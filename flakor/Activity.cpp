@@ -229,7 +229,9 @@ static void engine_handle_cmd(struct android_app* app, int32_t cmd) {
 }
 
 #ifdef __cplusplus
-extern C {
+extern "C" {
+#endif
+
 /**
  * This is the main entry point of a native application that is using
  * android_native_app_glue.  It runs in its own thread, with its own
@@ -312,5 +314,7 @@ void android_main(struct android_app* state) {
     }
 }
 
+#ifdef __cplusplus
 }
+#endif
 //END_INCLUDE(all)

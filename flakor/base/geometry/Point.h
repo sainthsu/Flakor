@@ -47,7 +47,7 @@ class Point
 	/** @returns if points have fuzzy equality which means 
 	 * equal with some degree of variance.
      */
-    bool fuzzyEquals(const CCPoint& target, float variance) const;
+    bool fuzzyEquals(const Point& target, float variance) const;
 
 	/**
 	 * getter

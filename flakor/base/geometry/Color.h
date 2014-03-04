@@ -38,15 +38,15 @@ class Color
 		static const int32_t ARGB_PACKED_RED_CLEAR = 0XFF00FFFF;
 		static const int32_t ARGB_PACKED_ALPHA_CLEAR = 0X00FFFFFF;
 	
-		static const Color WHITE = new Color(1, 1, 1, 1);
-		static const Color BLACK = new Color(0, 0, 0, 1);
-		static const Color RED = new Color(1, 0, 0, 1);
-		static const Color YELLOW = new Color(1, 1, 0, 1);
-		static const Color GREEN = new Color(0, 1, 0, 1);
-		static const Color CYAN = new Color(0, 1, 1, 1);
-		static const Color BLUE = new Color(0, 0, 1, 1);
-		static const Color PINK = new Color(1, 0, 1, 1);
-		static const Color TRANSPARENT = new Color(0, 0, 0, 0);
+		static const Color WHITE = Color(1, 1, 1, 1);
+		static const Color BLACK = Color(0, 0, 0, 1);
+		static const Color RED = Color(1, 0, 0, 1);
+		static const Color YELLOW = Color(1, 1, 0, 1);
+		static const Color GREEN = Color(0, 1, 0, 1);
+		static const Color CYAN = Color(0, 1, 1, 1);
+		static const Color BLUE = Color(0, 0, 1, 1);
+		static const Color PINK = Color(1, 0, 1, 1);
+		static const Color TRANSPARENT = Color(0, 0, 0, 0);
 		
 		float red;
 		float green;
@@ -80,5 +80,36 @@ class Color
 			return false;
 		}
 
+		inline bool setGreenChecking(float green)
+		{
+			if(this.green != green)
+			{
+				this.green = green;
+				return true;
+			}
+			return false;
+		}
+
+		inline bool setBlueChecking(float blue)
+		{
+			if(this.blue != blue)
+			{
+				this.blue = blue;
+				return true;
+			}
+			return false;
+		}
+
+		inline bool setAlphaChecking(float alpha)
+		{
+			if(this.alpha != alpha)
+			{
+				this.alpha = alpha;
+				return true;
+			}
+			return false;
+		}
 		
 }
+
+#endif

@@ -12,7 +12,7 @@ class Engine
     	const ASensor* accelerometerSensor;
     	ASensorEventQueue* sensorEventQueue;
 
-    	int animating;
+    	int running;
     	EGLDisplay display;
     	EGLSurface surface;
     	EGLContext context;

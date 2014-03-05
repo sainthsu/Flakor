@@ -22,6 +22,13 @@ abstract class Entity
 		Point m_scaleCenter;
 		Point m_skewCenter;
 		
+		float m_fRatationX;
+		float m_fRatationY;
+		float m_fScaleX;
+		float m_fScaleY;
+		float m_fSkewX;
+		float m_fSkewY;
+
 		int m_nZOrder;
 		int m_nTag;
 
@@ -34,6 +41,7 @@ abstract class Entity
 		bool m_bChildrenSortPending;
 
 		Camera* m_pCamera;
+		SmartList<Entity>	m_pChildren;
 		Entity* m_pParent;                  ///< weak reference to parent node
 		void* m_pUserData;
 

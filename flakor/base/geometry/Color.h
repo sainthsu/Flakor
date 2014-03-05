@@ -48,19 +48,23 @@ class Color
 		static const Color PINK = Color(1, 0, 1, 1);
 		static const Color TRANSPARENT = Color(0, 0, 0, 0);
 		
-		float red;
-		float green;
-		float blue;
-		float alpha;
+		GLfloat red;
+		GLfloat green;
+		GLfloat blue;
+		GLfloat alpha;
 
 	public:
 		Color();
-		Color(float red,float green,float blue);
-		Color(float red,float green,float blue,float alpha);
+		Color(GLubyte red,GLubyte green,GLubyte blue);
+		Color(GLubyte red,GLubyte green,GLubyte blue,GLubyte alpha);
+		Color(GLfloat red,GLfloat green,GLfloat blue);
+		Color(GLfloat red,GLfloat green,GLfloat blue,GLfloat alpha);
 		Color(const Color& other);
 
-		void setColor(float red,float green,float blue);
-		void setColor(float red,float green,float blue,float alpha);
+		void setColor(GLubyte red,GLubyte green,GLubyte blue);
+		void setColor(GLubyte red,GLubyte green,GLubyte blue,GLubyte alpha);
+		void setColor(GLfloat red,GLfloat green,GLfloat blue);
+		void setColor(GLfloat red,GLfloat green,GLfloat blue,GLfloat alpha);
 		void setColor(const Color& other);
 
     	bool equals(const Color& target) const;
@@ -70,7 +74,28 @@ class Color
 			setColor(*Color::WHITE);
 		}
 
-		inline bool setRedChecking(float red)
+		inline void setRed(GLubyte red)
+		{
+			this.red = red/255.f;
+		}
+		
+		inline void setGreen(GLubyte green)
+		{
+			this.green = green/255.f;
+		}
+
+		inline void setBlue(GLubyte blue)
+		{
+			this.blue = blue/255.f;
+		}
+
+		inline void setAlpha(GLubyte alpha)
+		{
+			this.alpha = alpha/255.f;
+		}
+
+
+		inline bool setRedChecking(GLfloat red)
 		{
 			if(this.red != red)
 			{
@@ -80,7 +105,7 @@ class Color
 			return false;
 		}
 
-		inline bool setGreenChecking(float green)
+		inline bool setGreenChecking(GLfloat green)
 		{
 			if(this.green != green)
 			{
@@ -90,7 +115,7 @@ class Color
 			return false;
 		}
 
-		inline bool setBlueChecking(float blue)
+		inline bool setBlueChecking(GLfloat blue)
 		{
 			if(this.blue != blue)
 			{
@@ -100,7 +125,7 @@ class Color
 			return false;
 		}
 
-		inline bool setAlphaChecking(float alpha)
+		inline bool setAlphaChecking(GLfloat alpha)
 		{
 			if(this.alpha != alpha)
 			{
@@ -109,6 +134,36 @@ class Color
 			}
 			return false;
 		}
+		
+		/*public not need to have getter
+		inline GLfloat getRed()
+		{
+			return this.red;
+		}
+	
+		inline GLfloat getGreen()
+		{
+			return this.green;
+		}
+
+		inline GLfloat getBlue()
+		{
+			return this.blue;
+		}
+
+		inline GLfloat getAlpha()
+		{
+			return this.alpha;
+		}
+		*/
+
+		inline int32_t getRGBAInt()
+		{
+				return ((int)(255 * this.alpha) << Color::RGBA_PACKED_ALPHA_SHIFT) | ((int)(255 * red) << Color::RGBA_PACKED_RED_SHIFT) | ((int)(255 * green) << Color::RGBA_PACKED_GREEN_SHIFT) | ((int)(255 * blue) << Color::RGBA_PACKED_BLUE_SHIFT);
+
+		}
+
+		void mix(const Color& ColorA, float percentageA, const Color& ColorB, float percentageB);
 		
 }
 

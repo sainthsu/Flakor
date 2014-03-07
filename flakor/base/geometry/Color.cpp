@@ -48,5 +48,25 @@ Color::setColor(GLubyte red,GLubyte green,GLubyte blue,GLubyte alpha)
 
 Color::setColor(GLfloat red,GLfloat green,GLfloat blue)
 {
+	this.red = red;
+	this.green = green;
+	this.blue = blue;
+}
 
+Color::setColor(GLfloat red,GLfloat green,GLfloat blue,GLfloat alpha)
+{
+	this.red = red;
+	this.green = green;
+	this.blue = blue;
+	this.alpha = alpha;
+}
+
+Color::mix(const Color& ColorA, float percentageA, const Color& ColorB, float percentageB)
+{
+	GLfloat red = (ColorA.red * percentageA) + (ColorB.red * percentageB);
+	GLfloat green = (ColorA.green * percentageA) + (ColorB.green * percentageB);
+	GLfloat blue = (ColorA.blue * percentageA) + (ColorB.blue * percentageB);
+	GLfloat alpha = (ColorA.alpha * percentageA) + (ColorB.alpha * percentageB);
+
+	this.set(red, green, blue, alpha);
 }

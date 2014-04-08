@@ -26,7 +26,27 @@
 #include <math.h>
 
 FLAKOR_NS_BEGIN
-
+/**
+ * @author Saint Hsu(saint@aliyun.com)
+ * @since 2013.5.12.18:00
+ * @copyright Saint Hsu
+ * This class represents an affine transformation with the following matrix:
+ * <pre>[ a , b , u ]
+ * 		[ c , d , v ]
+ * 		[ tx, ty, w ]</pre>
+ * where:
+ * <ul>
+ *  <li><b>a</b> is the <b>x scale</b></li>
+ *  <li><b>b</b> is the <b>y skew</b></li>
+ *  <li><b>c</b> is the <b>x skew</b></li>
+ *  <li><b>d</b> is the <b>y scale</b></li>
+ *  <li><b>tx</b> is the <b>x translation (position)</b></li>
+ *  <li><b>ty</b> is the <b>y translation (position)</b></li>
+ *  <li>The u, v, and w positions are static values that remain at 0, 0, and 1 respectively<li>
+ * </ul>
+ *  x' = x*a + y*c + tx
+ *  y' = x*b + y*d + ty
+ */
 class TransformMatrix
 {
 	private:

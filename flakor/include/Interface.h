@@ -21,9 +21,9 @@ public:
 	virtual void setColor(const Color& color) = 0;
 
 	virtual float getRed(void);
-	virtual float getRed(void);
-	virtual float getRed(void);
-	virtual float getRed(void);
+	virtual float getGreen(void);
+	virtual float getBlue(void);
+	virtual float getAlpha(void);
 
 	virtual const Color& getColor(void);
 };

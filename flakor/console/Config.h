@@ -12,8 +12,8 @@ typedef enum _screenOrientation
     PORTRAIT_FIXED,
     /** The app will automatically rotate between the Portrait modes, 
 	depending on the orientation of the device. */
-    PORTRAIT_SENSOR;
-}ScreenOrientation
+    PORTRAIT_SENSOR,
+}ScreenOrientation;
 
 class AudioConfig
 {
@@ -27,7 +27,7 @@ class AudioConfig
 		bool isSoundOn();
 		void setSoundOn();
 		int getMaxSimultaneousStreams();
-		void setMaxSimultaneousStreams(int maxSimultaneousStreams)
+		void setMaxSimultaneousStreams(int maxSimultaneousStreams);
 }
 
 class InputConfig

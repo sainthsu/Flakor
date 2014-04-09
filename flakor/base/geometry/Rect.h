@@ -32,7 +32,7 @@ public:
     bool intersectsRect(const Rect& rect) const;
 };
 
-#define MakeRect(width, height) Rect((float)(x), (float)(y) , (float)(width), (float)(height))
+#define MakeRect(x,y,width, height) Rect((float)(x), (float)(y) , (float)(width), (float)(height))
 
 const Rect RectZero = RectMake(0,0,0,0); 
 

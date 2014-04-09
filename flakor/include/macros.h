@@ -136,10 +136,10 @@
 
 	// flakor debug
 	#if !defined(FLAKOR_DEBUG) || FLAKO_DEBUG == 0
-	#define CCLOG(...)       do {} while (0)
-	#define CCLOGINFO(...)   do {} while (0)
-	#define CCLOGERROR(...)  do {} while (0)
-	#define CCLOGWARN(...)   do {} while (0)
+	#define FKLOG(...)       do {} while (0)
+	#define FKLOGINFO(...)   do {} while (0)
+	#define FKLOGERROR(...)  do {} while (0)
+	#define FKLOGWARN(...)   do {} while (0)
 
 	#elif FLAKOR_DEBUG == 1
 	#define FKLOG(format, ...)      cocos2d::CCLog(format, ##__VA_ARGS__)

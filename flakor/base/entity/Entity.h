@@ -1,7 +1,25 @@
 #ifdef _FK_ENTITY_H_
 #define _FK_ENTITY_H_
 
+#include "base/geometry/Color.h"
+#include "base/entity/Object.h"
+
 FLAKOR_NS_BEGIN
+
+class Color;
+class Camera;
+
+enum {
+	kEntityTagInvalid = -1,
+};
+
+enum {
+	kEntityOnEnter,
+	kEntityOnExit,
+    kEntityOnEnterTransitionDidFinish,
+    kEntityOnExitTransitionDidStart,
+    kEntityOnCleanup
+};
 
 /**
  *m member
@@ -10,7 +28,7 @@ FLAKOR_NS_BEGIN
  *n -int
  *f -float
  */
-abstract class Entity
+abstract class Entity :: public Object,public IUpdatable,public IColorable 
 {
 	protected:
 		/*＊
@@ -133,6 +151,7 @@ abstract class Entity
 		virtual bool init();
 
 		static Entity* create();
+		static Entity* create(float x,float y);
 
 		/**
 		 * Gets the description string. It makes debugging easier.
@@ -439,6 +458,7 @@ abstract class Entity
 		Entity* getChildByZIndex(int zIndex);
 		Entity* getFirstChild();
 		Entity* getLastChild();
+
 		/**
 		 * Return an array of children
 		 *
@@ -464,13 +484,37 @@ abstract class Entity
 		 */
 		unsigned int getChildrenCount(void) const;
 
+		/** 
+     	* Removes a child from the container with a cleanup
+     	*
+     	* @see removeChild(CCNode, bool)
+     	*
+     	* @param child     The child node which will be removed.
+     	*/
+    	virtual void removeChild(CCNode* child);
+    	/** 
+     	* Removes a child from the container. It will also cleanup all running actions depending on the cleanup parameter.
+     	* 
+     	* @param child     The child node which will be removed.
+     	* @param cleanup   true if all running actions and callbacks on the child node will be cleanup, false otherwise.
+     	*/
+    	virtual void removeChild(CCNode* child, bool cleanup);
 		virtual void removeChildByTag(int tag);
+		virtual void removeChildByTag(int tag,bool cleanup);
 		virtual void removeChildByZIndex(int zIndex);
-		virtual void removeChildren();
+		virtual void removeAllChildren();
+		virtual void removeAllChildren(bool cleanup);
 
-
+		/** 
+     	* Reorders a child according to a new z value.
+     	*
+     	* @param child     An already added child node. It MUST be already added.
+     	* @param zOrder    Z order for drawing priority. Please refer to setZOrder(int)
+     	*/
+    	virtual void reorderChild(CCNode * child, int zOrder);
 		virtual void sortChildren();
 		virtual void sortChildren(bool immediate);
+
 		/**
 		 * Returns a tag that is used to identify the node easily.
 		 *
@@ -505,6 +549,7 @@ abstract class Entity
 		 * @return A interger that identifies the node.
 		 */
 		virtual int getTag() const;
+
 		/**
 		 * Changes the tag that is used to identify the node easily.
 		 *
@@ -578,6 +623,67 @@ abstract class Entity
 		 */
 		virtual bool isRunning();
 
+		/** 
+     	* Event callback that is invoked every time when CCNode enters the 'stage'.
+     	* If the CCNode enters the 'stage' with a transition, this event is called when the transition starts.
+     	* During onEnter you can't access a "sister/brother" node.
+     	* If you override onEnter, you shall call its parent's one, e.g., CCNode::onEnter().
+     	* @js NA
+     	* @lua NA
+     	*/
+   		virtual void onEnter();
+
+    /** Event callback that is invoked when the CCNode enters in the 'stage'.
+     * If the CCNode enters the 'stage' with a transition, this event is called when the transition finishes.
+     * If you override onEnterTransitionDidFinish, you shall call its parent's one, e.g. CCNode::onEnterTransitionDidFinish()
+     * @js NA
+     * @lua NA
+     */
+    virtual void onEnterTransitionDidFinish();
+
+    /** 
+     * Event callback that is invoked every time the CCNode leaves the 'stage'.
+     * If the CCNode leaves the 'stage' with a transition, this event is called when the transition finishes.
+     * During onExit you can't access a sibling node.
+     * If you override onExit, you shall call its parent's one, e.g., CCNode::onExit().
+     * @js NA
+     * @lua NA
+     */
+    virtual void onExit();
+
+    /** 
+     * Event callback that is called every time the CCNode leaves the 'stage'.
+     * If the CCNode leaves the 'stage' with a transition, this callback is called when the transition starts.
+     * @js NA
+     * @lua NA
+     */
+    virtual void onExitTransitionDidStart();
+
+    /// @} end of event callbacks.
+
+
+    /** 
+     * Stops all running actions and schedulers
+     */
+    virtual void cleanup(void);
+
+/** 
+     * Override this method to draw your own node.
+     * The following GL states will be enabled by default:
+     * - glEnableClientState(GL_VERTEX_ARRAY);
+     * - glEnableClientState(GL_COLOR_ARRAY);
+     * - glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+     * - glEnable(GL_TEXTURE_2D);
+     * AND YOU SHOULD NOT DISABLE THEM AFTER DRAWING YOUR NODE
+     * But if you enable any other GL state, you should disable it after drawing your node.
+     */
+    virtual void draw(void);
+
+    /** 
+     * Visits this node's children and draw them recursively.
+     */
+    virtual void visit(void);
+
 		virtual void onAttached();
 		virtual void onDetached();
 		/* 
@@ -609,7 +715,7 @@ abstract class Entity
 		 */
 		virtual void updateTransform(void);
 
-		private:
+	private:
 		/// lazy allocs
 		void childrenAlloc(void);
 
@@ -620,11 +726,9 @@ abstract class Entity
 		void detachChild(Entity *child, bool doCleanup);
 
 		/** Convert cocos2d coordinates to UI windows coordinate.
-		 * @js NA
-		 * @lua NA
 		 */
 		Point convertToWindowSpace(const Point& entityPoint);
-		}
+}
 
 FLAKOR_NS_END
 

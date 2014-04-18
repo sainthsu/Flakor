@@ -1,7 +1,7 @@
 /****************************************************************************
-Copyright (c) 2010 cocos2d-x.org
+Copyright (c) 2010 flakor.org
 
-http://www.cocos2d-x.org
+http://www.flakor.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,14 +21,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#include "CCZone.h"
-#include "CCObject.h"
+#include "Zone.h"
+#include "Object.h"
 
-NS_CC_BEGIN
+FLAKOR_NS_BEGIN
 
-CCZone::CCZone(CCObject *pObject)
+Zone::Zone(Object *pObject)
 {
     m_pCopyObject = pObject;
 }
 
-NS_CC_END
+FLAKOR_NS_END

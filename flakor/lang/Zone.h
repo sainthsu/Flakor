@@ -1,7 +1,7 @@
 /****************************************************************************
-Copyright (c) 2010 cocos2d-x.org
+Copyright (c) 2014 flakor.org
 
-http://www.cocos2d-x.org
+http://www.flakor.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,37 +22,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __CC_ZONE_H__
-#define __CC_ZONE_H__
+#ifndef _FK_ZONE_H_
+#define _FK_ZONE_H_
 
-#include "platform/CCPlatformMacros.h"
+#include "platform/PlatformMacros.h"
 #include <stdio.h>
 
-NS_CC_BEGIN
+FK_NS_BEGIN
 
 /**
  * @addtogroup data_structures
  * @{
  */
 
-class CCObject;
+class Object;
 /**
  * @js NA
  * @lua NA
  */
-class CC_DLL CCZone
+class Zone
 {
 public:
-    CCZone(CCObject *pObject = NULL);
+    Zone(Object *pObject = NULL);
 
 public:
-    CCObject *m_pCopyObject;
+    Object *m_pCopyObject;
 };
 
 // end of data_structure group
 /// @}
 
-NS_CC_END
+FLAKOR_NS_END
 
-#endif // __CC_ZONE_H__
+#endif // _FK_ZONE_H_
 

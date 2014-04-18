@@ -66,8 +66,8 @@ public:
     void push();
     void pop();
 
-    void removeObject(CCObject* pObject);
-    void addObject(CCObject* pObject);
+    void removeObject(Object* pObject);
+    void addObject(Object* pObject);
 
     static PoolManager* sharedPoolManager();
     static void purgePoolManager();

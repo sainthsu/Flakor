@@ -24,7 +24,7 @@ THE SOFTWARE.
 #ifndef _FK_ARRAY_H_
 #define _FK_ARRAY_H_
 
-#include "support/data_support/ccCArray.h"
+#include "support/math/fkCArray.h"
 
 /**
  * @addtogroup data_structures
@@ -98,7 +98,7 @@ FLAKOR_NS_BEGIN
 /**
  * @js NA
  */
-class Array : public CCObject
+class Array : public Object
 {
 public:
     /**

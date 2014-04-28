@@ -31,12 +31,12 @@ THE SOFTWARE.
 #define _USE_MATH_DEFINES
 #endif
 
-#include "platform/CCCommon.h"
-#include "CCStdC.h"
+#include "platform/Common.h"
+#include "StdC.h"
 
 #ifndef FKAssert
 #if FLAKOR_DEBUG > 0
-extern bool CC_DLL cc_assert_script_compatible(const char *msg);
+extern bool cc_assert_script_compatible(const char *msg);
 #define FKAssert(cond, msg) do {                              \
       if (!(cond)) {                                          \
         if (!cc_assert_script_compatible(msg) && strlen(msg)) \

@@ -2,6 +2,8 @@
 #ifndef _FK_MACROS_H_
 #define _FK_MACROS_H_
 
+#include "PlatformDefine.h"
+
 	// namespace flakor {}
 	#ifdef __cplusplus
     	#define FLAKOR_NS_BEGIN                     namespace flakor {
@@ -135,15 +137,15 @@
     	CCLog("%s : %s",__FUNCTION__, CCString::createWithFormat(s, ##__VA_ARGS__)->getCString())
 
 	// flakor debug
-	#if !defined(FLAKOR_DEBUG) || FLAKO_DEBUG == 0
+	#if !defined(FLAKOR_DEBUG) || FLAKOR_DEBUG == 0
 	#define FKLOG(...)       do {} while (0)
 	#define FKLOGINFO(...)   do {} while (0)
 	#define FKLOGERROR(...)  do {} while (0)
 	#define FKLOGWARN(...)   do {} while (0)
 
 	#elif FLAKOR_DEBUG == 1
-	#define FKLOG(format, ...)      cocos2d::CCLog(format, ##__VA_ARGS__)
-	#define FKLOGERROR(format,...)  cocos2d::CCLog(format, ##__VA_ARGS__)
+	#define FKLOG(format, ...)      flakor::FKLog(format, ##__VA_ARGS__)
+	#define FKLOGERROR(format,...)  flakor::FKLog(format, ##__VA_ARGS__)
 	#define FKLOGINFO(format,...)   do {} while (0)
 	#define FKLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
 

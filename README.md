@@ -1,4 +1,4 @@
-flakor-cplusplus
+Flakor Engine (www.flakor.org)
 ================
 
 Flakor engine，

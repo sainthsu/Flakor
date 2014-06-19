@@ -2,12 +2,13 @@
 #define _FK_ENGINE_H_
 
 #include <jni.h>
-#include <errno.h>
 
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
+
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -27,18 +28,18 @@ class Engine
     	const ASensor* accelerometerSensor;
     	ASensorEventQueue* sensorEventQueue;
 
-    	int running;
     	EGLDisplay display;
     	EGLSurface surface;
     	EGLContext context;
     	int32_t width;
     	int32_t height;
+		int running;
 	public:
-		void initDisplay(void);
+		int initDisplay(void);
 		void create(void);
 		void drawFrame(void);
 		void termDisplay(void);
-		void handleInput(AInputEvent* event);
+		int32_t handleInput(AInputEvent* event);
 		void handleCMD(int32_t cmd);
 }
 

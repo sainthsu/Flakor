@@ -212,6 +212,9 @@ static void* android_app_entry(void* param) {
 
     print_cur_config(android_app);
 
+	/*
+	 *设置主循环和输入命令控制
+	 */
     android_app->cmdPollSource.id = LOOPER_ID_MAIN;
     android_app->cmdPollSource.app = android_app;
     android_app->cmdPollSource.process = process_cmd;

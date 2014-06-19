@@ -69,8 +69,8 @@ Engine::initDisplay(void)
 /**
  * Just the current frame in the display.
  */
-static void engine_draw_frame(struct engine* engine) {
-    if (engine->display == NULL) {
+Engine::drawFrame() {
+    if (this->display == NULL) {
         // No display.
         return;
     }
@@ -80,7 +80,7 @@ static void engine_draw_frame(struct engine* engine) {
             ((float)engine->state.y)/engine->height, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    eglSwapBuffers(engine->display, engine->surface);
+    eglSwapBuffers(this->display, this->surface);
 }
 
 /**
@@ -97,8 +97,8 @@ static void engine_term_display(struct engine* engine) {
         }
         eglTerminate(engine->display);
     }
-    engine->animating = 0;
-    engine->display = EGL_NO_DISPLAY;
+    this->animating = 0;
+    this->display = EGL_NO_DISPLAY;
     engine->context = EGL_NO_CONTEXT;
     engine->surface = EGL_NO_SURFACE;
 }

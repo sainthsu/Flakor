@@ -31,14 +31,14 @@ protected:
     	friend class AutoreleasePool;
 }
 
-typedef void (CCObject::*SEL_SCHEDULE)(float);
-typedef void (CCObject::*SEL_CallFunc)();
-typedef void (CCObject::*SEL_CallFuncN)(CCNode*);
-typedef void (CCObject::*SEL_CallFuncND)(CCNode*, void*);
-typedef void (CCObject::*SEL_CallFuncO)(CCObject*);
-typedef void (CCObject::*SEL_MenuHandler)(CCObject*);
-typedef void (CCObject::*SEL_EventHandler)(CCEvent*);
-typedef int (CCObject::*SEL_Compare)(CCObject*);
+typedef void (Object::*SEL_SCHEDULE)(float);
+typedef void (Object::*SEL_CallFunc)();
+typedef void (Object::*SEL_CallFuncN)(Node*);
+typedef void (Object::*SEL_CallFuncND)(Node*, void*);
+typedef void (Object::*SEL_CallFuncO)(Object*);
+typedef void (Object::*SEL_MenuHandler)(Object*);
+typedef void (Object::*SEL_EventHandler)(Event*);
+typedef int (Object::*SEL_Compare)(Object*);
 
 #define schedule_selector(_SELECTOR) (SEL_SCHEDULE)(&_SELECTOR)
 #define callfunc_selector(_SELECTOR) (SEL_CallFunc)(&_SELECTOR)

@@ -1,8 +1,8 @@
 #ifdef _FK_ENTITY_H_
 #define _FK_ENTITY_H_
 
-#include "base/geometry/Color.h"
-#include "base/entity/Object.h"
+#include "./base/geometry/Color.h"
+#include "./lang/Object.h"
 
 FLAKOR_NS_BEGIN
 

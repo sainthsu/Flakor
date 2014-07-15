@@ -1,9 +1,7 @@
 /****************************************************************************
-Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2008-2010 Ricardo Quesada
-Copyright (c) 2011      Zynga Inc.
+Copyright (c) 2013  flakor
 
-http://www.cocos2d-x.org
+http://www.flakor.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,32 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __MACROS_H__
-#define __MACROS_H__
+#ifndef _FK_MACROS_H_
+#define _FK_MACROS_H_
 
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif
 
-#include "platform/Common.h"
-#include "StdC.h"
+#include "common.h"
+#include "stdC.h"
 
 #ifndef FKAssert
 #if FLAKOR_DEBUG > 0
-extern bool cc_assert_script_compatible(const char *msg);
+extern bool assert_script_compatible(const char *msg);
 #define FKAssert(cond, msg) do {                              \
       if (!(cond)) {                                          \
-        if (!cc_assert_script_compatible(msg) && strlen(msg)) \
-          cocos2d::CCLog("Assert failed: %s", msg);           \
-        CC_ASSERT(cond);                                      \
+        if (!assert_script_compatible(msg) && strlen(msg)) \
+          flakor::Log("Assert failed: %s", msg);           \
+        FK_ASSERT(cond);                                      \
       } \
     } while (0)
 #else
 #define FKAssert(cond, msg) ((void)(cond))
 #endif
-#endif  // CCAssert
+#endif  // Assert
 
-#include "ccConfig.h"
+#include "config.h"
+
 
 /** @def FK_SWAP
 simple macro that swaps 2 variables
@@ -70,33 +69,33 @@ simple macro that swaps 2 variables
  */
 #define FKRANDOM_0_1() ((float)rand()/RAND_MAX)
 
-/** @def CC_DEGREES_TO_RADIANS
+/** @def FK_DEGREES_TO_RADIANS
  converts degrees to radians
  */
 #define FK_DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) * 0.01745329252f) // PI / 180
 
-/** @def CC_RADIANS_TO_DEGREES
+/** @def FK_RADIANS_TO_DEGREES
  converts radians to degrees
  */
 #define FK_RADIANS_TO_DEGREES(__ANGLE__) ((__ANGLE__) * 57.29577951f) // PI * 180
 
 #define kFKRepeatForever (UINT_MAX -1)
 
-/** @def CC_BLEND_SRC
+/** @def FK_BLEND_SRC
 default gl blend src function. Compatible with premultiplied alpha images.
 */
-#define CC_BLEND_SRC GL_ONE
-#define CC_BLEND_DST GL_ONE_MINUS_SRC_ALPHA
+#define FK_BLEND_SRC GL_ONE
+#define FK_BLEND_DST GL_ONE_MINUS_SRC_ALPHA
 
 
-/** @def CC_NODE_DRAW_SETUP
+/** @def FK_NODE_DRAW_SETUP
  Helpful macro that setups the GL server state, the correct GL program and sets the Model View Projection matrix
  @since v2.0
  */
 #define CC_NODE_DRAW_SETUP() \
 do { \
     ccGLEnable(m_eGLServerState); \
-    CCAssert(getShaderProgram(), "No shader program set for this node"); \
+    FKAssert(getShaderProgram(), "No shader program set for this node"); \
     { \
         getShaderProgram()->use(); \
         getShaderProgram()->setUniformsForBuiltins(); \
@@ -245,7 +244,7 @@ It should work same as apples CFSwapInt32LittleToHost(..)
  Increments the GL Draws counts by one.
  The number of calls per frame are displayed on the screen when the CCDirector's stats are enabled.
  */
-extern unsigned int CC_DLL g_uNumberOfDraws;
+extern unsigned int FK_DLL g_uNumberOfDraws;
 #define CC_INCREMENT_GL_DRAWS(__n__) g_uNumberOfDraws += __n__
 
 /*******************/
@@ -256,4 +255,5 @@ extern unsigned int CC_DLL g_uNumberOfDraws;
  */
 #define CCAnimationFrameDisplayedNotification "CCAnimationFrameDisplayedNotification"
 
-#endif // __CCMACROS_H__
+#endif // _FK_MACROS_H_
+

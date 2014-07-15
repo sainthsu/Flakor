@@ -1,5 +1,10 @@
 *~
 
+flakor.config
+flakor.creator
+flakor.files
+flakor.includes
+
 # Compiled Object files
 *.slo
 *.lo

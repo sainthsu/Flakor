@@ -1,9 +1,9 @@
-#include "platform/CCDevice.h"
+#include "./Device.h"
 #include "jni/DPIJni.h"
 
-NS_CC_BEGIN
+FLAKOR_NS_BEGIN
 
-int CCDevice::getDPI()
+int Device::getDPI()
 {
     static int dpi = -1;
     if (dpi == -1)
@@ -13,4 +13,4 @@ int CCDevice::getDPI()
     return dpi;
 }
 
-NS_CC_END
+FLAKOR_NS_END

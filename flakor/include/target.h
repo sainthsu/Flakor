@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2014 flakor.org
+Copyright (c) 2013 flakor.org
 
 http://www.flakor.org
 
@@ -22,18 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef _FK_PLATFORM_CONFIG_H_
-#define _FK_PLATFORM_CONFIG_H_
+#ifndef _FK_TARGET_H_
+#define _FK_TARGET_H_
 
 /**
-Config of flakor project, per target platform.
+Config of flakor project, define which target platform to be run in.
 */
 
 //////////////////////////////////////////////////////////////////////////
 // pre configure
 //////////////////////////////////////////////////////////////////////////
 
-// define supported target platform macro which FK uses.
+// define supported target platform macro which Flakor engine uses.
 #define FK_PLATFORM_UNKNOWN            0
 #define FK_PLATFORM_IOS                1
 #define FK_PLATFORM_ANDROID            2
@@ -140,8 +140,8 @@ Config of flakor project, per target platform.
 #endif 
 
 #if (FK_TARGET_PLATFORM == FK_PLATFORM_WIN32)
-#pragma warning (disable:4127)  
+  #pragma warning (disable:4127)
 #endif  // FK_PLATFORM_WIN32
 
-#endif  // __FK_PLATFORM_CONFIG_H__
+#endif
 

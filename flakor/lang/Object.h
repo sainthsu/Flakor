@@ -48,5 +48,7 @@ typedef int (Object::*SEL_Compare)(Object*);
 #define menu_selector(_SELECTOR) (SEL_MenuHandler)(&_SELECTOR)
 #define event_selector(_SELECTOR) (SEL_EventHandler)(&_SELECTOR)
 #define compare_selector(_SELECTOR) (SEL_Compare)(&_SELECTOR)
+
 FLAKOR_NS_END
+
 #endif

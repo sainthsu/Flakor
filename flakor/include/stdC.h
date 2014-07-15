@@ -1,7 +1,7 @@
 /****************************************************************************
-Copyright (c) 2010 cocos2d-x.org
+Copyright (c) 2013 flakor.org
 
-http://www.cocos2d-x.org
+http://www.flakor.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ THE SOFTWARE.
 #ifndef _FK_STD_C_H_
 #define _FK_STD_C_H_
 
-#include "platform/PlatformMacros.h"
 #include <float.h>
 #include <math.h>
 #include <string.h>
@@ -37,11 +36,11 @@ THE SOFTWARE.
 #include <stdint.h>
 
 #ifndef MIN
-#define MIN(x,y) (((x) > (y)) ? (y) : (x))
+	#define MIN(x,y) (((x) > (y)) ? (y) : (x))
 #endif  // MIN
 
 #ifndef MAX
-#define MAX(x,y) (((x) < (y)) ? (y) : (x))
+	#define MAX(x,y) (((x) < (y)) ? (y) : (x))
 #endif  // MAX
 
-#endif  // __CC_STD_C_H__
+#endif  // _FK_STD_C_H_

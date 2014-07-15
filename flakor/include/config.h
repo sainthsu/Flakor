@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2014 flakor.org
+Copyright (c) 2013 flakor.org
 
 http://www.flakor.org
 
@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef _FK_CONFIG_H_
 #define _FK_CONFIG_H_
 
-#include "PlatformConfig.h"
+#include "target.h"
 
 /**
  @file
@@ -40,7 +40,7 @@ THE SOFTWARE.
  Enabled by default.
  */
 #ifndef FK_ENABLE_STACKABLE_ACTIONS
-#define FK_ENABLE_STACKABLE_ACTIONS 1
+	#define FK_ENABLE_STACKABLE_ACTIONS 1
 #endif
 
 /** @def FK_ENABLE_GL_STATE_CACHE
@@ -60,7 +60,7 @@ THE SOFTWARE.
  @since v0.1.0
  */
 #ifndef FK_ENABLE_GL_STATE_CACHE
-#define FK_ENABLE_GL_STATE_CACHE 1
+	#define FK_ENABLE_GL_STATE_CACHE 1
 #endif
 
 /** @def FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL
@@ -84,7 +84,7 @@ To enabled set it to 1. Disabled by default.
 @since v0.99.5
 */
 #ifndef FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL
-#define FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL 0
+	#define FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL 0
 #endif
 
 /** @def FK_DIRECTOR_FPS_INTERVAL
@@ -95,7 +95,7 @@ To enabled set it to 1. Disabled by default.
  Default value: 0.5f
  */
 #ifndef FK_DIRECTOR_STATS_INTERVAL
-#define FK_DIRECTOR_STATS_INTERVAL (0.5f)
+	#define FK_DIRECTOR_STATS_INTERVAL (0.5f)
 #endif
 
 /** @def CC_DIRECTOR_FPS_POSITION
@@ -104,7 +104,7 @@ To enabled set it to 1. Disabled by default.
  Default: 0,0 (bottom-left corner)
  */
 #ifndef FK_DIRECTOR_FPS_POSITION
-#define FK_DIRECTOR_FPS_POSITION PointMake(0,0)
+	#define FK_DIRECTOR_FPS_POSITION PointMake(0,0)
 #endif
 
 /** @def FK_DIRECTOR_DISPATCH_FAST_EVENTS
@@ -118,7 +118,7 @@ To enabled set it to 1. Disabled by default.
  @warning This feature is experimental
  */
 #ifndef FK_DIRECTOR_DISPATCH_FAST_EVENTS
- #define FK_DIRECTOR_DISPATCH_FAST_EVENTS 0
+	#define FK_DIRECTOR_DISPATCH_FAST_EVENTS 0
 #endif
 
 /** @def FK_ENTITY_RENDER_SUBPIXEL
@@ -182,7 +182,7 @@ To enabled set it to 1. Disabled by default.
  @since v0.01.0
  */
 #ifndef FK_USE_LA88_LABELS
-#define FK_USE_LA88_LABELS 1
+	#define FK_USE_LA88_LABELS 1
 #endif
 
 /** @def FK_SPRITE_DEBUG_DRAW
@@ -253,4 +253,4 @@ To enable set it to a value different than 0. Disabled by default.
 #define FK_KUNKUA_ENGINE_DEBUG 0
 #endif
 
-#endif // __CCCONFIG_H__
+#endif // _FK_CONFIG_H_

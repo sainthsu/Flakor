@@ -107,6 +107,6 @@ struct StringCompare : public std::binary_function<String *, String *, bool> {
 
 #define StringMake(str) String::create(str)
 
-FLAKOR_ND_END
+FLAKOR_NS_END
 
 #endif

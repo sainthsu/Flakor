@@ -30,8 +30,6 @@ THE SOFTWARE.
 #include "lang/String.h"
 #include <string>
 
-
-
 FLAKOR_NS_BEGIN
 
 typedef enum _ConfigurationType {

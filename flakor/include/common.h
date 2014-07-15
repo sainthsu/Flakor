@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2014 flakor.org
+Copyright (c) 2013 flakor.org
 
 http://www.flakor.org
 
@@ -21,63 +21,60 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#ifndef _FK_AUTORELEASEPOOL_H_
-#define _FK_AUTORELEASEPOOL_H_
 
-#include "Object.h"
-#include "Array.h"
+#ifndef _FK_COMMON_H_
+#define _FK_COMMON_H_
+
+#include "targetMacros.h"
 
 FLAKOR_NS_BEGIN
 
 /**
- * @addtogroup lang
+ * @addtogroup platform
  * @{
- * @js NA
- * @lua NA
  */
 
-class AutoreleasePool : public Object
-{
-    Array*    m_pManagedObjectArray;    
-public:
-    AutoreleasePool(void);
-    ~AutoreleasePool(void);
-
-    void addObject(Object *pObject);
-    void removeObject(Object *pObject);
-
-    void clear();
-};
+/// The max length of CCLog message.
+static const int MAX_LOG_LENGTH = 16*1024;
 
 /**
- * @js NA
- * @lua NA
+@brief Output Debug message.
+*/
+void FK_DLL Log(const char * pszFormat, ...) FK_FORMAT_PRINTF(1, 2);
+
+/**
+ * lua can not deal with ...
  */
-class PoolManager
+void FK_DLL LuaLog(const char * pszFormat);
+
+/**
+@brief Pop out a message box
+*/
+void FK_DLL MessageBox(const char * pszMsg, const char * pszTitle);
+
+/**
+@brief Enum the language type supported now
+*/
+typedef enum __LanguageType
 {
-    Array*    m_pReleasePoolStack;    
-    AutoreleasePool*  m_pCurReleasePool;
+    LanguageEnglish = 0,
+    LanguageChinese,
+    LanguageFrench,
+    LanguageItalian,
+    LanguageGerman,
+    LanguageSpanish,
+    LanguageDutch,
+    LanguageRussian,
+    LanguageKorean,
+    LanguageJapanese,
+    LanguageHungarian,
+    LanguagePortuguese,
+    LanguageArabic
+} LanguageType;
 
-    AutoreleasePool* getCurReleasePool();
-public:
-    PoolManager();
-    ~PoolManager();
-    void finalize();
-    void push();
-    void pop();
-
-    void removeObject(Object* pObject);
-    void addObject(Object* pObject);
-
-    static PoolManager* sharedPoolManager();
-    static void purgePoolManager();
-
-    friend class AutoreleasePool;
-};
-
-// end of base_nodes group
+// end of platform group
 /// @}
 
 FLAKOR_NS_END
 
-#endif //_FK_AUTORELEASEPOOL_H_
+#endif    // _FK_COMMON_H_

@@ -1,27 +1,35 @@
+#ifndef _FK_TARGET_MACROS_H_
+#define _FK_TARGET_MACROS_H_
 
-#ifndef _FK_MACROS_H_
-#define _FK_MACROS_H_
+#include "targetAssert.h"
 
-#include "PlatformDefine.h"
+// namespace define flakor {}
+#ifdef __cplusplus
+    #define FLAKOR_NS_BEGIN                     namespace flakor {
+    #define FLAKOR_NS_END                       }
+    #define USING_FLAKOR_NS                    using namespace flakor
+#else
+    #define FLAKOR_NS_BEGIN
+    #define FLAKOR_NS_END
+    #define USING_FLAKOR_NS
+#endif
 
-	// namespace flakor {}
-	#ifdef __cplusplus
-    	#define FLAKOR_NS_BEGIN                     namespace flakor {
-    	#define FLAKOR_NS_END                       }
-    	#define USING_FLAKOR_NS                    using namespace flakor
-	#else
-    	#define FLAKOR_NS_BEGIN 
-    	#define FLAKOR_NS_END 
-    	#define USING_FLAKOR_NS   
-	#endif 
+/* Define NULL pointer value */
+#ifndef NULL
+  #ifdef __cplusplus
+      #define NULL    0
+  #else
+	  #define NULL    ((void *)0)
+  #endif
+#endif
 
-	/**
- 	* define a create function for a specific type, such as FKLayer
- 	* @__TYPE__ class type to add create(), such as FKLayer
- 	*/
-	#define CREATE_FUNC(__TYPE__) \
-	static __TYPE__* create() \
-	{ \
+  /**
+   * define a create function for a specific type, such as FKLayer
+   * @__TYPE__ class type to add create(), such as FKLayer
+   */
+  #define CREATE_FUNC(__TYPE__) \
+    static __TYPE__* create() \
+    { \
     	__TYPE__ *pRet = new __TYPE__(); \
     	if (pRet && pRet->init()) \
     	{ \
@@ -34,19 +42,19 @@
         	pRet = NULL; \
         	return NULL; \
     	} \
-	}
+    }
 
-	/** FK_PROPERTY_READONLY is used to declare a protected variable.
- 	We can use getter to read the variable.
-	能够getter的proteted成员变量
- 	@param varType : the type of variable.
- 	@param varName : variable name.
- 	@param funName : "get + funName" is the name of the getter.
- 	@warning : The getter is a public virtual function, you should rewrite it first.
- 	The variables and methods declared after FK_PROPERTY_READONLY are all public.
- 	If you need protected or private, please declare.
- 	*/
-	#define FK_PROPERTY_READONLY(varType, varName, funName)\
+  /** FK_PROPERTY_READONLY is used to declare a protected variable.
+   * We can use getter to read the variable.
+   * 能够getter的protected成员变量
+   * @param varType : the type of variable.
+   * @param varName : variable name.
+   * @param funName : "get + funName" is the name of the getter.
+   * @warning : The getter is a public virtual function, you should rewrite it first.
+   * The variables and methods declared after FK_PROPERTY_READONLY are all public.
+   * If you need protected or private, please declare.
+   */
+   #define FK_PROPERTY_READONLY(varType, varName, funName)\
 	protected: varType varName;\
 	public: virtual varType get##funName(void);
 
@@ -119,22 +127,22 @@
 	{ \
     	if (varName != var) \
     	{ \
-        	CC_SAFE_RETAIN(var); \
-        	CC_SAFE_RELEASE(varName); \
+        	FK_SAFE_RETAIN(var); \
+        	FK_SAFE_RELEASE(varName); \
         	varName = var; \
     	} \
 	} 
 
-	#define FK_SAFE_DELETE(p)            do { if(p) { delete (p); (p) = 0; } } while(0)
-	#define FK_SAFE_DELETE_ARRAY(p)     do { if(p) { delete[] (p); (p) = 0; } } while(0)
-	#define FK_SAFE_FREE(p)                do { if(p) { free(p); (p) = 0; } } while(0)
-	//#define FK_SAFE_RELEASE(p)            do { if(p) { (p)->release(); } } while(0)
-	//#define FK_SAFE_RELEASE_NULL(p)        do { if(p) { (p)->release(); (p) = 0; } } while(0)
-	//#define FK_SAFE_RETAIN(p)            do { if(p) { (p)->retain(); } } while(0)
-	#define FK_BREAK_IF(cond)            if(cond) break
+#define FK_SAFE_DELETE(p)            do { if(p) { delete (p); (p) = 0; } } while(0)
+#define FK_SAFE_DELETE_ARRAY(p)     do { if(p) { delete[] (p); (p) = 0; } } while(0)
+#define FK_SAFE_FREE(p)                do { if(p) { free(p); (p) = 0; } } while(0)
+#define FK_SAFE_RELEASE(p)            do { if(p) { (p)->release(); } } while(0)
+#define FK_SAFE_RELEASE_NULL(p)        do { if(p) { (p)->release(); (p) = 0; } } while(0)
+#define FK_SAFE_RETAIN(p)            do { if(p) { (p)->retain(); } } while(0)
+#define FK_BREAK_IF(cond)            if(cond) break
 
-	#define __CCLOGWITHFUNCTION(s, ...) \
-    	CCLog("%s : %s",__FUNCTION__, CCString::createWithFormat(s, ##__VA_ARGS__)->getCString())
+#define __LOGWITHFUNCTION(s, ...) \
+    Log("%s : %s",__FUNCTION__, String::createWithFormat(s, ##__VA_ARGS__)->getCString())
 
 	// flakor debug
 	#if !defined(FLAKOR_DEBUG) || FLAKOR_DEBUG == 0
@@ -144,34 +152,34 @@
 	#define FKLOGWARN(...)   do {} while (0)
 
 	#elif FLAKOR_DEBUG == 1
-	#define FKLOG(format, ...)      flakor::FKLog(format, ##__VA_ARGS__)
-	#define FKLOGERROR(format,...)  flakor::FKLog(format, ##__VA_ARGS__)
+	#define FKLOG(format, ...)      flakor::Log(format, ##__VA_ARGS__)
+	#define FKLOGERROR(format,...)  flakor::Log(format, ##__VA_ARGS__)
 	#define FKLOGINFO(format,...)   do {} while (0)
 	#define FKLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
 
 	#elif FLAKOR_DEBUG > 1
-	#define FKLOG(format, ...)      cocos2d::CCLog(format, ##__VA_ARGS__)
-	#define FKLOGERROR(format,...)  cocos2d::CCLog(format, ##__VA_ARGS__)
-	#define FKLOGINFO(format,...)   cocos2d::CCLog(format, ##__VA_ARGS__)
-	#define FKLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+	#define FKLOG(format, ...)      flakor::Log(format, ##__VA_ARGS__)
+	#define FKLOGERROR(format,...)  flakor::Log(format, ##__VA_ARGS__)
+	#define FKLOGINFO(format,...)   flakor::Log(format, ##__VA_ARGS__)
+	#define FKLOGWARN(...) __LOGWITHFUNCTION(__VA_ARGS__)
 	#endif // FLAKOR_DEBUG
 
 	// Lua engine debug
-	#if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0 || CC_LUA_ENGINE_DEBUG == 0
+	#if !defined(FLAKOR_DEBUG) || FLAKOR_DEBUG == 0 || FK_LUA_ENGINE_DEBUG == 0
 	#define LUALOG(...)
 	#else
-	#define LUALOG(format, ...)     cocos2d::CCLog(format, ##__VA_ARGS__)
+	#define LUALOG(format, ...)     flakor::Log(format, ##__VA_ARGS__)
 	#endif 
    // Lua engine debug
 
 	#if defined(__GNUC__) && ((__GNUC__ >= 5) || ((__GNUG__ == 4) && (__GNUC_MINOR__ >= 4))) \
     	|| (defined(__clang__) && (__clang_major__ >= 3))
-	#define CC_DISABLE_COPY(Class) \
+	#define FK_DISABLE_COPY(Class) \
 	private: \
     	Class(const Class &) = delete; \
     	Class &operator =(const Class &) = delete;
 	#else
-	#define CC_DISABLE_COPY(Class) \
+	#define FK_DISABLE_COPY(Class) \
 	private: \
     	Class(const Class &); \
     	Class &operator =(const Class &);
@@ -181,11 +189,11 @@
  * only certain compilers support __attribute__((deprecated))
  */
 #if defined(__GNUC__) && ((__GNUC__ >= 4) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 1)))
-    #define CC_DEPRECATED_ATTRIBUTE __attribute__((deprecated))
+    #define FK_DEPRECATED_ATTRIBUTE __attribute__((deprecated))
 #elif _MSC_VER >= 1400 //vs 2005 or higher
-    #define CC_DEPRECATED_ATTRIBUTE __declspec(deprecated) 
+    #define FK_DEPRECATED_ATTRIBUTE __declspec(deprecated) 
 #else
-    #define CC_DEPRECATED_ATTRIBUTE
+    #define FK_DEPRECATED_ATTRIBUTE
 #endif 
 
 /*
@@ -194,25 +202,25 @@
  * argPos - 1-based position of first format-dependent argument
  */
 #if defined(__GNUC__) && (__GNUC__ >= 4)
-#define CC_FORMAT_PRINTF(formatPos, argPos) __attribute__((__format__(printf, formatPos, argPos)))
+#define FK_FORMAT_PRINTF(formatPos, argPos) __attribute__((__format__(printf, formatPos, argPos)))
 #elif defined(__has_attribute)
   #if __has_attribute(format)
-  #define CC_FORMAT_PRINTF(formatPos, argPos) __attribute__((__format__(printf, formatPos, argPos)))
+  #define FK_FORMAT_PRINTF(formatPos, argPos) __attribute__((__format__(printf, formatPos, argPos)))
   #endif // __has_attribute(format)
 #else
-#define CC_FORMAT_PRINTF(formatPos, argPos)
+#define FK_FORMAT_PRINTF(formatPos, argPos)
 #endif
 
 #if defined(_MSC_VER)
-#define CC_FORMAT_PRINTF_SIZE_T "%08lX"
+#define FK_FORMAT_PRINTF_SIZE_T "%08lX"
 #else
-#define CC_FORMAT_PRINTF_SIZE_T "%08zX"
+#define FK_FORMAT_PRINTF_SIZE_T "%08zX"
 #endif
 
 #ifdef __GNUC__
-#define CC_UNUSED __attribute__ ((unused))
+#define FK_UNUSED __attribute__ ((unused))
 #else
-#define CC_UNUSED
+#define FK_UNUSED
 #endif
 
 #endif 

@@ -28,14 +28,14 @@ THE SOFTWARE.
 #include <set>
 #include "Object.h"
 
-FLAKOR_CC_BEGIN
+FLAKOR_NS_BEGIN
 
 /**
  * @addtogroup data_structures
  * @{
  */
 
-typedef std::set<CCObject *>::iterator SetIterator;
+typedef std::set<Object *>::iterator SetIterator;
 
 class Set : public Object
 {
@@ -113,7 +113,7 @@ private:
 // end of data_structure group
 /// @}
 
-NS_CC_END
+FLAKOR_NS__END
 
 #endif // __CC_SET_H__
 

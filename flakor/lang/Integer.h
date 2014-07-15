@@ -3,7 +3,7 @@
 
 #include "Object.h"
 
-FLAKOR_CC_BEGIN
+FLAKOR_NS_BEGIN
 
 /**
  * @addtogroup data_structures
@@ -37,6 +37,6 @@ private:
 // end of data_structure group
 /// @}
 
-FLAKOR_CC_END
+FLAKOR_NS_END
 
 #endif /* __CCINTEGER_H__ */

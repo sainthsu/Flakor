@@ -1,8 +1,6 @@
 #ifndef _FK_ENGINE_H_
 #define _FK_ENGINE_H_
 
-#include <jni.h>
-
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <GLES2/gl2.h>
@@ -17,7 +15,16 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
+#include "Flakor.h"
+
 FLAKOR_NS_BEGIN
+
+enum EngineState {
+    inital,
+    running,
+    stop,
+    destroyed
+};
 
 class Engine
 {
@@ -33,7 +40,10 @@ class Engine
     	EGLContext context;
     	int32_t width;
     	int32_t height;
-		int running;
+
+	enum EngineState state;
+	long lastTick;
+
 	public:
 		int initDisplay(void);
 		void create(void);

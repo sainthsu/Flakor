@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2014 flakor.org
+Copyright (c) 2013 flakor.org
 
 http://www.flakor.org
 
@@ -21,63 +21,37 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#ifndef _FK_AUTORELEASEPOOL_H_
-#define _FK_AUTORELEASEPOOL_H_
 
-#include "Object.h"
-#include "Array.h"
+#include <android/log.h>
+#include <stdio.h>
+#include <jni.h>
+
+#include "common.h"
 
 FLAKOR_NS_BEGIN
 
-/**
- * @addtogroup lang
- * @{
- * @js NA
- * @lua NA
- */
+#define MAX_LEN         (flakor::MAX_LOG_LENGTH + 1)
 
-class AutoreleasePool : public Object
+void Log(const char * pszFormat, ...)
 {
-    Array*    m_pManagedObjectArray;    
-public:
-    AutoreleasePool(void);
-    ~AutoreleasePool(void);
+    char buf[MAX_LEN];
 
-    void addObject(Object *pObject);
-    void removeObject(Object *pObject);
+    va_list args;
+    va_start(args, pszFormat);
+    vsnprintf(buf, MAX_LEN, pszFormat, args);
+    va_end(args);
 
-    void clear();
-};
+    __android_log_print(ANDROID_LOG_DEBUG, "flakor engine debug info", "%s", buf);
+}
 
-/**
- * @js NA
- * @lua NA
- */
-class PoolManager
+void MessageBox(const char * pszMsg, const char * pszTitle)
 {
-    Array*    m_pReleasePoolStack;    
-    AutoreleasePool*  m_pCurReleasePool;
+    showDialogJNI(pszMsg, pszTitle);
+}
 
-    AutoreleasePool* getCurReleasePool();
-public:
-    PoolManager();
-    ~PoolManager();
-    void finalize();
-    void push();
-    void pop();
-
-    void removeObject(Object* pObject);
-    void addObject(Object* pObject);
-
-    static PoolManager* sharedPoolManager();
-    static void purgePoolManager();
-
-    friend class AutoreleasePool;
-};
-
-// end of base_nodes group
-/// @}
+void LuaLog(const char * pszFormat)
+{
+    __android_log_print(ANDROID_LOG_DEBUG, "flakor engine debug info", "%s", pszFormat);
+}
 
 FLAKOR_NS_END
-
-#endif //_FK_AUTORELEASEPOOL_H_

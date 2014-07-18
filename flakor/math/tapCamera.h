@@ -19,7 +19,7 @@
 #include <string>
 #include <GLES2/gl2.h>
 
-#include "vecmath.h"
+#include "Matrix.h"
 
 /******************************************************************
  * Camera control helper class with a tap gesture

@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2014 flakor.org
+Copyright (c) 2013 flakor.org
 
 http://www.flakor.org
 
@@ -53,7 +53,7 @@ FLAKOR_NS_BEGIN
 #define FK_INVALID_INDEX 0xffffffff
 
 // Easy integration
-#define FKARRAYDATA_FOREACH(__array__, __object__)															\
+#define FK_ARRAYDATA_FOREACH(__array__, __object__)															\
 __object__=__array__->arr[0]; for(unsigned int i=0, num=__array__->num; i<num; i++, __object__=__array__->arr[i])	\
 
 
@@ -203,4 +203,4 @@ void fkCArrayFullRemoveArray(fkCArray *arr, fkCArray *minusArr);
 
 FLAKOR_NS_END
 	
-#endif // CC_ARRAY_H
+#endif // FK_ARRAY_H_

@@ -9,15 +9,9 @@
 //            | 6 7 8 |    |  8  9 10 11 |
 //                         | 12 13 14 15 |
 //
-//  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
-// CREATED: 2005-06-24
-// UPDATED: 2012-10-08
-//
-// Copyright (C) 2005 Song Ho Ahn
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <cmath>
-#include <algorithm>
+#include <math.h>
 #include "Matrices.h"
 
 const float DEG2RAD = 3.141593f / 180;
@@ -118,12 +112,12 @@ Matrix3& Matrix3::invert()
 ///////////////////////////////////////////////////////////////////////////////
 Matrix4& Matrix4::transpose()
 {
-    std::swap(m[1],  m[4]);
-    std::swap(m[2],  m[8]);
-    std::swap(m[3],  m[12]);
-    std::swap(m[6],  m[9]);
-    std::swap(m[7],  m[13]);
-    std::swap(m[11], m[14]);
+    FK_SWAP(m[1],  m[4] , float);
+    FK_SWAP(m[2],  m[8] , float);
+    FK_SWAP(m[3],  m[12], float);
+    FK_SWAP(m[6],  m[9], float);
+    FK_SWAP(m[7],  m[13], float);
+    FK_SWAP(m[11], m[14], float);
 
     return *this;
 }
@@ -543,4 +537,91 @@ Matrix4& Matrix4::rotateZ(float angle)
     m[7] = m3 * s + m7 * c;
 
     return *this;
+}
+
+Matrix4 Matrix4::perspective( float width, float height, float nearPlane, float farPlane )
+{
+	float n2 = 2.0f * nearPlane;
+    float rcpnmf = 1.f / (nearPlane - farPlane);
+
+    Matrix4 result;
+    result.m[0] = n2 / width;
+    result.m[4] = 0;
+    result.m[8] = 0;
+    result.m[12] = 0;
+    result.m[1] = 0;
+    result.m[5] = n2 / height;
+    result.m[9] = 0;
+    result.m[13] = 0;
+    result.m[2] = 0;
+    result.m[6] = 0;
+    result.m[10] = (farPlane + nearPlane) * rcpnmf;
+    result.m[14] = farPlane * rcpnmf * n2;
+    result.m[3] = 0;
+    result.m[7] = 0;
+    result.m[11] = -1.0;
+    result.m[15] = 0;
+
+    return result;
+}
+
+Mat4 Mat4::orthographic( float width, float height, float nearPlane, float farPlane )
+{
+  Matrix4 result;
+
+  result.m[0] = 1/ width;
+  result.m[4] = 0;
+  result.m[8] = 0;
+  result.m[12] = 0;
+  result.m[1] = 0;
+  result.m[5] = 1/ height;
+  result.m[9] = 0;
+  result.m[13] = 0;
+  result.m[2] = 0;
+  result.m[6] = 0;
+  result.m[10] = -2/(farPlane - nearPlane);
+  result.m[14] = (farPlane+nearPlane)/(nearPlane-farPlane);
+  result.m[3] = 0;
+  result.m[7] = 0;
+  result.m[11] = 0;
+  result.m[15] = 0;
+
+  return result;
+}
+
+
+Matrix4 Matrix4::lookAt( const Vector3& vEye, const Vector3& vAt, const Vector3& vUp )
+{
+	Vector3 vec_forward, vec_up_norm, vec_side;
+    Matrix4 result;
+
+    vec_forward.x_ = vec_eye.x_ - vec_at.x_;
+    vec_forward.y_ = vec_eye.y_ - vec_at.y_;
+    vec_forward.z_ = vec_eye.z_ - vec_at.z_;
+
+    vec_forward.Normalize();
+    vec_up_norm = vec_up;
+    vec_up_norm.Normalize();
+    vec_side = vec_up_norm.Cross( vec_forward );
+    vec_up_norm = vec_forward.Cross( vec_side );
+
+    result.m[0] = vec_side.x_;
+    result.m[4] = vec_side.y_;
+    result.m[8] = vec_side.z_;
+    result.m[12] = 0;
+    result.m[1] = vec_up_norm.x_;
+    result.m[5] = vec_up_norm.y_;
+    result.m[9] = vec_up_norm.z_;
+    result.m[13] = 0;
+    result.m[2] = vec_forward.x_;
+    result.m[6] = vec_forward.y_;
+    result.m[10] = vec_forward.z_;
+    result.m[14] = 0;
+    result.m[3] = 0;
+    result.m[7] = 0;
+    result.m[11] = 0;
+    result.m[15] = 1.0;
+
+    result.PostTranslate( -vec_eye.x_, -vec_eye.y_, -vec_eye.z_ );
+    return result;
 }

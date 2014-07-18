@@ -1,11 +1,14 @@
 #ifndef _FK_FLAKOR_H_
 #define _FK_FLAKOR_H_
 
+#define FLAKOR_VERSION 0x00000100
+
+int getFlakorVersion()
+{
+       return FLAKOR_VERSION;
+}
 //macro
 #include "macros.h"
-
-//version
-#include "version.h"
 
 //lang include
 #include "./lang/Array.h"

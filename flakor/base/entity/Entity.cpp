@@ -1,55 +1,390 @@
-
-
 #include "Entity.h"
 
 FLAKOR_NS_BEGIN
 
 Entity::Entity(void)
-: m_obPosition(PointZero)
-, m_obContentSize(SizeZero)
-, m_fRotationX(0.0f)
-, m_fRotationY(0.0f)
-, m_fScaleX(1.0f)
-, m_fScaleY(1.0f)
-, m_fVertexZ(0.0f)
-, m_fSkewX(0.0f)
-, m_fSkewY(0.0f)
-, m_obAnchorPointInPixels(PointZero)
-, m_obAnchorPoint(PointZero)
-, m_sAdditionalTransform(CCAffineTransformMakeIdentity())
-, m_pCamera(NULL)
+: obPosition(PointZero)
+, obContentSize(SizeZero)
+, rotationX(0.0f)
+, rotationY(0.0f)
+, scaleX(1.0f)
+, scaleY(1.0f)
+, vertexZ(0.0f)
+, skewX(0.0f)
+, skewY(0.0f)
+, obAnchorPointInPixels(PointZero)
+, obAnchorPoint(PointZero)
+, additionalTransform(Matrix4())
+, camera(NULL)
 // children (lazy allocs)
 // lazy alloc
-, m_nZOrder(0)
-, m_pChildren(NULL)
-, m_pParent(NULL)
-// "whole screen" objects. like Scenes and Layers, should set m_bIgnoreAnchorPointForPosition to true
-, m_nTag(kEntityTagInvalid)
+, ZOrder(0)
+, children(NULL)
+, parent(NULL)
+, tag(EntityTagInvalid)
 // userData is always inited as null
-, m_pUserData(NULL)
-, m_pUserObject(NULL)
-, m_pShaderProgram(NULL)
-, m_eGLServerState(ccGLServerState(0))
-, m_uOrderOfArrival(0)
-, m_bRunning(false)
-, m_bTransformDirty(true)
-, m_bInverseDirty(true)
-, m_bAdditionalTransformDirty(false)
-, m_bVisible(true)
-, m_bIgnoreAnchorPointForPosition(false)
-, m_bReorderChildDirty(false)
-, m_nScriptHandler(0)
-, m_nUpdateScriptHandler(0)
-, m_pComponentContainer(NULL)
+, userData(NULL)
+, cullingEnabled(true)
+//, orderOfArrival(0)
+, running(false)
+, transformDirty(true)
+, inverseDirty(true)
+, additionalTransformDirty(false)
+, visible(true)
+// "whole screen" objects. like Scenes and Layers, should set relativeAnchorPoint to true
+, relativeAnchorPoint(false)
+, childrenSortPending(false)
+//, scriptHandler(0)
+//, updateScriptHandler(0)
+//, componentContainer(NULL)
 {
-	
-
 }
 
 Entity::~Entity(void)
 {
+	FKLOG("FLAKOR:deallocing");
+	//unregisterScriptHandler
+	FK_SAFE_RELEASE(camera);
+	FK_SAFE_RELEASE(userData);
+}
+
+bool Entity::init(void)
+{
+	return true;
+}
+
+Entity * Entity::create()
+{
+	Entity * entity = new Entity();
+    if (entity && entity->init())
+    {
+        entity->autorelease();
+    }
+    else
+    {
+        FK_SAFE_DELETE(pRet);
+    }
+	return entity;
+}
+
+Entity * Entity::create(float x,float y)
+{
+	Entity *entity = create();
+	if(entity != NULL)
+	{
+		entity.setPosition(x,y);
+	}
+	
+	return entity;
+}
+
+
+
+const char* Entity::toString(void)
+{
+	return String::createWithFormat("{Entity: | Tag = %d}", tag)->getCString();
+}
+
+void Entity::setPosition(const Point &position)
+{
+	obPosition = position;
+	transformDirty = inverseDirty = true;
+}
+
+void Entity::setPosition(float x, float y)
+{
+	obPosition.x = x;
+	obPosition.y = y;
+	transformDirty = inverseDirty = true;
+}
+
+Point& Entity::getPosition()
+{
+	return obPosition;
+}
+
+void Entity::getPosition(float* x, float* y)
+{
+	*x = obPosition.x;
+	*y = obPosition.y;
+}
+
+void  Entity::setPositionX(float x)
+{
+	obPosition.x = x;
+	transformDirty = inverseDirty = true;
+}
+
+float Entity::getPositionX(void)
+{
+	return obPosition.x;
+}
+
+void  Entity::setPositionY(float y)
+{
+	obPosition.y = y;
+	transformDirty = inverseDirty = true;
+}
+
+float Entity::getPositionY(void)
+{
+	return obPosition.y;
+}
+
+void Entity::setRelativeAnchorPoint(bool relative)
+{
+	if(relativeAnchorPoint != relative)
+	{
+		relativeAnchorPoint = relative;
+		transformDirty = inverseDirty = true;
+	}
+}
+
+bool Entity::isRelativeAnchorPoint()
+{
+	return relativeAnchorPoint;
+}
+
+const Point& Entity::getAnchorPointInPixels()
+{
+	return PointMake(obContentSize.width*anchorPoint.x , obContentSize.height*anchorPoint.y);
+}
+
+const Size& Entity::getContentSize()
+{
+	return obContentSize;
+}
+
+void Entity::setContentSize(const Size& contentSize)
+{
+	obContentSize = contentSize;
+}
+
+const Point& Entity::getAnchorPoint()
+{
+	return anchorPoint;
+}
+
+void Entity::setAnchorPoint(const Point &point)
+{
+	anchorPoint = point;
+}
+
+void Entity::setZOrder(int z)
+{
+	_setZOrder(z);
+	if(parent != NULL)
+	{
+		parent->reorderChild(this,z);
+	}
+}
+
+void Entity::_setZOrder(int z)
+{
+	ZOrder = z;
+}
+
+int Entity::getZOrder()
+{
+	return ZOrder;
+}
+
+bool Entity::hasParent()
+{
+	return (parent != NULL);
+}
+
+void Entity::setParent(const Entity *parent)
+{
+	parent = parent;
+}
+
+Entity* Entity::getParent()
+{
+	return parent;
+}
+
+void Entity::setVertexZ(float z)
+{
+	vertexZ = z;
+}
+
+float Entity::getVertexZ()
+{
+	return vertexZ;
+}
+
+bool Entity::isRotated()
+{
+	return (rotationX != 0.f) || (rotation != 0.f) ;
+}
+
+float Entity::getRotation()
+{
+	FKAssert(rotationX == rotationY, "Entity#rotation. rotationX != rotationY. Don't know which one to return!");
+    return rotationX;
+}
+
+void Entity::setRotation(float rotation)
+{
+	rotationX = rotationY = rotation;
+	transformDirty = inverseDirty = true;
+}
+
+void Entity::setRotationX(float x)
+{
+	rotationX = x;
+	transformDirty = inverseDirty = true;
+}
+
+float Entity::getRotationX()
+{
+	return ratationX;
+}
+
+void Entity::setRotationY(float y)
+{
+	rotationY = y;
+	transformDirty = inverseDirty = true;
+}
+
+float Entity::getRotationY()
+{
+	return ratationY;
+}
+
+bool Entity::isScaled()
+{
+	return (scaleX != 0.f) || (scaleY != 0.f);
+}
+
+void Entity::setScaleX(float x)
+{
+	scaleX = x;
+	transformDirty = inverseDirty = true;
+}
+
+float Entity::getScaleX()
+{
+	return scaleX;
+}
+
+void Entity::setScaleY(float y)
+{
+	scaleY = y;
+	transformDirty = inverseDirty = true;
+}
+
+float Entity::getScaleY()
+{
+	return scaleY;	
+}
+
+void Entity::setScale(float scale)
+{
+	scaleX = scaleY = scale;
+	transformDirty = inverseDirty = true;
+}
+
+float Entity::getScale()
+{
+	FKAssert(scaleX == scaleY, "Entity#scale. scaleX != scaleY. Don't know which one to return!");
+}
+
+void Entity::setScale(float x,float y)
+{
+	scaleX = x;
+	scaleY = y;
+	transformDirty = inverseDirty = true;
+}
+
+bool Entity::isSkewed()
+{
+	return (skewX != 0) || (skewY != 0);
+}
+
+void Entity::setSkewX(float x)
+{
+	skewX = x;
+	transformDirty = inverseDirty = true;
+}
+
+float Entity::getSkewX()
+{
+	return skewX;
+}
+
+void Entity::setSkewY(float y)
+{
+	skewY = y;
+	transformDirty = inverseDirty = true;	
+}
+
+float Entity::getSkewY()
+{
+	return skewY;
+}
+
+void Entity::setVisible(bool visible)
+{
+	
+}
+
+bool Entity::isVisible()
+{
 
 }
+
+void Entity::setChildrenVisible();
+bool Entity::isChildrenVisible();
+void Entity::setChildrenIgnoreUpdate();
+bool Entity::isChildrenIgnoreUpdate();
+void Entity::addChild(Entity * child);
+void Entity::addChild(Entity * child, int zOrder);
+void Entity::addChild(Entity* child, int zOrder, int tag);
+Entity* Entity::getChildByTag(int tag);
+Entity* Entity::getChildByZIndex(int zIndex);
+Entity* Entity::getFirstChild();
+Entity* Entity::getLastChild();
+Array* Entity::getChildren();
+unsigned int Entity::getChildrenCount(void) const;
+void Entity::removeChild(CCNode* child);
+void Entity::removeChild(CCNode* child, bool cleanup);
+void Entity::removeChildByTag(int tag);
+void Entity::removeChildByTag(int tag,bool cleanup);
+void Entity::removeChildByZIndex(int zIndex);
+void Entity::removeAllChildren();
+void Entity::removeAllChildren(bool cleanup);
+void Entity::reorderChild(Entity * child, int zOrder);
+void Entity::sortChildren();
+void Entity::sortChildren(bool immediate);
+int Entity::getTag()
+void Entity::setTag(int nTag)
+void* Entity::getUserData();
+void Entity::setUserData(void *pUserData);
+Object* Entity::getUserObject();
+void Entity::setUserObject(Object *pUserObject);
+Camera* Entity::getCamera();
+bool Entity::isRunning();
+void Entity::onEnter();
+void Entity::onEnterTransitionDidFinish();
+void Entity::onExit();
+void Entity::onExitTransitionDidStart();
+void Entity::cleanup(void);
+void Entity::draw(void);
+void Entity::visit(void);
+void Entity::onAttached();
+void Entity::onDetached();
+void Entity::update(float delta);
+void Entity::transform(void);
+void Entity::transformAncestors(void);
+void Entity::updateTransform(void);
+void Entity::childrenAlloc(void);
+void Entity::insertChild(Entity* child, int z);
+void Entity::detachChild(Entity *child, bool doCleanup);
+Point Entity::convertToWindowSpace(const Point& entityPoint);
+
+
 
 FLAKOR_NS_END
 

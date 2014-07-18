@@ -24,7 +24,7 @@ THE SOFTWARE.
 #ifndef _FK_ARRAY_H_
 #define _FK_ARRAY_H_
 
-#include "support/math/fkCArray.h"
+#include "support/math/CArray.h"
 
 /**
  * @addtogroup data_structures
@@ -35,20 +35,20 @@ THE SOFTWARE.
 A convenience macro to iterate over a Array using. It is faster than the "fast enumeration" interface.
 @since v0.99.4
 */
-#define FKARRAY_FOREACH(__array__, __object__)                                                                         \
+#define FK_ARRAY_FOREACH(__array__, __object__)                                                                         \
     if ((__array__) && (__array__)->data->num > 0)                                                                     \
     for(Object** __arr__ = (__array__)->data->arr, **__end__ = (__array__)->data->arr + (__array__)->data->num-1;    \
     __arr__ <= __end__ && (((__object__) = *__arr__) != NULL/* || true*/);                                             \
     __arr__++)
 
-#define FKARRAY_FOREACH_REVERSE(__array__, __object__)                                                                  \
+#define FK_ARRAY_FOREACH_REVERSE(__array__, __object__)                                                                  \
     if ((__array__) && (__array__)->data->num > 0)                                                                      \
     for(Object** __arr__ = (__array__)->data->arr + (__array__)->data->num-1, **__end__ = (__array__)->data->arr;     \
     __arr__ >= __end__ && (((__object__) = *__arr__) != NULL/* || true*/);                                              \
     __arr__--)
 
 #if defined(FLAKOR_DEBUG) && (FLAKOR_DEBUG > 0)
-#define FKARRAY_VERIFY_TYPE(__array__, __type__)                                                                 \
+#define FK_ARRAY_VERIFY_TYPE(__array__, __type__)                                                                 \
     do {                                                                                                         \
         if ((__array__) && (__array__)->data->num > 0)                                                           \
             for(Object** __arr__ = (__array__)->data->arr,                                                     \
@@ -56,7 +56,7 @@ A convenience macro to iterate over a Array using. It is faster than the "fast e
                 FKAssert(dynamic_cast<__type__>(*__arr__), "element type is wrong!");                            \
     } while(false)
 #else
-#define FKARRAY_VERIFY_TYPE(__array__, __type__) void(0)
+#define FK_ARRAY_VERIFY_TYPE(__array__, __type__) void(0)
 #endif
 
 #define arrayMakeObjectsPerformSelector(pArray, func, elementType)    \
@@ -64,7 +64,7 @@ do {                                                                  \
     if(pArray && pArray->count() > 0)                                 \
     {                                                                 \
         Object* child;                                              \
-        FKARRAY_FOREACH(pArray, child)                                \
+        FK_ARRAY_FOREACH(pArray, child)                                \
         {                                                             \
             elementType pEntity = (elementType) child;                  \
             if(pEntity)                                                 \
@@ -95,9 +95,8 @@ while(false)
 
 
 FLAKOR_NS_BEGIN
-/**
- * @js NA
- */
+
+template <typename T>
 class Array : public Object
 {
 public:
@@ -163,10 +162,13 @@ public:
     unsigned int indexOfObject(Object* object) const;
     /** Returns an element with a certain index */
     Object* objectAtIndex(unsigned int index);
+	/** Returns first element */
+	Object* firstObject();
     /** Returns last element */
     Object* lastObject();
     /** Returns a random element */
     Object* randomObject();
+	Object* query(IMatcher<T> matcher);
     /** Returns a Boolean value that indicates whether object is present in array. */
     bool containsObject(Object* object) const;
     /** @since 1.1 */
@@ -175,6 +177,7 @@ public:
 
     /** Add a certain object */
     void addObject(Object* object);
+	void addFirst(Object* object);
     /** Add all elements of an existing array */
     void addObjectsFromArray(Array* otherArray);
     /** Insert a certain object at a certain index */

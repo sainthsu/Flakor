@@ -3,19 +3,13 @@
 // =========
 // 2D/3D/4D vectors
 //
-//  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
-// CREATED: 2007-02-14
-// UPDATED: 2013-01-20
-//
-// Copyright (C) 2007-2013 Song Ho Ahn
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef VECTORS_H_DEF
-#define VECTORS_H_DEF
+#ifndef _FK_VECTORS_H_
+#define _FK_VECTORS_H_
 
-#include <cmath>
-#include <iostream>
+#include <math.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2D vector
@@ -26,8 +20,10 @@ struct Vector2
     float y;
 
     // ctors
-    Vector2() : x(0), y(0) {};
+    Vector2() : x(0.f), y(0.f) {};
     Vector2(float x, float y) : x(x), y(y) {};
+	Vector2( const Vector2& vec ) : x(vec.x), y(vec.y) {};
+    Vector2( const float* pVec ) : x(*pVec++), y(*pVec++) {};
 
     // utils functions
     void        set(float x, float y);
@@ -36,6 +32,7 @@ struct Vector2
     Vector2&    normalize();                            //
     float       dot(const Vector2& vec) const;          // dot product
     bool        equal(const Vector2& vec, float e) const; // compare with epsilon
+	bool 		validate();
 
     // operators
     Vector2     operator-() const;                      // unary operator (negate)
@@ -56,7 +53,6 @@ struct Vector2
     float&      operator[](int index);                  // subscript operator v[0], v[1]
 
     friend Vector2 operator*(const float a, const Vector2 vec);
-    friend std::ostream& operator<<(std::ostream& os, const Vector2& vec);
 };
 
 
@@ -73,6 +69,28 @@ struct Vector3
     // ctors
     Vector3() : x(0), y(0), z(0) {};
     Vector3(float x, float y, float z) : x(x), y(y), z(z) {};
+    Vec3( const Vec3& vec )
+    {
+        x_ = vec.x_;
+        y_ = vec.y_;
+        z_ = vec.z_;
+    }
+
+    Vec3( const float* pVec )
+    {
+        x_ = (*pVec++);
+        y_ = (*pVec++);
+        z_ = *pVec;
+    }
+
+    Vec3( const Vec2& vec, float f )
+    {
+        x_ = vec.x_;
+        y_ = vec.y_;
+        z_ = f;
+    }
+
+    Vec3( const Vec4& vec );
 
     // utils functions
     void        set(float x, float y, float z);
@@ -82,6 +100,7 @@ struct Vector3
     float       dot(const Vector3& vec) const;          // dot product
     Vector3     cross(const Vector3& vec) const;        // cross product
     bool        equal(const Vector3& vec, float e) const; // compare with epsilon
+	bool		validate();
 
     // operators
     Vector3     operator-() const;                      // unary operator (negate)
@@ -102,7 +121,6 @@ struct Vector3
     float&      operator[](int index);                  // subscript operator v[0], v[1]
 
     friend Vector3 operator*(const float a, const Vector3 vec);
-    friend std::ostream& operator<<(std::ostream& os, const Vector3& vec);
 };
 
 
@@ -120,6 +138,29 @@ struct Vector4
     // ctors
     Vector4() : x(0), y(0), z(0), w(0) {};
     Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {};
+	Vec4( const Vec4& vec )
+    {
+        x_ = vec.x_;
+        y_ = vec.y_;
+        z_ = vec.z_;
+        w_ = vec.w_;
+    }
+
+    Vec4( const Vec3& vec, const float fW )
+    {
+        x_ = vec.x_;
+        y_ = vec.y_;
+        z_ = vec.z_;
+        w_ = fW;
+    }
+
+    Vec4( const float* pVec )
+    {
+        x_ = (*pVec++);
+        y_ = (*pVec++);
+        z_ = *pVec;
+        w_ = *pVec;
+    }
 
     // utils functions
     void        set(float x, float y, float z, float w);
@@ -127,7 +168,9 @@ struct Vector4
     float       distance(const Vector4& vec) const;     // distance between two vectors
     Vector4&    normalize();                            //
     float       dot(const Vector4& vec) const;          // dot product
+    Vector3     cross(const Vector3& vec) const;        // cross product
     bool        equal(const Vector4& vec, float e) const; // compare with epsilon
+	bool		validate();
 
     // operators
     Vector4     operator-() const;                      // unary operator (negate)
@@ -148,7 +191,6 @@ struct Vector4
     float&      operator[](int index);                  // subscript operator v[0], v[1]
 
     friend Vector4 operator*(const float a, const Vector4 vec);
-    friend std::ostream& operator<<(std::ostream& os, const Vector4& vec);
 };
 
 
@@ -270,14 +312,16 @@ inline bool Vector2::equal(const Vector2& rhs, float epsilon) const {
     return fabs(x - rhs.x) < epsilon && fabs(y - rhs.y) < epsilon;
 }
 
+inline bool Vector2::validate() {
+	if( isnan( x ) || isnan( y ) )
+            return false;
+        return true;
+}
+
 inline Vector2 operator*(const float a, const Vector2 vec) {
     return Vector2(a*vec.x, a*vec.y);
 }
 
-inline std::ostream& operator<<(std::ostream& os, const Vector2& vec) {
-    os << "(" << vec.x << ", " << vec.y << ")";
-    return os;
-}
 // END OF VECTOR2 /////////////////////////////////////////////////////////////
 
 
@@ -394,14 +438,16 @@ inline bool Vector3::equal(const Vector3& rhs, float epsilon) const {
     return fabs(x - rhs.x) < epsilon && fabs(y - rhs.y) < epsilon && fabs(z - rhs.z) < epsilon;
 }
 
+inline bool Vector3::validate() {
+	if( isnan( x ) || isnan( y ) || isnan( z ))
+            return false;
+        return true;
+}
+
 inline Vector3 operator*(const float a, const Vector3 vec) {
     return Vector3(a*vec.x, a*vec.y, a*vec.z);
 }
 
-inline std::ostream& operator<<(std::ostream& os, const Vector3& vec) {
-    os << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
-    return os;
-}
 // END OF VECTOR3 /////////////////////////////////////////////////////////////
 
 
@@ -512,19 +558,25 @@ inline float Vector4::dot(const Vector4& rhs) const {
     return (x*rhs.x + y*rhs.y + z*rhs.z + w*rhs.w);
 }
 
+inline Vector3 Vector3::cross(const Vector3& rhs) const {
+    return Vector3(y*rhs.z - z*rhs.y, z*rhs.x - x*rhs.z, x*rhs.y - y*rhs.x);
+}
+
 inline bool Vector4::equal(const Vector4& rhs, float epsilon) const {
     return fabs(x - rhs.x) < epsilon && fabs(y - rhs.y) < epsilon &&
            fabs(z - rhs.z) < epsilon && fabs(w - rhs.w) < epsilon;
+}
+
+inline bool Vector4::validate() {
+	if( isnan( x ) || isnan( y ) || isnan( z ) || isnan( w ))
+            return false;
+        return true;
 }
 
 inline Vector4 operator*(const float a, const Vector4 vec) {
     return Vector4(a*vec.x, a*vec.y, a*vec.z, a*vec.w);
 }
 
-inline std::ostream& operator<<(std::ostream& os, const Vector4& vec) {
-    os << "(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ")";
-    return os;
-}
 // END OF VECTOR4 /////////////////////////////////////////////////////////////
 
 #endif

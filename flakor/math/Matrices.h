@@ -11,8 +11,9 @@
 #ifndef _FK_MATRICES_H_
 #define _FK_MATRICES_H_
 
-#include <math.h>
+
 #include "Vectors.h"
+#include "Quaternion.h"
 
 FLAKOR_NS_BEGIN
 
@@ -108,7 +109,6 @@ public:
     friend Matrix3 operator-(const Matrix3& m);                     // unary operator (-)
     friend Matrix3 operator*(float scalar, const Matrix3& m);       // pre-multiplication
     friend Vector3 operator*(const Vector3& vec, const Matrix3& m); // pre-multiplication
-    friend std::ostream& operator<<(std::ostream& os, const Matrix3& m);
 
 protected:
 
@@ -199,6 +199,10 @@ public:
     Matrix4&    scale(float scale);                     // uniform scale
     Matrix4&    scale(float sx, float sy, float sz);    // scale by (sx, sy, sz) on each axis
 
+	static Matrix4 perspective( float width, float height, float nearPlane, float farPlane );
+	Matrix4 orthographic( float width, float height, float nearPlane, float farPlane );
+    static Matrix4 lookAt( const Vector3& vEye, const Vector3& vAt, const Vector3& vUp );
+
     // operators
     Matrix4     operator+(const Matrix4& rhs) const;    // add rhs
     Matrix4     operator-(const Matrix4& rhs) const;    // subtract rhs
@@ -217,7 +221,6 @@ public:
     friend Matrix4 operator*(float scalar, const Matrix4& m);       // pre-multiplication
     friend Vector3 operator*(const Vector3& vec, const Matrix4& m); // pre-multiplication
     friend Vector4 operator*(const Vector4& vec, const Matrix4& m); // pre-multiplication
-    friend std::ostream& operator<<(std::ostream& os, const Matrix4& m);
 
 private:
     float  getCofactor(float m0, float m1, float m2,
@@ -412,14 +415,6 @@ inline Vector2 operator*(const Vector2& v, const Matrix2& rhs)
     return Vector2(v.x*rhs[0] + v.y*rhs[2],  v.x*rhs[1] + v.y*rhs[3]);
 }
 
-
-
-inline std::ostream& operator<<(std::ostream& os, const Matrix2& m)
-{
-    os << "(" << m[0] << ",\t" << m[1] << ")\n"
-       << "(" << m[2] << ",\t" << m[3] << ")\n";
-    return os;
-}
 // END OF MATRIX2 INLINE //////////////////////////////////////////////////////
 
 
@@ -632,14 +627,6 @@ inline Vector3 operator*(const Vector3& v, const Matrix3& m)
 }
 
 
-
-inline std::ostream& operator<<(std::ostream& os, const Matrix3& m)
-{
-    os << "(" << m[0] << ",\t" << m[1] << ",\t" << m[2] << ")\n"
-       << "(" << m[3] << ",\t" << m[4] << ",\t" << m[5] << ")\n"
-       << "(" << m[6] << ",\t" << m[7] << ",\t" << m[8] << ")\n";
-    return os;
-}
 // END OF MATRIX3 INLINE //////////////////////////////////////////////////////
 
 
@@ -905,15 +892,6 @@ inline Vector3 operator*(const Vector3& v, const Matrix4& m)
 }
 
 
-
-inline std::ostream& operator<<(std::ostream& os, const Matrix4& m)
-{
-    os << "(" << m[0]  << ",\t" << m[1]  << ",\t" << m[2]  <<  ",\t" << m[3] << ")\n"
-       << "(" << m[4]  << ",\t" << m[5]  << ",\t" << m[6]  <<  ",\t" << m[7] << ")\n"
-       << "(" << m[8]  << ",\t" << m[9]  << ",\t" << m[10] <<  ",\t" << m[11] << ")\n"
-       << "(" << m[12] << ",\t" << m[13] << ",\t" << m[14] <<  ",\t" << m[15] << ")\n";
-    return os;
-}
 /**
 class TransformMatrix
 {

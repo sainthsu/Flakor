@@ -33,10 +33,10 @@ class Point
 	/**
 	 *运算符重载
 	 */
-	Point& operator= (const CCPoint& other);
-    Point& operator= (const CCSize& size);
-    Point operator+(const CCPoint& right) const;
-    Point operator-(const CCPoint& right) const;
+	Point& operator= (const Point& other);
+    Point& operator= (const Size& size);
+    Point operator+(const Point& right) const;
+    Point operator-(const Point& right) const;
     Point operator-() const;
     Point operator*(float a) const;
     Point operator/(float a) const;

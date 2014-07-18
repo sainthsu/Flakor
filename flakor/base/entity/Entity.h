@@ -3,6 +3,8 @@
 
 #include "./base/geometry/Color.h"
 #include "./lang/Object.h"
+#include "./lang/Array.h"
+#include "Camera.h"
 
 FLAKOR_NS_BEGIN
 
@@ -10,35 +12,24 @@ class Color;
 class Camera;
 
 enum {
-	kEntityTagInvalid = -1,
+	EntityTagInvalid = -1,
 };
 
 enum {
-	kEntityOnEnter,
-	kEntityOnExit,
-    kEntityOnEnterTransitionDidFinish,
-    kEntityOnExitTransitionDidStart,
-    kEntityOnCleanup
+	EntityOnEnter,
+	EntityOnExit,
+    EntityOnEnterTransitionDidFinish,
+    EntityOnExitTransitionDidStart,
+    EntityOnCleanup
 };
 
-/**
- *m member
- *b -bool
- *p -pointer
- *n -int
- *f -float
- */
 abstract class Entity :: public Object,public IUpdatable,public IColorable 
 {
 	protected:
-		/*＊
-		 *在屏幕上的绝对坐标
-		 */
-		Point m_obPosition;
-		/*＊
-		 *绝对尺寸，由宽高组成
-		 */
-		Size m_obContentSize;
+		///在屏幕上的绝对坐标
+		Point obPosition;
+		///绝对尺寸，由宽高组成
+		Size obContentSize;
 
 		/**
 		 *锚点
@@ -47,102 +38,97 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *把节点的中心作为锚点，值为(0.5,0.5) ；
 		 *把节点右下角作为锚点，值为(1,0) 。
 		 **************************************/
-		Point m_obAnchorPoint;
+		Point obAnchorPoint;
 		/**
 		 *锚点是否起作用
 		 *如果锚点起作用，将会使m_obPosition失去作用。位置由anchorpoint
 		 *和父类元素的位置决定
 		 */
-		bool m_bRelativeAnchorPoint;
-		/**
-		 *opengl Z轴大小，备用
-		 */
-		float m_fVertexZ;
+		bool relativeAnchorPoint;
+		///opengl Z轴大小，备用
+		float vertexZ;
 
-		Color m_color;
-		/**
-		 *旋转中心点，缩放中心点和倾斜中心点
-		 */
-		Point m_rotationCenter;
-		Point m_scaleCenter;
-		Point m_skewCenter;
+		Color color;
+		///旋转中心点，缩放中心点和倾斜中心点
+		Point rotationCenter;
+		Point scaleCenter;
+		Point skewCenter;
 
-		/**
-		 *x,y轴上的旋转，缩放，倾斜尺寸大小
-		 */
-		float m_fRatationX;
-		float m_fRatationY;
-		float m_fScaleX;
-		float m_fScaleY;
-		float m_fSkewX;
-		float m_fSkewY;
+		///x,y轴上的旋转，缩放，倾斜尺寸大小
+		float rotationX;
+		float rotationY;
+		float scaleX;
+		float scaleY;
+		float skewX;
+		float skewY;
 
-		/**
-		 *在父元素排序使用的Z值
-		 */
-		int m_nZOrder;
+		///在父元素排序使用的Z值
+		int ZOrder;
 		/**
 		 *标签
 		 */
-		int m_nTag;
+		int tag;
 
 		/**
 		 *是否选中
 		 */
-		bool m_bSelected;
+		bool selected;
 		/**
 		 *是否可用，如果是False渲染将忽略这个元素
 		 */
-		bool m_bEnabled;
+		bool enabled;
 		/**
 		 *是否正在运行中
 		 */
-		bool m_bRunning;                    ///< is running
+		bool running;                    ///< is running
 		/**
 		 *是否剪裁
 		 */
-		bool m_bCullingEnabled;
+		bool cullingEnabled;
 		/**
 		 *是否忽略更新
 		 */
-		bool m_bIgnoreUpdate;
+		bool ignoreUpdate;
 		/**
 		 *子元素是否可见，如果为FALSE将不渲染子元素
 		 */
-		bool m_bChildrenVisible;
+		bool childrenVisible;
 		/**
 		 *子元素忽略更新
 		 */
-		bool m_bChildrenIgnoreUpdate;
+		bool childrenIgnoreUpdate;
 		/**
 		 *子元素是否等待排序
 		 */
-		bool m_bChildrenSortPending;
+		bool childrenSortPending;
 
+		bool transformDirty;
+		bool inverseDirty
 		/**
 		 *相机，默认不起作用
 		 */
-		Camera* m_pCamera;
+		Camera* camera;
 		/**
 		 *子元素队列
 		 */
-		SmartList<Entity>	m_pChildren;
+		Array* children;
 		/**
 		 *父元素
 		 */
-		Entity* m_pParent;                  ///< weak reference to parent node
+		Entity* parent;                  ///< weak reference to parent entity
 		/**
 		 *逆矩阵
 		 *inverse matrix：在线性代数中，给定一个 n 阶方阵A，若存在一 n 阶方阵B，使得 AB=BA=I_n，其中I_n为 n 阶单位矩阵，则称A 是可逆的，且 B 是A的逆矩阵，记作A^{-1}。
 		 *只有正方形（n×n）的矩阵，亦即方阵，才可能、但非必然有逆矩阵。若方阵A的逆矩阵存在，则称A为非奇异方阵或可逆方阵。
 		 *
 		 */
-		TransformMatrix *m_pInverseMatrix;
-		TransformMatrix *m_pTransformMatrix;
-		TransformMatrix *m_pAddictionMatrix;
+		Matrix4 *inverseMatrix;
+		Matrix4 *transformMatrix;
+		Matrix4 *addictionMatrix;
 
 		//用户自定义数据指针
-		void* m_pUserData;
+		void* userData;
+		ScriptType scriptType;
 
 	public:
 		Entity(void);
@@ -191,8 +177,8 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 
 		virtual const Size& getContentSize() const;
 		virtual void setContentSize(const Size& contentSize);
-		virtual const Point& getAnchorPoiter();
-		virtual void setAnchorPointer(const Point &anchorPointer);
+		virtual const Point& getAnchorPoint();
+		virtual void setAnchorPoint(const Point &anchorPointer);
 
 		/**
 		 * Sets the Z order which stands for the drawing order, and reorder this entity in its parent's children array.
@@ -246,23 +232,23 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * @warning Use it at your own risk since it might break the flakor parent-children z order
 		 *
-		 * @param fVertexZ  OpenGL Z vertex of this entity.
+		 * @param z  OpenGL Z vertex of this entity.
 		 */
-		virtual void setVertexZ(float vertexZ);
+		virtual void setVertexZ(float z);
 		virtual float getVertexZ();
 
 		virtual bool isRotated();
 		virtual float getRotation();
-		virtual void setRoatation(float rotation);
+		virtual void setRotation(float rotation);
 		/** 
 		 * Sets the X rotation (angle) of the node in degrees which performs a horizontal rotational skew.
 		 * 
 		 * 0 is the default rotation angle. 
 		 * Positive values rotate node clockwise, and negative values for anti-clockwise.
 		 * 
-		 * @param fRotationX    The X rotation in degrees which performs a horizontal rotational skew.
+		 * @param x    The X rotation in degrees which performs a horizontal rotational skew.
 		 */
-		virtual void setRotationX(float fRotaionX);
+		virtual void setRotationX(float x);
 		/**
 		 * Gets the X rotation (angle) of the node in degrees which performs a horizontal rotation skew.
 		 *
@@ -281,7 +267,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * @param fRotationY    The Y rotation in degrees.
 		 */
-		virtual void setRotationY(float fRotationY);
+		virtual void setRotationY(float y);
 		/**
 		 * Gets the Y rotation (angle) of the node in degrees which performs a vertical rotational skew.
 		 *
@@ -475,7 +461,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * @return An array of children
 		 */
-		virtual SmartList* getChildren();
+		virtual Array* getChildren();
 
 		/** 
 		 * Get the amount of children.
@@ -489,16 +475,16 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
      	*
      	* @see removeChild(CCNode, bool)
      	*
-     	* @param child     The child node which will be removed.
+     	* @param child     The child entity which will be removed.
      	*/
-    	virtual void removeChild(CCNode* child);
+    	virtual void removeChild(Entity* child);
     	/** 
      	* Removes a child from the container. It will also cleanup all running actions depending on the cleanup parameter.
      	* 
-     	* @param child     The child node which will be removed.
+     	* @param child     The child entity which will be removed.
      	* @param cleanup   true if all running actions and callbacks on the child node will be cleanup, false otherwise.
      	*/
-    	virtual void removeChild(CCNode* child, bool cleanup);
+    	virtual void removeChild(Entity* child, bool cleanup);
 		virtual void removeChildByTag(int tag);
 		virtual void removeChildByTag(int tag,bool cleanup);
 		virtual void removeChildByZIndex(int zIndex);
@@ -511,7 +497,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
      	* @param child     An already added child node. It MUST be already added.
      	* @param zOrder    Z order for drawing priority. Please refer to setZOrder(int)
      	*/
-    	virtual void reorderChild(CCNode * child, int zOrder);
+    	virtual void reorderChild(Entity * child, int zOrder);
 		virtual void sortChildren();
 		virtual void sortChildren(bool immediate);
 
@@ -605,12 +591,12 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * Returns a camera object that lets you move the node using a gluLookAt
 		 *
 		 * @code
-		 * CCCamera* camera = node->getCamera();
+		 * Camera* camera = Entity->getCamera();
 		 * camera->setEyeXYZ(0, 0, 415/2);
 		 * camera->setCenterXYZ(0, 0, 0);
 		 * @endcode
 		 *
-		 * @return A CCCamera object that lets you move the node using a gluLookAt
+		 * @return A Camera object that lets you move the node like using a gluLookAt in OpenGL 1.0 1.1
 		 */
 		virtual Camera* getCamera();
 
@@ -674,20 +660,20 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
      * - glEnableClientState(GL_COLOR_ARRAY);
      * - glEnableClientState(GL_TEXTURE_COORD_ARRAY);
      * - glEnable(GL_TEXTURE_2D);
-     * AND YOU SHOULD NOT DISABLE THEM AFTER DRAWING YOUR NODE
-     * But if you enable any other GL state, you should disable it after drawing your node.
+     * AND YOU SHOULD NOT DISABLE THEM AFTER DRAWING YOUR Entity
+     * But if you enable any other GL state, you should disable it after drawing your entity.
      */
     virtual void draw(void);
 
     /** 
-     * Visits this node's children and draw them recursively.
+     * Visits this entity's children and draw them recursively.
      */
     virtual void visit(void);
 
 		virtual void onAttached();
 		virtual void onDetached();
 		/* 
-		 * Update method will be called automatically every frame if "scheduleUpdate" is called, and the node is "live"
+		 * Update method will be called automatically every frame if "scheduleUpdate" is called, and the entity is "live"
 		 */
 		virtual void update(float delta);
 
@@ -708,10 +694,6 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		void transformAncestors(void);
 		/**
 		 * Calls children's updateTransform() method recursively.
-		 *
-		 * This method is moved from CCSprite, so it's no longer specific to CCSprite.
-		 * As the result, you apply CCSpriteBatchNode's optimization on your customed CCNode.
-		 * e.g., batchNode->addChild(myCustomNode), while you can only addChild(sprite) before.
 		 */
 		virtual void updateTransform(void);
 
@@ -725,7 +707,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		/// Removes a child, call child->onExit(), do cleanup, remove it from children array.
 		void detachChild(Entity *child, bool doCleanup);
 
-		/** Convert cocos2d coordinates to UI windows coordinate.
+		/** Convert flakor coordinates to UI windows coordinate.
 		 */
 		Point convertToWindowSpace(const Point& entityPoint);
 }

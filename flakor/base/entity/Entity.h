@@ -283,9 +283,9 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * The deafult value is 1.0 if you haven't changed it before
 		 *
-		 * @param fScaleX   The scale factor on X axis.
+		 * @param x   The scale factor on X axis.
 		 */
-		virtual void setScaleX(float fScaleX);
+		virtual void setScaleX(float x);
 		/**
 		 * Returns the scale factor on X axis of this entity
 		 *
@@ -301,9 +301,9 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * The Default value is 1.0 if you haven't changed it before.
 		 *
-		 * @param fScaleY   The scale factor on Y axis.
+		 * @param y   The scale factor on Y axis.
 		 */
-		virtual void setScaleY(float fScaleY);
+		virtual void setScaleY(float y);
 		/**
 		 * Returns the scale factor on Y axis of this entity
 		 *
@@ -338,10 +338,10 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * 1.0 is the default scale factor. It modifies the X and Y scale at the same time.
 		 *
-		 * @param fScaleX     The scale factor on X axis.
-		 * @param fScaleY     The scale factor on Y axis.
+		 * @param x     The scale factor on X axis.
+		 * @param y     The scale factor on Y axis.
 		 */
-		virtual void setScale(float fScaleX,float fScaleY);
+		virtual void setScale(float x,float y);
 
 		virtual bool isSkewed();
 		/**
@@ -351,9 +351,9 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * Thus, it is the angle between the Y axis and the left edge of the shape
 		 * The default skewX angle is 0. Positive values distort the node in a CW direction.
 		 *
-		 * @param fSkewX The X skew angle of the node in degrees.
+		 * @param x The X skew angle of the node in degrees.
 		 */
-		virtual void setSkewX(float fSkewX);
+		virtual void setSkewX(float x);
 		/**
 		 * Returns the X skew angle of the entity in degrees.
 		 *
@@ -371,9 +371,9 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * Thus, it is the angle between the X axis and the bottom edge of the shape
 		 * The default skewY angle is 0. Positive values distort the node in a CCW direction.
 		 *
-		 * @param fSkewY    The Y skew angle of the node in degrees.
+		 * @param y    The Y skew angle of the node in degrees.
 		 */
-		virtual void setSkewY(float fSkewY);
+		virtual void setSkewY(float y);
 		/**
 		 * Returns the Y skew angle of the entity in degrees.
 		 *
@@ -401,9 +401,9 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 */
 		virtual bool isVisible();
 
-		virtual void setChildrenVisible();
+		virtual void setChildrenVisible(bool visible);
 		virtual bool isChildrenVisible();
-		virtual void setChildrenIgnoreUpdate();
+		virtual void setChildrenIgnoreUpdate(bool visible);
 		virtual bool isChildrenIgnoreUpdate();
 
 		/** 
@@ -487,7 +487,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
     	virtual void removeChild(Entity* child, bool cleanup);
 		virtual void removeChildByTag(int tag);
 		virtual void removeChildByTag(int tag,bool cleanup);
-		virtual void removeChildByZIndex(int zIndex);
+		virtual void removeChildByZOrder(int z);
 		virtual void removeAllChildren();
 		virtual void removeAllChildren(bool cleanup);
 
@@ -543,7 +543,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * @param A interger that indentifies the node.
 		 */
-		virtual void setTag(int nTag);
+		virtual void setTag(int tag);
 
 		/**
 		 * Returns a custom user data pointer
@@ -564,7 +564,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * @return A custom user data pointer
 		 * @js NA
 		 */
-		virtual void setUserData(void *pUserData);
+		virtual void setUserData(void *data);
 
 		/** 
 		 * Returns a user assigned CCObject

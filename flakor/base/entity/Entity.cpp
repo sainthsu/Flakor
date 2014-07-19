@@ -335,54 +335,293 @@ bool Entity::isVisible()
 
 }
 
-void Entity::setChildrenVisible();
-bool Entity::isChildrenVisible();
-void Entity::setChildrenIgnoreUpdate();
-bool Entity::isChildrenIgnoreUpdate();
-void Entity::addChild(Entity * child);
-void Entity::addChild(Entity * child, int zOrder);
-void Entity::addChild(Entity* child, int zOrder, int tag);
-Entity* Entity::getChildByTag(int tag);
-Entity* Entity::getChildByZIndex(int zIndex);
-Entity* Entity::getFirstChild();
-Entity* Entity::getLastChild();
-Array* Entity::getChildren();
-unsigned int Entity::getChildrenCount(void) const;
-void Entity::removeChild(CCNode* child);
-void Entity::removeChild(CCNode* child, bool cleanup);
-void Entity::removeChildByTag(int tag);
-void Entity::removeChildByTag(int tag,bool cleanup);
-void Entity::removeChildByZIndex(int zIndex);
-void Entity::removeAllChildren();
-void Entity::removeAllChildren(bool cleanup);
-void Entity::reorderChild(Entity * child, int zOrder);
-void Entity::sortChildren();
-void Entity::sortChildren(bool immediate);
+void Entity::setChildrenVisible(bool visible)
+{
+	childrenVisible = visible;
+}
+
+bool Entity::isChildrenVisible()
+{
+	return childrenVisible;
+}
+
+void Entity::setChildrenIgnoreUpdate(bool visible)
+{
+	childrenIgnoreUpdate = visible;
+}
+
+bool Entity::isChildrenIgnoreUpdate()
+{
+	return childrenIgnoreUpdate;
+}
+
+void Entity::addChild(Entity * child)
+{
+	children
+}
+
+void Entity::addChild(Entity * child, int zOrder)
+{
+}
+
+void Entity::addChild(Entity* child, int zOrder, int tag)
+{
+	FKAssert( child != NULL, "Argument must be non-nil");
+    FKAssert( child->parent == NULL, "child already added. It can't be added again");
+
+    if( ! children )
+    {
+        this->childrenAlloc();
+    }
+
+    this->insertChild(child, zOrder);
+
+    child->tag = tag;
+
+    child->setParent(this);
+    //child->setOrderOfArrival(s_globalOrderOfArrival++);
+
+    if( running )
+    {
+        child->onEnter();
+        child->onEnterTransitionDidFinish();
+    }
+}
+
+Entity* Entity::getChildByTag(int tag)
+{
+
+}
+
+Entity* Entity::getChildByZIndex(int zIndex)
+{
+}
+
+Entity* Entity::getFirstChild()
+{
+}
+
+Entity* Entity::getLastChild()
+{
+	return chilidren.getLast();
+}
+
+Array* Entity::getChildren()
+{
+	return children;
+}
+
+unsigned int Entity::getChildrenCount(void)
+{
+	return children->count();
+}
+
+void Entity::removeChild(Entity* child)
+{
+}
+
+void Entity::removeChild(Entity* child, bool cleanup)
+{
+	if(child == NULL)
+	{
+		return;
+	}
+	
+	if ( children->containsObject(child) )
+    {
+        this->detachChild(child,cleanup);
+    }
+
+}
+
+void Entity::removeChildByTag(int tag)
+{
+
+}
+
+void Entity::removeChildByTag(int tag,bool cleanup)
+{
+	FKAssert( tag != EntityTagInvalid, "Invalid tag");
+
+    Entity *child = this->getChildByTag(tag);
+
+    if (child == NULL)
+    {
+        FK_LOG("flakor: removeChildByTag(tag = %d): child not found!", tag);
+    }
+    else
+    {
+        this->removeChild(child, cleanup);
+    }
+}
+
+void Entity::removeChildByZOrder(int z)
+{
+
+}
+
+void Entity::removeAllChildren()
+{
+
+}
+
+void Entity::removeAllChildren(bool cleanup)
+{
+	 // not using detachChild improves speed here
+    if ( children && children->count() > 0 )
+    {
+        Entity* child;
+        FK_ARRAY_FOREACH(children, child)
+        {
+            Entity* entity = (Entity*) child;
+            if (entity)
+            {
+                // IMPORTANT:
+                //  -1st do onExit
+                //  -2nd cleanup
+                if(running)
+                {
+                    entity->onExitTransitionDidStart();
+                    entity->onExit();
+                }
+
+                if (cleanup)
+                {
+                    entity->cleanup();
+                }
+                // set parent nil at the end
+                entity->setParent(NULL);
+            }
+        }
+        
+        children->removeAllObjects();
+    }
+}
+
+void Entity::reorderChild(Entity * child, int zOrder)
+{
+
+}
+
+void Entity::sortChildren()
+{
+
+}
+
+void Entity::sortChildren(bool immediate)
+{
+
+}
+
 int Entity::getTag()
-void Entity::setTag(int nTag)
-void* Entity::getUserData();
-void Entity::setUserData(void *pUserData);
+{
+	return tag;
+}
+
+void Entity::setTag(int tag)
+{	
+	this->tag = tag;
+}
+
+void* Entity::getUserData()
+{
+	return userData;
+}
+
+void Entity::setUserData(void *data)
+{
+	this->userData = data;
+}
+
 Object* Entity::getUserObject();
 void Entity::setUserObject(Object *pUserObject);
-Camera* Entity::getCamera();
-bool Entity::isRunning();
-void Entity::onEnter();
-void Entity::onEnterTransitionDidFinish();
-void Entity::onExit();
-void Entity::onExitTransitionDidStart();
-void Entity::cleanup(void);
-void Entity::draw(void);
-void Entity::visit(void);
-void Entity::onAttached();
-void Entity::onDetached();
-void Entity::update(float delta);
-void Entity::transform(void);
-void Entity::transformAncestors(void);
-void Entity::updateTransform(void);
-void Entity::childrenAlloc(void);
-void Entity::insertChild(Entity* child, int z);
-void Entity::detachChild(Entity *child, bool doCleanup);
-Point Entity::convertToWindowSpace(const Point& entityPoint);
+
+Camera* Entity::getCamera()
+{
+	return camera;
+}
+
+bool Entity::isRunning()
+{
+
+}
+
+void Entity::onEnter()
+{
+
+}
+
+void Entity::onEnterTransitionDidFinish()
+{
+
+}
+
+void Entity::onExit()
+{
+
+}
+
+void Entity::onExitTransitionDidStart()
+{
+}
+
+void Entity::cleanup(void)
+{
+}
+
+void Entity::draw(void)
+{
+}
+
+void Entity::visit(void)
+{
+}
+
+void Entity::onAttached()
+{
+
+}
+
+void Entity::onDetached()
+{
+
+}
+
+void Entity::update(float delta)
+{
+
+}
+
+void Entity::transform(void)
+{
+}
+
+void Entity::transformAncestors(void)
+{
+}
+
+void Entity::updateTransform(void)
+{
+}
+
+void Entity::childrenAlloc(void)
+{
+	children = Array::createWithCapacity(4);
+    children->retain();
+}
+
+void Entity::insertChild(Entity* child, int z)
+{
+}
+
+void Entity::detachChild(Entity *child, bool doCleanup)
+{
+}
+
+Point Entity::convertToWindowSpace(const Point& entityPoint)
+{
+
+}
 
 
 

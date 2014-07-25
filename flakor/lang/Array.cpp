@@ -226,6 +226,14 @@ Object* Array::objectAtIndex(unsigned int index)
     return data->arr[index];
 }
 
+Object* Array::firstObject()
+{
+	 if( data->num > 0 )
+        return data->arr[0];
+
+    return NULL;
+}
+
 Object* Array::lastObject()
 {
     if( data->num > 0 )

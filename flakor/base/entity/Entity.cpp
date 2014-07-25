@@ -17,7 +17,6 @@ Entity::Entity(void)
 , additionalTransform(Matrix4())
 , camera(NULL)
 // children (lazy allocs)
-// lazy alloc
 , ZOrder(0)
 , children(NULL)
 , parent(NULL)
@@ -36,7 +35,6 @@ Entity::Entity(void)
 , childrenSortPending(false)
 //, scriptHandler(0)
 //, updateScriptHandler(0)
-//, componentContainer(NULL)
 {
 }
 
@@ -357,11 +355,12 @@ bool Entity::isChildrenIgnoreUpdate()
 
 void Entity::addChild(Entity * child)
 {
-	children
+	addChild(child,child->zOrder,child->tag);
 }
 
 void Entity::addChild(Entity * child, int zOrder)
 {
+	addChild(child,zOrder,child->tag);
 }
 
 void Entity::addChild(Entity* child, int zOrder, int tag)
@@ -390,20 +389,43 @@ void Entity::addChild(Entity* child, int zOrder, int tag)
 
 Entity* Entity::getChildByTag(int tag)
 {
-
+	//FKAssert();
+    if ( children && children->count() > 0 )
+	{
+		Object *child;
+		FK_ARRAY_FOREACH(children,child)
+		{
+			Entity *entity = (Entity *)child;
+			if(entity && entity->tag == tag)
+				return entity;
+		}
+	}
+	return NULL;
 }
 
-Entity* Entity::getChildByZIndex(int zIndex)
+Entity* Entity::getChildByZOrder(int z)
 {
+	if ( children && children->count() > 0 )
+	{
+		Object *child;
+		FK_ARRAY_FOREACH(children,child)
+		{
+			Entity *entity = (Entity *)child;
+			if(entity && entity->zOrder == z)
+				return entity;
+		}
+	}
+	return NULL;
 }
 
 Entity* Entity::getFirstChild()
 {
+	return children.firstObject();
 }
 
 Entity* Entity::getLastChild()
 {
-	return chilidren.getLast();
+	return chilidren.lastObject();
 }
 
 Array* Entity::getChildren()
@@ -418,6 +440,7 @@ unsigned int Entity::getChildrenCount(void)
 
 void Entity::removeChild(Entity* child)
 {
+	removeChild(child,true);
 }
 
 void Entity::removeChild(Entity* child, bool cleanup)
@@ -436,7 +459,7 @@ void Entity::removeChild(Entity* child, bool cleanup)
 
 void Entity::removeChildByTag(int tag)
 {
-
+	removeChildByTag(tag,true);
 }
 
 void Entity::removeChildByTag(int tag,bool cleanup)
@@ -457,12 +480,22 @@ void Entity::removeChildByTag(int tag,bool cleanup)
 
 void Entity::removeChildByZOrder(int z)
 {
+	 Entity *child = this->getChildByZOrder(tag);
+
+    if (child == NULL)
+    {
+        FK_LOG("flakor: removeChildByZOrder(ZOrder = %d): child not found!", tag);
+    }
+    else
+    {
+        this->removeChild(child, cleanup);
+    }
 
 }
 
 void Entity::removeAllChildren()
 {
-
+	removeAllChildren(true);
 }
 
 void Entity::removeAllChildren(bool cleanup)
@@ -500,16 +533,41 @@ void Entity::removeAllChildren(bool cleanup)
 
 void Entity::reorderChild(Entity * child, int zOrder)
 {
-
+	
 }
 
 void Entity::sortChildren()
 {
-
+	sortChildren(true);
 }
 
 void Entity::sortChildren(bool immediate)
 {
+	if(immediate)
+	{
+		int i,j,length = children->data->num;
+		Entity **data=  (Entity **)children->data->arr;
+		Entity *tmp;
+
+		//insertion sort
+		for(i=1;i<length;i++)
+		{
+			tmp = data[i];
+			j=i-1;
+
+			while(j>=0 && (tmp->ZOrder < data[j]->ZOrder))
+			{
+				data[j+1] = data[j];
+				j--;
+			}
+			data[j+1] = tmp;
+		}
+		
+	}
+	else
+	{
+		
+	}
 
 }
 
@@ -533,9 +591,6 @@ void Entity::setUserData(void *data)
 	this->userData = data;
 }
 
-Object* Entity::getUserObject();
-void Entity::setUserObject(Object *pUserObject);
-
 Camera* Entity::getCamera()
 {
 	return camera;
@@ -548,7 +603,7 @@ bool Entity::isRunning()
 
 void Entity::onEnter()
 {
-
+	
 }
 
 void Entity::onEnterTransitionDidFinish()
@@ -567,14 +622,65 @@ void Entity::onExitTransitionDidStart()
 
 void Entity::cleanup(void)
 {
+	arrayMakeObjectsPerformSelector(children,cleanup,Entityy*);
 }
 
 void Entity::draw(void)
 {
+
 }
 
-void Entity::visit(void)
+void Entity::onVisit(void)
 {
+	if(!visible)
+	{
+		return;
+	}
+
+	this->transform();
+
+	if(children == NULL || children->count() <=0 || !this->chilrenVisible)
+	{
+		this->draw();
+	}
+	else
+	{
+		if(this->childrenSortPending)
+		{
+			sortAllChildren(true);
+		}
+		int childCount = children->count();
+		int i = 0;
+		Entity child = NULL;
+		
+		//draw children behind this entity
+		for(;i<childCount;i++)
+		{
+			child = (Entity *)children->CArray->arr[i];
+			if(child && child->ZOrder < 0)
+			{
+				child->onVisit();
+			}
+			else
+			{
+				break;
+			}
+		}
+		
+		//draw self
+		this->draw();
+
+		//draw children in font of this entity
+		for(;i<childCount;i++)
+		{
+			child = (Entity *)children->CArray->arr[i];
+			if(child)
+			{
+				child->onVisit();
+			}
+		}
+
+	}
 }
 
 void Entity::onAttached()
@@ -589,19 +695,26 @@ void Entity::onDetached()
 
 void Entity::update(float delta)
 {
-
+	
 }
 
 void Entity::transform(void)
 {
+	if(transformDirty)
+	{
+		float x = obPosition.x;
+		float y = obPosition.y;
+	}
 }
 
 void Entity::transformAncestors(void)
 {
+
 }
 
 void Entity::updateTransform(void)
 {
+
 }
 
 void Entity::childrenAlloc(void)
@@ -612,10 +725,24 @@ void Entity::childrenAlloc(void)
 
 void Entity::insertChild(Entity* child, int z)
 {
+
 }
 
 void Entity::detachChild(Entity *child, bool doCleanup)
 {
+	if(running)
+	{
+		child->onExitTransitionDidStart();
+		child->onExit();
+	}
+	if(doCleanup)
+	{
+		child->cleanup();
+	}
+
+	child->setParent(NULL);
+
+	children->removeObject(child);
 }
 
 Point Entity::convertToWindowSpace(const Point& entityPoint)

@@ -1,8 +1,7 @@
-Flakor Engine (www.flakor.org)
-================
+#Flakor Engine (www.flakor.org)
 
-###Flakor engine，
-a 2d game engine writing in C++！
+##Flakor engine，
+	a 2d game engine writing in C++！
 
 
 

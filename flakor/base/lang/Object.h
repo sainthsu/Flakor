@@ -33,8 +33,8 @@ protected:
 
 typedef void (Object::*SEL_SCHEDULE)(float);
 typedef void (Object::*SEL_CallFunc)();
-typedef void (Object::*SEL_CallFuncN)(Node*);
-typedef void (Object::*SEL_CallFuncND)(Node*, void*);
+typedef void (Object::*SEL_CallFuncN)(Enitity*);
+typedef void (Object::*SEL_CallFuncND)(Enitity*, void*);
 typedef void (Object::*SEL_CallFuncO)(Object*);
 typedef void (Object::*SEL_MenuHandler)(Object*);
 typedef void (Object::*SEL_EventHandler)(Event*);

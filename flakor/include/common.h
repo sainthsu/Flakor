@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013 flakor.org
+Copyright (c) 2013-2014 flakor.org
 
 http://www.flakor.org
 
@@ -57,8 +57,8 @@ void FK_DLL MessageBox(const char * pszMsg, const char * pszTitle);
 */
 typedef enum __LanguageType
 {
-    LanguageEnglish = 0,
-    LanguageChinese,
+	LanguageChinese = 0,
+    LanguageEnglish,
     LanguageFrench,
     LanguageItalian,
     LanguageGerman,

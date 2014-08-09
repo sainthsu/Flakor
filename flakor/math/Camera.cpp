@@ -1,8 +1,7 @@
 /****************************************************************************
-Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2008-2010 Ricardo Quesada
+Copyright (c) 2013-2014 flakor.org
 
-http://www.cocos2d-x.org
+http://www.flakor.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "CCCamera.h"
-#include "cocoa/CCString.h"
-#include "CCGL.h"
+#include "Camera.h"
+#include "lang/CCString.h"
+#include "GL.h"
 
 #include "draw_nodes/CCDrawingPrimitives.h"
 #include "CCDirector.h"

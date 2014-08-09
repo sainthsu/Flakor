@@ -37,6 +37,7 @@ Config of flakor project, define which target platform to be run in.
 #define FK_PLATFORM_UNKNOWN            0
 #define FK_PLATFORM_IOS                1
 #define FK_PLATFORM_ANDROID            2
+
 #define FK_PLATFORM_WIN32              3
 #define FK_PLATFORM_MARMALADE          4
 #define FK_PLATFORM_LINUX              5

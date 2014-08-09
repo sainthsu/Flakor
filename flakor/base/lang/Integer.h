@@ -39,4 +39,4 @@ private:
 
 FLAKOR_NS_END
 
-#endif /* __CCINTEGER_H__ */
+#endif /* __INTEGER_H_*/

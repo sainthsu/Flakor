@@ -31,11 +31,4 @@ public:
     virtual void visit(const Set *p);
 };
 
-
-
-
-
-
-
-
 #endif

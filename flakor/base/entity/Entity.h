@@ -128,6 +128,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 
 		//用户自定义数据指针
 		void* userData;
+		Object* userObject;
 		ScriptType scriptType;
 
 	public:
@@ -567,7 +568,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		virtual void setUserData(void *data);
 
 		/** 
-		 * Returns a user assigned CCObject
+		 * Returns a user assigned Object
 		 * 
 		 * Similar to userData, but instead of holding a void* it holds an object
 		 *

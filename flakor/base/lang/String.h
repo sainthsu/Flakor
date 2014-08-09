@@ -18,9 +18,9 @@ public:
 	String(void);
 	String(const char* str);
     String(const std::string& str);
-    String(const CCString& str);
+    String(const String& str);
 
-    virtual ~CCString();
+    virtual ~String();
     
     /* override assignment operator
      * @lua NA
@@ -56,8 +56,8 @@ public:
     /** compare to a c string */
     int compare(const char *) const;
 	
-    //virtual CCObject* copyWithZone(CCZone* pZone);
-    virtual bool equal(const CCObject* pObject);
+    //virtual Object* copyWithZone(Zone* pZone);
+    virtual bool equal(const Object* pObject);
 
     /** create a string with std string, you can also pass a c string pointer because the default constructor of std::string can access a c string pointer. 
      *  @return A String pointer which is an autorelease object pointer,

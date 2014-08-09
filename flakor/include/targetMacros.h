@@ -24,8 +24,8 @@
 #endif
 
   /**
-   * define a create function for a specific type, such as FKLayer
-   * @__TYPE__ class type to add create(), such as FKLayer
+   * define a create function for a specific type, such as Layer
+   * @__TYPE__ class type to add create(), such as Layer
    */
   #define CREATE_FUNC(__TYPE__) \
     static __TYPE__* create() \

@@ -1,5 +1,5 @@
-
 #include "DataVisitor.h"
+
 FLAKOR_NS_BEGIN
 
 void DataVisitor::visit(const Bool *value)

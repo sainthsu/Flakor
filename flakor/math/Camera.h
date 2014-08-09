@@ -24,15 +24,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __CCCAMERA_H__
-#define __CCCAMERA_H__
+#ifndef _FK_CAMERA_H_
+#define _FK_CAMERA_H_
 
-#include "cocoa/CCObject.h"
-#include "ccMacros.h"
-#include "kazmath/mat4.h"
+#include "lang/Object.h"
+#include "macros.h"
+#include "Matrices.h"
 #include <string>
 
-NS_CC_BEGIN
+FK_NS_BEGIN
 
 /**
  * @addtogroup base_nodes
@@ -40,9 +40,9 @@ NS_CC_BEGIN
  */
 
 /** 
-A CCCamera is used in every CCNode.
+A Camera is used in every Entity.
 Useful to look at the object from different views.
-The OpenGL gluLookAt() function is used to locate the
+likes The OpenGL gluLookAt() function, it's used to locate the
 camera.
 
 If the object is transformed by any of the scale, rotation or
@@ -53,15 +53,15 @@ World coordinates won't work if you use the camera.
 
 Limitations:
 
-- Some nodes, like CCParallaxNode, CCParticle uses world node coordinates, and they won't work properly if you move them (or any of their ancestors)
+- Some entitys, like Parallax, Particle uses world node coordinates, and they won't work properly if you move them (or any of their ancestors)
 using the camera.
 
-- It doesn't work on batched nodes like CCSprite objects when they are parented to a CCSpriteBatchNode object.
+- It doesn't work on batched entity like Sprite objects when they are parented to a SpriteBatch object.
 
-- It is recommended to use it ONLY if you are going to create 3D effects. For 2D effects, use the action CCFollow or position/scale/rotate.
+- It is recommended to use it ONLY if you are going to create 3D effects. For 2D effects, use the action Follow or position/scale/rotate.
 
 */
-class CC_DLL CCCamera : public CCObject
+class Camera : public Object
 {
 protected:
     float m_fEyeX;
@@ -77,17 +77,17 @@ protected:
     float m_fUpZ;
 
     bool m_bDirty;
-    kmMat4    m_lookupMatrix;
+    Matrix4    m_lookupMatrix;
 public:
     /**
      *  @js ctor
      */
-    CCCamera(void);
+    Camera(void);
     /**
      *  @js NA
      *  @lua NA
      */
-    ~CCCamera(void);
+    ~Camera(void);
 
     void init(void);
     /**
@@ -134,12 +134,11 @@ public:
     static float getZEye();
 
 private:
-    DISALLOW_COPY_AND_ASSIGN(CCCamera);
+    DISALLOW_COPY_AND_ASSIGN(Camera);
 };
 
-// end of base_node group
 /// @}
 
-NS_CC_END
+FK_NS_END
 
-#endif // __CCCAMERA_H__
+#endif // __CAMERA_H_

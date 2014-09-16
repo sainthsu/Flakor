@@ -20,10 +20,10 @@
 FLAKOR_NS_BEGIN
 
 enum EngineState {
-    inital,
-    running,
-    stop,
-    destroyed
+    STATE_INITAL,
+    STATE_RUNNING,
+    STATE_STOP,
+    STATE_DESTROYED
 };
 
 class Engine
@@ -41,8 +41,8 @@ class Engine
     	int32_t width;
     	int32_t height;
 
-	enum EngineState state;
-	long lastTick;
+		enum EngineState state;
+		long lastTick;
 
 	public:
 		int initDisplay(void);

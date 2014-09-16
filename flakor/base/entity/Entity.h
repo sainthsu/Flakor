@@ -26,6 +26,8 @@ enum {
 abstract class Entity :: public Object,public IUpdatable,public IColorable 
 {
 	protected:
+		static int s_globalOrderOfArrival;
+
 		///在屏幕上的绝对坐标
 		Point obPosition;
 		///绝对尺寸，由宽高组成
@@ -64,6 +66,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 
 		///在父元素排序使用的Z值
 		int ZOrder;
+		int orderOfArrival;            ///< used to preserve sequence while sorting children with the same localZOrder
 		/**
 		 *标签
 		 */
@@ -81,6 +84,11 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *是否正在运行中
 		 */
 		bool running;                    ///< is running
+
+		/**
+		 * @brief visible是否可见，如果不可见，那么将不绘制，但是事件属性还是存在的
+		 */
+		bool visible;
 		/**
 		 *是否剪裁
 		 */
@@ -211,6 +219,26 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * @return The Z order.
 		 */
 		virtual int getZOrder();
+
+                /**
+                 * Sets the arrival order when this entity has a same ZOrder with other children.
+                 *
+                 * A entity which called addChild subsequently will take a larger arrival order,
+                 * If two children have the same Z order, the child with larger arrival order will be drawn later.
+                 *
+                 * @warning This method is used internally for ZOrder sorting, don't change this manually
+                 *
+                 * @param orderOfArrival   The arrival order.
+                 */
+                void setOrderOfArrival(int orderOfArrival);
+                /**
+                 * Returns the arrival order, indicates which children is added previously.
+                 *
+                 * @see `setOrderOfArrival(unsigned int)`
+                 *
+                 * @return The arrival order.
+                 */
+                int getOrderOfArrival() const;
 
 		virtual bool hasParent();
 		virtual void setParent(const Entity *parent);

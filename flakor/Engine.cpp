@@ -99,15 +99,15 @@ Engine::termDisplay() {
     }
     this->animating = 0;
     this->display = EGL_NO_DISPLAY;
-    engine->context = EGL_NO_CONTEXT;
-    engine->surface = EGL_NO_SURFACE;
+    this->context = EGL_NO_CONTEXT;
+    this->surface = EGL_NO_SURFACE;
 }
 
 /**
  * Process the next input event.
  */
 Engine::handleInput(struct android_app* app, AInputEvent* event) {
-    struct engine* engine = (struct engine*)app->userData;
+    Engine* engine = (Engine*)app->userData;
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION) {
         engine->animating = 1;
         engine->state.x = AMotionEvent_getX(event, 0);

@@ -2,6 +2,8 @@
 
 FLAKOR_NS_BEGIN
 
+int Entity::s_globalOrderOfArrival = 1;
+
 Entity::Entity(void)
 : obPosition(PointZero)
 , obContentSize(SizeZero)
@@ -46,6 +48,7 @@ Entity::~Entity(void)
 	FK_SAFE_RELEASE(userData);
 }
 
+//overwrite this method for your own init action
 bool Entity::init(void)
 {
 	return true;
@@ -194,7 +197,7 @@ bool Entity::hasParent()
 
 void Entity::setParent(const Entity *parent)
 {
-	parent = parent;
+	this->parent = parent;
 }
 
 Entity* Entity::getParent()
@@ -287,6 +290,7 @@ void Entity::setScale(float scale)
 float Entity::getScale()
 {
 	FKAssert(scaleX == scaleY, "Entity#scale. scaleX != scaleY. Don't know which one to return!");
+	return sclaleX;
 }
 
 void Entity::setScale(float x,float y)
@@ -323,14 +327,15 @@ float Entity::getSkewY()
 	return skewY;
 }
 
+//maybe not need this two method
 void Entity::setVisible(bool visible)
 {
-	
+        this.visible = visible;
 }
 
 bool Entity::isVisible()
 {
-
+  return this.visible;
 }
 
 void Entity::setChildrenVisible(bool visible)
@@ -365,7 +370,7 @@ void Entity::addChild(Entity * child, int zOrder)
 
 void Entity::addChild(Entity* child, int zOrder, int tag)
 {
-	FKAssert( child != NULL, "Argument must be non-nil");
+        FKAssert( child != NULL, "Child argument must be non-nil");
     FKAssert( child->parent == NULL, "child already added. It can't be added again");
 
     if( ! children )
@@ -533,7 +538,10 @@ void Entity::removeAllChildren(bool cleanup)
 
 void Entity::reorderChild(Entity * child, int zOrder)
 {
-	
+	FKAssert(child != NULL,"Child must be non-nil!");
+	childrenSortPending = true;
+	child->setOrderOfArrival(s_globalOrderOfArrival++);
+	child->_setZorder(zOrder);
 }
 
 void Entity::sortChildren()
@@ -555,7 +563,8 @@ void Entity::sortChildren(bool immediate)
 			tmp = data[i];
 			j=i-1;
 
-			while(j>=0 && (tmp->ZOrder < data[j]->ZOrder))
+			while(j>=0 && ((tmp->ZOrder < data[j]->ZOrder)  ||
+			      (temp->ZOrder== x[j]->ZOrder && temp->orderOfArrival < x[j]->orderOfArrival ) ))
 			{
 				data[j+1] = data[j];
 				j--;
@@ -563,10 +572,11 @@ void Entity::sortChildren(bool immediate)
 			data[j+1] = tmp;
 		}
 		
+		ChildrenSortPending = false;
 	}
 	else
 	{
-		
+		ChildrenSortPending = true;
 	}
 
 }
@@ -598,36 +608,79 @@ Camera* Entity::getCamera()
 
 bool Entity::isRunning()
 {
-
+	return running;
 }
 
+/**
+ * @brief Entity::onEnter enter this entity
+ */
 void Entity::onEnter()
 {
-	
+  running = true;
+
+  /* finish it later
+      if (scriptType != scriptTypeNone)
+      {
+          ScriptEngineManager::sharedManager()->getScriptEngine()->executeNodeEvent(this, EntityOnEnter);
+      }*/
+
+      //Judge the running state for prevent called onEnter method more than once,it's possible that this function called by addChild
+      if (children && children->count() > 0)
+      {
+          Object* child;
+          Entity* entity;
+          FKARRAY_FOREACH(children, child)
+          {
+              entity = (Entity*)child;
+              if (!entity->isRunning())
+              {
+                  entity->onEnter();
+              }
+          }
+      }
+
+      //this->resumeSchedulerAndActions();
 }
 
 void Entity::onEnterTransitionDidFinish()
 {
+  /*
+  if (scriptType != ScriptTypeNone)
+      {
+          ScriptEngineManager::sharedManager()->getScriptEngine()->executeNodeEvent(this, EntityOnEnterTransitionDidFinish);
+      }*/
 
+      arrayMakeObjectsPerformSelector(children, onEnterTransitionDidFinish, Entity*);
 }
 
 void Entity::onExit()
 {
+  //this->pauseSchedulerAndActions();
 
+      running = false;
+
+      arrayMakeObjectsPerformSelector(m_pChildren, onExit, CCNode*);
+
+      /*
+      if ( scriptType != ScriptTypeNone)
+      {
+          ScriptEngineManager::sharedManager()->getScriptEngine()->executeNodeEvent(this, EntityOnExit);
+      }*/
 }
 
 void Entity::onExitTransitionDidStart()
 {
+  arrayMakeObjectsPerformSelector(children, onExitTransitionDidStart, Entity*);
 }
 
 void Entity::cleanup(void)
 {
-	arrayMakeObjectsPerformSelector(children,cleanup,Entityy*);
+        arrayMakeObjectsPerformSelector(children,cleanup,Entity*);
 }
 
 void Entity::draw(void)
 {
-
+	//	overwrite to handle your own draw action
 }
 
 void Entity::onVisit(void)
@@ -683,6 +736,9 @@ void Entity::onVisit(void)
 	}
 }
 
+/**
+ * call it when entity attach to a parent
+ * */
 void Entity::onAttached()
 {
 
@@ -700,21 +756,46 @@ void Entity::update(float delta)
 
 void Entity::transform(void)
 {
-	if(transformDirty)
-	{
-		float x = obPosition.x;
-		float y = obPosition.y;
-	}
+      kmMat4 transfrom4x4;
+
+      // Convert 3x3 into 4x4 matrix
+      CCAffineTransform tmpAffine = this->nodeToParentTransform();
+      CGAffineToGL(&tmpAffine, transfrom4x4.mat);
+
+      // Update Z vertex manually
+      transfrom4x4.mat[14] = m_fVertexZ;
+
+      kmGLMultMatrix( &transfrom4x4 );
+
+      // XXX: Expensive calls. Camera should be integrated into the cached affine matrix
+      if ( m_pCamera != NULL && !(m_pGrid != NULL && m_pGrid->isActive()) )
+      {
+          bool translate = (m_obAnchorPointInPoints.x != 0.0f || m_obAnchorPointInPoints.y != 0.0f);
+
+          if( translate )
+              kmGLTranslatef(RENDER_IN_SUBPIXEL(m_obAnchorPointInPoints.x), RENDER_IN_SUBPIXEL(m_obAnchorPointInPoints.y), 0 );
+
+          m_pCamera->locate();
+
+          if( translate )
+              kmGLTranslatef(RENDER_IN_SUBPIXEL(-m_obAnchorPointInPoints.x), RENDER_IN_SUBPIXEL(-m_obAnchorPointInPoints.y), 0 );
+      }
+
 }
 
 void Entity::transformAncestors(void)
 {
-
+    if(parent != NULL)
+      {
+        parent->transformAncestors();
+        parent->transform();
+      }
 }
 
 void Entity::updateTransform(void)
 {
-
+  // Recursively iterate over children
+     arrayMakeObjectsPerformSelector(children, updateTransform, Entity*);
 }
 
 void Entity::childrenAlloc(void)
@@ -725,7 +806,9 @@ void Entity::childrenAlloc(void)
 
 void Entity::insertChild(Entity* child, int z)
 {
-
+  m_bReorderChildDirty = true;
+      ccArrayAppendObjectWithResize(m_pChildren->data, child);
+      child->_setZOrder(z);
 }
 
 void Entity::detachChild(Entity *child, bool doCleanup)
@@ -744,6 +827,87 @@ void Entity::detachChild(Entity *child, bool doCleanup)
 
 	children->removeObject(child);
 }
+
+Martrix4 Entity::entityToParentTransform(void)
+{
+    if (transformDirty)
+    {
+
+        // Translate values
+        float x = obPosition.x;
+        float y = obPosition.y;
+
+        float obAnchorPointInPointsX = obContentSize.width * obAnchorPoint.x;
+        float obAnchorPointInPointsY = obContentSize.height * obAnchorPoint.y;
+
+
+        if (ignoreAnchorPointForPosition)
+        {
+            x += m_obAnchorPointInPoints.x;
+            y += m_obAnchorPointInPoints.y;
+        }
+
+	// Rotation values
+	// Change rotation code to handle X and Y
+	// If we skew with the exact same value for both x and y then we're simply just rotating
+	float cx = 1, sx = 0, cy = 1, sy = 0;
+	if (rotationX || rotationY)
+	{
+	    float radiansX = -CC_DEGREES_TO_RADIANS(rotationX);
+	    float radiansY = -CC_DEGREES_TO_RADIANS(rotationY);
+	    cx = cosf(radiansX);
+	    sx = sinf(radiansX);
+	    cy = cosf(radiansY);
+	    sy = sinf(radiansY);
+	}
+
+	bool needsSkewMatrix = ( skewX || skewY );
+
+
+        // optimization:
+        // inline anchor point calculation if skew is not needed
+        // Adjusted transform calculation for rotational skew
+        if (! needsSkewMatrix && !m_obAnchorPointInPoints.equals(PointZero))
+        {
+            x += cy * -m_obAnchorPointInPoints.x * scaleX + -sx * -m_obAnchorPointInPoints.y * scaleY;
+            y += sy * -m_obAnchorPointInPoints.x * scaleX +  cx * -m_obAnchorPointInPoints.y * scaleY;
+        }
+
+
+        // Build Transform Matrix
+        // Adjusted transform calculation for rotational skew
+        m_sTransform = CCAffineTransformMake( cy * m_fScaleX,  sy * m_fScaleX,
+            -sx * m_fScaleY, cx * m_fScaleY,
+            x, y );
+
+        // XXX: Try to inline skew
+        // If skew is needed, apply skew and then anchor point
+        if (needsSkewMatrix)
+        {
+            CCAffineTransform skewMatrix = CCAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(m_fSkewY)),
+                tanf(CC_DEGREES_TO_RADIANS(m_fSkewX)), 1.0f,
+                0.0f, 0.0f );
+            m_sTransform = CCAffineTransformConcat(skewMatrix, m_sTransform);
+
+            // adjust anchor point
+            if (!m_obAnchorPointInPoints.equals(CCPointZero))
+            {
+                m_sTransform = CCAffineTransformTranslate(m_sTransform, -m_obAnchorPointInPoints.x, -m_obAnchorPointInPoints.y);
+            }
+        }
+
+        if (additionalTransformDirty)
+        {
+            m_sTransform = CCAffineTransformConcat(m_sTransform, m_sAdditionalTransform);
+            m_bAdditionalTransformDirty = false;
+        }
+
+        m_bTransformDirty = false;
+    }
+
+    return m_sTransform;
+}
+
 
 Point Entity::convertToWindowSpace(const Point& entityPoint)
 {

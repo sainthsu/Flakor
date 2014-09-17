@@ -79,8 +79,6 @@ Entity * Entity::create(float x,float y)
 	return entity;
 }
 
-
-
 const char* Entity::toString(void)
 {
 	return String::createWithFormat("{Entity: | Tag = %d}", tag)->getCString();
@@ -370,7 +368,7 @@ void Entity::addChild(Entity * child, int zOrder)
 
 void Entity::addChild(Entity* child, int zOrder, int tag)
 {
-        FKAssert( child != NULL, "Child argument must be non-nil");
+    FKAssert( child != NULL, "Child argument must be non-nil");
     FKAssert( child->parent == NULL, "child already added. It can't be added again");
 
     if( ! children )

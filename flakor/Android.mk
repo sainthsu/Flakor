@@ -17,6 +17,8 @@ LOCAL_STATIC_LIBRARIES += png
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/libjpeg
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/libpng
 
+LOCAL_CPP_EXTENSION := .cxx .cpp .cc
+
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)

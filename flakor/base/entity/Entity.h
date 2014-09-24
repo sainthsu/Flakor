@@ -28,10 +28,11 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 	protected:
 		static int s_globalOrderOfArrival;
 
-		///在屏幕上的绝对坐标
-		Point obPosition;
+		//相对于父类的位置坐标
+		//在屏幕上的绝对坐标
+		Point position;
 		///绝对尺寸，由宽高组成
-		Size obContentSize;
+		Size contentSize;
 
 		/**
 		 *锚点
@@ -39,14 +40,19 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *例如，把节点左下角作为锚点，值为(0,0) ；
 		 *把节点的中心作为锚点，值为(0.5,0.5) ；
 		 *把节点右下角作为锚点，值为(1,0) 。
+		 *
+		 *从图像的展示效果上来看，如果锚点是(x, y)，则指定的是图片中(x, y)坐标的点与节点指定的position重合。
+		 *定位点相对于自身的位置
 		 **************************************/
-		Point obAnchorPoint;
+		Point anchorPoint;
+
 		/**
 		 *锚点是否起作用
-		 *如果锚点起作用，将会使m_obPosition失去作用。位置由anchorpoint
-		 *和父类元素的位置决定
+		 *如果锚点起作用，将会使position位置由anchorpoint
+		 *否则锚点始终为左下角（0，0）
 		 */
 		bool relativeAnchorPoint;
+		bool useAnchorPointAsTransformCenter;
 		///opengl Z轴大小，备用
 		float vertexZ;
 

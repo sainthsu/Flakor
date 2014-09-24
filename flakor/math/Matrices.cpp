@@ -577,6 +577,77 @@ Matrix4& Matrix4::rotateZ(float angle)
     return *this;
 }
 
+/**
+ * |1 b 0 0 |
+ * |d 1 0 0 |
+ * |0 0 1 0 |
+ * |0 0 0 1 |
+ * skewX is a skew angle of X
+ * 
+ * d = tan(skewX)
+ * b = tan(skewy)
+ */
+Matrix4& Matrix4::skew2D(float skewXAngle,float skewYAngle)
+{
+	float tanD =  tanf(skewXAngle * DEG2RAD);
+	float tanB =  tanf(skewXAngle * DEG2RAD);
+
+	float m0 = m[0];
+	float m4 = m[4];
+	float m8 = m[8];
+	float m12 = m[12];
+
+	m[0] += tanB*m[1];
+	m[4] += tanB*m[5];
+	m[8] += tanB*m[9];
+	m[12] += tanB*m[13];
+
+	m[1] += tanD*m0;
+	m[5] += tanD*m4;
+	m[9] += tanD*m8;
+	m[13] += tanD*m12;
+
+	return *this;
+}
+
+/**
+ * |1 0 0 0 |
+ * |d 1 0 0 |
+ * |0 0 1 0 |
+ * |0 0 0 1 |
+ * d = tan(skewX)
+ */
+Matrix4& Matrix4::skew2DX(float skewXAngle)
+{
+	float tan =  tanf(skewXAngle * DEG2RAD);
+	
+	m[1] += tan*m[0];
+	m[5] += tan*m[4];
+	m[9] += tan*m[8];
+	m[13] += tan*m[12];
+
+	return *this;
+}
+
+/**
+ * |1 b 0 0 |
+ * |0 1 0 0 |
+ * |0 0 1 0 |
+ * |0 0 0 1 |
+ * b = tan(skewy)
+ */
+Matrix4& Matrix4::skew2DY(float skewYAngle)
+{
+	float tan = tanf(skewYAngle * DEG2RAD);
+	
+	m[0] += tan*m[1];
+	m[4] += tan*m[5];
+	m[8] += tan*m[9];
+	m[12] += tan*m[13];
+
+	return *this;
+}
+
 Matrix4& Matrix4::perspective( float width, float height, float nearPlane, float farPlane )
 {
 	float n2 = 2.0f * nearPlane;

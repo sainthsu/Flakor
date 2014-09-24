@@ -6,19 +6,19 @@ FLAKOR_NS_BEGIN
 /**
  * 利用成员变量初始化列表初始化类
  */
-Point::Point(void) :x(0),y(0)
+Point::Point(void) :x(0),y(0),z(0)
 {
 }
 
-Point::Point(float x, float y) : x(x),y(y)
+Point::Point(float x, float y) : x(x),y(y),z(0)
 {
 }
 
-Point::Point(const Point& other) : x(other.x),y(other.y)
+Point::Point(const Point& other) : x(other.x),y(other.y),z(other.z)
 {
 }
 
-Point::Point(const Size& size) : x(size.width),y(size.height)
+Point::Point(const Size& size) : x(size.width),y(size.height),z(0)
 {
 }
 

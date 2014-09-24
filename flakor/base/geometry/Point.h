@@ -22,10 +22,12 @@ class Point
 
 	Point();	
 	Point(int x,int y);
+	Point(int x,int y,int z);
 	Point(const Point& other);
 	Point(const Size& size);
 
 	Point make(int x,int y) const;
+	Point make(int x,int y,int z) const;
 	Point makeZero(void) const;
 	
 	~Point(void);

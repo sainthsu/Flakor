@@ -40,7 +40,6 @@ class Matrix2
     Matrix2();  // init with identity
     Matrix2(const float src[4],enum MATRIX_MAJOR major);
     Matrix2(float xx, float xy, float yx, float yy);
-    Matrix2(const Vector2& vector);
 
     //setter
     void        set(const float src[4],enum MATRIX_MAJOR major);
@@ -201,6 +200,7 @@ public:
     const float* get() const;
     const float* getTranspose();                        // return transposed matrix
     float        getDeterminant();
+	const char* toString(void) const;
 
     Matrix4&    identity();
     Matrix4&    transpose();                            // transpose itself and return reference
@@ -222,6 +222,10 @@ public:
     Matrix4&    rotateZ(float angle);                   // rotate on Z-axis with degree
     Matrix4&    scale(float scale);                     // uniform scale
     Matrix4&    scale(float sx, float sy, float sz);    // scale by (sx, sy, sz) on each axis
+	//keep Z no change ,used in 2D skew
+	Matrix4&    skew2D(float skewXAngle,float skewYAngle);
+	Matrix4&    skew2DX(float skewXAngle);
+	Matrix4&    skew2DY(float skewYAngle);
 
 	static Matrix4& perspective( float width, float height, float nearPlane, float farPlane );
 	static Matrix4& orthographic( float width, float height, float nearPlane, float farPlane );
@@ -235,6 +239,7 @@ public:
     Matrix4&    operator-=(const Matrix4& rhs);         // subtract rhs and update this object
     Vector4     operator*(const Vector4& rhs) const;    // multiplication: v' = M * v
     Vector3     operator*(const Vector3& rhs) const;    // multiplication: v' = M * v
+    Matrix4     operator*(const Point& rhs) const;     // multiplication: p' = M * p
     Matrix4     operator*(const Matrix4& rhs) const;    // multiplication: M3 = M1 * M2
     Matrix4&    operator*=(const Matrix4& rhs);         // multiplication: M1' = M1 * M2
     bool        operator==(const Matrix4& rhs) const;   // exact compare, no epsilon
@@ -271,7 +276,6 @@ inline Matrix2::Matrix2(const float src[4],enum MATRIX_MAJOR major=ROW_MAJOR)
 {
     set(src,major);
 }
-
 
 inline Matrix2::Matrix2(float xx, float xy, float yx, float yy)
 {
@@ -719,7 +723,14 @@ inline Matrix4::Matrix4(float xx, float xy, float xz, float xw,
     set(xx, xy, xz, xw,  yx, yy, yz, yw,  zx, zy, zz, zw,  wx, wy, wz, ww);
 }
 
-
+inline Matrix4::Matrix4(const Matrix3& matrix)
+{
+	m[0] = matrix[0]; m[4] = matrix[4]; m[8] = matrix[8]; m[12] = matrix[12];
+    m[1] = matrix[1]; m[5] = matrix[5]; m[9] = matrix[9]; m[13] = matrix[13];
+	m[2] = matrix[2]; m[6] = matrix[6]; m[10] = matrix[10]; m[14] = matrix[14];
+    m[3] = m[7] = m[11] = m[12] = m[13] = m[14] = 0;
+    m[15] = 1;
+}
 
 inline void Matrix4::set(const float src[16],enum MATRIX_MAJOR major)
 {
@@ -884,6 +895,12 @@ inline Vector3 Matrix4::operator*(const Vector3& rhs) const
                    m[2]*rhs.x + m[6]*rhs.y + m[10]*rhs.z);
 }
 
+inline Point Matrix4::operator*(const Point& rhs) const
+{
+    return Point(m[0]*rhs.x + m[4]*rhs.y + m[8]*rhs.z,
+                   m[1]*rhs.x + m[5]*rhs.y + m[9]*rhs.z,
+                   m[2]*rhs.x + m[6]*rhs.y + m[10]*rhs.z);
+}
 
 
 inline Matrix4 Matrix4::operator*(const Matrix4& n) const
@@ -974,32 +991,6 @@ inline Vector3 operator*(const Vector3& v, const Matrix4& m)
                    v.x*m[4] + v.y*m[5] + v.z*m[6],
                    v.x*m[8] + v.y*m[9] + v.z*m[10]);
 }
-
-/*
-class TransformMatrix
-{
-	private:
-		float a,b,c,b;
-		float tx,ty;
-	public:
-		TransformMatrix();
-
-		void indentity();
-		void setMatrix(const TransformMatrix& matrix);
-		void reset();
-
-		void translate(float tX,float tY) const;
-		void scale(float sX, float sY) const;
-		void skew(float skewX,float skewY) const;
-		void rotate(float angle) const;
-		void concat(const TransformMatrix& right) const;
-		void preconcat(const TransformMatrix& left) const;
-		void inverse();
-
-		Point transform(const Point& point) const;
-
-		const char* toString(void);
 		
-}*/
 
 FLAKOR_NS_END

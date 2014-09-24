@@ -5,6 +5,7 @@ flakor.config
 flakor.creator
 flakor.files
 flakor.includes
+tags
 
 # Compiled Object files
 *.slo

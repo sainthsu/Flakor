@@ -15,12 +15,12 @@ enum {
 	EntityTagInvalid = -1,
 };
 
-enum {
+enum EntityState {
 	EntityOnEnter,
 	EntityOnExit,
-    EntityOnEnterTransitionDidFinish,
-    EntityOnExitTransitionDidStart,
-    EntityOnCleanup
+	EntityOnEnterTransitionDidFinish,
+	EntityOnExitTransitionDidStart,
+	EntityOnCleanup
 };
 
 abstract class Entity :: public Object,public IUpdatable,public IColorable 
@@ -220,25 +220,25 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 */
 		virtual int getZOrder();
 
-                /**
-                 * Sets the arrival order when this entity has a same ZOrder with other children.
-                 *
-                 * A entity which called addChild subsequently will take a larger arrival order,
-                 * If two children have the same Z order, the child with larger arrival order will be drawn later.
-                 *
-                 * @warning This method is used internally for ZOrder sorting, don't change this manually
-                 *
-                 * @param orderOfArrival   The arrival order.
-                 */
-                void setOrderOfArrival(int orderOfArrival);
-                /**
-                 * Returns the arrival order, indicates which children is added previously.
-                 *
-                 * @see `setOrderOfArrival(unsigned int)`
-                 *
-                 * @return The arrival order.
-                 */
-                int getOrderOfArrival() const;
+		/**
+		 * Sets the arrival order when this entity has a same ZOrder with other children.
+		 *
+		 * A entity which called addChild subsequently will take a larger arrival order,
+		 * If two children have the same Z order, the child with larger arrival order will be drawn later.
+		 *
+		 * @warning This method is used internally for ZOrder sorting, don't change this manually
+		 *
+		 * @param orderOfArrival   The arrival order.
+		 */
+		void setOrderOfArrival(int orderOfArrival);
+		/**
+		 * Returns the arrival order, indicates which children is added previously.
+		 *
+		 * @see `setOrderOfArrival(unsigned int)`
+		 *
+		 * @return The arrival order.
+		 */
+		int getOrderOfArrival() const;
 
 		virtual bool hasParent();
 		virtual void setParent(const Entity *parent);
@@ -500,20 +500,20 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		unsigned int getChildrenCount(void) const;
 
 		/** 
-     	* Removes a child from the container with a cleanup
-     	*
-     	* @see removeChild(CCNode, bool)
-     	*
-     	* @param child     The child entity which will be removed.
-     	*/
-    	virtual void removeChild(Entity* child);
-    	/** 
-     	* Removes a child from the container. It will also cleanup all running actions depending on the cleanup parameter.
-     	* 
-     	* @param child     The child entity which will be removed.
-     	* @param cleanup   true if all running actions and callbacks on the child node will be cleanup, false otherwise.
-     	*/
-    	virtual void removeChild(Entity* child, bool cleanup);
+		 * Removes a child from the container with a cleanup
+		 *
+		 * @see removeChild(CCNode, bool)
+		 *
+		 * @param child     The child entity which will be removed.
+		 */
+		virtual void removeChild(Entity* child);
+		/** 
+		 * Removes a child from the container. It will also cleanup all running actions depending on the cleanup parameter.
+		 * 
+		 * @param child     The child entity which will be removed.
+		 * @param cleanup   true if all running actions and callbacks on the child node will be cleanup, false otherwise.
+		 */
+		virtual void removeChild(Entity* child, bool cleanup);
 		virtual void removeChildByTag(int tag);
 		virtual void removeChildByTag(int tag,bool cleanup);
 		virtual void removeChildByZOrder(int z);
@@ -521,12 +521,12 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		virtual void removeAllChildren(bool cleanup);
 
 		/** 
-     	* Reorders a child according to a new z value.
-     	*
-     	* @param child     An already added child node. It MUST be already added.
-     	* @param zOrder    Z order for drawing priority. Please refer to setZOrder(int)
-     	*/
-    	virtual void reorderChild(Entity * child, int zOrder);
+		 * Reorders a child according to a new z value.
+		 *
+		 * @param child     An already added child node. It MUST be already added.
+		 * @param zOrder    Z order for drawing priority. Please refer to setZOrder(int)
+		 */
+		virtual void reorderChild(Entity * child, int zOrder);
 		virtual void sortChildren();
 		virtual void sortChildren(bool immediate);
 
@@ -639,65 +639,65 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		virtual bool isRunning();
 
 		/** 
-     	* Event callback that is invoked every time when CCNode enters the 'stage'.
-     	* If the CCNode enters the 'stage' with a transition, this event is called when the transition starts.
-     	* During onEnter you can't access a "sister/brother" node.
-     	* If you override onEnter, you shall call its parent's one, e.g., CCNode::onEnter().
-     	* @js NA
-     	* @lua NA
-     	*/
-   		virtual void onEnter();
+		 * Event callback that is invoked every time when CCNode enters the 'stage'.
+		 * If the CCNode enters the 'stage' with a transition, this event is called when the transition starts.
+		 * During onEnter you can't access a "sister/brother" node.
+		 * If you override onEnter, you shall call its parent's one, e.g., CCNode::onEnter().
+		 * @js NA
+		 * @lua NA
+		 */
+		virtual void onEnter();
 
-    /** Event callback that is invoked when the CCNode enters in the 'stage'.
-     * If the CCNode enters the 'stage' with a transition, this event is called when the transition finishes.
-     * If you override onEnterTransitionDidFinish, you shall call its parent's one, e.g. CCNode::onEnterTransitionDidFinish()
-     * @js NA
-     * @lua NA
-     */
-    virtual void onEnterTransitionDidFinish();
+		/** Event callback that is invoked when the CCNode enters in the 'stage'.
+		 * If the CCNode enters the 'stage' with a transition, this event is called when the transition finishes.
+		 * If you override onEnterTransitionDidFinish, you shall call its parent's one, e.g. CCNode::onEnterTransitionDidFinish()
+		 * @js NA
+		 * @lua NA
+		 */
+		virtual void onEnterTransitionDidFinish();
 
-    /** 
-     * Event callback that is invoked every time the CCNode leaves the 'stage'.
-     * If the CCNode leaves the 'stage' with a transition, this event is called when the transition finishes.
-     * During onExit you can't access a sibling node.
-     * If you override onExit, you shall call its parent's one, e.g., CCNode::onExit().
-     * @js NA
-     * @lua NA
-     */
-    virtual void onExit();
+		/** 
+		 * Event callback that is invoked every time the CCNode leaves the 'stage'.
+		 * If the CCNode leaves the 'stage' with a transition, this event is called when the transition finishes.
+		 * During onExit you can't access a sibling node.
+		 * If you override onExit, you shall call its parent's one, e.g., CCNode::onExit().
+		 * @js NA
+		 * @lua NA
+		 */
+		virtual void onExit();
 
-    /** 
-     * Event callback that is called every time the CCNode leaves the 'stage'.
-     * If the CCNode leaves the 'stage' with a transition, this callback is called when the transition starts.
-     * @js NA
-     * @lua NA
-     */
-    virtual void onExitTransitionDidStart();
+		/** 
+		 * Event callback that is called every time the CCNode leaves the 'stage'.
+		 * If the CCNode leaves the 'stage' with a transition, this callback is called when the transition starts.
+		 * @js NA
+		 * @lua NA
+		 */
+		virtual void onExitTransitionDidStart();
 
-    /// @} end of event callbacks.
+		/// @} end of event callbacks.
 
 
-    /** 
-     * Stops all running actions and schedulers
-     */
-    virtual void cleanup(void);
+		/** 
+		 * Stops all running actions and schedulers
+		 */
+		virtual void cleanup(void);
 
-    /** 
-     * Override this method to draw your own node.
-     * The following GL states will be enabled by default:
-     * - glEnableClientState(GL_VERTEX_ARRAY);
-     * - glEnableClientState(GL_COLOR_ARRAY);
-     * - glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-     * - glEnable(GL_TEXTURE_2D);
-     * AND YOU SHOULD NOT DISABLE THEM AFTER DRAWING YOUR Entity
-     * But if you enable any other GL state, you should disable it after drawing your entity.
-     */
-    virtual void draw(void);
+		/** 
+		 * Override this method to draw your own node.
+		 * The following GL states will be enabled by default:
+		 * - glEnableClientState(GL_VERTEX_ARRAY);
+		 * - glEnableClientState(GL_COLOR_ARRAY);
+		 * - glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		 * - glEnable(GL_TEXTURE_2D);
+		 * AND YOU SHOULD NOT DISABLE THEM AFTER DRAWING YOUR Entity
+		 * But if you enable any other GL state, you should disable it after drawing your entity.
+		 */
+		virtual void draw(void);
 
-    /** 
-     * Visits this entity's children and draw them recursively.
-     */
-    virtual void visit(void);
+		/** 
+		 * Visits this entity's children and draw them recursively.
+		 */
+		virtual void visit(void);
 
 		virtual void onAttached();
 		virtual void onDetached();
@@ -726,7 +726,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 */
 		virtual void updateTransform(void);
 
-	private:
+		private:
 		/// lazy allocs
 		void childrenAlloc(void);
 
@@ -739,7 +739,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		/** Convert flakor coordinates to UI windows coordinate.
 		 */
 		Point convertToWindowSpace(const Point& entityPoint);
-}
+		}
 
 FLAKOR_NS_END
 

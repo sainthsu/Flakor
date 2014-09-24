@@ -26,34 +26,34 @@ THE SOFTWARE.
 #include "lang/CCString.h"
 #include "GL.h"
 
-#include "draw_nodes/CCDrawingPrimitives.h"
+#include "draw_nodes/DrawingPrimitives.h"
 #include "CCDirector.h"
 #include "kazmath/GL/matrix.h"
 
 using namespace std;
 
-NS_CC_BEGIN
+FLAKOR_NS_BEGIN
 
-CCCamera::CCCamera(void)
+Camera::Camera(void)
 {
     init();
 }
 
-CCCamera::~CCCamera(void)
+Camera::~Camera(void)
 {
 }
 
-const char* CCCamera::description(void)
+const char* Camera::description(void)
 {
-    return CCString::createWithFormat("<CCCamera | center = (%.2f,%.2f,%.2f)>", m_fCenterX, m_fCenterY, m_fCenterZ)->getCString();
+    return String::createWithFormat("<Camera | center = (%.2f,%.2f,%.2f)>", m_fCenterX, m_fCenterY, m_fCenterZ)->getCString();
 }
 
-void CCCamera::init(void)
+void Camera::init(void)
 {
     restore();
 }
 
-void CCCamera::restore(void)
+void Camera::restore(void)
 {
     m_fEyeX = m_fEyeY = 0.0f;
     m_fEyeZ = getZEye();
@@ -69,7 +69,7 @@ void CCCamera::restore(void)
     m_bDirty = false;
 }
 
-void CCCamera::locate(void)
+void Camera::locate(void)
 {
     if (m_bDirty)
     {
@@ -86,12 +86,12 @@ void CCCamera::locate(void)
     kmGLMultMatrix( &m_lookupMatrix );
 }
 
-float CCCamera::getZEye(void)
+float Camera::getZEye(void)
 {
     return FLT_EPSILON;
 }
 
-void CCCamera::setEyeXYZ(float fEyeX, float fEyeY, float fEyeZ)
+void Camera::setEyeXYZ(float fEyeX, float fEyeY, float fEyeZ)
 {
     m_fEyeX = fEyeX;
     m_fEyeY = fEyeY;
@@ -100,7 +100,7 @@ void CCCamera::setEyeXYZ(float fEyeX, float fEyeY, float fEyeZ)
     m_bDirty = true;
 }
 
-void CCCamera::setCenterXYZ(float fCenterX, float fCenterY, float fCenterZ)
+void Camera::setCenterXYZ(float fCenterX, float fCenterY, float fCenterZ)
 {
     m_fCenterX = fCenterX;
     m_fCenterY = fCenterY;
@@ -109,7 +109,7 @@ void CCCamera::setCenterXYZ(float fCenterX, float fCenterY, float fCenterZ)
     m_bDirty = true;
 }
 
-void CCCamera::setUpXYZ(float fUpX, float fUpY, float fUpZ)
+void Camera::setUpXYZ(float fUpX, float fUpY, float fUpZ)
 {
     m_fUpX = fUpX;
     m_fUpY = fUpY;
@@ -118,26 +118,26 @@ void CCCamera::setUpXYZ(float fUpX, float fUpY, float fUpZ)
     m_bDirty = true;
 }
 
-void CCCamera::getEyeXYZ(float *pEyeX, float *pEyeY, float *pEyeZ)
+void Camera::getEyeXYZ(float *pEyeX, float *pEyeY, float *pEyeZ)
 {
     *pEyeX = m_fEyeX;
     *pEyeY = m_fEyeY;
     *pEyeZ = m_fEyeZ;
 }
 
-void CCCamera::getCenterXYZ(float *pCenterX, float *pCenterY, float *pCenterZ)
+void Camera::getCenterXYZ(float *pCenterX, float *pCenterY, float *pCenterZ)
 {
     *pCenterX = m_fCenterX;
     *pCenterY = m_fCenterY;
     *pCenterZ = m_fCenterZ;
 }
 
-void CCCamera::getUpXYZ(float *pUpX, float *pUpY, float *pUpZ)
+void Camera::getUpXYZ(float *pUpX, float *pUpY, float *pUpZ)
 {
     *pUpX = m_fUpX;
     *pUpY = m_fUpY;
     *pUpZ = m_fUpZ;
 }
 
-NS_CC_END
+FLAKOR_NS_END
 

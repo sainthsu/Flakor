@@ -48,10 +48,14 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 
 		/**
 		 *锚点是否起作用
-		 *如果锚点起作用，将会使position位置由anchorpoint
+		 *如果锚点起作用，将会使position位置由anchorpoint决定
 		 *否则锚点始终为左下角（0，0）
 		 */
 		bool relativeAnchorPoint;
+		/**
+		 *use AnchorPoint as transformCenter expect translate
+		 *otherwise use its own center point
+		 */
 		bool useAnchorPointAsTransformCenter;
 		///opengl Z轴大小，备用
 		float vertexZ;
@@ -117,6 +121,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		bool childrenSortPending;
 
 		bool transformDirty;
+		bool additionalTransformDirty;
 		bool inverseDirty
 		/**
 		 *相机，默认不起作用
@@ -138,7 +143,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 */
 		Matrix4 *inverseMatrix;
 		Matrix4 *transformMatrix;
-		Matrix4 *addictionMatrix;
+		Matrix4 *additionalMatrix;
 
 		//用户自定义数据指针
 		void* userData;
@@ -191,9 +196,9 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		virtual const Point& getAnchorPointInPixels();
 
 		virtual const Size& getContentSize() const;
-		virtual void setContentSize(const Size& contentSize);
+		virtual void setContentSize(const Size& size);
 		virtual const Point& getAnchorPoint();
-		virtual void setAnchorPoint(const Point &anchorPointer);
+		virtual void setAnchorPoint(const Point &point);
 
 		/**
 		 * Sets the Z order which stands for the drawing order, and reorder this entity in its parent's children array.
@@ -236,7 +241,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * @param orderOfArrival   The arrival order.
 		 */
-		void setOrderOfArrival(int orderOfArrival);
+		void setOrderOfArrival(int arrival);
 		/**
 		 * Returns the arrival order, indicates which children is added previously.
 		 *
@@ -745,7 +750,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		/** Convert flakor coordinates to UI windows coordinate.
 		 */
 		Point convertToWindowSpace(const Point& entityPoint);
-		}
+}
 
 FLAKOR_NS_END
 

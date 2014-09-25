@@ -4,40 +4,39 @@ FLAKOR_NS_BEGIN
 
 int Entity::s_globalOrderOfArrival = 1;
 
-	Entity::Entity(void)
-	: obPosition(PointZero)
-	, obContentSize(SizeZero)
-	, rotationX(0.0f)
-	, rotationY(0.0f)
-	, scaleX(1.0f)
-	, scaleY(1.0f)
-	, vertexZ(0.0f)
-	, skewX(0.0f)
-	, skewY(0.0f)
-	, obAnchorPointInPixels(PointZero)
-	, obAnchorPoint(PointZero)
-	, additionalTransform(Matrix4())
-	  , camera(NULL)
-	  // children (lazy allocs)
-	, ZOrder(0)
-	, orderofArrival(0)
-	, children(NULL)
-	, parent(NULL)
-	  , tag(EntityTagInvalid)
-	  // userData is always inited as null
-	, userData(NULL)
-	  , cullingEnabled(true)
-	  //, orderOfArrival(0)
-	, running(false)
-	, transformDirty(true)
-	, inverseDirty(true)
-	, additionalTransformDirty(false)
-	  , visible(true)
-	  // "whole screen" objects. like Scenes and Layers, should set relativeAnchorPoint to true
-	, relativeAnchorPoint(false)
-	  , childrenSortPending(false)
-	  //, scriptHandler(0)
-	  //, updateScriptHandler(0)
+Entity::Entity(void)
+: position(PointZero)
+, contentSize(SizeZero)
+, rotationX(0.0f)
+, rotationY(0.0f)
+, scaleX(1.0f)
+, scaleY(1.0f)
+, vertexZ(0.0f)
+, skewX(0.0f)
+, skewY(0.0f)
+, obAnchorPointInPixels(PointZero)
+, anchorPoint(PointZero)
+, additionalTransform(Matrix4())
+, camera(NULL)	  
+, ZOrder(0)
+, orderOfArrival(0)
+// children (lazy allocs)
+, children(NULL)
+, parent(NULL)
+, tag(EntityTagInvalid)
+// userData is always inited as null
+, userData(NULL)
+, cullingEnabled(true)
+, running(false)
+, transformDirty(true)
+, inverseDirty(true)
+, additionalTransformDirty(false)
+, visible(true)
+// "whole screen" objects. like Scenes and Layers, should set relativeAnchorPoint to false
+, relativeAnchorPoint(false)
+, childrenSortPending(false)
+//, scriptHandler(0)
+//, updateScriptHandler(0)
 {
 }
 
@@ -87,48 +86,48 @@ const char* Entity::toString(void)
 
 void Entity::setPosition(const Point &position)
 {
-	obPosition = position;
+	this->position = position;
 	transformDirty = inverseDirty = true;
 }
 
 void Entity::setPosition(float x, float y)
 {
-	obPosition.x = x;
-	obPosition.y = y;
+	this->position.x = x;
+	this->position.y = y;
 	transformDirty = inverseDirty = true;
 }
 
 Point& Entity::getPosition()
 {
-	return obPosition;
+	return this->position;
 }
 
 void Entity::getPosition(float* x, float* y)
 {
-	*x = obPosition.x;
-	*y = obPosition.y;
+	*x = this->position.x;
+	*y = this->position.y;
 }
 
 void  Entity::setPositionX(float x)
 {
-	obPosition.x = x;
+	this->position.x = x;
 	transformDirty = inverseDirty = true;
 }
 
 float Entity::getPositionX(void)
 {
-	return obPosition.x;
+	return this->position.x;
 }
 
 void  Entity::setPositionY(float y)
 {
-	obPosition.y = y;
+	this->position.y = y;
 	transformDirty = inverseDirty = true;
 }
 
 float Entity::getPositionY(void)
 {
-	return obPosition.y;
+	return this->position.y;
 }
 
 void Entity::setRelativeAnchorPoint(bool relative)
@@ -147,17 +146,17 @@ bool Entity::isRelativeAnchorPoint()
 
 const Point& Entity::getAnchorPointInPixels()
 {
-	return PointMake(obContentSize.width*anchorPoint.x , obContentSize.height*anchorPoint.y);
+	return PointMake(contentSize.width*anchorPoint.x , contentSize.height*anchorPoint.y);
 }
 
 const Size& Entity::getContentSize()
 {
-	return obContentSize;
+	return contentSize;
 }
 
-void Entity::setContentSize(const Size& contentSize)
+void Entity::setContentSize(const Size& size)
 {
-	obContentSize = contentSize;
+	this->contentSize = contentSize;
 }
 
 const Point& Entity::getAnchorPoint()
@@ -765,19 +764,18 @@ void Entity::update(float delta)
 
 void Entity::transform(void)
 {
-	kmMat4 transfrom4x4;
+	Matrix4 transfrom4x4;
 
 	// Convert 3x3 into 4x4 matrix
-	CCAffineTransform tmpAffine = this->entityToParentTransform();
-	CGAffineToGL(&tmpAffine, transfrom4x4.mat);
+	transfrom4x4 = this->entityToParentTransform();
 
 	// Update Z vertex manually
-	transfrom4x4.mat[14] = m_fVertexZ;
+	transfrom4x4.m[14] = vertexZ;
 
 	kmGLMultMatrix( &transfrom4x4 );
 
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
-	if ( m_pCamera != NULL && !(m_pGrid != NULL && m_pGrid->isActive()) )
+	if ( camera != NULL && !(grid != NULL && grid->isActive()) )
 	{
 		bool translate = (m_obAnchorPointInPoints.x != 0.0f || m_obAnchorPointInPoints.y != 0.0f);
 
@@ -842,86 +840,144 @@ Martrix4 Entity::entityToParentTransform(void)
 	if (transformDirty)
 	{
 
-		// Translate values
-		float x = obPosition.x;
-		float y = obPosition.y;
-
-		float obAnchorPointInPointsX = obContentSize.width * obAnchorPoint.x;
-		float obAnchorPointInPointsY = obContentSize.height * obAnchorPoint.y;
-
-
-		if (ignoreAnchorPointForPosition)
+		if(useAnchorPointAsTransformCenter)
 		{
-			x += obAnchorPointInPointsX;
-			y += obAnchorPointInPointY;
-		}
+			// Translate values
+			float x = obPosition.x;
+			float y = obPosition.y;
+
+			float obAnchorPointInPointsX = contentSize.width * anchorPoint.x;
+			float obAnchorPointInPointsY = contentSize.height * anchorPoint.y;
+
+			if (!relativeAnchorPoint)
+			{
+				x += obAnchorPointInPointsX;
+				y += obAnchorPointInPointsY;
+			}
+
+			// Rotation values
+			// Change rotation code to handle X and Y
+			// If we skew with the exact same value for both x and y then we're simply just rotating
+			float cx = 1, sx = 0, cy = 1, sy = 0;
+			if (rotationX || rotationY)
+			{
+				float radiansX = -DEGREES_TO_RADIANS(rotationX);
+				float radiansY = -DEGREES_TO_RADIANS(rotationY);
+				cx = cosf(radiansX);
+				sx = sinf(radiansX);
+				cy = cosf(radiansY);
+				sy = sinf(radiansY);
+			}
+
+			bool needsSkewMatrix = ( skewX || skewY );
+
+			// optimization:
+			// inline anchor point calculation if skew is not needed
+			// Adjusted transform calculation for rotational skew
+			if (! needsSkewMatrix && !m_obAnchorPointInPoints.equals(PointZero))
+			{
+				x += cy * -obAnchorPointInPointX * scaleX + -sx * -obAnchorPointInPointY * scaleY;
+				y += sy * -obAnchorPointInPointX * scaleX +  cx * -obAnchorPointInPointY * scaleY;
+			}
 
 
-		// Rotation values
-		// Change rotation code to handle X and Y
-		// If we skew with the exact same value for both x and y then we're simply just rotating
-		float cx = 1, sx = 0, cy = 1, sy = 0;
-		if (rotationX || rotationY)
-		{
-			float radiansX = -DEGREES_TO_RADIANS(rotationX);
-			float radiansY = -DEGREES_TO_RADIANS(rotationY);
-			cx = cosf(radiansX);
-			sx = sinf(radiansX);
-			cy = cosf(radiansY);
-			sy = sinf(radiansY);
-		}
-
-		bool needsSkewMatrix = ( skewX || skewY );
-
-
-		// optimization:
-		// inline anchor point calculation if skew is not needed
-		// Adjusted transform calculation for rotational skew
-		if (! needsSkewMatrix && !m_obAnchorPointInPoints.equals(PointZero))
-		{
-			x += cy * -obAnchorPointInPointX * scaleX + -sx * -obAnchorPointInPointY * scaleY;
-			y += sy * -obAnchorPointInPointX * scaleX +  cx * -obAnchorPointInPointY * scaleY;
-		}
-
-
-		// Build Transform Matrix
-		// Adjusted transform calculation for rotational skew
-		transformMatrix = CCAffineTransformMake( cy * scaleX,  sy *scaleX,
+			// Build Transform Matrix
+			// Adjusted transform calculation for rotational skew
+			transformMatrix = new Matrix4( cy * scaleX,  sy *scaleX,
 				-sx * scaleY, cx * scaleY,
 				x, y );
 
-		// XXX: Try to inline skew
-		// If skew is needed, apply skew and then anchor point
-		if (needsSkewMatrix)
-		{
-			CCAffineTransform skewMatrix = CCAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(m_fSkewY)),
+			// XXX: Try to inline skew
+			// If skew is needed, apply skew and then anchor point
+			if (needsSkewMatrix)
+			{
+				CCAffineTransform skewMatrix = CCAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(m_fSkewY)),
 					tanf(CC_DEGREES_TO_RADIANS(m_fSkewX)), 1.0f,
 					0.0f, 0.0f );
-			m_sTransform = CCAffineTransformConcat(skewMatrix, m_sTransform);
+				m_sTransform = CCAffineTransformConcat(skewMatrix, m_sTransform);
 
-			// adjust anchor point
-			if (!m_obAnchorPointInPoints.equals(CCPointZero))
-			{
-				m_sTransform = CCAffineTransformTranslate(m_sTransform, -m_obAnchorPointInPoints.x, -m_obAnchorPointInPoints.y);
+				// adjust anchor point
+				if (!m_obAnchorPointInPoints.equals(CCPointZero))
+				{
+					m_sTransform = CCAffineTransformTranslate(m_sTransform, -m_obAnchorPointInPoints.x, -m_obAnchorPointInPoints.y);
+				}
 			}
 		}
-
-		if (additionalTransformDirty)
+		else
 		{
-			m_sTransform = CCAffineTransformConcat(m_sTransform, m_sAdditionalTransform);
-			m_bAdditionalTransformDirty = false;
+			Matrix4 matrix = new Matrix4();
+			matrix.translate(position.x,position.y);
+
+			float obAnchorPointInPointsX = contentSize.width * anchorPoint.x;
+			float obAnchorPointInPointsY = contentSize.height * anchorPoint.y;
+
+			if (relativeAnchorPoint)
+			{
+				matrix.translate(-obAnchorPointInPointsX,-obAnchorPointInPointsY);
+			}
+
+			if(isScaled())
+			{
+				if(!scaleCenter.equal(PointZero))
+				{
+					matrix.scale(scaleX,scaleY);
+				}
+				else
+				{
+					matrix.translate(-scaleCenter.x,-scaleCenter.y);
+					matrix.ratate(scaleX,scaleY);
+					matrix.translate(scaleCenter.x,scaleCenter.y);
+				}	
+			}
+
+			if(isRotated())
+			{
+				if(!rotationCenter.equal(PointZero))
+				{
+					matrix.ratate(rotationX,rotationY);
+				}
+				else
+				{
+					matrix.translate(-rotationCenter.x,-rotationCenter.y);
+					matrix.ratate(rotationX,rotationY);
+					matrix.translate(rotationCenter.x,rotationCenter.y);
+				}	
+			}
+
+			if(isSkewed())
+			{
+				if(!skewCenter.equal(PointZero))
+				{
+					matrix.ratate(skewX,skewY);
+				}
+				else
+				{
+					matrix.translate(-skewCenter.x,-skewCenter.y);
+					matrix.ratate(skewX,skewY);
+					matrix.translate(skewCenter.x,skewCenter.y);
+				}	
+			}
+
+			transformMatrix = matrix;
 		}
 
-		m_bTransformDirty = false;
+		
+		if (additionalTransformDirty)
+		{
+			transformMatrix =  transformMatrix * additionalTransform; //??pre or post
+			additionalTransformDirty = false;
+		}
+
+		transformDirty = false;
 	}
 
-	return m_sTransform;
+	return transformMatrix;
 }
 
 
 Point Entity::convertToWindowSpace(const Point& entityPoint)
 {
-
+	
 }
 
 

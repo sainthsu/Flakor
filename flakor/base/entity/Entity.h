@@ -480,10 +480,10 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 *
 		 * @return a CCNode object whose tag equals to the input parameter
 		 */
-		Entity* getChildByTag(int tag);
-		Entity* getChildByZIndex(int zIndex);
-		Entity* getFirstChild();
-		Entity* getLastChild();
+		virtual	Entity* getChildByTag(int tag);
+		virtual Entity* getChildByZIndex(int zIndex);
+		virtual Entity* getFirstChild();
+		virtual Entity* getLastChild();
 
 		/**
 		 * Return an array of children
@@ -593,7 +593,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * @return A custom user data pointer
 		 * @js NA
 		 */
-		virtual void* getUserData();
+		virtual void* getUserData() const;
 		/**
 		 * Sets a custom user data pointer
 		 *
@@ -614,7 +614,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * @return A user assigned CCObject
 		 * @js NA
 		 */
-		virtual Object* getUserObject();
+		virtual Object* getUserObject() const;
 		/**
 		 * Returns a user assigned CCObject
 		 *
@@ -626,7 +626,14 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * @param A user assigned CCObject
 		 */
 		virtual void setUserObject(Object *pUserObject);
+	
+		/**
+		 * set additional Matrix for extra transform or others
+		 */
+		virtual void setAddtionalMatrix(const Matrix4* matrix);
+		virtual Matrix4 getAddtionalMatrix();
 
+		virtual void setCamera(const Camera* camera);
 		/**
 		 * Returns a camera object that lets you move the node using a gluLookAt
 		 *

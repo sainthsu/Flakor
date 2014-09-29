@@ -609,6 +609,23 @@ void Entity::setUserData(void *data)
 	this->userData = data;
 }
 
+void Entity::setAddtionalMatrix(const Matrix4 matrix)
+{
+	this.addtionalMatrix = matrix;
+	transformDirty = true;
+	addtionalTransformDirty = true;
+}
+
+Matrix4* Entity::getAddtionalMatrix()
+{
+	return this.addtionalMatrix;
+}
+
+void Entity::setCamera(const Camera* camera);
+{
+	this.camera = camera;
+}
+
 Camera* Entity::getCamera()
 {
 	return camera;
@@ -775,7 +792,7 @@ void Entity::transform(void)
 	kmGLMultMatrix( &transfrom4x4 );
 
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
-	if ( camera != NULL && !(grid != NULL && grid->isActive()) )
+	if ( camera != NULL)/// && !(grid != NULL && grid->isActive()) )
 	{
 		bool translate = (m_obAnchorPointInPoints.x != 0.0f || m_obAnchorPointInPoints.y != 0.0f);
 

@@ -43,6 +43,8 @@ class Engine
 
 		enum EngineState state;
 		long lastTick;
+		Scene* mainScene;
+		Scene* nextScene;
 
 	public:
 		int initDisplay(void);

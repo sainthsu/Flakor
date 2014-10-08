@@ -4,6 +4,7 @@
 
 class Texture2D :: public ITexture2D
 {
-
+    
 }
 
+#endif

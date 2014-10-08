@@ -69,28 +69,28 @@ struct Vector3
     // ctors
     Vector3() : x(0), y(0), z(0) {};
     Vector3(float x, float y, float z) : x(x), y(y), z(z) {};
-    Vec3( const Vec3& vec )
+    Vector3( const Vector3& vec )
     {
         x_ = vec.x_;
         y_ = vec.y_;
         z_ = vec.z_;
     }
 
-    Vec3( const float* pVec )
+    Vector3( const float* pVec )
     {
         x_ = (*pVec++);
         y_ = (*pVec++);
         z_ = *pVec;
     }
 
-    Vec3( const Vec2& vec, float f )
+    Vector3( const Vector2& vec, float f )
     {
         x_ = vec.x_;
         y_ = vec.y_;
         z_ = f;
     }
 
-    Vec3( const Vec4& vec );
+    Vector3( const Vector4& vec );
 
     // utils functions
     void        set(float x, float y, float z);
@@ -138,7 +138,7 @@ struct Vector4
     // ctors
     Vector4() : x(0), y(0), z(0), w(0) {};
     Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {};
-	Vec4( const Vec4& vec )
+	Vector4( const Vector4& vec )
     {
         x_ = vec.x_;
         y_ = vec.y_;
@@ -146,7 +146,7 @@ struct Vector4
         w_ = vec.w_;
     }
 
-    Vec4( const Vec3& vec, const float fW )
+    Vector4( const Vector3& vec, const float fW )
     {
         x_ = vec.x_;
         y_ = vec.y_;
@@ -154,7 +154,7 @@ struct Vector4
         w_ = fW;
     }
 
-    Vec4( const float* pVec )
+    Vector4( const float* pVec )
     {
         x_ = (*pVec++);
         y_ = (*pVec++);

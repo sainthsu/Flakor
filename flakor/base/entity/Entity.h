@@ -701,7 +701,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		virtual void cleanup(void);
 
 		/** 
-		 * Override this method to draw your own node.
+		 * Override this method to draw your own entity.
 		 * The following GL states will be enabled by default:
 		 * - glEnableClientState(GL_VERTEX_ARRAY);
 		 * - glEnableClientState(GL_COLOR_ARRAY);

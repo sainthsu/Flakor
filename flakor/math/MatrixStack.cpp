@@ -48,3 +48,8 @@ void MatrixStack::pop(Matrix4 *outMatrix)
 	outMatrix = &this->[--this->itemCount];
 	this->top = &this->stack[this->itemCount - 1];
 }
+
+void MatrixStack::release(void)
+{
+    
+}

@@ -6,7 +6,7 @@
 
 static MatrixStack* mainStack = NULL;
 
-class MatrixStack :: Object.h
+class MatrixStack :: Object
 {
 	private:
 		int capacity;

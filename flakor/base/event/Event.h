@@ -6,7 +6,7 @@ FLAKOR_NS_BEGIN
 
 typedef (void *)PROCEDURE(Event* event,...)
 
-class Event::Object
+class Event: public Object
 {
 	protected:
 		Event* _parent;

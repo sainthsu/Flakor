@@ -7,7 +7,8 @@ FLAKOR_NS_BEGIN
 class Role : public Entity
 {
 	protected:
-		
+        Array* attributes;
+        Array* actions;
 	public:
 		Role();
 		~Role();

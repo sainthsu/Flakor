@@ -123,10 +123,10 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		bool transformDirty;
 		bool additionalTransformDirty;
 		bool inverseDirty
-		/**
-		 *相机，默认不起作用
-		 */
-		Camera* camera;
+			/**
+			 *相机，默认不起作用
+			 */
+			Camera* camera;
 		/**
 		 *子元素队列
 		 */
@@ -626,7 +626,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		 * @param A user assigned CCObject
 		 */
 		virtual void setUserObject(Object *pUserObject);
-	
+
 		/**
 		 * set additional Matrix for extra transform or others
 		 */
@@ -757,7 +757,69 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		/** Convert flakor coordinates to UI windows coordinate.
 		 */
 		Point convertToWindowSpace(const Point& entityPoint);
-}
+
+		/** 
+		 * Returns the matrix that transform the node's (local) space coordinates into the parent's space coordinates.
+		 * The matrix is in Pixels.
+		 */
+		virtual Matrix4 entityToParentTransform(void);
+
+		/** 
+		 * Returns the matrix that transform parent's space coordinates to the node's (local) space coordinates.
+		 * The matrix is in Pixels.
+		 */
+		virtual Matrix4 parentToNodeTransform(void);
+
+		/** 
+		 * Returns the world affine transform matrix. The matrix is in Pixels.
+		 */
+		virtual Matrix4 nodeToWorldTransform(void);
+
+		/** 
+		 * Returns the inverse world affine transform matrix. The matrix is in Pixels.
+		 */
+		virtual Matrix4 worldToNodeTransform(void);
+
+		/// @} end of Transformations
+
+
+		/// @{
+		/// @name Coordinate Converters
+
+		/** 
+		 * Converts a Point to node (local) space coordinates. The result is in Points.
+		 */
+		Point convertToNodeSpace(const Point& worldPoint);
+
+		/** 
+		 * Converts a Point to world space coordinates. The result is in Points.
+		 */
+		Point convertToWorldSpace(const Point& nodePoint);
+
+		/** 
+		 * Converts a Point to node (local) space coordinates. The result is in Points.
+		 * treating the returned/received node point as anchor relative.
+		 */
+		Point convertToNodeSpaceAR(const Point& worldPoint);
+
+		/** 
+		 * Converts a local Point to world space coordinates.The result is in Points.
+		 * treating the returned/received node point as anchor relative.
+		 */
+		Point convertToWorldSpaceAR(const Point& nodePoint);
+
+		/** 
+		 * convenience methods which take a CCTouch instead of Point
+		 */
+		Point convertTouchToNodeSpace(CCTouch * touch);
+
+		/** 
+		 * converts a CCTouch (world coordinates) into a local coordinate. This method is AR (Anchor Relative).
+		 */
+		Point convertTouchToNodeSpaceAR(CCTouch * touch);
+
+
+		}
 
 FLAKOR_NS_END
 

@@ -75,6 +75,7 @@ Engine::drawFrame() {
         return;
     }
 
+	this->mainScene->visit();
     // Just fill the screen with a color.
     glClearColor(((float)engine->state.x)/engine->width, engine->state.angle,
             ((float)engine->state.y)/engine->height, 1);
@@ -108,7 +109,8 @@ Engine::termDisplay() {
  */
 Engine::handleInput(struct android_app* app, AInputEvent* event) {
     Engine* engine = (Engine*)app->userData;
-    if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION) {
+    if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
+	{
         engine->animating = 1;
         engine->state.x = AMotionEvent_getX(event, 0);
         engine->state.y = AMotionEvent_getY(event, 0);
@@ -132,13 +134,13 @@ Engine::handleCMD(struct android_app* app, int32_t cmd) {
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.
             if (engine->app->window != NULL) {
-                engine_init_display(engine);
-                engine_draw_frame(engine);
+                this->initDisplay();
+                this->drawFrame();
             }
             break;
         case APP_CMD_TERM_WINDOW:
             // The window is being hidden or closed, clean it up.
-            engine_term_display(engine);
+            this->termDisplay();
             break;
         case APP_CMD_GAINED_FOCUS:
             // When our app gains focus, we start monitoring the accelerometer.
@@ -159,7 +161,7 @@ Engine::handleCMD(struct android_app* app, int32_t cmd) {
             }
             // Also stop animating.
             engine->animating = 0;
-            engine_draw_frame(engine);
+            this->drawFrame();
             break;
     }
 }

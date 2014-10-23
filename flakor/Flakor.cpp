@@ -60,28 +60,28 @@ static bool splitWithForm(const char* pStr, strArray& strs)
 
     do 
     {
-        CC_BREAK_IF(!pStr);
+        FK_BREAK_IF(!pStr);
 
         // string is empty
         std::string content = pStr;
-        CC_BREAK_IF(content.length() == 0);
+        FK_BREAK_IF(content.length() == 0);
 
         int nPosLeft  = content.find('{');
         int nPosRight = content.find('}');
 
         // don't have '{' and '}'
-        CC_BREAK_IF(nPosLeft == (int)std::string::npos || nPosRight == (int)std::string::npos);
+        FK_BREAK_IF(nPosLeft == (int)std::string::npos || nPosRight == (int)std::string::npos);
         // '}' is before '{'
-        CC_BREAK_IF(nPosLeft > nPosRight);
+        FK_BREAK_IF(nPosLeft > nPosRight);
 
         std::string pointStr = content.substr(nPosLeft + 1, nPosRight - nPosLeft - 1);
         // nothing between '{' and '}'
-        CC_BREAK_IF(pointStr.length() == 0);
+        FK_BREAK_IF(pointStr.length() == 0);
 
         int nPos1 = pointStr.find('{');
         int nPos2 = pointStr.find('}');
         // contain '{' or '}' 
-        CC_BREAK_IF(nPos1 != (int)std::string::npos || nPos2 != (int)std::string::npos);
+        FK_BREAK_IF(nPos1 != (int)std::string::npos || nPos2 != (int)std::string::npos);
 
         split(pointStr, ",", strs);
         if (strs.size() != 2 || strs[0].length() == 0 || strs[1].length() == 0)
@@ -98,13 +98,13 @@ static bool splitWithForm(const char* pStr, strArray& strs)
 
 // implement the functions
 
-CCRect CCRectFromString(const char* pszContent)
+Rect RectFromString(const char* pszContent)
 {
-    CCRect result = CCRectZero;
+    Rect result = RectZero;
 
     do 
     {
-        CC_BREAK_IF(!pszContent);
+        FK_BREAK_IF(!pszContent);
         std::string content = pszContent;
 
         // find the first '{' and the third '}'
@@ -118,13 +118,13 @@ CCRect CCRectFromString(const char* pszContent)
             }
             nPosRight = content.find('}', nPosRight + 1);
         }
-        CC_BREAK_IF(nPosLeft == (int)std::string::npos || nPosRight == (int)std::string::npos);
+        FK_BREAK_IF(nPosLeft == (int)std::string::npos || nPosRight == (int)std::string::npos);
 
         content = content.substr(nPosLeft + 1, nPosRight - nPosLeft - 1);
         int nPointEnd = content.find('}');
-        CC_BREAK_IF(nPointEnd == (int)std::string::npos);
+        FK_BREAK_IF(nPointEnd == (int)std::string::npos);
         nPointEnd = content.find(',', nPointEnd);
-        CC_BREAK_IF(nPointEnd == (int)std::string::npos);
+        FK_BREAK_IF(nPointEnd == (int)std::string::npos);
 
         // get the point string and size string
         std::string pointStr = content.substr(0, nPointEnd);
@@ -132,52 +132,52 @@ CCRect CCRectFromString(const char* pszContent)
 
         // split the string with ','
         strArray pointInfo;
-        CC_BREAK_IF(!splitWithForm(pointStr.c_str(), pointInfo));
+        FK_BREAK_IF(!splitWithForm(pointStr.c_str(), pointInfo));
         strArray sizeInfo;
-        CC_BREAK_IF(!splitWithForm(sizeStr.c_str(), sizeInfo));
+        FK_BREAK_IF(!splitWithForm(sizeStr.c_str(), sizeInfo));
 
         float x = (float) atof(pointInfo[0].c_str());
         float y = (float) atof(pointInfo[1].c_str());
         float width  = (float) atof(sizeInfo[0].c_str());
         float height = (float) atof(sizeInfo[1].c_str());
 
-        result = CCRectMake(x, y, width, height);
+        result = RectMake(x, y, width, height);
     } while (0);
 
     return result;
 }
 
-CCPoint CCPointFromString(const char* pszContent)
+Point PointFromString(const char* pszContent)
 {
-    CCPoint ret = CCPointZero;
+    Point ret = PointZero;
 
     do 
     {
         strArray strs;
-        CC_BREAK_IF(!splitWithForm(pszContent, strs));
+        FK_BREAK_IF(!splitWithForm(pszContent, strs));
 
         float x = (float) atof(strs[0].c_str());
         float y = (float) atof(strs[1].c_str());
 
-        ret = CCPointMake(x, y);
+        ret = PointMake(x, y);
     } while (0);
 
     return ret;
 }
 
-CCSize CCSizeFromString(const char* pszContent)
+Size SizeFromString(const char* pszContent)
 {
-    CCSize ret = CCSizeZero;
+    Size ret = SizeZero;
 
     do 
     {
         strArray strs;
-        CC_BREAK_IF(!splitWithForm(pszContent, strs));
+        FK_BREAK_IF(!splitWithForm(pszContent, strs));
 
         float width  = (float) atof(strs[0].c_str());
         float height = (float) atof(strs[1].c_str());
 
-        ret = CCSizeMake(width, height);
+        ret = SizeMake(width, height);
     } while (0);
 
     return ret;

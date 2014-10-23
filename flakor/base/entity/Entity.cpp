@@ -391,7 +391,7 @@ void Entity::addChild(Entity* child, int zOrder, int tag)
 	child->tag = tag;
 
 	child->setParent(this);
-	//child->setOrderOfArrival(s_globalOrderOfArrival++);
+	child->setOrderOfArrival(s_globalOrderOfArrival++);
 
 	if( running )
 	{
@@ -646,7 +646,7 @@ void Entity::onEnter()
 	/* finish it later
 	   if (scriptType != scriptTypeNone)
 	   {
-	   ScriptEngineManager::sharedManager()->getScriptEngine()->executeNodeEvent(this, EntityOnEnter);
+	   ScriptEngineManager::sharedManager()->getScriptEngine()->executeEntityEvent(this, EntityOnEnter);
 	   }*/
 
 	//Judge the running state for prevent called onEnter method more than once,it's possible that this function called by addChild
@@ -672,7 +672,7 @@ void Entity::onEnterTransitionDidFinish()
 	/*
 	   if (scriptType != ScriptTypeNone)
 	   {
-	   ScriptEngineManager::sharedManager()->getScriptEngine()->executeNodeEvent(this, EntityOnEnterTransitionDidFinish);
+	   ScriptEngineManager::sharedManager()->getScriptEngine()->executeEntityEvent(this, EntityOnEnterTransitionDidFinish);
 	   }*/
 
 	arrayMakeObjectsPerformSelector(children, onEnterTransitionDidFinish, Entity*);
@@ -684,12 +684,12 @@ void Entity::onExit()
 
 	running = false;
 
-	arrayMakeObjectsPerformSelector(m_pChildren, onExit, CCNode*);
+	arrayMakeObjectsPerformSelector(m_pChildren, onExit, Entity*);
 
 	/*
 	   if ( scriptType != ScriptTypeNone)
 	   {
-	   ScriptEngineManager::sharedManager()->getScriptEngine()->executeNodeEvent(this, EntityOnExit);
+	   ScriptEngineManager::sharedManager()->getScriptEngine()->executeEntityEvent(this, EntityOnExit);
 	   }*/
 }
 
@@ -914,7 +914,7 @@ Martrix4 Entity::entityToParentTransform(void)
 				m_sTransform = CCAffineTransformConcat(skewMatrix, m_sTransform);
 
 				// adjust anchor point
-				if (!m_obAnchorPointInPoints.equals(CCPointZero))
+				if (!m_obAnchorPointInPoints.equals(PointZero))
 				{
 					m_sTransform = CCAffineTransformTranslate(m_sTransform, -m_obAnchorPointInPoints.x, -m_obAnchorPointInPoints.y);
 				}
@@ -992,11 +992,72 @@ Martrix4 Entity::entityToParentTransform(void)
 }
 
 
-Point Entity::convertToWindowSpace(const Point& entityPoint)
+Matrix4 Entity::parentToEntityTransform(void)
 {
-	
+		if(transformDirty)
+		{
+			inverse = this->entityToParentTransform()->inverse();
+		}
+		return inverse;
 }
 
+Matrix4 Entity::entityToWorldTransform()
+{
+    Matrix4 t = this->entityToParentTransform();
+
+    for (Entity *p = parent; p != NULL; p = p->getParent())
+        t = t*(p->entityToParentTransform());
+
+    return t;
+}
+
+Matrix Entity::worldToEntityTransform(void)
+{
+    return this->entityToWorldTransform()->inverse();
+}
+
+Point Entity::convertToEntitySpace(const Point& worldPoint)
+{
+    Point ret = worldToEntityTransform()*worldPoint;
+    return ret;
+}
+
+Point Entity::convertToWorldSpace(const Point& entityPoint)
+{
+    Point ret =  entityToWorldTransform()*entityPoint;
+    return ret;
+}
+
+Point Entity::convertToEntitySpaceAR(const Point& worldPoint)
+{
+    Point entityPoint = convertToEntitySpace(worldPoint);
+    return ccpSub(entityPoint, obAnchorPointInPoints);
+}
+
+Point Entity::convertToWorldSpaceAR(const Point& entityPoint)
+{
+    Point pt = ccpAdd(entityPoint, obAnchorPointInPoints);
+    return convertToWorldSpace(pt);
+}
+
+Point Entity::convertToWindowSpace(const Point& nodePoint)
+{
+    Point worldPoint = this->convertToWorldSpace(nodePoint);
+    return Engine::shareEngine()->convertToUI(worldPoint);
+}
+
+// convenience methods which take a CCTouch instead of Point
+Point Entity::convertTouchToEntitySpace(Touch *touch)
+{
+    Point point = touch->getLocation();
+    return this->convertToEntitySpace(point);
+}
+
+Point Entity::convertTouchToEntitySpaceAR(Touch *touch)
+{
+    Point point = touch->getLocation();
+    return this->convertToEntitySpaceAR(point);
+}
 
 
 FLAKOR_NS_END

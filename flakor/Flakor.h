@@ -49,7 +49,7 @@ FLAKOR_NS_BEGIN
                     An example of a valid string is "{{3,2},{4,5}}".
                     The string is not localized, so items are always separated with a comma.
 @return A Core Graphics structure that represents a rectangle.
-        If the string is not well-formed, the function returns CCRectZero.
+        If the string is not well-formed, the function returns RectZero.
 */
 Rect RectFromString(const char* pszContent);
 
@@ -61,7 +61,7 @@ Rect RectFromString(const char* pszContent);
                     An example of a valid string is "{3.0,2.5}".
                     The string is not localized, so items are always separated with a comma.
 @return A Core Graphics structure that represents a point.
-        If the string is not well-formed, the function returns CCPointZero.
+        If the string is not well-formed, the function returns PointZero.
 */
 Point PointFromString(const char* pszContent);
 
@@ -73,7 +73,7 @@ Point PointFromString(const char* pszContent);
                     An example of a valid string is "{3.0,2.5}".
                     The string is not localized, so items are always separated with a comma.
 @return A Core Graphics structure that represents a size.
-        If the string is not well-formed, the function returns CCSizeZero.
+        If the string is not well-formed, the function returns SizeZero.
 */
 Size SizeFromString(const char* pszContent);
 

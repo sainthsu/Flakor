@@ -754,31 +754,28 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		/// Removes a child, call child->onExit(), do cleanup, remove it from children array.
 		void detachChild(Entity *child, bool doCleanup);
 
-		/** Convert flakor coordinates to UI windows coordinate.
-		 */
-		Point convertToWindowSpace(const Point& entityPoint);
 
 		/** 
-		 * Returns the matrix that transform the node's (local) space coordinates into the parent's space coordinates.
+		 * Returns the matrix that transform the entity's (local) space coordinates into the parent's space coordinates.
 		 * The matrix is in Pixels.
 		 */
 		virtual Matrix4 entityToParentTransform(void);
 
 		/** 
-		 * Returns the matrix that transform parent's space coordinates to the node's (local) space coordinates.
+		 * Returns the matrix that transform parent's space coordinates to the entity's (local) space coordinates.
 		 * The matrix is in Pixels.
 		 */
-		virtual Matrix4 parentToNodeTransform(void);
+		virtual Matrix4 parentToEntityTransform(void);
 
 		/** 
 		 * Returns the world affine transform matrix. The matrix is in Pixels.
 		 */
-		virtual Matrix4 nodeToWorldTransform(void);
+		virtual Matrix4 entityToWorldTransform(void);
 
 		/** 
 		 * Returns the inverse world affine transform matrix. The matrix is in Pixels.
 		 */
-		virtual Matrix4 worldToNodeTransform(void);
+		virtual Matrix4 worldToEntityTransform(void);
 
 		/// @} end of Transformations
 
@@ -787,36 +784,36 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		/// @name Coordinate Converters
 
 		/** 
-		 * Converts a Point to node (local) space coordinates. The result is in Points.
+		 * Converts a Point to entity (local) space coordinates. The result is in Points.
 		 */
-		Point convertToNodeSpace(const Point& worldPoint);
+		Point convertToEntitySpace(const Point& worldPoint);
 
 		/** 
 		 * Converts a Point to world space coordinates. The result is in Points.
 		 */
-		Point convertToWorldSpace(const Point& nodePoint);
+		Point convertToWorldSpace(const Point& entityPoint);
 
 		/** 
-		 * Converts a Point to node (local) space coordinates. The result is in Points.
-		 * treating the returned/received node point as anchor relative.
+		 * Converts a Point to entity (local) space coordinates. The result is in Points.
+		 * treating the returned/received entity point as anchor relative.
 		 */
-		Point convertToNodeSpaceAR(const Point& worldPoint);
+		Point convertToEntitySpaceAR(const Point& worldPoint);
 
 		/** 
 		 * Converts a local Point to world space coordinates.The result is in Points.
-		 * treating the returned/received node point as anchor relative.
+		 * treating the returned/received entity point as anchor relative.
 		 */
-		Point convertToWorldSpaceAR(const Point& nodePoint);
+		Point convertToWorldSpaceAR(const Point& entityPoint);
 
 		/** 
-		 * convenience methods which take a CCTouch instead of Point
+		 * convenience methods which take a Touch instead of Point
 		 */
-		Point convertTouchToNodeSpace(CCTouch * touch);
+		Point convertTouchToEntitySpace(Touch * touch);
 
 		/** 
-		 * converts a CCTouch (world coordinates) into a local coordinate. This method is AR (Anchor Relative).
+		 * converts a Touch (world coordinates) into a local coordinate. This method is AR (Anchor Relative).
 		 */
-		Point convertTouchToNodeSpaceAR(CCTouch * touch);
+		Point convertTouchToEntitySpaceAR(Touch * touch);
 
 
 		}

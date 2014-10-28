@@ -4,6 +4,8 @@
 
 FLAKOR_NS_BEGIN
 
+typedef (void *)ACTION(Role* role,...)
+
 class Role : public Entity
 {
 	protected:
@@ -14,6 +16,8 @@ class Role : public Entity
 		~Role();
         bool init();
         Role *create();
+		void addAction(char* name,ACTION action);
+		doAction(char* name);
 }
 
 FLAKOR_NS_END

@@ -54,7 +54,7 @@ typedef enum {
 	DEFAULT = AUTO,
 
 	NONE = -1
-} Texture2DPixelFormat;
+} PixelFormat;
 
 typedef struct _TexParams {
 	GLuint    minFilter;
@@ -68,16 +68,44 @@ class Texture2D : public Object,ITexture2D
 	public:
 		Texture2D();
 		virtual ~Texture2D();
-		bool initWithData(const void *data,int width,int height,Size size);
+		bool initWithData(const void *data,ssize_t dataLen, PixelFormat pixelFormat,int width,int height,Size size);
+
 		bool initWithFile(const char *fileName);
+
+		/** Gets the pixel format of the texture */
+	    PixelFormat getPixelFormat() const;
+
+		void setTexParams(const TexParams& texParams);
+
 		void setContentSize(const Size *size);
+
 		Size* getContentSize();
+	
+		/** Gets the width of the texture in pixels */
+    	int getPixelsWidth() const;
+    
+    	/** Gets the height of the texture in pixels */
+    	int getPixelsHeight() const;
+    
+    	/** Gets the texture id*/
+    	GLuint getTextureID() const;
+    
+    	/** Gets max S */
+    	GLfloat getMaxS() const;
+    	/** Sets max S */
+    	void setMaxS(GLfloat maxS);
+    
+    	/** Gets max T */
+    	GLfloat getMaxT() const;
+    	/** Sets max T */
+    	void setMaxT(GLfloat maxT);
+
 		void load();
 		void unload();
 
 protexted:
 
-		Texture2DPixelFormat pixelFormat;
+		PixelFormat pixelFormat;
 		/** width in pixels */
 		int _pixelsWidth;
 

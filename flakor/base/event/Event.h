@@ -15,6 +15,7 @@ class Event: public Object
 	public:
 		Event();
 		~Event();
+		doProcedure(const char* name);
 }
 
 FLAKOR_NS_END

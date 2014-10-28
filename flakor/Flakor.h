@@ -3,26 +3,26 @@
 
 #define FLAKOR_VERSION 0x00000100
 
-int getFlakorVersion()
+char* getFlakorVersion()
 {
-       return FLAKOR_VERSION;
+       return "flakor engine 0.1.0beta";
 }
 //macro
 #include "macros.h"
 
 //lang include
-#include "./lang/Array.h"
-#include "./lang/AutoreleasePool.h"
-#include "./lang/Bool.h"
-#include "./lang/DataVisitor.h"
-#include "./lang/Dictionary.h"
-#include "./lang/Double.h"
-#include "./lang/Float.h"
-#include "./lang/Integer.h"
-#include "./lang/Object.h"
-#include "./lang/Set.h"
-#include "./lang/String.h"
-#include "./lang/Zone.h"
+#include "lang/Array.h"
+#include "lang/AutoreleasePool.h"
+#include "lang/Bool.h"
+#include "lang/DataVisitor.h"
+#include "lang/Dictionary.h"
+#include "lang/Double.h"
+#include "lang/Float.h"
+#include "lang/Integer.h"
+#include "lang/Object.h"
+#include "lang/Set.h"
+#include "lang/String.h"
+#include "lang/Zone.h"
 
 //base
 #include "base/geometry/Point.h"
@@ -31,6 +31,7 @@ int getFlakorVersion()
 #include "base/geometry/Color.h"
 #include "base/geometry/Type.h"
 
+#include "base/entity/Entity.h"
 
 #endif
 

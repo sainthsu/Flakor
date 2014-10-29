@@ -1,6 +1,8 @@
 #ifndef _FK_RESOURCE_MANAGER_H_
 #define _FK_RESOURCE_MANAGER_H_
 
+#include "IResource.h"
+
 class ResourceManager
 {
     

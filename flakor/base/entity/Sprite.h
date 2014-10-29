@@ -1,25 +1,8 @@
 /****************************************************************************
 Copyright (c) 2013-2014 saint
 
-http://www.flakor.org
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+http://www.flakor.org for english
+http://www.feike.org for chinese
 ****************************************************************************/
 
 #ifndef _FK_SPRITE_H_
@@ -39,7 +22,7 @@ class Texture2D;
 struct transformValues_;
 
 /**
- * @addtogroup sprite_nodes
+ * @addtogroup entity
  * @{
  */
 
@@ -298,7 +281,7 @@ public:
     /**
      * Gets the offset position of the sprite. Calculated automatically by editors like Zwoptex.
      */
-    inline const Vec2& getOffsetPosition(void) const { return _offsetPosition; }
+    inline const Point& getOffsetPosition(void) const { return _offsetPosition; }
 
 
     /**
@@ -370,31 +353,31 @@ public:
     * @js  NA
     * @lua NA
     */
-    virtual void setPosition(const Vec2& pos) override;
+    virtual void setPosition(const Point& pos) override;
     virtual void setPosition(float x, float y) override;
     virtual void setRotation(float rotation) override;
     virtual void setRotationSkewX(float rotationX) override;
     virtual void setRotationSkewY(float rotationY) override;
     virtual void setSkewX(float sx) override;
     virtual void setSkewY(float sy) override;
-    virtual void removeChild(Node* child, bool cleanup) override;
+    virtual void removeChild(Entity* child, bool cleanup) override;
     virtual void removeAllChildrenWithCleanup(bool cleanup) override;
-    virtual void reorderChild(Node *child, int zOrder) override;
-    using Node::addChild;
-    virtual void addChild(Node *child, int zOrder, int tag) override;
-    virtual void addChild(Node *child, int zOrder, const std::string &name) override;
+    virtual void reorderChild(Entity *child, int zOrder) override;
+    using Entity::addChild;
+    virtual void addChild(Entity *child, int zOrder, int tag) override;
+    virtual void addChild(Entity *child, int zOrder, const std::string &name) override;
     virtual void sortAllChildren() override;
     virtual void setScale(float scale) override;
     virtual void setPositionZ(float positionZ) override;
-    virtual void setAnchorPoint(const Vec2& anchor) override;
+    virtual void setAnchorPoint(const Point& anchor) override;
     virtual void ignoreAnchorPointForPosition(bool value) override;
     virtual void setVisible(bool bVisible) override;
-    virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
+    virtual void draw(Renderer *renderer, const Matrix4 &transform, uint32_t flags) override;
     virtual void setOpacityModifyRGB(bool modify) override;
     virtual bool isOpacityModifyRGB(void) const override;
     /// @}
 
-CC_CONSTRUCTOR_ACCESS:
+protected:
 
     Sprite(void);
     virtual ~Sprite(void);
@@ -514,7 +497,7 @@ protected:
     QuadCommand      _quadCommand;          /// quad command
 #if CC_SPRITE_DEBUG_DRAW
     DrawNode *_debugDrawNode;
-#endif //CC_SPRITE_DEBUG_DRAW
+#endif //FK_SPRITE_DEBUG_DRAW
     //
     // Shared data
     //
@@ -524,11 +507,12 @@ protected:
     bool   _rectRotated;                    /// Whether the texture is rotated
 
     // Offset Position (used by Zwoptex)
-    Vec2 _offsetPosition;
-    Vec2 _unflippedOffsetPositionFromCenter;
+    Point _offsetPosition;
+    Point _unflippedOffsetPositionFromCenter;
 
     // vertex coords, texture coords and color info
-    V3F_C4B_T2F_Quad _quad;
+	VBO _vbo;
+    //V3F_C4B_T2F_Quad _quad;
 
     // opacity and RGB protocol
     bool _opacityModifyRGB;
@@ -539,7 +523,7 @@ protected:
 
     bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(Sprite);
+    FK_DISALLOW_COPY_AND_ASSIGN(Sprite);
 };
 
 

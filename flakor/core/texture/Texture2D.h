@@ -2,7 +2,7 @@
 #ifndef _FK_TEXTURE2D_H_
 #define _FK_TEXTURE2D_H_
 
-FLAKOR_NS_START
+FLAKOR_NS_BEGIN
 
 /** @typedef Texture2DPixelFormat
   Possible texture pixel formats
@@ -63,7 +63,7 @@ typedef struct _TexParams {
 	GLuint    wrapT;
 } TexParams;
 
-class Texture2D : public Object,ITexture2D
+class Texture2D : public Object
 {
 	public:
 		Texture2D();

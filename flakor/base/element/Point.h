@@ -8,7 +8,7 @@ FLAKOR_NS_START
 typedef enum {
 	2D,
 	3D,
-}PointType;
+} PointType;
 
 
 class Point

@@ -47,7 +47,6 @@ typedef enum _ConfigurationType {
  */
 /**
  @brief Configuration contains some openGL variables
- @since v0.99.0
  */
 class Configuration : public Object
 {

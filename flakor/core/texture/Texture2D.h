@@ -131,6 +131,11 @@ protexted:
 
 		/** shader program used by drawAtPoint and drawInRect */
 		GLProgram* _shaderProgram;
+
+		//TODO need these attributes later
+		float _scale;
+		bool rotated;
+		bool flipY;
 }
 
 FLAKOR_NS_END

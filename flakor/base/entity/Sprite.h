@@ -9,7 +9,8 @@ http://www.feike.org for chinese
 #define _FK_SPRITE_H_
 
 #include <string>
-#include "entity/Entity.h"
+#include "base/entity/Entity.h"
+#include "core/opengl/VBO.h"
 
 FLAKOR_NS_BEGIN
 
@@ -326,7 +327,7 @@ public:
     // Overrides
     //
     /// @{
-    /// @name Functions inherited from TextureProtocol
+    /// @name Functions inherited from ITexture
     /**
     *@code
     *When this function bound into js or lua,the parameter will be changed
@@ -342,7 +343,7 @@ public:
     inline const BlendFunc& getBlendFunc() const override { return _blendFunc; }
     /// @}
 
-    virtual std::string getDescription() const override;
+    virtual std::string toString() const override;
 
     /// @{
     /// @name Functions inherited from Node
@@ -512,7 +513,6 @@ protected:
 
     // vertex coords, texture coords and color info
 	VBO _vbo;
-    //V3F_C4B_T2F_Quad _quad;
 
     // opacity and RGB protocol
     bool _opacityModifyRGB;

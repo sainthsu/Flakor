@@ -81,7 +81,7 @@ class VBO : Object
 		 * 是否VBO数据已过期
 		 * @return true if its dirty
 		 */
-		boolean isDirty();
+		bool isDirty();
 
 		/**
 		 * 标记数据已过期

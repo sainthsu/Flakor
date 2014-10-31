@@ -196,14 +196,14 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
         // zwoptex default values
         _offsetPosition = PointZero;
 
-        // clean the Quad
-        memset(&_quad, 0, sizeof(_quad));
+        // add vbo
+        _vbo = VBO::create();
         
         // Atlas: Color
-        _quad.bl.colors = Color4B::WHITE;
-        _quad.br.colors = Color4B::WHITE;
-        _quad.tl.colors = Color4B::WHITE;
-        _quad.tr.colors = Color4B::WHITE;
+        _quad.bl.colors = Color::WHITE;
+        _quad.br.colors = Color::WHITE;
+        _quad.tl.colors = Color::WHITE;
+        _quad.tr.colors = Color::WHITE;
         
         // shader state
         setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP));

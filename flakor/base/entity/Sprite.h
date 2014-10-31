@@ -14,7 +14,7 @@ http://www.feike.org for chinese
 
 FLAKOR_NS_BEGIN
 
-class SpriteBatchNode;
+class SpriteBatch;
 class SpriteFrame;
 class Animation;
 class Rect;
@@ -242,11 +242,11 @@ public:
     virtual void setDirty(bool dirty) { _dirty = dirty; }
 
     /**
-     * Returns the quad (tex coords, vertex coords and color) information.
+     * Returns the vbo (tex coords, vertex coords and color) information.
      * @js  NA
      * @lua NA
      */
-    inline V3F_C4B_T2F_Quad getQuad(void) const { return _quad; }
+    inline VBO& getVBO(void) const { return _vbo; }
 
     /**
      * Returns whether or not the texture rectangle is rotated.
@@ -346,7 +346,7 @@ public:
     virtual std::string toString() const override;
 
     /// @{
-    /// @name Functions inherited from Node
+    /// @name Functions inherited from Entity
     virtual void setScaleX(float scaleX) override;
     virtual void setScaleY(float scaleY) override;
     virtual void setScale(float scaleX, float scaleY) override;

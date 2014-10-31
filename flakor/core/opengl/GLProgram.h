@@ -26,7 +26,7 @@ class GLProgram : Object
 		bool 			  _compiled;
 
 		std::unordered_map<std::string, Uniform> _userUniforms;
-    std::unordered_map<std::string, VertexAttrib> _vertexAttribs;
+    	std::unordered_map<std::string, VertexAttrib> _vertexAttribs;
 
 	protected:
 		bool updateUniformLocation(GLint location, const GLvoid* data, unsigned int bytes);
@@ -39,7 +39,7 @@ class GLProgram : Object
 
 	public:
 
-		enum
+	enum
     {
         VERTEX_ATTRIB_POSITION,
         VERTEX_ATTRIB_COLOR,

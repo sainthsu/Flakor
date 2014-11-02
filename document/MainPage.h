@@ -1,28 +1,23 @@
 /*! 
-@mainpage cocos2d-x
+@mainpage flakor
 
-@image html cocos2dx_portrait.png
+@image html flakor_logo.png
 
-@section sec1 About cocos2d-x
-cocos2d-x open source project is designed to be a cross-platform 2D game engine for building 2D games, demos and other graphical/interactive mobile applications.
+@section sec1 About flakor
+flakor open source project is designed to be a cross-platform 2D game engine for building 2D games, demos and other graphical/interactive mobile applications.
 It runs on top of OpenGL 2.0 and OpenGL ES 2.0 and is written in C++.\n
-This project is based on the famous <A HREF="http://www.cocos2d-iphone.org">"cocos2d-iphone"</A> project.\n
 
-- website:                          http://www.cocos2d-x.org/
-- forum:                            http://forum.cocos2d-x.org/
-- twitter:                          http://twitter.com/cocos2dx/
-- weibo:                            http://weibo.com/cocos2dx/
-- wiki:                             http://wiki.cocos2d-x.org/
-- show cases:                       http://www.cocos2d-x.org/games
-
-- <A HREF="http://www.cocos2d-x.org/projects/cocos2d-x/wiki/Tutorials">Tutorials of Cocos2dxSimpleGame</A>
-- <A HREF="http://www.cocos2d-x.org/projects/cocos2d-x/wiki/Installation_and_First_run">Installation and First run</A>
-- <A HREF="http://www.cocos2d-x.org/boards/6/topics/567">FAQ</A>
+- website:                          http://www.flakor.org/
+- forum:                            http://forum.flakor.org/
+- twitter:                          http://twitter.com/flakor/
+- weibo:                            http://weibo.com/flakor/
+- wiki:                             http://wiki.flakor.org/
+- show cases:                       http://www.flakor.org/games
 
 \n
 
 @section sec2 License
-Copyright (c) 2010-2012 cocos2d-x.org \n
+Copyright (c) 2013-2015 flakor.org \n
 \n
 Permission is hereby granted, free of charge, to any person obtaining a copy \n
 of this software and associated documentation files (the "Software"), to deal \n
@@ -45,9 +40,9 @@ THE SOFTWARE. \n
 
 @section sec3 Get the source code
 - Stable version: \n
-    - publish at http://download.cocos2d-x.org/
+    - publish at http://download.flakor.org/
 - Latest code: \n
-    - http://github.com/cocos2d/cocos2d-x/
+    - http://github.com/sainthsu/flakor/
 
 @section sec4 How to contribute
 - Fork our repository on github, commit your changes, and send a "pull request" to us. We will merge your contribution to master

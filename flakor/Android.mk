@@ -8,7 +8,7 @@ LOCAL_SRC_FILES := \
 main.cpp \
 Flakor.cpp \
 Engine.cpp \
-android_native_app_glue.cpp \
+Application.cpp \
 base/lang/Array.cpp \
 base/lang/AutoreleasePool.cpp \
 base/lang/Bool.cpp \

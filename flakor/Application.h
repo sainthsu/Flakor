@@ -177,15 +177,6 @@ class Application
     // here if it likes.
     void* userData;
 
-    // Fill this in with the function to process main app commands (APP_CMD_*)
-    void (*onAppCmd)(struct android_app* app, int32_t cmd);
-
-    // Fill this in with the function to process input events.  At this point
-    // the event has already been pre-dispatched, and it will be finished upon
-    // return.  Return 1 if you have handled the event, 0 for any default
-    // dispatching.
-    int32_t (*onInputEvent)(struct android_app* app, AInputEvent* event);
-
     // The ANativeActivity object instance that this app is running in.
     ANativeActivity* activity;
 
@@ -266,6 +257,9 @@ class Application
      */
      void preExecCmd(int8_t cmd);
 
+    // Fill this in with the function to process main app commands (APP_CMD_*)
+    void onAppCmd(int32_t cmd);
+    
 	/**
      * Call with the command returned by android_app_read_cmd() to do the
 	 * final post-processing of the given command.  You must have done your own
@@ -273,6 +267,18 @@ class Application
      */
      void postExecCmd(int8_t cmd);
 
+    void writeCmd(int8_t cmd);
+    
+    void setInput(AInputQueue* inputQueue);
+    void setWindow(ANativeWindow* window);
+
+    
+    // Fill this in with the function to process input events.  At this point
+    // the event has already been pre-dispatched, and it will be finished upon
+    // return.  Return 1 if you have handled the event, 0 for any default
+    // dispatching.
+    int32_t onInputEvent(AInputEvent* event);
+    
 	/**
      * Dummy function you can call to ensure glue code isn't stripped.
      */
@@ -282,11 +288,14 @@ class Application
       *This is the function that application code must implement, representing
       *the main entry to the app.
       */
-	  void main(struct android_app* app);
+	  void main();
 
+      void setActivityState(int8_t cmd);
+      void freeSavedState();
 	  void free();
-
-	  void setActivitystate(int8_t cmd);
+      void destroy();
+    
+      void printConfig();
 };
 
 

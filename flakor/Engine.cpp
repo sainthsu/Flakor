@@ -55,6 +55,7 @@ Engine::initDisplay(void)
     this->surface = surface;
     this->width = w;
     this->height = h;
+    
     this->state.angle = 0;
 
     // Initialize GL state.
@@ -87,16 +88,19 @@ Engine::drawFrame() {
 /**
  * Tear down the EGL context currently associated with the display.
  */
-Engine::termDisplay() {
-    if (this->display != EGL_NO_DISPLAY) {
-        eglMakeCurrent(engine->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-        if (engine->context != EGL_NO_CONTEXT) {
-            eglDestroyContext(engine->display, engine->context);
+Engine::termDisplay()
+{
+    if (this->display != EGL_NO_DISPLAY)
+    {
+        eglMakeCurrent(this->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+        if (this->context != EGL_NO_CONTEXT)
+        {
+            eglDestroyContext(this->display, this->context);
         }
         if (engine->surface != EGL_NO_SURFACE) {
-            eglDestroySurface(engine->display, engine->surface);
+            eglDestroySurface(this->display, this->surface);
         }
-        eglTerminate(engine->display);
+        eglTerminate(this->display);
     }
     this->animating = 0;
     this->display = EGL_NO_DISPLAY;
@@ -107,13 +111,15 @@ Engine::termDisplay() {
 /**
  * Process the next input event.
  */
-Engine::handleInput(struct android_app* app, AInputEvent* event) {
-    Engine* engine = (Engine*)app->userData;
+Engine::handleInput(AInputEvent* event)
+{
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
 	{
-        engine->animating = 1;
+        this->animating = 1;
+        
         engine->state.x = AMotionEvent_getX(event, 0);
         engine->state.y = AMotionEvent_getY(event, 0);
+        
         return 1;
     }
     return 0;
@@ -122,9 +128,10 @@ Engine::handleInput(struct android_app* app, AInputEvent* event) {
 /**
  * Process the next main command.
  */
-Engine::handleCMD(struct android_app* app, int32_t cmd) {
-    struct engine* engine = (struct engine*)app->userData;
-    switch (cmd) {
+Engine::handleCMD(int32_t cmd)
+{
+    switch (cmd)
+    {
         case APP_CMD_SAVE_STATE:
             // The system has asked us to save our current state.  Do so.
             engine->app->savedState = malloc(sizeof(struct saved_state));
@@ -133,7 +140,7 @@ Engine::handleCMD(struct android_app* app, int32_t cmd) {
             break;
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.
-            if (engine->app->window != NULL) {
+            if (this->app->window != NULL) {
                 this->initDisplay();
                 this->drawFrame();
             }
@@ -144,23 +151,24 @@ Engine::handleCMD(struct android_app* app, int32_t cmd) {
             break;
         case APP_CMD_GAINED_FOCUS:
             // When our app gains focus, we start monitoring the accelerometer.
-            if (engine->accelerometerSensor != NULL) {
-                ASensorEventQueue_enableSensor(engine->sensorEventQueue,
-                        engine->accelerometerSensor);
+            if (this->accelerometerSensor != NULL)
+            {
+                ASensorEventQueue_enableSensor(this->sensorEventQueue,
+                        this->accelerometerSensor);
                 // We'd like to get 60 events per second (in us).
-                ASensorEventQueue_setEventRate(engine->sensorEventQueue,
-                        engine->accelerometerSensor, (1000L/60)*1000);
+                ASensorEventQueue_setEventRate(this->sensorEventQueue,
+                        this->accelerometerSensor, (1000L/60)*1000);
             }
             break;
         case APP_CMD_LOST_FOCUS:
             // When our app loses focus, we stop monitoring the accelerometer.
             // This is to avoid consuming battery while not being used.
-            if (engine->accelerometerSensor != NULL) {
-                ASensorEventQueue_disableSensor(engine->sensorEventQueue,
-                        engine->accelerometerSensor);
+            if (this->accelerometerSensor != NULL) {
+                ASensorEventQueue_disableSensor(this->sensorEventQueue,
+                        this->accelerometerSensor);
             }
             // Also stop animating.
-            engine->animating = 0;
+            this->animating = 0;
             this->drawFrame();
             break;
     }

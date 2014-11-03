@@ -1,4 +1,3 @@
-
 #ifndef _FK_TEXTURE2D_H_
 #define _FK_TEXTURE2D_H_
 
@@ -68,7 +67,7 @@ class Texture2D : public Object
 	public:
 		Texture2D();
 		virtual ~Texture2D();
-		bool initWithData(const void *data,ssize_t dataLen, PixelFormat pixelFormat,int width,int height,Size size);
+		bool initWithData(const void *data,ssize_t dataLen,PixelFormat pixelFormat,int width,int height,Size size);
 
 		bool initWithFile(const char *fileName);
 

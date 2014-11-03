@@ -45,17 +45,17 @@ extern "C" {
  * android_native_app_glue.  It runs in its own thread, with its own
  * event loop for receiving input events and doing other things.
  */
-void android_main(struct android_app* state) {
-    struct engine engine;
+void android_main(struct android_app* app) {
+    Engine engine = new Engine();
 
     // Make sure glue isn't stripped.
     app_dummy();
 
-    memset(&engine, 0, sizeof(engine));
-    state->userData = &engine;
-    state->onAppCmd = engine_handle_cmd;
-    state->onInputEvent = engine_handle_input;
-    engine.app = state;
+    //memset(&engine, 0, sizeof(Engine));
+    app->userData = &engine;
+    app->onAppCmd = engine_handle_cmd;
+    app->onInputEvent = engine_handle_input;
+    engine.app = app;
 
     // Prepare to monitor accelerometer
     engine.sensorManager = ASensorManager_getInstance();
@@ -64,9 +64,9 @@ void android_main(struct android_app* state) {
     engine.sensorEventQueue = ASensorManager_createEventQueue(engine.sensorManager,
             state->looper, LOOPER_ID_USER, NULL, NULL);
 
-    if (state->savedState != NULL) {
+    if (app->savedState != NULL) {
         // We are starting with a previous saved state; restore from it.
-        engine.state = *(struct saved_state*)state->savedState;
+        engine.state = *(struct saved_state*)app->savedState;
     }
 
     // loop waiting for stuff to do.

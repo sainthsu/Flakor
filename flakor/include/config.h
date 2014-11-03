@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013 flakor.org
+Copyright (c) 2013-2014 flakor.org
 
 http://www.flakor.org
 
@@ -74,14 +74,12 @@ This formula prevents artifacts by using 99% of the texture.
 The "correct" way to prevent artifacts is by using the spritesheet-artifact-fixer.py or a similar tool.
 
 Affected nodes:
-- CCSprite / CCSpriteBatchNode and subclasses: CCLabelBMFont, CCTMXTiledMap
-- CCLabelAtlas
-- CCQuadParticleSystem
-- CCTileMap
+- Sprite / SpriteBatchNode and subclasses: LabelBMFont, TMXTiledMap
+- LabelAtlas
+- QuadParticleSystem
+- TileMap
 
 To enabled set it to 1. Disabled by default.
-
-@since v0.99.5
 */
 #ifndef FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL
 	#define FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL 0
@@ -98,7 +96,7 @@ To enabled set it to 1. Disabled by default.
 	#define FK_DIRECTOR_STATS_INTERVAL (0.5f)
 #endif
 
-/** @def CC_DIRECTOR_FPS_POSITION
+/** @def FK_DIRECTOR_FPS_POSITION
  Position of the FPS
 
  Default: 0,0 (bottom-left corner)
@@ -153,7 +151,7 @@ To enabled set it to 1. Disabled by default.
 #endif
 
 /** @def FK_TEXTURE_ATLAS_USE_VAO
- By default, CCTextureAtlas (used by many cocos2d classes) will use VAO (Vertex Array Objects).
+ By default, TextureAtlas (used by many cocos2d classes) will use VAO (Vertex Array Objects).
  Apple recommends its usage but they might consume a lot of memory, specially if you use many of them.
  So for certain cases, where you might need hundreds of VAO objects, it might be a good idea to disable it.
  
@@ -202,7 +200,7 @@ To enabled set it to 1. Disabled by default.
 #endif
 
 /** @def FK_SPRITEBATCH_DEBUG_DRAW
-If enabled, all subclasses of Sprite that are rendered using an CCSpriteBatch draw a bounding box.
+If enabled, all subclasses of Sprite that are rendered using an SpriteBatch draw a bounding box.
 Useful for debugging purposes only. It is recommended to leave it disabled.
 
 To enable set it to a value different than 0. Disabled by default.

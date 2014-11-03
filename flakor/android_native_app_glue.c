@@ -335,6 +335,9 @@ static void android_app_free(struct android_app* android_app) {
     free(android_app);
 }
 
+/**
+ * nativeActivity
+ */
 static void onDestroy(ANativeActivity* activity) {
     LOGV("Destroy: %p\n", activity);
     android_app_free((struct android_app*)activity->instance);
@@ -423,7 +426,8 @@ static void onInputQueueDestroyed(ANativeActivity* activity, AInputQueue* queue)
 }
 
 void ANativeActivity_onCreate(ANativeActivity* activity,
-        void* savedState, size_t savedStateSize) {
+        void* savedState, size_t savedStateSize) 
+{
     LOGV("Creating: %p\n", activity);
     activity->callbacks->onDestroy = onDestroy;
     activity->callbacks->onStart = onStart;

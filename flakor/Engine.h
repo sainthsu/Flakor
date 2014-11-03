@@ -47,6 +47,7 @@ class Engine
 		Scene* nextScene;
 
 	public:
+		
 		int initDisplay(void);
 		void create(void);
 		void drawFrame(void);

@@ -434,13 +434,14 @@ void Application::main()
             }
             
             // Check if we are exiting.
-            if (this->destroyRequested != 0) {
+            if (this->destroyRequested != 0) 
+			{
                 engine->termDisplay();
                 return;
             }
         }
         
-        if (engine->animating)
+        if (engine->state == STATE_RUNNING)
         {
             // Done with events; draw next animation frame.
            	

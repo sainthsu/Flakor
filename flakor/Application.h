@@ -9,6 +9,8 @@
 #include <android/looper.h>
 #include <android/native_activity.h>
 
+#include "Engine.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -13,9 +13,10 @@
 
 #include <android/sensor.h>
 #include <android/log.h>
-#include <android_native_app_glue.h>
 
-#include "Flakor.h"
+#include "base/entity/Scene.h"
+
+class Application;
 
 FLAKOR_NS_BEGIN
 
@@ -54,6 +55,8 @@ class Engine
 		void termDisplay(void);
 		int32_t handleInput(AInputEvent* event);
 		void handleCMD(int32_t cmd);
+
+		void setMainScene(Scene *scene);
 }
 
 FLAKOR_NS_END

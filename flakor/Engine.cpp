@@ -55,8 +55,6 @@ Engine::initDisplay(void)
     this->surface = surface;
     this->width = w;
     this->height = h;
-    
-    this->state.angle = 0;
 
     // Initialize GL state.
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
@@ -76,11 +74,16 @@ Engine::drawFrame() {
         return;
     }
 
-	this->mainScene->visit();
-    // Just fill the screen with a color.
+	if (this->mainScene != NULL)
+	{
+		this->mainScene->visit();
+	}
+	
+    /* Just fill the screen with a color.
     glClearColor(((float)engine->state.x)/engine->width, engine->state.angle,
             ((float)engine->state.y)/engine->height, 1);
     glClear(GL_COLOR_BUFFER_BIT);
+	*/
 
     eglSwapBuffers(this->display, this->surface);
 }
@@ -102,7 +105,7 @@ Engine::termDisplay()
         }
         eglTerminate(this->display);
     }
-    this->animating = 0;
+    this->state = STATE_DESTR0YED;
     this->display = EGL_NO_DISPLAY;
     this->context = EGL_NO_CONTEXT;
     this->surface = EGL_NO_SURFACE;
@@ -115,7 +118,7 @@ Engine::handleInput(AInputEvent* event)
 {
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
 	{
-        this->animating = 1;
+        this->state = STATE_RUNNING;
         
         engine->state.x = AMotionEvent_getX(event, 0);
         engine->state.y = AMotionEvent_getY(event, 0);
@@ -134,9 +137,11 @@ Engine::handleCMD(int32_t cmd)
     {
         case APP_CMD_SAVE_STATE:
             // The system has asked us to save our current state.  Do so.
-            engine->app->savedState = malloc(sizeof(struct saved_state));
-            *((struct saved_state*)engine->app->savedState) = engine->state;
-            engine->app->savedStateSize = sizeof(struct saved_state);
+
+            engine->app->savedState = new Scene();
+            *((Scene*)engine->app->savedState) = engine->mainScene;
+            engine->app->savedStateSize = sizeof(Scene);
+
             break;
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.
@@ -168,7 +173,7 @@ Engine::handleCMD(int32_t cmd)
                         this->accelerometerSensor);
             }
             // Also stop animating.
-            this->animating = 0;
+            this->state = STATE_STOP;
             this->drawFrame();
             break;
     }

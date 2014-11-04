@@ -18,6 +18,28 @@
 #  define LOGV(...)  ((void)0)
 #endif
 
+static void process_input(Application* app, struct android_poll_source* source) {
+    AInputEvent* event = NULL;
+    while (AInputQueue_getEvent(app->inputQueue, &event) >= 0)
+    {
+        LOGV("New input event: type=%d\n", AInputEvent_getType(event));
+        if (AInputQueue_preDispatchEvent(app->inputQueue, event)) {
+            continue;
+        }
+        int32_t handled = 0;
+        handled = app->onInputEvent(event);
+        AInputQueue_finishEvent(app->inputQueue, event, handled);
+    }
+}
+
+static void process_cmd(Application* app, struct android_poll_source* source)
+{
+    int8_t cmd = android_app_read_cmd(app);
+    app->preExecCmd(cmd);
+    app->onExecCmd(cmd);
+    app->postExecCmd(cmd);
+}
+
 int8_t Application::readCmd()
 {
     int8_t cmd;
@@ -99,7 +121,7 @@ void Application::preExecCmd(int8_t cmd)
     }
 }
 
-void Application::onAppCmd(int32_t cmd)
+void Application::onExecCmd(int32_t cmd)
 {
     if(this->engine != NULL)
     {
@@ -239,28 +261,28 @@ void Application::free()
 void Application::printConfig()
 {
     char lang[2], country[2];
-    AConfiguration_getLanguage(android_app->config, lang);
-    AConfiguration_getCountry(android_app->config, country);
+    AConfiguration_getLanguage(this->config, lang);
+    AConfiguration_getCountry(this->config, country);
     
     LOGV("Config: mcc=%d mnc=%d lang=%c%c cnt=%c%c orien=%d touch=%d dens=%d "
          "keys=%d nav=%d keysHid=%d navHid=%d sdk=%d size=%d long=%d "
          "modetype=%d modenight=%d",
-         AConfiguration_getMcc(android_app->config),
-         AConfiguration_getMnc(android_app->config),
+         AConfiguration_getMcc(this->config),
+         AConfiguration_getMnc(this->config),
          lang[0], lang[1], country[0], country[1],
-         AConfiguration_getOrientation(android_app->config),
-         AConfiguration_getTouchscreen(android_app->config),
-         AConfiguration_getDensity(android_app->config),
-         AConfiguration_getKeyboard(android_app->config),
-         AConfiguration_getNavigation(android_app->config),
-         AConfiguration_getKeysHidden(android_app->config),
-         AConfiguration_getNavHidden(android_app->config),
-         AConfiguration_getSdkVersion(android_app->config),
-         AConfiguration_getScreenSize(android_app->config),
-         AConfiguration_getScreenLong(android_app->config),
-         AConfiguration_getUiModeType(android_app->config),
-         AConfiguration_getUiModeNight(android_app->config));
-}
+         AConfiguration_getOrientation(this->config),
+         AConfiguration_getTouchscreen(this->config),
+         AConfiguration_getDensity(this->config),
+         AConfiguration_getKeyboard(this->config),
+         AConfiguration_getNavigation(this->config),
+         AConfiguration_getKeysHidden(this->config),
+         AConfiguration_getNavHidden(this->config),
+         AConfiguration_getSdkVersion(this->config),
+         AConfiguration_getScreenSize(this->config),
+         AConfiguration_getScreenLong(this->config),
+         AConfiguration_getUiModeType(this->config),
+         AConfiguration_getUiModeNight(this->config));
+} 
 
 // --------------------------------------------------------------------
 // Native activity interaction (called from main thread)
@@ -421,188 +443,12 @@ void Application::main()
         if (engine->animating)
         {
             // Done with events; draw next animation frame.
-            engine.state.angle += .01f;
-            if (engine.state.angle > 1) {
-                engine.state.angle = 0;
-            }
+           	
             
             // Drawing is throttled to the screen update rate, so there
             // is no need to do timing here.
             engine->drawFrame();
         }
     }
-}
-
-
-static void process_input(Application* app, struct android_poll_source* source) {
-    AInputEvent* event = NULL;
-    while (AInputQueue_getEvent(app->inputQueue, &event) >= 0)
-    {
-        LOGV("New input event: type=%d\n", AInputEvent_getType(event));
-        if (AInputQueue_preDispatchEvent(app->inputQueue, event)) {
-            continue;
-        }
-        int32_t handled = 0;
-        handled = app->onInputEvent(event);
-        AInputQueue_finishEvent(app->inputQueue, event, handled);
-    }
-}
-
-static void process_cmd(Application* app, struct android_poll_source* source)
-{
-    int8_t cmd = android_app_read_cmd(app);
-    app->preExecCmd(cmd);
-    app->onAppCmd(cmd);
-    app->postExecCmd(cmd);
-}
-
-/**
- * nativeActivity lifecycle
- */
-
-static void onStart(ANativeActivity* activity)
-{
-    LOGV("Start: %p\n", activity);
-    Application* app = (Application*)activity->instance;
-    app->setActivityState(APP_CMD_START);
-}
-
-static void onPause(ANativeActivity* activity)
-{
-    LOGV("Pause: %p\n", activity);
-    Application* app = (Application*)activity->instance;
-    app->setActivityState(APP_CMD_PAUSE);
-}
-
-static void onStop(ANativeActivity* activity)
-{
-    LOGV("Stop: %p\n", activity);
-    Application* app = (Application*)activity->instance;
-    app->setActivityState(APP_CMD_STOP);
-}
-
-static void onResume(ANativeActivity* activity)
-{
-    LOGV("Resume: %p\n", activity);
-    Application* app = (Application*)activity->instance;
-    app->setActivityState(APP_CMD_RESUME);
-}
-
-
-static void onDestroy(ANativeActivity* activity) 
-{
-    LOGV("Destroy: %p\n", activity);
-    Application* app = (Application*)activity->instance;
-    app->free();
-}
-
-static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
-{
-    Application* app = (Application*)activity->instance;
-    void* savedState = NULL;
-
-    LOGV("SaveInstanceState: %p\n", activity);
-    pthread_mutex_lock(&app->mutex);
-    app->stateSaved = 0;
-    app->writeCmd(APP_CMD_SAVE_STATE);
-    
-    while (!app->stateSaved) {
-        pthread_cond_wait(&app->cond, &app->mutex);
-    }
-
-    if (app->savedState != NULL)
-    {
-        savedState = app->savedState;
-        *outLen = app->savedStateSize;
-        app->savedState = NULL;
-        app->savedStateSize = 0;
-    }
-
-    pthread_mutex_unlock(&app->mutex);
-
-    return savedState;
-}
-
-static void onConfigurationChanged(ANativeActivity* activity)
-{
-    Application* app = (Application*)activity->instance;
-    LOGV("ConfigurationChanged: %p\n", activity);
-    app->writeCmd(APP_CMD_CONFIG_CHANGED);
-}
-
-static void onLowMemory(ANativeActivity* activity)
-{
-    Application* app = (Application*)activity->instance;
-    LOGV("LowMemory: %p\n", activity);
-    app->writeCmd(APP_CMD_LOW_MEMORY);
-}
-
-static void onWindowFocusChanged(ANativeActivity* activity, int focused)
-{
-    LOGV("WindowFocusChanged: %p -- %d\n", activity, focused);
-    Application* app = (Application*)activity->instance;
-    app->writeCmd(focused ? APP_CMD_GAINED_FOCUS : APP_CMD_LOST_FOCUS);
-}
-
-static void onNativeWindowCreated(ANativeActivity* activity, ANativeWindow* window)
-{
-    LOGV("NativeWindowCreated: %p -- %p\n", activity, window);
-    Application* app = (Application*)activity->instance;
-
-    app->setWindow(window);
-}
-
-static void onNativeWindowDestroyed(ANativeActivity* activity, ANativeWindow* window)
-{
-    LOGV("NativeWindowDestroyed: %p -- %p\n", activity, window);
-    Application* app = (Application*)activity->instance;
-
-    app->setWindow(NULL);
-}
-
-static void onInputQueueCreated(ANativeActivity* activity, AInputQueue* queue)
-{
-    LOGV("InputQueueCreated: %p -- %p\n", activity, queue);
-    Application* app = (Application*)activity->instance;
-
-    app->setInput(queue);
-}
-
-static void onInputQueueDestroyed(ANativeActivity* activity, AInputQueue* queue)
-{
-    LOGV("InputQueueDestroyed: %p -- %p\n", activity, queue);
-    Application* app = (Application*)activity->instance;
-    
-    app->setInput(NULL);
-}
-
-/*create activity*/
-void ANativeActivity_onCreate(ANativeActivity* activity,
-        void* savedState, size_t savedStateSize) 
-{
-    LOGV("Creating: %p\n", activity);
-    
-    activity->callbacks->onStart = onStart;
-    activity->callbacks->onResume = onResume;
-    activity->callbacks->onSaveInstanceState = onSaveInstanceState;
-    activity->callbacks->onPause = onPause;
-    activity->callbacks->onStop = onStop;
-    activity->callbacks->onDestroy = onDestroy;
-    
-    activity->callbacks->onWindowFocusChanged = onWindowFocusChanged;
-    activity->callbacks->onNativeWindowCreated = onNativeWindowCreated;
-    activity->callbacks->onNativeWindowResized = NULL;
-    activity->callbacks->onNativeWindowRedrawNeeded = NULL;
-    activity->callbacks->onNativeWindowDestroyed = onNativeWindowDestroyed;
-    
-    activity->callbacks->onInputQueueCreated = onInputQueueCreated;
-    activity->callbacks->onInputQueueDestroyed = onInputQueueDestroyed;
-
-    activity->callbacks->onContentRectChanged = NULL;
-    
-    activity->callbacks->onConfigurationChanged = onConfigurationChanged;
-    activity->callbacks->onLowMemory = onLowMemory;
-
-    activity->instance = Application::create(activity, savedState, savedStateSize);
 }
 

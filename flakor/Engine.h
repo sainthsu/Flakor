@@ -29,7 +29,7 @@ enum EngineState {
 class Engine
 {
 	protected:
-		struct android_app* app;
+		Application* app;
 
     	ASensorManager* sensorManager;
     	const ASensor* accelerometerSensor;

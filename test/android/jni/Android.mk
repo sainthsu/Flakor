@@ -13,8 +13,7 @@ LOCAL_SRC_FILES := main.cpp \
                    classes/TestScene.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/classes \
-                    $(LOCAL_PATH)/../../../flakor \
-					$(LOCAL_PATH)/../../../flakor/..
+                    $(LOCAL_PATH)/../../../flakor
 				 
 
 LOCAL_STATIC_LIBRARIES := flakor_static

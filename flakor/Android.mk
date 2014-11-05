@@ -37,18 +37,25 @@ core/vbo/VBO.cpp \
 core/shader/Shader.cpp \
 core/texture2D.cpp \
 
-LOCAL_EXPORT_LDLIBS := -lGLESv2 \
+LOCAL_EXPORT_LDLIBS := -lGLESv1_CM \
+                       -lGLESv2 \
+                       -lEGL \
                        -llog \
                        -lz \
                        -landroid
 
-LOCAL_LDLIBS    := -llog -lGLESv2 -lz
+LOCAL_LDLIBS    := -lGLESv1_CM \
+                   -lGLESv2 \
+                   -lEGL \
+                   -llog \
+                   -lz \
+                   -landroid
 
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
-                    $(LOCAL_PATH)/. \
-                    $(LOCAL_PATH)/.. \
-					$(LOCAL_PATH)/base/elment \
+                           $(LOCAL_PATH)/. \
+                           $(LOCAL_PATH)/.. \
+                           $(LOCAL_PATH)/base/elment \
 					$(LOCAL_PATH)/base/entity \
 					$(LOCAL_PATH)/base/lang \
 					$(LOCAL_PATH)/base/interface \
@@ -81,10 +88,10 @@ LOCAL_STATIC_LIBRARIES := jpeg
 LOCAL_STATIC_LIBRARIES += png
 LOCAL_CPP_EXTENSION := .cxx .cpp .cc
 # define the macro to compile through support/zip_support/ioapi.c
-LOCAL_CFLAGS   :=  -DUSE_FILE32API
-LOCAL_CPPFLAGS := -Wno-deprecated-declarations -Wno-extern-c-compat
-LOCAL_EXPORT_CFLAGS   := -DUSE_FILE32API
-LOCAL_EXPORT_CPPFLAGS := -Wno-deprecated-declarations -Wno-extern-c-compat
+#LOCAL_CFLAGS   :=  -DUSE_FILE32API
+#LOCAL_CPPFLAGS := -Wno-deprecated-declarations -Wno-extern-c-compat
+#LOCAL_EXPORT_CFLAGS   := -DUSE_FILE32API
+#LOCAL_EXPORT_CPPFLAGS := -Wno-deprecated-declarations -Wno-extern-c-compat
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 LOCAL_ARM_NEON  := true

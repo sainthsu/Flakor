@@ -9,7 +9,6 @@ const char* getFlakorVersion()
 }
 //macro
 #include "macros.h"
-#include "stdC.h"
 
 //core opengl
 #include "core/opengl/GL.h"

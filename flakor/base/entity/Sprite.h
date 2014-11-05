@@ -9,14 +9,16 @@ http://www.feike.org for chinese
 #define _FK_SPRITE_H_
 
 #include <string>
+#include "base/lang/Object.h"
+#include "base/interface/ITexture.h"
 #include "base/entity/Entity.h"
 #include "core/opengl/vbo/VBO.h"
 
 FLAKOR_NS_BEGIN
 
-class SpriteBatch;
 class SpriteFrame;
 class Animation;
+class Point;
 class Rect;
 class Size;
 class Texture2D;
@@ -136,29 +138,6 @@ public:
      * Updates the quad according the rotation, position, scale values.
      */
     virtual void updateTransform(void);
-
-    /**
-     * Returns the batch node object if this sprite is rendered by SpriteBatchNode
-     *
-     * @return The SpriteBatchNode object if this sprite is rendered by SpriteBatchNode,
-     *         nullptr if the sprite isn't used batch node.
-     */
-    virtual SpriteBatchNode* getBatchNode(void);
-    /**
-     * Sets the batch node to sprite
-     * @warning This method is not recommended for game developers. Sample code for using batch node
-     * @code
-     * SpriteBatchNode *batch = SpriteBatchNode::create("Images/grossini_dance_atlas.png", 15);
-     * Sprite *sprite = Sprite::createWithTexture(batch->getTexture(), Rect(0, 0, 57, 57));
-     * batch->addChild(sprite);
-     * layer->addChild(batch);
-     * @endcode
-     */
-    virtual void setBatchNode(SpriteBatchNode *spriteBatchNode);
-
-    /// @} end of BatchNode methods
-
-
 
     /// @{
     /// @name Texture / Frame methods
@@ -357,12 +336,12 @@ public:
     virtual void setPosition(const Point& pos) override;
     virtual void setPosition(float x, float y) override;
     virtual void setRotation(float rotation) override;
-    virtual void setRotationSkewX(float rotationX) override;
-    virtual void setRotationSkewY(float rotationY) override;
+    virtual void setRotationX(float rotationX) override;
+    virtual void setRotationY(float rotationY) override;
     virtual void setSkewX(float sx) override;
     virtual void setSkewY(float sy) override;
     virtual void removeChild(Entity* child, bool cleanup) override;
-    virtual void removeAllChildrenWithCleanup(bool cleanup) override;
+    virtual void removeAllChildren(bool cleanup) override;
     virtual void reorderChild(Entity *child, int zOrder) override;
     using Entity::addChild;
     virtual void addChild(Entity *child, int zOrder, int tag) override;
@@ -373,9 +352,9 @@ public:
     virtual void setAnchorPoint(const Point& anchor) override;
     virtual void ignoreAnchorPointForPosition(bool value) override;
     virtual void setVisible(bool bVisible) override;
-    virtual void draw(Renderer *renderer, const Matrix4 &transform, uint32_t flags) override;
-    virtual void setOpacityModifyRGB(bool modify) override;
-    virtual bool isOpacityModifyRGB(void) const override;
+    virtual void draw() override;
+    //virtual void setOpacityModifyRGB(bool modify) override;
+    //virtual bool isOpacityModifyRGB(void) const override;
     /// @}
 
 protected:
@@ -473,6 +452,7 @@ protected:
 protected:
 
     void updateColor(void);
+    void updateVBO(void);
     virtual void setTextureCoords(Rect rect);
     virtual void updateBlendFunc(void);
     virtual void setReorderChildDirtyRecursively(void);
@@ -483,7 +463,6 @@ protected:
     //
     TextureAtlas*       _textureAtlas;      /// SpriteBatchNode texture atlas (weak reference)
     ssize_t             _atlasIndex;        /// Absolute (real) Index on the SpriteSheet
-    SpriteBatchNode*    _batchNode;         /// Used batch node (weak reference)
 
     bool                _dirty;             /// Whether the sprite needs to be updated
     bool                _recursiveDirty;    /// Whether all of the sprite's children needs to be updated
@@ -495,8 +474,8 @@ protected:
     //
     BlendFunc        _blendFunc;            /// It's required for TextureProtocol inheritance
     Texture2D*       _texture;              /// Texture2D object that is used to render the sprite
-    QuadCommand      _quadCommand;          /// quad command
-#if CC_SPRITE_DEBUG_DRAW
+    //QuadCommand      _quadCommand;          /// quad command
+#if FK_SPRITE_DEBUG_DRAW
     DrawNode *_debugDrawNode;
 #endif //FK_SPRITE_DEBUG_DRAW
     //
@@ -512,7 +491,7 @@ protected:
     Point _unflippedOffsetPositionFromCenter;
 
     // vertex coords, texture coords and color info
-	VBO _vbo;
+	VBO* _vbo;
 
     // opacity and RGB protocol
     bool _opacityModifyRGB;

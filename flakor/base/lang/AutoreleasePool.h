@@ -24,8 +24,8 @@ THE SOFTWARE.
 #ifndef _FK_AUTORELEASEPOOL_H_
 #define _FK_AUTORELEASEPOOL_H_
 
-#include "Object.h"
-#include "Array.h"
+#include "base/lang/Object.h"
+#include "base/lang/Array.h"
 
 FLAKOR_NS_BEGIN
 

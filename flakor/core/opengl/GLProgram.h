@@ -273,6 +273,6 @@ class GLProgram : Object
     inline const GLuint getProgram() const { return _program; }
 
 	
-}
+};
 
 #endif

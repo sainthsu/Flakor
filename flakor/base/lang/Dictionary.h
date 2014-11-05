@@ -25,12 +25,13 @@ THE SOFTWARE.
 #ifndef _FK_DICTIONARY_H_
 #define _FK_DICTIONARY_H_
 
-#include "support/data_support/uthash.h"
+#include "uthash.h"
 #include "Object.h"
 #include "Array.h"
+#include "base/lang/Zone.h"
 #include "String.h"
 
-FLAKOR_CC_BEGIN
+FLAKOR_NS_BEGIN
 
 class Dictionary;
 
@@ -69,7 +70,7 @@ private:
      *  @param  pszKey    The string key of this element.
      *  @param  pObject   The object of this element.
      */
-    DictItem(const char* pszKey, CCObject* pObject);
+    DictItem(const char* pszKey, Object* pObject);
 
     /**
      *  Constructor of DictItem. It's only for internal usage. CCDictionary is its friend class.
@@ -77,7 +78,7 @@ private:
      *  @param  iKey    The integer key of this element.
      *  @param  pObject   The object of this element.
      */
-    DictItem(intptr_t iKey, CCObject* pObject);
+    DictItem(intptr_t iKey, Object* pObject);
     
 public:
     /**
@@ -127,7 +128,7 @@ private:
     // So it's a pain that all elements will allocate 256 bytes for this array.
     char      m_szKey[MAX_KEY_LEN];     // hash key of string type 存储名称的字符数组。
     intptr_t  m_iKey;       // hash key of integer type 哈希表索引
-    CCObject* m_pObject;    // hash value 哈希值（Object指针）
+    Object* m_pObject;    // hash value 哈希值（Object指针）
 public:
     UT_hash_handle hh;      // makes this class hashable 哈希表结构指针 
     friend class Dictionary; // declare Dictionary as friend class
@@ -206,7 +207,7 @@ public:
      *  @warning  We use '==' to compare two objects
      *  @return   The array contains all keys for the specified object. It's an autorelease object yet.
      */
-    Array* allKeysForObject(CCObject* object);
+    Array* allKeysForObject(Object* object);
 
     /**
      *  Get the object according to the specified string key.
@@ -336,7 +337,7 @@ public:
      *  @lua NA
      *  @js  NA
      */
-    virtual Object* copyWithZone(CCZone* pZone);
+    virtual Object* copyWithZone(Zone* pZone);
     /// @}
     
     /**
@@ -397,7 +398,7 @@ public:
     /* override functions 
      * @lua NA
      */
-    virtual void acceptVisitor(CCDataVisitor &visitor);
+    virtual void acceptVisitor(DataVisitor &visitor);
 
 private:
     /** 
@@ -433,6 +434,6 @@ private:
 // end of data_structure group
 /// @}
 
-FLAKOR_CC_END
+FLAKOR_NS_END
 
 #endif /* __CCDICTIONARY_H__ */

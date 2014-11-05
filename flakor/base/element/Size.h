@@ -2,6 +2,9 @@
 #define _FK_SIZE_H_
 
 #include "macros.h"
+#include "base/element/Point.h"
+
+FLAKOR_NS_BEGIN
 
 class Size
 {
@@ -26,10 +29,12 @@ public:
 
 	void setSize(float width, float height);
     bool equals(const Size& target) const;
-}
+};
 
 #define MakeSize(width, height) Size((float)(width), (float)(height))
 
 const Size SizeZero = MakeSize(0,0);
+
+FLAKOR_NS_END
 
 #endif

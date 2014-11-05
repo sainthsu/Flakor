@@ -1,6 +1,8 @@
 #ifndef _FK_BOOL_H_
 #define _FK_BOOL_H_
 
+#include "base/lang/DataVisitor.h"
+
 FLAKOR_NS_BEGIN
 
 class Bool : public Object
@@ -25,7 +27,7 @@ public:
 
 private:
 	bool m_bValue;
-}
+};
 
 FLAKOR_NS_END
 

@@ -159,7 +159,7 @@ To enabled set it to 1. Disabled by default.
  
  */
 #ifndef FK_TEXTURE_ATLAS_USE_VAO
-    #if (FK_TARGET_PLATFORM == FK_PLATFORM_IOS))
+    #if (FK_TARGET_PLATFORM == FK_PLATFORM_IOS)
         #define FK_TEXTURE_ATLAS_USE_VAO 1
     #else
         /* Some Windows display adapter driver cannot support VAO. */

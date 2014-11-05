@@ -3,6 +3,9 @@
 
 
 #include <string>
+
+FLAKOR_NS_BEGIN
+
 class Object;
 class Bool;
 class Integer;
@@ -30,5 +33,7 @@ public:
     virtual void visit(const Dictionary *p);
     virtual void visit(const Set *p);
 };
+
+FLAKOR_NS_END
 
 #endif

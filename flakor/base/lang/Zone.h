@@ -25,10 +25,10 @@ THE SOFTWARE.
 #ifndef _FK_ZONE_H_
 #define _FK_ZONE_H_
 
-#include "platform/PlatformMacros.h"
+#include "targetMacros.h"
 #include <stdio.h>
 
-FK_NS_BEGIN
+FLAKOR_NS_BEGIN
 
 /**
  * @addtogroup data_structures

@@ -48,15 +48,14 @@ class Engine
 		Scene* nextScene;
 
 	public:
-		
-		int initDisplay(void);
 		void create(void);
 		void drawFrame(void);
 		void termDisplay(void);
 		int32_t handleInput(AInputEvent* event);
 		void handleCMD(int32_t cmd);
-
 		void setMainScene(Scene *scene);
+	private:
+		int initDisplay(void);
 }
 
 FLAKOR_NS_END

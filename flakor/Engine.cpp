@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "TestScene.h"
 
 Engine::initDisplay(void)
 {
@@ -147,6 +148,7 @@ Engine::handleCMD(int32_t cmd)
             // The window is being shown, get it ready.
             if (this->app->window != NULL) {
                 this->initDisplay();
+				this->mainScene = TestScene::create();
                 this->drawFrame();
             }
             break;

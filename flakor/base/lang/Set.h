@@ -113,7 +113,7 @@ private:
 // end of data_structure group
 /// @}
 
-FLAKOR_NS__END
+FLAKOR_NS_END
 
 #endif // __CC_SET_H__
 

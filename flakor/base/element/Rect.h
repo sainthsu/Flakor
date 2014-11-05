@@ -2,8 +2,10 @@
 #ifndef _FK_RECT_H_
 #define _FK_RECT_H_
 
-#include "base/geometry/Point.h"
-#include "base/geometry/Size.h"
+#include "base/element/Point.h"
+#include "base/element/Size.h"
+
+FLAKOR_NS_BEGIN
 
 class Rect
 {
@@ -35,5 +37,7 @@ public:
 #define MakeRect(x,y,width, height) Rect((float)(x), (float)(y) , (float)(width), (float)(height))
 
 const Rect RectZero = RectMake(0,0,0,0); 
+
+FLAKOR_NS_END
 
 #endif

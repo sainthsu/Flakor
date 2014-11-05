@@ -1,5 +1,7 @@
 #include "./Scene.h"
 
+FLAKOR_NS_BEGIN
+
 Scene::Scene()
 {
 	relateAnchorPoint = false;
@@ -30,3 +32,5 @@ Scene* Scene::create()
 	}
 
 }
+
+FLAKOR_NS_END

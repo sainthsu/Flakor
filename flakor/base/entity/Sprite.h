@@ -10,7 +10,7 @@ http://www.feike.org for chinese
 
 #include <string>
 #include "base/entity/Entity.h"
-#include "core/opengl/VBO.h"
+#include "core/opengl/vbo/VBO.h"
 
 FLAKOR_NS_BEGIN
 

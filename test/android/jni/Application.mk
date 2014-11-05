@@ -1,4 +1,4 @@
-APP_PLATFORM := android-9
+APP_PLATFORM := android-10
 APP_ABI := armeabi armeabi-v7a
 APP_STL := gnustl_static #GNU STL
 APP_CPPFLAGS := -fexceptions -frtti #允许异常功能，及运行时类型识别

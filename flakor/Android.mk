@@ -2,8 +2,11 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := flakor
+LOCAL_MODULE    := flakor_static
+LOCAL_MODULE_FILENAME := libflakor
+
 LOCAL_CFLAGS    := -Werror
+
 LOCAL_SRC_FILES := \
 main.cpp \
 Flakor.cpp \
@@ -45,9 +48,34 @@ LOCAL_LDLIBS    := -llog -lGLESv2 -lz
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/. \
                     $(LOCAL_PATH)/.. \
+					$(LOCAL_PATH)/base/elment \
+					$(LOCAL_PATH)/base/entity \
+					$(LOCAL_PATH)/base/lang \
+					$(LOCAL_PATH)/base/interface \
+					$(LOCAL_PATH)/include \
+					$(LOCAL_PATH)/core/opengl/ \
+					$(LOCAL_PATH)/core/opengl/vbo \
+					$(LOCAL_PATH)/core/opengl/shader \
+					$(LOCAL_PATH)/core/texture \
+					$(LOCAL_PATH)/math \
+					$(LOCAL_PATH)/support/libjpeg \
+					$(LOCAL_PATH)/support/libpng
 
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/support/libjpeg 
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/support/libpng
+LOCAL_C_INCLUDES := $(LOCAL_PATH) \
+                    $(LOCAL_PATH)/. \
+                    $(LOCAL_PATH)/.. \
+					$(LOCAL_PATH)/base/elment \
+					$(LOCAL_PATH)/base/entity \
+					$(LOCAL_PATH)/base/lang \
+					$(LOCAL_PATH)/base/interface \
+					$(LOCAL_PATH)/include \
+					$(LOCAL_PATH)/core/opengl/ \
+					$(LOCAL_PATH)/core/opengl/vbo \
+					$(LOCAL_PATH)/core/opengl/shader \
+					$(LOCAL_PATH)/core/texture \
+					$(LOCAL_PATH)/math \
+					$(LOCAL_PATH)/support/libjpeg \
+					$(LOCAL_PATH)/support/libpng
 
 LOCAL_STATIC_LIBRARIES := jpeg
 LOCAL_STATIC_LIBRARIES += png
@@ -66,4 +94,4 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-include $(LOCAL_PATH)/libjpeg/Android.mk  $(LOCAL_PATH)/libpng/Android.mk
+include $(LOCAL_PATH)/support/libjpeg/Android.mk  $(LOCAL_PATH)/support/libpng/Android.mk

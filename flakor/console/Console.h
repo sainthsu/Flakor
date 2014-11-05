@@ -1,7 +1,7 @@
 /****************************************************************************
-Copyright (c) 2010 cocos2d-x.org
+Copyright (c) 2013 flakor.org
 
-http://www.cocos2d-x.org
+http://www.flakor.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ FLAKOR_NS_BEGIN
  * @{
  */
 
-/// The max length of CCLog message.
+/// The max length of Log message.
 static const int kMaxLogLen = 16*1024;
 
 class Console
@@ -42,7 +42,7 @@ class Console
 	/**
 	@brief Output Debug message.
 	*/
-	void log(const char * pszFormat, ...) CC_FORMAT_PRINTF(1, 2);
+	void log(const char * pszFormat, ...) FK_FORMAT_PRINTF(1, 2);
 
 	/**
 	* lua can not deal with ...

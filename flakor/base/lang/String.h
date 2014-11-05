@@ -9,6 +9,7 @@
 #include <string>
 #include <functional>
 #include "Object.h"
+#include "base/lang/DataVisitor.h"
 
 FLAKOR_NS_BEGIN
 
@@ -96,7 +97,7 @@ private:
 
 public:
     std::string m_sString;
-}
+};
 
 struct StringCompare : public std::binary_function<String *, String *, bool> {
     public:

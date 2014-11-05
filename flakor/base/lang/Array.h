@@ -24,7 +24,11 @@ THE SOFTWARE.
 #ifndef _FK_ARRAY_H_
 #define _FK_ARRAY_H_
 
-#include "support/math/CArray.h"
+#include "base/lang/Object.h"
+#include "base/lang/DataVisitor.h"
+#include "base/lang/Zone.h"
+#include "base/interface/IMatcher.h"
+#include "math/CArray.h"
 
 /**
  * @addtogroup data_structures
@@ -96,7 +100,7 @@ while(false)
 
 FLAKOR_NS_BEGIN
 
-template <typename T>
+//template <typename T>
 class Array : public Object
 {
 public:
@@ -168,7 +172,7 @@ public:
     Object* lastObject();
     /** Returns a random element */
     Object* randomObject();
-	Object* query(IMatcher<T> matcher);
+	Object* query(IMatcher<Object> matcher);
     /** Returns a Boolean value that indicates whether object is present in array. */
     bool containsObject(Object* object) const;
     /** @since 1.1 */

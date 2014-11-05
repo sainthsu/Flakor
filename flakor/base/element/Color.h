@@ -3,50 +3,53 @@
 #define _FK_COLOR_H_
 
 #include <stdint.h>
+#include <GLES/gl.h>
+
+FLAKOR_NS_BEGIN
 
 class Color
 {
 	public:
-		static const float COLOR_FACTOR_INT_TO_FLOAT = 255.0f;
-		static const int32_t ABGR_PACKED_RED_SHIFT = 0;
-		static const int32_t ABGR_PACKED_GREEN_SHIFT = 8;
-		static const int32_t ABGR_PACKED_BLUE_SHIFT = 16;
-		static const int32_t ABGR_PACKED_ALPHA_SHIFT = 24;
+		static const float COLOR_FACTOR_INT_TO_FLOAT;
+		static const int32_t ABGR_PACKED_RED_SHIFT;
+		static const int32_t ABGR_PACKED_GREEN_SHIFT;
+		static const int32_t ABGR_PACKED_BLUE_SHIFT;
+		static const int32_t ABGR_PACKED_ALPHA_SHIFT;
 
-		static const int32_t ABGR_PACKED_RED_CLEAR = 0XFFFFFF00;
-		static const int32_t ABGR_PACKED_GREEN_CLEAR = 0XFFFF00FF;
-		static const int32_t ABGR_PACKED_BLUE_CLEAR = 0XFF00FFFF;
-		static const int32_t ABGR_PACKED_ALPHA_CLEAR = 0X00FFFFFF;
+		static const int32_t ABGR_PACKED_RED_CLEAR;
+		static const int32_t ABGR_PACKED_GREEN_CLEAR;
+		static const int32_t ABGR_PACKED_BLUE_CLEAR;
+		static const int32_t ABGR_PACKED_ALPHA_CLEAR;
 	
-		static const int32_t RGBA_PACKED_ALPHA_SHIFT = 0;
-		static const int32_t RGBA_PACKED_BLUE_SHIFT = 8;
-		static const int32_t RGBA_PACKED_GREEN_SHIFT = 16;
-		static const int32_t RGBA_PACKED_RED_SHIFT = 24;
+		static const int32_t RGBA_PACKED_ALPHA_SHIFT;
+		static const int32_t RGBA_PACKED_BLUE_SHIFT;
+		static const int32_t RGBA_PACKED_GREEN_SHIFT;
+		static const int32_t RGBA_PACKED_RED_SHIFT;
 	
-		static const int32_t RGBA_PACKED_ALPHA_CLEAR = 0XFFFFFF00;
-		static const int32_t RGBA_PACKED_BLUE_CLEAR = 0XFFFF00FF;
-		static const int32_t RGBA_PACKED_GREEN_CLEAR = 0XFF00FFFF;
-		static const int32_t RGBA_PACKED_RED_CLEAR = 0X00FFFFFF;
+		static const int32_t RGBA_PACKED_ALPHA_CLEAR;
+		static const int32_t RGBA_PACKED_BLUE_CLEAR;
+		static const int32_t RGBA_PACKED_GREEN_CLEAR;
+		static const int32_t RGBA_PACKED_RED_CLEAR;
 	
-		static const int32_t ARGB_PACKED_BLUE_SHIFT = 0;
-		static const int32_t ARGB_PACKED_GREEN_SHIFT = 8;
-		static const int32_t ARGB_PACKED_RED_SHIFT = 16;
-		static const int32_t ARGB_PACKED_ALPHA_SHIFT = 24;
+		static const int32_t ARGB_PACKED_BLUE_SHIFT;
+		static const int32_t ARGB_PACKED_GREEN_SHIFT;
+		static const int32_t ARGB_PACKED_RED_SHIFT;
+		static const int32_t ARGB_PACKED_ALPHA_SHIFT;
 
-		static const int32_t ARGB_PACKED_BLUE_CLEAR = 0XFFFFFF00;
-		static const int32_t ARGB_PACKED_GREEN_CLEAR = 0XFFFF00FF;
-		static const int32_t ARGB_PACKED_RED_CLEAR = 0XFF00FFFF;
-		static const int32_t ARGB_PACKED_ALPHA_CLEAR = 0X00FFFFFF;
+		static const int32_t ARGB_PACKED_BLUE_CLEAR;
+		static const int32_t ARGB_PACKED_GREEN_CLEAR;
+		static const int32_t ARGB_PACKED_RED_CLEAR;
+		static const int32_t ARGB_PACKED_ALPHA_CLEAR;
 	
-		static const Color WHITE = Color(1, 1, 1, 1);
-		static const Color BLACK = Color(0, 0, 0, 1);
-		static const Color RED = Color(1, 0, 0, 1);
-		static const Color YELLOW = Color(1, 1, 0, 1);
-		static const Color GREEN = Color(0, 1, 0, 1);
-		static const Color CYAN = Color(0, 1, 1, 1);
-		static const Color BLUE = Color(0, 0, 1, 1);
-		static const Color PINK = Color(1, 0, 1, 1);
-		static const Color TRANSPARENT = Color(0, 0, 0, 0);
+		static const Color WHITE;
+		static const Color BLACK;
+		static const Color RED;
+		static const Color YELLOW;
+		static const Color GREEN;
+		static const Color CYAN;
+		static const Color BLUE;
+		static const Color PINK;
+		static const Color TRANSPARENT;
 		
 		GLfloat red;
 		GLfloat green;
@@ -167,4 +170,5 @@ class Color
 		
 }
 
+FLAKOR_NS_END
 #endif

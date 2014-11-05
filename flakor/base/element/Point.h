@@ -3,13 +3,14 @@
 
 #include <math.h>
 
-FLAKOR_NS_START
+FLAKOR_NS_BEGIN
 
 typedef enum {
 	2D,
 	3D,
 } PointType;
 
+class Size;
 
 class Point
 {

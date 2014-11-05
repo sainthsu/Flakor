@@ -3,7 +3,7 @@
 
 #include "Object.h"
 
-NS_CC_BEGIN
+FLAKOR_NS_BEGIN
 
 /**
  * @addtogroup data_structures
@@ -30,7 +30,7 @@ public:
     }
 
     /* override functions */
-    virtual void acceptVisitor(CCDataVisitor &visitor) { visitor.visit(this); }
+    virtual void acceptVisitor(DataVisitor &visitor) { visitor.visit(this); }
 
 private:
     float m_fValue;
@@ -39,6 +39,6 @@ private:
 // end of data_structure group
 /// @}
 
-NS_CC_END
+FLAKOR_NS_END
 
 #endif /* _FK_FLOAT_H_ */

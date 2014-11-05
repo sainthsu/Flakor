@@ -1,20 +1,25 @@
 #ifndef _FK_OBJECT_H_
 #define _FK_OBJECT_H_
 
+#include "base/lang/AutoreleasePool.h"
+#include "base/entity/Entity.h"
+
 FLAKOR_NS_BEGIN
+
+class Entity;
 
 class Object
 {
-public:
-    // object id, ScriptSupport need public m_uID
-    unsigned int        m_uID;
-    // Lua reference id
-    int                 m_nLuaID;
-protected:
-    // count of references
-    unsigned int        m_uReference;
-    // count of autorelease
-    unsigned int        m_uAutoReleaseCount;
+	public:
+    	// object id, ScriptSupport need public m_uID
+    	unsigned int        m_uID;
+    	// Lua reference id
+    	int                 m_nLuaID;
+	protected:
+    	// count of references
+    	unsigned int        m_uReference;
+    	// count of autorelease
+    	unsigned int        m_uAutoReleaseCount;
 	public:
 		Object(void);
 		virtual ~Object(void);
@@ -29,15 +34,15 @@ protected:
 		virtual bool equal(const Object* pObject);
 		virtual void finalize();
     	friend class AutoreleasePool;
-}
+};
 
 typedef void (Object::*SEL_SCHEDULE)(float);
 typedef void (Object::*SEL_CallFunc)();
-typedef void (Object::*SEL_CallFuncN)(Enitity*);
-typedef void (Object::*SEL_CallFuncND)(Enitity*, void*);
+typedef void (Object::*SEL_CallFuncN)(Entity*);
+typedef void (Object::*SEL_CallFuncND)(Entity*, void*);
 typedef void (Object::*SEL_CallFuncO)(Object*);
 typedef void (Object::*SEL_MenuHandler)(Object*);
-typedef void (Object::*SEL_EventHandler)(Event*);
+//typedef void (Object::*SEL_EventHandler)(Event*);
 typedef int (Object::*SEL_Compare)(Object*);
 
 #define schedule_selector(_SELECTOR) (SEL_SCHEDULE)(&_SELECTOR)

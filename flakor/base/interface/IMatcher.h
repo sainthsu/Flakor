@@ -10,3 +10,5 @@ class IMatcher
 };
 
 FLAKOR_NS_END
+
+#endif

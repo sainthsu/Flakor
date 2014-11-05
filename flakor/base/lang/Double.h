@@ -1,10 +1,15 @@
 #ifndef _FK_DOUBLE_H_
 #define _FK_DOUBLE_H_
 
+FLAKOR_NS_BEGIN
+
+class Object;
+class DataVisitor;
+
 class Double : public Object
 {
 public:
-	CCDouble(double v)
+	Double(double v)
         : m_dValue(v) {}
     double getValue() const {return m_dValue;}
 
@@ -19,10 +24,12 @@ public:
     }
 
     /* override functions */
-    virtual void acceptVisitor(CCDataVisitor &visitor) { visitor.visit(this); }
+    virtual void acceptVisitor(DataVisitor &visitor) { visitor.visit(this); }
 
 private:
 	double m_dValue;
-}
+};
+
+FLAKOR_NS_END
 
 #endif

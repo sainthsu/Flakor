@@ -42,7 +42,7 @@ THE SOFTWARE.
 #define _FK_CARRAY_H_
 
 #include "macros.h"
-#include "lang/Object.h"
+#include "Object.h"
 
 #include <stdlib.h>
 #include <string.h>

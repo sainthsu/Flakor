@@ -1,6 +1,8 @@
 #ifndef _FK_TYPE_H_
 #define _FK_TYPE_H_
 
+#include "core/opengl/GL.h"
+
 //! Blend Function used for textures
 typedef struct _fkBlendFunc
 {

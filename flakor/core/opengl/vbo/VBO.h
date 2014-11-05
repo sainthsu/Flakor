@@ -36,7 +36,7 @@ struct VBOAttribute
     {
         glVertexAttribPointer(_location, _size, _type, _normalized, stride, _offset);
     }
-}
+};
 
 /**
  * VBO =  VertexBufferObject
@@ -75,7 +75,7 @@ class VBO : Object
 		 * 从显卡上卸载下来
 		 * @param glState Opengle 状态
 		 */
-		void unload(final GLState glState);
+		void unload();
 
 		/**
 		 * 是否VBO数据已过期
@@ -115,19 +115,19 @@ class VBO : Object
 		 * 与显卡bufferID绑定
 		 * @param glState
 		 */
-		void bind(GLState glStatae);
+		/*void bind(GLState glState);
 		void bind(GLState glState, ShaderProgram shaderProgram);
 		void unbind(GLState glState, ShaderProgram shaderProgram);
 
-		VBOManager getVBOManager();
+		VBOManager* getVBOManager();*/
 
 		/**
 		 * 画VBO存储的信息
 		 * @param primitiveType int
 		 * @param count int
 		 */
-		void draw(final int primitiveType, final int count);
-		void draw(final int primitiveType, final int offset, final int count);
+		void draw(int primitiveType, int count);
+		void draw(int primitiveType, int offset, int count);
 
 		virtual void onBufferData();
 
@@ -142,7 +142,7 @@ class VBO : Object
 
 			Array* VBOAttibutes;
 
-}
+};
 
 FLAKOR_NS_END
 

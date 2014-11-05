@@ -1,6 +1,47 @@
 
 #include "Color.h"
 
+float Color::COLOR_FACTOR_INT_TO_FLOAT = 255.0f;
+int32_t Color::ABGR_PACKED_RED_SHIFT = 0;
+int32_t Color::ABGR_PACKED_GREEN_SHIFT = 8;
+int32_t Color::ABGR_PACKED_BLUE_SHIFT = 16;
+int32_t Color::ABGR_PACKED_ALPHA_SHIFT = 24;
+
+int32_t Color::ABGR_PACKED_RED_CLEAR = 0XFFFFFF00;
+int32_t Color::ABGR_PACKED_GREEN_CLEAR = 0XFFFF00FF;
+int32_t Color::ABGR_PACKED_BLUE_CLEAR = 0XFF00FFFF;
+int32_t Color::ABGR_PACKED_ALPHA_CLEAR = 0X00FFFFFF;
+	
+int32_t Color::RGBA_PACKED_ALPHA_SHIFT = 0;
+int32_t Color::RGBA_PACKED_BLUE_SHIFT = 8;
+int32_t Color::RGBA_PACKED_GREEN_SHIFT = 16;
+int32_t Color::RGBA_PACKED_RED_SHIFT = 24;
+	
+int32_t Color::RGBA_PACKED_ALPHA_CLEAR = 0XFFFFFF00;
+int32_t Color::RGBA_PACKED_BLUE_CLEAR = 0XFFFF00FF;
+int32_t Color::RGBA_PACKED_GREEN_CLEAR = 0XFF00FFFF;
+int32_t Color::RGBA_PACKED_RED_CLEAR = 0X00FFFFFF;
+	
+int32_t Color::ARGB_PACKED_BLUE_SHIFT = 0;
+int32_t Color::ARGB_PACKED_GREEN_SHIFT = 8;
+int32_t Color::ARGB_PACKED_RED_SHIFT = 16;
+int32_t Color::ARGB_PACKED_ALPHA_SHIFT = 24;
+
+int32_t Color::ARGB_PACKED_BLUE_CLEAR = 0XFFFFFF00;
+int32_t Color::ARGB_PACKED_GREEN_CLEAR = 0XFFFF00FF;
+int32_t Color::ARGB_PACKED_RED_CLEAR = 0XFF00FFFF;
+int32_t Color::ARGB_PACKED_ALPHA_CLEAR = 0X00FFFFFF;
+	
+Color Color::WHITE = Color(1, 1, 1, 1);
+Color Color::BLACK = Color(0, 0, 0, 1);
+Color Color::RED = Color(1, 0, 0, 1);
+Color Color::YELLOW = Color(1, 1, 0, 1);
+Color Color::GREEN = Color(0, 1, 0, 1);
+Color Color::CYAN = Color(0, 1, 1, 1);
+Color Color::BLUE = Color(0, 0, 1, 1);
+Color Color::PINK = Color(1, 0, 1, 1);
+Color Color::TRANSPARENT = Color(0, 0, 0, 0);
+
 Color::Color(void)
 :red(1.),green(1.),blue(1.0),alpha(1.0)
 {

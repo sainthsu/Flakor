@@ -3,35 +3,42 @@
 
 #define FLAKOR_VERSION 0x00000100
 
-char* getFlakorVersion()
+const char* getFlakorVersion()
 {
        return "flakor engine 0.1.0beta";
 }
 //macro
 #include "macros.h"
+#include "stdC.h"
+
+//core opengl
+#include "core/opengl/GL.h"
 
 //lang include
-#include "lang/Array.h"
-#include "lang/AutoreleasePool.h"
-#include "lang/Bool.h"
-#include "lang/DataVisitor.h"
-#include "lang/Dictionary.h"
-#include "lang/Double.h"
-#include "lang/Float.h"
-#include "lang/Integer.h"
-#include "lang/Object.h"
-#include "lang/Set.h"
-#include "lang/String.h"
-#include "lang/Zone.h"
+#include "base/lang/Object.h"
+#include "base/lang/Array.h"
+#include "base/lang/AutoreleasePool.h"
+#include "base/lang/Bool.h"
+#include "base/lang/DataVisitor.h"
+#include "base/lang/Dictionary.h"
+#include "base/lang/Double.h"
+#include "base/lang/Float.h"
+#include "base/lang/Integer.h"
+#include "base/lang/Set.h"
+#include "base/lang/String.h"
+#include "base/lang/Zone.h"
 
-//base
-#include "base/geometry/Point.h"
-#include "base/geometry/Size.h"
-#include "base/geometry/Rect.h"
-#include "base/geometry/Color.h"
-#include "base/geometry/Type.h"
+//element
+#include "base/element/Point.h"
+#include "base/element/Size.h"
+#include "base/element/Rect.h"
+#include "base/element/Color.h"
+#include "base/element/Type.h"
 
+//entity
 #include "base/entity/Entity.h"
+#include "base/entity/Scene.h"
+#include "base/entity/Sprite.h"
 
 #endif
 

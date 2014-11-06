@@ -12,6 +12,7 @@ FLAKOR_NS_BEGIN
 
 class Color;
 class Camera;
+class Matrix4;
 
 enum {
 	EntityTagInvalid = -1,
@@ -29,7 +30,8 @@ typedef enum {
 	SCRIPT_LUA,
 	SCRIPT_SCRIPT,
 	SCRIPT_KUNKUA
-}
+} ScriptType
+
 
 class Entity : public Object,public IColorable,public IUpdatable
 {

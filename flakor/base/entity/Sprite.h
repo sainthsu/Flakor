@@ -10,7 +10,7 @@ http://www.feike.org for chinese
 
 #include <string>
 #include "base/lang/Object.h"
-#include "base/interface/ITexture.h"
+#include "base/interface/Interface.h"
 #include "base/entity/Entity.h"
 #include "core/opengl/vbo/VBO.h"
 

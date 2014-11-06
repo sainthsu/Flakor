@@ -19,14 +19,16 @@
 #define _FK_MATRICES_H_
 
 
-#include "Vectors.h"
-#include "Quaternion.h"
+#include "math/Vectors.h"
 
 FLAKOR_NS_BEGIN
+
 enum MATRIX_MAJOR{
     ROW_MAJOR=1,
     COLUMN_MAJOR
 };
+
+class Point;
 
 ///////////////////////////////////////////////////////////////////////////
 // 2x2 matrix
@@ -77,7 +79,7 @@ class Matrix2
 
 private:
     float m[4];
-}
+};
 
 /**
  * 
@@ -239,7 +241,7 @@ public:
     Matrix4&    operator-=(const Matrix4& rhs);         // subtract rhs and update this object
     Vector4     operator*(const Vector4& rhs) const;    // multiplication: v' = M * v
     Vector3     operator*(const Vector3& rhs) const;    // multiplication: v' = M * v
-    Matrix4     operator*(const Point& rhs) const;     // multiplication: p' = M * p
+    Point*     operator*(const Point& rhs) const;     // multiplication: p' = M * p
     Matrix4     operator*(const Matrix4& rhs) const;    // multiplication: M3 = M1 * M2
     Matrix4&    operator*=(const Matrix4& rhs);         // multiplication: M1' = M1 * M2
     bool        operator==(const Matrix4& rhs) const;   // exact compare, no epsilon
@@ -494,7 +496,7 @@ inline Matrix3::Matrix3(float xx, float xy, float xz,
     set(xx, xy, xz,  yx, yy, yz,  zx, zy, zz);
 }
 
-inline Matrix3::Matrix3(const Matrix2 matrix)
+inline Matrix3::Matrix3(const Matrix2& matrix)
 {
     m[0] = matrix[0]; m[1] = matrix[1];
     m[3] = matrix[2]; m[4] = matrix[3];
@@ -895,13 +897,6 @@ inline Vector3 Matrix4::operator*(const Vector3& rhs) const
                    m[2]*rhs.x + m[6]*rhs.y + m[10]*rhs.z);
 }
 
-inline Point Matrix4::operator*(const Point& rhs) const
-{
-    return Point(m[0]*rhs.x + m[4]*rhs.y + m[8]*rhs.z,
-                   m[1]*rhs.x + m[5]*rhs.y + m[9]*rhs.z,
-                   m[2]*rhs.x + m[6]*rhs.y + m[10]*rhs.z);
-}
-
 
 inline Matrix4 Matrix4::operator*(const Matrix4& n) const
 {
@@ -992,5 +987,165 @@ inline Vector3 operator*(const Vector3& v, const Matrix4& m)
                    v.x*m[8] + v.y*m[9] + v.z*m[10]);
 }
 		
+/******************************************************************
+ * Quaternion class
+ *
+ */
+class Quaternion
+{
+private:
+    float x, y, z, w;
+
+public:
+    friend class Vector3;
+    friend class Vector4;
+    friend class Matrix4;
+
+    Quaternion()
+    {
+        x = 0.f;
+        y = 0.f;
+        z = 0.f;
+        w = 1.f;
+    }
+
+    Quaternion( const float fX, const float fY, const float fZ, const float fW )
+    {
+        x = fX;
+        y = fY;
+        z = fZ;
+        w = fW;
+    }
+
+    Quaternion( const Vector3 vec, const float fW )
+    {
+        x = vec.x;
+        y = vec.y;
+        z = vec.z;
+        w = fW;
+    }
+
+    Quaternion( const float* p )
+    {
+        x = *p++;
+        y = *p++;
+        z = *p++;
+        w = *p++;
+    }
+
+    Quaternion operator*( const Quaternion rhs )
+    {
+        Quaternion ret;
+        ret.x = x * rhs.w + y * rhs.z - z * rhs.y + w * rhs.x;
+        ret.y = -x * rhs.z + y * rhs.w + z * rhs.x + w * rhs.y;
+        ret.z = x * rhs.y - y * rhs.x + z * rhs.w + w * rhs.z;
+        ret.w = -x * rhs.x - y * rhs.y - z * rhs.z + w * rhs.w;
+        return ret;
+    }
+
+    Quaternion& operator*=( const Quaternion rhs )
+    {
+        Quaternion ret;
+        ret.x = x * rhs.w + y * rhs.z - z * rhs.y + w * rhs.x;
+        ret.y = -x * rhs.z + y * rhs.w + z * rhs.x + w * rhs.y;
+        ret.z = x * rhs.y - y * rhs.x + z * rhs.w + w * rhs.z;
+        ret.w = -x * rhs.x - y * rhs.y - z * rhs.z + w * rhs.w;
+        *this = ret;
+        return *this;
+    }
+
+    Quaternion Conjugate()
+    {
+        x = -x;
+        y = -y;
+        z = -z;
+        return *this;
+    }
+
+    //Non destuctive version
+    Quaternion Conjugated()
+    {
+        Quaternion ret;
+        ret.x = -x;
+        ret.y = -y;
+        ret.z = -z;
+        ret.w = w;
+        return ret;
+    }
+
+    void ToMatrix( Matrix4& mat )
+    {
+        float x2 = x * x * 2.0f;
+        float y2 = y * y * 2.0f;
+        float z2 = z * z * 2.0f;
+        float xy = x * y * 2.0f;
+        float yz = y * z * 2.0f;
+        float zx = z * x * 2.0f;
+        float xw = x * w * 2.0f;
+        float yw = y * w * 2.0f;
+        float zw = z * w * 2.0f;
+
+        mat.m[0] = 1.0f - y2 - z2;
+        mat.m[1] = xy + zw;
+        mat.m[2] = zx - yw;
+        mat.m[4] = xy - zw;
+        mat.m[5] = 1.0f - z2 - x2;
+        mat.m[6] = yz + xw;
+        mat.m[8] = zx + yw;
+        mat.m[9] = yz - xw;
+        mat.m[10] = 1.0f - x2 - y2;
+
+        mat.m[3] = mat.m[7] = mat.m[11] = mat.m[12] = mat.m[13] = mat.m[14] = 0.0f;
+        mat.m[15] = 1.0f;
+    }
+
+    void ToMatrixPreserveTranslate( Matrix4& mat )
+    {
+        float x2 = x * x * 2.0f;
+        float y2 = y * y * 2.0f;
+        float z2 = z * z * 2.0f;
+        float xy = x * y * 2.0f;
+        float yz = y * z * 2.0f;
+        float zx = z * x * 2.0f;
+        float xw = x * w * 2.0f;
+        float yw = y * w * 2.0f;
+        float zw = z * w * 2.0f;
+
+        mat.m[0] = 1.0f - y2 - z2;
+        mat.m[1] = xy + zw;
+        mat.m[2] = zx - yw;
+        mat.m[4] = xy - zw;
+        mat.m[5] = 1.0f - z2 - x2;
+        mat.m[6] = yz + xw;
+        mat.m[8] = zx + yw;
+        mat.m[9] = yz - xw;
+        mat.m[10] = 1.0f - x2 - y2;
+
+        mat.m[3] = mat.m[7] = mat.m[11] = 0.0f;
+        mat.m[15] = 1.0f;
+    }
+
+    static Quaternion RotationAxis( const Vector3 axis, const float angle )
+    {
+        Quaternion ret;
+        float s = sinf( angle / 2 );
+        ret.x = s * axis.x;
+        ret.y = s * axis.y;
+        ret.z = s * axis.z;
+        ret.w = cosf( angle / 2 );
+        return ret;
+    }
+
+    void Value( float& fX, float& fY, float& fZ, float& fW )
+    {
+        fX = x;
+        fY = y;
+        fZ = z;
+        fW = w;
+    }
+};
+
 
 FLAKOR_NS_END
+
+#endif

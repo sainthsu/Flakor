@@ -1,6 +1,10 @@
 #ifndef _FK_ICOLORABLE_H_
 #define _FK_ICOLORABLE_H_
 
+FLAKOR_NS_BEGIN
+
+class Color;
+
 class IColorable
 {
 	public:
@@ -16,6 +20,8 @@ class IColorable
 		virtual float getGreen();
 		virtual float getBlue();
 		virtual float getAlpha();
-}
+};
+
+FLAKOR_NS_END
 
 #endif

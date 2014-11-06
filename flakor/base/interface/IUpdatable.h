@@ -1,5 +1,8 @@
-#ifdef _FK_IUPDATABLE_H_
+#ifndef _FK_IUPDATABLE_H_
 #define _FK_IUPDATABLE_H_
+
+FLAKOR_NS_BEGIN
+
 
 class IUpdatable
 {
@@ -9,7 +12,9 @@ class IUpdatable
 
 		virtual void onUpdate(float delta);
 		virtual void reset();
-}
+};
+
+FLAKOR_NS_END
 
 #endif
 

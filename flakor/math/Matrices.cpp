@@ -6,9 +6,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <math.h>
+#include "base/element/Element.h"
 #include "Matrices.h"
 
 const float DEG2RAD = 3.141593f / 180;
+
+inline Point* Matrix4::operator*(const Point& rhs) const
+{
+    return *Point(m[0]*rhs.x + m[4]*rhs.y + m[8]*rhs.z,
+                   m[1]*rhs.x + m[5]*rhs.y + m[9]*rhs.z,
+                   m[2]*rhs.x + m[6]*rhs.y + m[10]*rhs.z);
+}
 
 // return the determinant of 2x2 matrix
 ///////////////////////////////////////////////////////////////////////////////

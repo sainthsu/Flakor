@@ -56,7 +56,7 @@ struct Vector2
 };
 
 
-
+struct Vector4;
 ///////////////////////////////////////////////////////////////////////////////
 // 3D vector
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,23 +71,23 @@ struct Vector3
     Vector3(float x, float y, float z) : x(x), y(y), z(z) {};
     Vector3( const Vector3& vec )
     {
-        x_ = vec.x_;
-        y_ = vec.y_;
-        z_ = vec.z_;
+        x = vec.x;
+        y = vec.y;
+        z = vec.z;
     }
 
     Vector3( const float* pVec )
     {
-        x_ = (*pVec++);
-        y_ = (*pVec++);
-        z_ = *pVec;
+        x = (*pVec++);
+        y = (*pVec++);
+        z = *pVec;
     }
 
     Vector3( const Vector2& vec, float f )
     {
-        x_ = vec.x_;
-        y_ = vec.y_;
-        z_ = f;
+        x = vec.x;
+        y = vec.y;
+        z = f;
     }
 
     Vector3( const Vector4& vec );
@@ -140,26 +140,26 @@ struct Vector4
     Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {};
 	Vector4( const Vector4& vec )
     {
-        x_ = vec.x_;
-        y_ = vec.y_;
-        z_ = vec.z_;
-        w_ = vec.w_;
+        x = vec.x;
+        y = vec.y;
+        z = vec.z;
+        w = vec.w;
     }
 
     Vector4( const Vector3& vec, const float fW )
     {
-        x_ = vec.x_;
-        y_ = vec.y_;
-        z_ = vec.z_;
-        w_ = fW;
+        x = vec.x;
+        y = vec.y;
+        z = vec.z;
+        w = fW;
     }
 
     Vector4( const float* pVec )
     {
-        x_ = (*pVec++);
-        y_ = (*pVec++);
-        z_ = *pVec;
-        w_ = *pVec;
+        x = (*pVec++);
+        y = (*pVec++);
+        z = *pVec;
+        w = *pVec;
     }
 
     // utils functions
@@ -168,7 +168,7 @@ struct Vector4
     float       distance(const Vector4& vec) const;     // distance between two vectors
     Vector4&    normalize();                            //
     float       dot(const Vector4& vec) const;          // dot product
-    Vector3     cross(const Vector3& vec) const;        // cross product
+    Vector4     cross(const Vector4& vec) const;        // cross product
     bool        equal(const Vector4& vec, float e) const; // compare with epsilon
 	bool		validate();
 
@@ -558,8 +558,9 @@ inline float Vector4::dot(const Vector4& rhs) const {
     return (x*rhs.x + y*rhs.y + z*rhs.z + w*rhs.w);
 }
 
-inline Vector3 Vector3::cross(const Vector3& rhs) const {
-    return Vector3(y*rhs.z - z*rhs.y, z*rhs.x - x*rhs.z, x*rhs.y - y*rhs.x);
+//i dont know if correct or not
+inline Vector4 Vector4::cross(const Vector4& rhs) const {
+    return Vector4(y*rhs.z - w*rhs.z, z*rhs.w - x*rhs.w, w*rhs.x - y*rhs.x, x*rhs.y - z*rhs.y);
 }
 
 inline bool Vector4::equal(const Vector4& rhs, float epsilon) const {

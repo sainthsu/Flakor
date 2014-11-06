@@ -74,35 +74,35 @@ class Color
 
 		inline void reset()
 		{
-			setColor(*Color::WHITE);
+			setColor(1.f,1.f,1.f,1.f);
 		}
 
 		inline void setRed(GLubyte red)
 		{
-			this.red = red/255.f;
+			this->red = red/255.f;
 		}
 		
 		inline void setGreen(GLubyte green)
 		{
-			this.green = green/255.f;
+			this->green = green/255.f;
 		}
 
 		inline void setBlue(GLubyte blue)
 		{
-			this.blue = blue/255.f;
+			this->blue = blue/255.f;
 		}
 
 		inline void setAlpha(GLubyte alpha)
 		{
-			this.alpha = alpha/255.f;
+			this->alpha = alpha/255.f;
 		}
 
 
 		inline bool setRedChecking(GLfloat red)
 		{
-			if(this.red != red)
+			if(this->red != red)
 			{
-				this.red = red;
+				this->red = red;
 				return true;
 			}
 			return false;
@@ -110,9 +110,9 @@ class Color
 
 		inline bool setGreenChecking(GLfloat green)
 		{
-			if(this.green != green)
+			if(this->green != green)
 			{
-				this.green = green;
+				this->green = green;
 				return true;
 			}
 			return false;
@@ -120,9 +120,9 @@ class Color
 
 		inline bool setBlueChecking(GLfloat blue)
 		{
-			if(this.blue != blue)
+			if(this->blue != blue)
 			{
-				this.blue = blue;
+				this->blue = blue;
 				return true;
 			}
 			return false;
@@ -130,9 +130,9 @@ class Color
 
 		inline bool setAlphaChecking(GLfloat alpha)
 		{
-			if(this.alpha != alpha)
+			if(this->alpha != alpha)
 			{
-				this.alpha = alpha;
+				this->alpha = alpha;
 				return true;
 			}
 			return false;
@@ -162,13 +162,13 @@ class Color
 
 		inline int32_t getRGBAInt()
 		{
-				return ((int)(255 * this.alpha) << Color::RGBA_PACKED_ALPHA_SHIFT) | ((int)(255 * red) << Color::RGBA_PACKED_RED_SHIFT) | ((int)(255 * green) << Color::RGBA_PACKED_GREEN_SHIFT) | ((int)(255 * blue) << Color::RGBA_PACKED_BLUE_SHIFT);
+				return ((int)(255 * this->alpha) << Color::RGBA_PACKED_ALPHA_SHIFT) | ((int)(255 * red) << Color::RGBA_PACKED_RED_SHIFT) | ((int)(255 * green) << Color::RGBA_PACKED_GREEN_SHIFT) | ((int)(255 * blue) << Color::RGBA_PACKED_BLUE_SHIFT);
 
 		}
 
 		void mix(const Color& ColorA, float percentageA, const Color& ColorB, float percentageB);
 		
-}
+};
 
 FLAKOR_NS_END
 #endif

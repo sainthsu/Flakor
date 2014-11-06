@@ -1,9 +1,10 @@
 #ifndef _FK_QUATERNION_H_
 #define _FK_QUATERNION_H_
 
-#include "Matrices.h"
-
 FLAKOR_NS_BEGIN
+
+class Matrix4;
+
 /******************************************************************
  * Quaternion class
  *
@@ -163,3 +164,5 @@ public:
 };
 
 FLAKOR_NS_END
+
+#endif

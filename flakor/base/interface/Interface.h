@@ -2,9 +2,11 @@
 #define _FK_INTERFACE_H_
 
 #include <string>
+#include "base/element/Type.h"
 
 FLAKOR_NS_BEGIN
 
+class Texture2D;
 /**
  * Color interface that affects CCNode's color and opacity
  */
@@ -46,9 +48,9 @@ class IBlendFunc
      * @return A ccBlendFunc structure with source and destination factor which specified pixel arithmetic.
      */
     virtual BlendFunc getBlendFunc(void) = 0;
-}
+};
 
-class ITexture :: public IBlendFunc
+class ITexture : public IBlendFunc
 {
 	public:
     /**
@@ -67,6 +69,6 @@ class ITexture :: public IBlendFunc
     virtual void setTexture(Texture2D *texture) = 0;
 }
 
-FLKAOR_NS_END
+FLAKOR_NS_END
 
 #endif

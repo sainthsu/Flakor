@@ -1,6 +1,6 @@
 #include "TestScene.h"
 
-bool TestScene:init()
+bool TestScene::init()
 {
 	Sprite *sprite = Sprite::create("flakor_test.png");
 

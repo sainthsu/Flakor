@@ -6,6 +6,8 @@
 
 FLAKOR_NS_BEGIN
 
+class Point;
+
 class Size
 {
 public:

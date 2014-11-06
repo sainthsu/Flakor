@@ -1,13 +1,13 @@
-#ifdef _FK_POINT_H_
-#define _FK_POINT_H_
+#ifndef _FK_ELEMENT_H_
+#define _FK_ELEMENT_H_
 
 #include <math.h>
 
 FLAKOR_NS_BEGIN
 
 typedef enum {
-	2D,
-	3D,
+	POINT2D,
+	POINT3D,
 } PointType;
 
 class Size;
@@ -172,12 +172,70 @@ class Point
     	return Point(cosf(a), sinf(a));
     }
 
-	transform();
+	//transform();
 
-}
+};
+
+class Size
+{
+public:
+	int width;
+	int height;
+public:
+	Size();
+    Size(float width, float height);
+	Size(const Size& other);
+	Size(const Point& point);
+
+	/**
+	 *运算符重载
+	 */
+	Size& operator= (const Size& other);
+    Size& operator= (const Point& point);
+    Size operator+ (const Size& right) const;
+    Size operator- (const Size& right) const;
+	Size operator* (float a) const;
+    Size operator/ (float a) const;
+
+	void setSize(float width, float height);
+    bool equals(const Size& target) const;
+};
+
+class Rect
+{
+public:
+    Point origin;
+    Size  size;
+
+public:
+    Rect();
+    Rect(float x, float y, float width, float height);
+    Rect(const Rect& other);
+    
+    Rect& operator= (const Rect& other);
+    void setRect(float x, float y, float width, float height);
+
+    float getMinX() const; /// return the leftmost x-value of current rect
+    float getMidX() const; /// return the midpoint x-value of current rect
+    float getMaxX() const; /// return the rightmost x-value of current rect
+
+    float getMinY() const; /// return the bottommost y-value of current rect
+    float getMidY() const; /// return the midpoint y-value of current rect
+    float getMaxY() const; /// return the topmost y-value of current rect
+
+    bool equals(const Rect& rect) const;   
+    bool containsPoint(const Point& point) const;
+    bool intersectsRect(const Rect& rect) const;
+};
 
 #define MakePoint(x,y) Point((float)(x),(float)(y));
 const Point PointZero = MakePoint(0,0);
+
+#define MakeSize(width, height) Size((float)(width), (float)(height))
+const Size SizeZero = MakeSize(0,0);
+
+#define MakeRect(x,y,width, height) Rect((float)(x), (float)(y) , (float)(width), (float)(height))
+const Rect RectZero = MakeRect(0,0,0,0);
 
 FLAKOR_NS_END
 

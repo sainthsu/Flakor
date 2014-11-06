@@ -1,12 +1,10 @@
 #ifndef _FK_OBJECT_H_
 #define _FK_OBJECT_H_
 
-#include "base/lang/AutoreleasePool.h"
-#include "base/entity/Entity.h"
-
 FLAKOR_NS_BEGIN
 
 class Entity;
+class AutoReleasePool;
 
 class Object
 {

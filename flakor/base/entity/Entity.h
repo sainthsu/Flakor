@@ -1,10 +1,12 @@
-#ifdef _FK_ENTITY_H_
+#ifndef _FK_ENTITY_H_
 #define _FK_ENTITY_H_
 
-#include "./base/geometry/Color.h"
-#include "./lang/Object.h"
-#include "./lang/Array.h"
-#include "Camera.h"
+#include "base/interface/IUpdatable.h"
+#include "base/interface/IColorable.h"
+#include "base/element/Element.h"
+#include "base/element/Color.h"
+#include "base/lang/Array.h"
+#include "math/Camera.h"
 
 FLAKOR_NS_BEGIN
 
@@ -23,7 +25,13 @@ enum EntityState {
 	EntityOnCleanup
 };
 
-abstract class Entity :: public Object,public IUpdatable,public IColorable 
+typedef enum {
+	SCRIPT_LUA,
+	SCRIPT_SCRIPT,
+	SCRIPT_KUNKUA
+}
+
+class Entity : public Object,public IColorable,public IUpdatable
 {
 	protected:
 		static int s_globalOrderOfArrival;
@@ -122,7 +130,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 
 		bool transformDirty;
 		bool additionalTransformDirty;
-		bool inverseDirty
+		bool inverseDirty;
 			/**
 			 *相机，默认不起作用
 			 */
@@ -816,7 +824,7 @@ abstract class Entity :: public Object,public IUpdatable,public IColorable
 		Point convertTouchToEntitySpaceAR(Touch * touch);
 
 
-		}
+};
 
 FLAKOR_NS_END
 

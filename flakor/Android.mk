@@ -22,9 +22,8 @@ base/lang/Set.cpp \
 base/lang/String.cpp \
 base/lang/Zone.cpp \
 base/element/Color.cpp \
-base/element/Point.cpp \
-base/element/Rect.cpp \
-base/element/Size.cpp \
+base/element/Element.cpp \
+base/element/Helper.cpp \
 base/entity/Entity.cpp \
 base/entity/Scene.cpp \
 base/entity/Sprite.cpp \
@@ -35,7 +34,7 @@ math/MatrixStack.cpp \
 core/opengl/GLProgram.cpp \
 core/vbo/VBO.cpp \
 core/shader/Shader.cpp \
-core/texture2D.cpp \
+core/texture/texture2D.cpp \
 
 LOCAL_EXPORT_LDLIBS := -lGLESv1_CM \
                        -lGLESv2 \
@@ -55,7 +54,7 @@ LOCAL_LDLIBS    := -lGLESv1_CM \
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
                            $(LOCAL_PATH)/. \
                            $(LOCAL_PATH)/.. \
-                           $(LOCAL_PATH)/base/elment \
+                           $(LOCAL_PATH)/base/element \
 					$(LOCAL_PATH)/base/entity \
 					$(LOCAL_PATH)/base/lang \
 					$(LOCAL_PATH)/base/interface \
@@ -71,7 +70,7 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
 LOCAL_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/. \
                     $(LOCAL_PATH)/.. \
-					$(LOCAL_PATH)/base/elment \
+					$(LOCAL_PATH)/base/element \
 					$(LOCAL_PATH)/base/entity \
 					$(LOCAL_PATH)/base/lang \
 					$(LOCAL_PATH)/base/interface \

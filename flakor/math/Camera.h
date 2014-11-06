@@ -1,9 +1,7 @@
 /****************************************************************************
-Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2008-2010 Ricardo Quesada
-Copyright (c) 2011      Zynga Inc.
+Copyright (c) 2013      Saint Hsu
 
-http://www.cocos2d-x.org
+http://www.flakor.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +25,12 @@ THE SOFTWARE.
 #ifndef _FK_CAMERA_H_
 #define _FK_CAMERA_H_
 
-#include "lang/Object.h"
 #include "macros.h"
-#include "Matrices.h"
+#include "base/lang/Object.h"
+#include "math/Matrices.h"
 #include <string>
 
-FK_NS_BEGIN
+FLAKOR_NS_BEGIN
 
 /**
  * @addtogroup base_nodes
@@ -139,6 +137,6 @@ private:
 
 /// @}
 
-FK_NS_END
+FLAKOR_NS_END
 
 #endif // __CAMERA_H_

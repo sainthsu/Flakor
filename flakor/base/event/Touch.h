@@ -1,8 +1,7 @@
 /****************************************************************************
-Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2014 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Saint
 
-http://www.cocos2d-x.org
+http://www.flakor.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __CC_TOUCH_H__
-#define __CC_TOUCH_H__
+#ifndef _FK_TOUCH_H_
+#define _FK_TOUCH_H_
 
-#include "base/CCRef.h"
-#include "math/CCGeometry.h"
+#include "base/lang/Object.h"
+#include "base/element/Element.h"
 
-NS_CC_BEGIN
+FLAKOR_NS_BEGIN
 
 /**
  * @addtogroup input
  * @{
  */
 
-class CC_DLL Touch : public Ref
+class Touch : public Object
 {
 public:
-    /** how the touches are dispathced */
+    /** how the touches are dispathched */
     enum class DispatchMode {
         /** All at once */
         ALL_AT_ONCE,
@@ -53,19 +52,19 @@ public:
     {}
 
     /** returns the current touch location in OpenGL coordinates */
-    Vec2 getLocation() const;
+    Point getLocation() const;
     /** returns the previous touch location in OpenGL coordinates */
-    Vec2 getPreviousLocation() const;
+    Point getPreviousLocation() const;
     /** returns the start touch location in OpenGL coordinates */
-    Vec2 getStartLocation() const;
+    Point getStartLocation() const;
     /** returns the delta of 2 current touches locations in screen coordinates */
-    Vec2 getDelta() const;
+    Point getDelta() const;
     /** returns the current touch location in screen coordinates */
-    Vec2 getLocationInView() const;
+    Point getLocationInView() const;
     /** returns the previous touch location in screen coordinates */
-    Vec2 getPreviousLocationInView() const;
+    Point getPreviousLocationInView() const;
     /** returns the start touch location in screen coordinates */
-    Vec2 getStartLocationInView() const;
+    Point getStartLocationInView() const;
     
     void setTouchInfo(int id, float x, float y)
     {
@@ -91,14 +90,14 @@ public:
 private:
     int _id;
     bool _startPointCaptured;
-    Vec2 _startPoint;
-    Vec2 _point;
-    Vec2 _prevPoint;
+    Point _startPoint;
+    Point _point;
+    Point _prevPoint;
 };
 
 // end of input group
 /// @}
 
-NS_CC_END
+FLAKOR_NS_END
 
-#endif  // __PLATFORM_TOUCH_H__
+#endif  // _FK_TOUCH_H_

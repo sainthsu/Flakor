@@ -7,6 +7,7 @@
 
 #include <android/configuration.h>
 #include <android/looper.h>
+#include <android/input.h>
 #include <android/native_activity.h>
 
 #include "Engine.h"
@@ -14,6 +15,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+FLAKOR_NS_BEGIN
 
 	class Application;
 	class Engine;
@@ -300,7 +303,10 @@ extern "C" {
 			void printConfig();
 	};
 
+FLAKOR_NS_END
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

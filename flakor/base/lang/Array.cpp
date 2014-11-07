@@ -23,7 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "Array.h"
-#include "platform/FileUtils.h"
+//#include "platform/FileUtils.h"
 
 FLAKOR_NS_BEGIN
 
@@ -133,7 +133,8 @@ Array* Array::createWithContentsOfFile(const char* pFileName)
 
 Array* Array::createWithContentsOfFileThreadSafe(const char* pFileName)
 {
-    return CCFileUtils::sharedFileUtils()->createCCArrayWithContentsOfFile(pFileName);
+    return NULL;
+	//CCFileUtils::sharedFileUtils()->createCCArrayWithContentsOfFile(pFileName);
 }
 
 bool Array::init()
@@ -268,7 +269,7 @@ bool Array::isEqualToArray(Array* otherArray)
 {
     for (unsigned int i = 0; i< this->count(); i++)
     {
-        if (!this->objectAtIndex(i)->isEqual(otherArray->objectAtIndex(i)))
+        if (!this->objectAtIndex(i)->equal(otherArray->objectAtIndex(i)))
         {
             return false;
         }
@@ -322,7 +323,7 @@ void Array::fastRemoveObjectAtIndex(unsigned int index)
     fkArrayFastRemoveObjectAtIndex(data, index);
 }
 
-void Array::fastRemoveObject(CCObject* object)
+void Array::fastRemoveObject(Object* object)
 {
     fkArrayFastRemoveObject(data, object);
 }
@@ -403,4 +404,4 @@ void Array::acceptVisitor(DataVisitor &visitor)
     visitor.visit(this);
 }
 
-NS_CC_END
+FLAKOR_NS_END

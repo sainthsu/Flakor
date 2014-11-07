@@ -18,6 +18,8 @@
 #  define LOGV(...)  ((void)0)
 #endif
 
+FLAKOR_NS_BEGIN
+
 static void process_input(Application* app, struct android_poll_source* source) {
     AInputEvent* event = NULL;
     while (AInputQueue_getEvent(app->inputQueue, &event) >= 0)
@@ -34,7 +36,7 @@ static void process_input(Application* app, struct android_poll_source* source) 
 
 static void process_cmd(Application* app, struct android_poll_source* source)
 {
-    int8_t cmd = android_app_read_cmd(app);
+    int8_t cmd = app->readCmd();
     app->preExecCmd(cmd);
     app->onExecCmd(cmd);
     app->postExecCmd(cmd);
@@ -169,7 +171,7 @@ void Application::freeSavedState()
     pthread_mutex_lock(&this->mutex);
     if (this->savedState != NULL)
     {
-        free(this->savedState);
+        free();
         this->savedState = NULL;
         this->savedStateSize = 0;
     }
@@ -202,7 +204,7 @@ void Application::writeCmd(int8_t cmd)
 void Application::setInput(AInputQueue* inputQueue)
 {
     pthread_mutex_lock(&this->mutex);
-    android_app->pendingInputQueue = inputQueue;
+    this->pendingInputQueue = inputQueue;
     this->writeCmd(APP_CMD_INPUT_CHANGED);
     
     while (this->inputQueue != this->pendingInputQueue)
@@ -255,7 +257,7 @@ void Application::free()
     close(this->msgwrite);
     pthread_cond_destroy(&this->cond);
     pthread_mutex_destroy(&this->mutex);
-    free(android_app);
+    delete(this);
 }
 
 void Application::printConfig()
@@ -316,7 +318,7 @@ Application* Application::create(ANativeActivity* activity,
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    pthread_create(&app->thread, &attr, Application::ThreadEntry, app);
+    pthread_create(&app->thread, &attr, Application::threadEntry, app);
     
     // Wait for thread to start.
     pthread_mutex_lock(&app->mutex);
@@ -329,7 +331,7 @@ Application* Application::create(ANativeActivity* activity,
 }
 
 /* new thread entry */
-void* Application::ThreadEntry(void* param)
+void* Application::threadEntry(void* param)
 {
     Application* app = (Application*)param;
     
@@ -393,7 +395,7 @@ void Application::main()
     
     if (this->savedState != NULL) {
         // We are starting with a previous saved state; restore from it.
-        engine->app = *(Application *)this->savedState;
+        engine->app = (Application *)this->savedState;
     }
     
     // loop waiting for stuff to do.
@@ -408,7 +410,7 @@ void Application::main()
         // If not animating, we will block forever waiting for events.
         // If animating, we loop until all events are read, then continue
         // to draw the next frame of animation.
-        while ((ident=ALooper_pollAll(engine->animating ? 0 : -1, NULL, &events,
+        while ((ident=ALooper_pollAll(engine->state==STATE_RUNNING ? 0 : -1, NULL, &events,
                                       (void**)&source)) >= 0)
         {
             
@@ -453,3 +455,4 @@ void Application::main()
     }
 }
 
+FLAKOR_NS_END

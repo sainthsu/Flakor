@@ -1,7 +1,12 @@
 #include "Engine.h"
-#include "TestScene.h"
+#include "Application.h"
+#include "../test/android/jni/classes/TestScene.h"
 
-Engine::initDisplay(void)
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "engine", __VA_ARGS__))
+
+FLAKOR_NS_BEGIN
+
+int Engine::initDisplay(void)
 {
 	// initialize OpenGL ES and EGL
 
@@ -40,7 +45,7 @@ Engine::initDisplay(void)
 
     ANativeWindow_setBuffersGeometry(this->app->window, 0, 0, format);
 
-    surface = eglCreateWindowSurface(display, config, engine->app->window, NULL);
+    surface = eglCreateWindowSurface(display, config, this->app->window, NULL);
     context = eglCreateContext(display, config, NULL, NULL);
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
@@ -69,7 +74,7 @@ Engine::initDisplay(void)
 /**
  * Just the current frame in the display.
  */
-Engine::drawFrame() {
+void Engine::drawFrame() {
     if (this->display == NULL) {
         // No display.
         return;
@@ -92,7 +97,7 @@ Engine::drawFrame() {
 /**
  * Tear down the EGL context currently associated with the display.
  */
-Engine::termDisplay()
+void Engine::termDisplay()
 {
     if (this->display != EGL_NO_DISPLAY)
     {
@@ -101,12 +106,12 @@ Engine::termDisplay()
         {
             eglDestroyContext(this->display, this->context);
         }
-        if (engine->surface != EGL_NO_SURFACE) {
+        if (this->surface != EGL_NO_SURFACE) {
             eglDestroySurface(this->display, this->surface);
         }
         eglTerminate(this->display);
     }
-    this->state = STATE_DESTR0YED;
+    this->state = STATE_DESTROYED;
     this->display = EGL_NO_DISPLAY;
     this->context = EGL_NO_CONTEXT;
     this->surface = EGL_NO_SURFACE;
@@ -115,14 +120,14 @@ Engine::termDisplay()
 /**
  * Process the next input event.
  */
-Engine::handleInput(AInputEvent* event)
+int32_t Engine::handleInput(AInputEvent* event)
 {
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
 	{
         this->state = STATE_RUNNING;
         
-        engine->state.x = AMotionEvent_getX(event, 0);
-        engine->state.y = AMotionEvent_getY(event, 0);
+        //engine->state.x = AMotionEvent_getX(event, 0);
+        //engine->state.y = AMotionEvent_getY(event, 0);
         
         return 1;
     }
@@ -132,17 +137,17 @@ Engine::handleInput(AInputEvent* event)
 /**
  * Process the next main command.
  */
-Engine::handleCMD(int32_t cmd)
+void Engine::handleCMD(int32_t cmd)
 {
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
             // The system has asked us to save our current state.  Do so.
-
-            engine->app->savedState = new Scene();
+		/*
+            this->app->savedState = new Scene();
             *((Scene*)engine->app->savedState) = engine->mainScene;
-            engine->app->savedStateSize = sizeof(Scene);
-
+            this->app->savedStateSize = sizeof(Scene);
+		*/
             break;
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.
@@ -180,3 +185,6 @@ Engine::handleCMD(int32_t cmd)
             break;
     }
 }
+
+FLAKOR_NS_END
+

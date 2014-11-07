@@ -1,5 +1,6 @@
 
-#include "Object.h"
+#include "base/lang/Object.h"
+#include "base/lang/AutoreleasePool.h"
 
 FLAKOR_NS_BEGIN
 
@@ -21,19 +22,19 @@ Object::~Object(void)
         PoolManager::sharedPoolManager()->removeObject(this);
     }
 
-    // if the object is referenced by Lua engine, remove it
+    /** if the object is referenced by Lua engine, remove it
     if (m_nLuaID)
     {
         ScriptEngineManager::sharedManager()->getScriptEngine()->removeScriptObjectByCCObject(this);
     }
     else
     {
-        CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()->getScriptEngine();
+        ScriptEngineProtocol* pEngine = ScriptEngineManager::sharedManager()->getScriptEngine();
         if (pEngine != NULL && pEngine->getScriptType() == kScriptTypeJavascript)
         {
                 pEngine->removeScriptObjectByCCObject(this);
         }
-    }
+    }*/
 }
 
 Object* Object::copy()
@@ -42,7 +43,7 @@ Object* Object::copy()
 
 void Object::release(void)
 {
-    CCAssert(m_uReference > 0, "reference count should greater than 0");
+    FKAssert(m_uReference > 0, "reference count should greater than 0");
     --m_uReference;
 
     if (m_uReference == 0)
@@ -53,7 +54,7 @@ void Object::release(void)
 
 void Object::retain(void)
 {
-    CCAssert(m_uReference > 0, "reference count should greater than 0");
+    FKAssert(m_uReference > 0, "reference count should greater than 0");
 
     ++m_uReference;
 }

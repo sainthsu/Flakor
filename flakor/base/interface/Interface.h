@@ -7,28 +7,6 @@
 FLAKOR_NS_BEGIN
 
 class Texture2D;
-/**
- * Color interface that affects CCNode's color and opacity
- */
-class IColorable
-{
-public:
-	virtual void setRed(float red);
-	virtual void setGreen(float green);
-	virtual void setBlue(float blue);
-	virtual void setAlpha(float alpha);
-
-	virtual void setColor(float red,float green, float blue);
-	virtual void setColor(float red,float green, float blue ,float alpha);
-	virtual void setColor(const Color& color) = 0;
-
-	virtual float getRed(void);
-	virtual float getGreen(void);
-	virtual float getBlue(void);
-	virtual float getAlpha(void);
-
-	virtual const Color& getColor(void);
-};
 
 class IBlendFunc
 {
@@ -40,14 +18,14 @@ class IBlendFunc
      *                  e.g. {GL_ONE, GL_ONE}, {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA}.
      *
      */
-    virtual void setBlendFunc(BlendFunc blendFunc) = 0;
+    virtual void setBlendFunc(const BlendFunc &blendFunc) = 0;
 
     /**
      * Returns the blending function that is currently being used.
      * 
      * @return A ccBlendFunc structure with source and destination factor which specified pixel arithmetic.
      */
-    virtual BlendFunc getBlendFunc(void) = 0;
+    virtual const BlendFunc& getBlendFunc(void) const = 0;
 };
 
 class ITexture : public IBlendFunc
@@ -58,7 +36,7 @@ class ITexture : public IBlendFunc
      *
      * @return  The texture that is currenlty being used.
      */
-    virtual Texture2D* getTexture(void) = 0;
+    virtual Texture2D* getTexture(void) const = 0;
 
     /**
      * Sets a new texuture. It will be retained.
@@ -67,7 +45,7 @@ class ITexture : public IBlendFunc
      * 
      */
     virtual void setTexture(Texture2D *texture) = 0;
-}
+};
 
 FLAKOR_NS_END
 

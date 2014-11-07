@@ -13,6 +13,7 @@ FLAKOR_NS_BEGIN
 class Color;
 class Camera;
 class Matrix4;
+class Touch;
 
 enum {
 	EntityTagInvalid = -1,
@@ -30,7 +31,7 @@ typedef enum {
 	SCRIPT_LUA,
 	SCRIPT_SCRIPT,
 	SCRIPT_KUNKUA
-} ScriptType
+} ScriptType;
 
 
 class Entity : public Object,public IColorable,public IUpdatable
@@ -173,7 +174,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * Gets the description string. It makes debugging easier.
 		 * @return A string terminated with '\0'
 		 */
-		const char* toString(void);
+		virtual std::string toString(void) const;
 
 		virtual void setPosition(const Point &position);
 		virtual void setPosition(float x, float y);
@@ -193,7 +194,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		virtual void  setPositionY(float y);
 		virtual float getPositionY(void);
 
-		void setRelativeAnchorPoint(bool relative);
+		virtual void setRelativeAnchorPoint(bool relative);
 		bool isRelativeAnchorPoint();
 		/**
 		 * Returns the anchorPoint in absolute pixels.
@@ -548,8 +549,8 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * @param zOrder    Z order for drawing priority. Please refer to setZOrder(int)
 		 */
 		virtual void reorderChild(Entity * child, int zOrder);
-		virtual void sortChildren();
-		virtual void sortChildren(bool immediate);
+		virtual void sortAllChildren();
+		virtual void sortAllChildren(bool immediate);
 
 		/**
 		 * Returns a tag that is used to identify the node easily.

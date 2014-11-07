@@ -12,12 +12,12 @@ main.cpp \
 Flakor.cpp \
 Engine.cpp \
 Application.cpp \
+base/lang/Object.cpp \
 base/lang/Array.cpp \
 base/lang/AutoreleasePool.cpp \
 base/lang/Bool.cpp \
 base/lang/DataVisitor.cpp \
 base/lang/Dictionary.cpp \
-base/lang/Object.cpp \
 base/lang/Set.cpp \
 base/lang/String.cpp \
 base/lang/Zone.cpp \

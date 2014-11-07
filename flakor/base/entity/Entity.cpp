@@ -552,12 +552,12 @@ void Entity::reorderChild(Entity * child, int zOrder)
 	child->_setZorder(zOrder);
 }
 
-void Entity::sortChildren()
+void Entity::sortAllChildren()
 {
-	sortChildren(true);
+	sortAllChildren(true);
 }
 
-void Entity::sortChildren(bool immediate)
+void Entity::sortAllChildren(bool immediate)
 {
 	if(immediate)
 	{

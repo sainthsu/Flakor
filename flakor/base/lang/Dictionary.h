@@ -26,10 +26,10 @@ THE SOFTWARE.
 #define _FK_DICTIONARY_H_
 
 #include "uthash.h"
-#include "Object.h"
-#include "Array.h"
+#include "base/lang/Object.h"
+#include "base/lang/Array.h"
 #include "base/lang/Zone.h"
-#include "String.h"
+#include "base/lang/String.h"
 
 FLAKOR_NS_BEGIN
 
@@ -436,4 +436,4 @@ private:
 
 FLAKOR_NS_END
 
-#endif /* __CCDICTIONARY_H__ */
+#endif /* _FK_DICTIONARY_H_ */

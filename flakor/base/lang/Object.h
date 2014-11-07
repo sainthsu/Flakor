@@ -1,6 +1,8 @@
 #ifndef _FK_OBJECT_H_
 #define _FK_OBJECT_H_
 
+#include "macros.h"
+
 FLAKOR_NS_BEGIN
 
 class Entity;

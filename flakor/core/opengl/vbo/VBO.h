@@ -1,7 +1,13 @@
+/****************************************************************************
+Copyright (c) 2013-2014 saint
 
+http://www.flakor.org for english
+http://www.feike.org for chinese
+****************************************************************************/
 #ifndef _FK_VBO_H_
 #define _FK_VBO_H_
 
+#include "core/opengl/GL.h"
 FLAKOR_NS_BEGIN
 
 /**
@@ -18,7 +24,7 @@ struct VBOAttribute
 	bool _normalized;
 
 	VBOAttribute()
-	:_name("unnamed"),_location(0),_offset(0),_size(0),_type(0),_normalized(false)
+	:_name((char *)"unnamed"),_location(0),_offset(0),_size(0),_type(0),_normalized(false)
 	{
 	}
 
@@ -32,9 +38,9 @@ struct VBOAttribute
 	{
 	}
 
-	inline void glVertexAttribPointer(int stride)
+	inline void vertexAttribPointer(int stride)
     {
-        glVertexAttribPointer(_location, _size, _type, _normalized, stride, _offset);
+        glVertexAttribPointer(_location, _size, _type, _normalized, stride, (GLvoid*)_offset);
     }
 };
 

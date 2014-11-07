@@ -22,6 +22,7 @@ class Point;
 class Rect;
 class Size;
 class Texture2D;
+class TextureAtlas;
 struct transformValues_;
 
 /**
@@ -154,7 +155,7 @@ public:
     virtual void setTexture(Texture2D *texture) override;
 
     /** returns the Texture2D object used by the sprite */
-    virtual Texture2D* getTexture() const override;
+    virtual Texture2D* getTexture(void) const override;
 
     /**
      * Updates the texture rect of the Sprite in points.
@@ -225,7 +226,7 @@ public:
      * @js  NA
      * @lua NA
      */
-    inline VBO& getVBO(void) const { return _vbo; }
+    inline VBO& getVBO(void) { return *_vbo; } const
 
     /**
      * Returns whether or not the texture rectangle is rotated.
@@ -345,12 +346,12 @@ public:
     virtual void reorderChild(Entity *child, int zOrder) override;
     using Entity::addChild;
     virtual void addChild(Entity *child, int zOrder, int tag) override;
-    virtual void addChild(Entity *child, int zOrder, const std::string &name) override;
+    //virtual void addChild(Entity *child, int zOrder, const std::string &name) override;
     virtual void sortAllChildren() override;
     virtual void setScale(float scale) override;
-    virtual void setPositionZ(float positionZ) override;
+    //virtual void setPositionZ(float positionZ) override;
     virtual void setAnchorPoint(const Point& anchor) override;
-    virtual void ignoreAnchorPointForPosition(bool value) override;
+    virtual void setRelativeAnchorPoint(bool relative) override;
     virtual void setVisible(bool bVisible) override;
     virtual void draw() override;
     //virtual void setOpacityModifyRGB(bool modify) override;
@@ -502,7 +503,7 @@ protected:
 
     bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
 private:
-    FK_DISALLOW_COPY_AND_ASSIGN(Sprite);
+    DISALLOW_COPY_AND_ASSIGN(Sprite);
 };
 
 

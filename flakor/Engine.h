@@ -13,12 +13,14 @@
 
 #include <android/sensor.h>
 #include <android/log.h>
+#include <android/input.h>
 
-#include "base/entity/Scene.h"
-
-class Application;
+#include "macros.h"
 
 FLAKOR_NS_BEGIN
+
+class Scene;
+class Application;
 
 enum EngineState {
     STATE_INITAL,
@@ -29,7 +31,7 @@ enum EngineState {
 
 class Engine
 {
-	protected:
+	public:
 		Application* app;
 
     	ASensorManager* sensorManager;
@@ -48,6 +50,8 @@ class Engine
 		Scene* nextScene;
 
 	public:
+		void setApplication(Application* app);
+		
 		void create(void);
 		void drawFrame(void);
 		void termDisplay(void);
@@ -56,7 +60,7 @@ class Engine
 		void setMainScene(Scene *scene);
 	private:
 		int initDisplay(void);
-}
+};
 
 FLAKOR_NS_END
 

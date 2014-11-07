@@ -23,6 +23,9 @@
 #include "base/lang/String.h"
 #include "base/lang/Zone.h"
 
+//event
+#include "base/event/Touch.h"
+
 //element
 #include "base/element/Element.h"
 #include "base/element/Color.h"
@@ -30,8 +33,8 @@
 
 //entity
 #include "base/entity/Entity.h"
-//#include "base/entity/Scene.h"
-//#include "base/entity/Sprite.h"
+#include "base/entity/Scene.h"
+#include "base/entity/Sprite.h"
 
 //#include "core/texture/Texture2D.h"
 

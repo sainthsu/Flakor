@@ -228,7 +228,7 @@ public:
     bool intersectsRect(const Rect& rect) const;
 };
 
-#define MakePoint(x,y) Point((float)(x),(float)(y));
+#define MakePoint(x,y) Point((float)(x),(float)(y))
 const Point PointZero = MakePoint(0,0);
 
 #define MakeSize(width, height) Size((float)(width), (float)(height))

@@ -73,7 +73,7 @@ private:
     DictItem(const char* pszKey, Object* pObject);
 
     /**
-     *  Constructor of DictItem. It's only for internal usage. CCDictionary is its friend class.
+     *  Constructor of DictItem. It's only for internal usage. Dictionary is its friend class.
      *
      *  @param  iKey    The integer key of this element.
      *  @param  pObject   The object of this element.
@@ -139,10 +139,10 @@ public:
  *  @note It's faster than getting all keys and traversing keys to get objects by objectForKey.
  *        It's also safe to remove elements while traversing.
  */
-#define FKDICT_FOREACH(__dict__, __el__) \
+#define FK_DICT_FOREACH(__dict__, __el__) \
     DictItem* pTmp##__dict__##__el__ = NULL; \
     if (__dict__) \
-    HASH_ITER(hh, (__dict__)->m_pElements, __el__, pTmp##__dict__##__el__)
+    HASH_ITER(hh, (__dict__)->m_pItems, __el__, pTmp##__dict__##__el__)
 
 
 

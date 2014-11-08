@@ -390,7 +390,7 @@ Object* Array::copyWithZone(Zone* pZone)
 
     Object* pObj = NULL;
     Object* pTmpObj = NULL;
-    FKARRAY_FOREACH(this, pObj)
+    FK_ARRAY_FOREACH(this, pObj)
     {
         pTmpObj = pObj->copy();
         pArray->addObject(pTmpObj);

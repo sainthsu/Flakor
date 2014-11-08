@@ -56,6 +56,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *定位点相对于自身的位置
 		 **************************************/
 		Point anchorPoint;
+		Point anchorPointInPixels;
 
 		/**
 		 *锚点是否起作用
@@ -221,7 +222,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *
 		 * @param nZOrder   Z order of this node.
 		 */
-		virtual void setZorder(int zOrder);
+		virtual void setZOrder(int zOrder);
 
 		/**
 		 * Sets the z order which stands for the drawing order

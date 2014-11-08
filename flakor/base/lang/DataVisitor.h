@@ -1,12 +1,11 @@
 #ifndef _FK_DATAVISITOR_H_
 #define _FK_DATAVISITOR_H_
 
-
+#include "base/lang/Object.h"
 #include <string>
 
 FLAKOR_NS_BEGIN
 
-class Object;
 class Bool;
 class Integer;
 class Float;

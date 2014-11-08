@@ -21,10 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
+#include "macros.h"
 #include "AutoreleasePool.h"
-#include "Macros.h"
 
-FLAKOR_CC_BEGIN
+
+FLAKOR_NS_BEGIN
 
 static PoolManager* s_pPoolManager = NULL;
 
@@ -48,7 +49,7 @@ void AutoreleasePool::addObject(Object* pObject)
     pObject->release(); // no ref count, in this case autorelease pool added.
 }
 
-void AutoreleasePool::removeObject(CCObject* pObject)
+void AutoreleasePool::removeObject(Object* pObject)
 {
     for (unsigned int i = 0; i < pObject->m_uAutoReleaseCount; ++i)
     {
@@ -66,7 +67,7 @@ void AutoreleasePool::clear()
 #endif
 
         Object* pObj = NULL;
-        FKARRAY_FOREACH_REVERSE(m_pManagedObjectArray, pObj)
+        FK_ARRAY_FOREACH_REVERSE(m_pManagedObjectArray, pObj)
         {
             if(!pObj)
                 break;
@@ -129,7 +130,7 @@ void PoolManager::finalize()
     {
         //CCAutoreleasePool* pReleasePool;
         Object* pObj = NULL;
-        FKARRAY_FOREACH(m_pReleasePoolStack, pObj)
+        FK_ARRAY_FOREACH(m_pReleasePoolStack, pObj)
         {
             if(!pObj)
                 break;
@@ -200,4 +201,4 @@ AutoreleasePool* PoolManager::getCurReleasePool()
     return m_pCurReleasePool;
 }
 
-FLAKOR_CC_END
+FLAKOR_NS_END

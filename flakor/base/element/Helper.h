@@ -20,7 +20,7 @@ FLAKOR_NS_BEGIN
 @return A Core Graphics structure that represents a rectangle.
         If the string is not well-formed, the function returns RectZero.
 */
-Rect *RectFromString(const char* pszContent);
+Rect RectFromString(const char* pszContent);
 
 /**
 @brief Returns a Core Graphics point structure corresponding to the data in a given string.
@@ -32,7 +32,7 @@ Rect *RectFromString(const char* pszContent);
 @return A Core Graphics structure that represents a point.
         If the string is not well-formed, the function returns PointZero.
 */
-Point *PointFromString(const char* pszContent);
+Point PointFromString(const char* pszContent);
 
 /**
 @brief Returns a Core Graphics size structure corresponding to the data in a given string.
@@ -44,7 +44,7 @@ Point *PointFromString(const char* pszContent);
 @return A Core Graphics structure that represents a size.
         If the string is not well-formed, the function returns SizeZero.
 */
-Size *SizeFromString(const char* pszContent);
+Size SizeFromString(const char* pszContent);
 
 // end of data_structure group
 /// @}

@@ -155,7 +155,7 @@
 	#define FKLOG(format, ...)      flakor::Log(format, ##__VA_ARGS__)
 	#define FKLOGERROR(format,...)  flakor::Log(format, ##__VA_ARGS__)
 	#define FKLOGINFO(format,...)   do {} while (0)
-	#define FKLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+	#define FKLOGWARN(...) __LOGWITHFUNCTION(__VA_ARGS__)
 
 	#elif FLAKOR_DEBUG > 1
 	#define FKLOG(format, ...)      flakor::Log(format, ##__VA_ARGS__)

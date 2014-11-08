@@ -21,12 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-
-#include "Set.h"
+#include "base/lang/DataVisitor.h"
+#include "base/lang/Set.h"
 
 using namespace std;
 
-NS_CC_BEGIN
+FLAKOR_NS_BEGIN
 
 Set::Set(void)
 {
@@ -56,7 +56,7 @@ Set::~Set(void)
     FK_SAFE_DELETE(m_pSet);
 }
 
-void Set::acceptVisitor(CCDataVisitor &visitor)
+void Set::acceptVisitor(DataVisitor &visitor)
 {
     visitor.visit(this);
 }
@@ -151,4 +151,4 @@ Object* Set::anyObject()
     return 0;
 }
 
-FLAKOR_CC_END
+FLAKOR_NS_END

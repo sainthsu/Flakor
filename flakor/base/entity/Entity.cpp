@@ -1,3 +1,4 @@
+#include "targetMacros.h"
 #include "Entity.h"
 
 FLAKOR_NS_BEGIN
@@ -16,7 +17,7 @@ Entity::Entity(void)
 , skewY(0.0f)
 , obAnchorPointInPixels(PointZero)
 , anchorPoint(PointZero)
-, additionalTransform(Matrix4())
+, additionalMatrix(NULL)
 , camera(NULL)	  
 , ZOrder(0)
 , orderOfArrival(0)
@@ -45,7 +46,7 @@ Entity::~Entity(void)
 	FKLOG("FLAKOR:deallocing");
 	//unregisterScriptHandler
 	FK_SAFE_RELEASE(camera);
-	FK_SAFE_RELEASE(userData);
+	FK_SAFE_RELEASE(userObject);
 }
 
 //overwrite this method for your own init action
@@ -73,15 +74,15 @@ Entity * Entity::create(float x,float y)
 	Entity *entity = create();
 	if(entity != NULL)
 	{
-		entity.setPosition(x,y);
+		entity->setPosition(x,y);
 	}
 
 	return entity;
 }
 
-const char* Entity::toString(void)
+std::string Entity::toString(void)
 {
-	return String::createWithFormat("{Entity: | Tag = %d}", tag)->getCString();
+	return String::createWithFormat("{Entity: | Tag = %d}", tag)->m_sString;
 }
 
 void Entity::setPosition(const Point &position)
@@ -146,7 +147,8 @@ bool Entity::isRelativeAnchorPoint()
 
 const Point& Entity::getAnchorPointInPixels()
 {
-	return PointMake(contentSize.width*anchorPoint.x , contentSize.height*anchorPoint.y);
+	//new MakePoint(contentSize.width*anchorPoint.x , contentSize.height*anchorPoint.y);
+	return anchorPointInPixels;
 }
 
 const Size& Entity::getContentSize()

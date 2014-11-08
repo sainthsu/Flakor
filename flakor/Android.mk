@@ -15,7 +15,6 @@ Application.cpp \
 base/lang/Object.cpp \
 base/lang/Array.cpp \
 base/lang/AutoreleasePool.cpp \
-base/lang/Bool.cpp \
 base/lang/DataVisitor.cpp \
 base/lang/Dictionary.cpp \
 base/lang/Set.cpp \

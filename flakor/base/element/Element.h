@@ -2,6 +2,7 @@
 #define _FK_ELEMENT_H_
 
 #include <math.h>
+#include <float.h>
 
 FLAKOR_NS_BEGIN
 
@@ -22,13 +23,13 @@ class Point
 	public:
 
 	Point();	
-	Point(int x,int y);
-	Point(int x,int y,int z);
+	Point(float x,float y);
+	Point(float x,float y,float z);
 	Point(const Point& other);
 	Point(const Size& size);
 
-	Point make(int x,int y) const;
-	Point make(int x,int y,int z) const;
+	Point make(float x,float y) const;
+	Point make(float x,float y,float z) const;
 	Point makeZero(void) const;
 	
 	~Point(void);
@@ -45,6 +46,9 @@ class Point
     Point operator/(float a) const;
 
 	void setPoint(float x, float y);
+	void setPoint(float x, float y, float z);
+	void setPoint(const Point& other);
+
     bool equals(const Point& target) const;
 
 	/** @returns if points have fuzzy equality which means 

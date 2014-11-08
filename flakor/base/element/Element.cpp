@@ -1,30 +1,34 @@
-
-#include "Point.h"
+#include "macros.h"
+#include "base/element/Element.h"
 
 FLAKOR_NS_BEGIN
 
 /**
  * 利用成员变量初始化列表初始化类
  */
-Point::Point(void) :x(0),y(0),z(0)
+Point::Point(void) :x(0),y(0),z(0),type(POINT2D)
 {
 }
 
-Point::Point(float x, float y) : x(x),y(y),z(0)
+Point::Point(float x, float y) : x(x),y(y),z(0),type(POINT2D)
 {
 }
 
-Point::Point(const Point& other) : x(other.x),y(other.y),z(other.z)
+Point::Point(float x, float y ,float z) : x(x),y(y),z(z),type(POINT3D)
 {
 }
 
-Point::Point(const Size& size) : x(size.width),y(size.height),z(0)
+Point::Point(const Point& other) : x(other.x),y(other.y),z(other.z),type(other.type)
+{
+}
+
+Point::Point(const Size& size) : x(size.width),y(size.height),z(0),type(POINT2D)
 {
 }
 
 Point& Point::operator= (const Point& other)
 {
-	setPoint(other.x,other.y);
+	setPoint(other);
 	return *this;
 }
 
@@ -56,7 +60,7 @@ Point Point::operator*(float a) const
 
 Point Point::operator/(float a) const
 {
-	Assert::ok(a, "Point division by 0.");
+	//Assert::ok(a, "Point division by 0.");
     return Point(this->x / a, this->y / a);
 }
 
@@ -64,6 +68,21 @@ void Point::setPoint(float x, float y)
 {
     this->x = x;
     this->y = y;
+}
+
+void Point::setPoint(float x, float y ,float z)
+{
+    this->x = x;
+    this->y = y;
+	this->z = z;
+}
+
+void Point::setPoint(const Point& other)
+{
+    this->x = other.x;
+    this->y = other.y;
+	this->z = other.z;
+	this->type = other.type;
 }
 
 bool Point::equals(const Point& target) const
@@ -119,7 +138,7 @@ Size& Size::operator= (const Size& other)
     return *this;
 }
 
-Size& Size::operator= (const CCPoint& point)
+Size& Size::operator= (const Point& point)
 {
     setSize(point.x, point.y);
     return *this;
@@ -171,7 +190,7 @@ Rect::Rect(float x, float y, float width, float height)
     setRect(x, y, width, height);
 }
 
-Rect::Rect(const CCRect& other)
+Rect::Rect(const Rect& other)
 {
     setRect(other.origin.x, other.origin.y, other.size.width, other.size.height);
 }

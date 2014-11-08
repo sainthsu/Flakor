@@ -8,7 +8,6 @@
 #include <stdarg.h>
 #include <string>
 #include <functional>
-#include "Object.h"
 #include "base/lang/DataVisitor.h"
 
 FLAKOR_NS_BEGIN

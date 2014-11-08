@@ -1,6 +1,4 @@
-#include "String.h"
-#include "platform/CCFileUtils.h"
-#include "Macros.h"
+#include "base/lang/String.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -119,7 +117,7 @@ const char* String::getCString() const
     return m_sString.c_str();
 }
 
-unsigned int CCString::length() const
+unsigned int String::length() const
 {
     return m_sString.length();
 }
@@ -196,7 +194,7 @@ String* String::createWithContentsOfFile(const char* pszFileName)
     unsigned long size = 0;
     unsigned char* pData = 0;
     String* pRet = NULL;
-    pData = CCFileUtils::sharedFileUtils()->getFileData(pszFileName, "rb", &size);
+    pData = NULL;//FileUtils::sharedFileUtils()->getFileData(pszFileName, "rb", &size);
     pRet = String::createWithData(pData, size);
     FK_SAFE_DELETE_ARRAY(pData);
     return pRet;

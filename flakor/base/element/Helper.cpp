@@ -1,4 +1,11 @@
+#include "targetMacros.h"
 #include "base/element/Helper.h"
+
+#include <string>
+#include <vector>
+#include <string.h>
+#include <stdlib.h>
+
 using namespace std;
 
 FLAKOR_NS_BEGIN
@@ -112,7 +119,7 @@ Rect RectFromString(const char* pszContent)
         float width  = (float) atof(sizeInfo[0].c_str());
         float height = (float) atof(sizeInfo[1].c_str());
 
-        result = RectMake(x, y, width, height);
+        result = MakeRect(x, y, width, height);
     } while (0);
 
     return result;
@@ -130,7 +137,7 @@ Point PointFromString(const char* pszContent)
         float x = (float) atof(strs[0].c_str());
         float y = (float) atof(strs[1].c_str());
 
-        ret = PointMake(x, y);
+        ret = MakePoint(x, y);
     } while (0);
 
     return ret;
@@ -148,7 +155,7 @@ Size SizeFromString(const char* pszContent)
         float width  = (float) atof(strs[0].c_str());
         float height = (float) atof(strs[1].c_str());
 
-        ret = SizeMake(width, height);
+        ret = MakeSize(width, height);
     } while (0);
 
     return ret;

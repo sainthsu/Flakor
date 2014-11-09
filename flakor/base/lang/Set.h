@@ -26,10 +26,10 @@ THE SOFTWARE.
 #define _FK_SET_H_
 
 #include <set>
-#include "base/lang/Object.h"
 
 FLAKOR_NS_BEGIN
 
+class Object;
 /**
  * @addtogroup data_structures
  * @{

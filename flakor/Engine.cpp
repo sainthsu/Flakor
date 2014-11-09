@@ -82,7 +82,7 @@ void Engine::drawFrame() {
 
 	if (this->mainScene != NULL)
 	{
-		this->mainScene->visit();
+		this->mainScene->onVisit();
 	}
 	
     /* Just fill the screen with a color.

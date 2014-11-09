@@ -18,6 +18,7 @@
 #ifndef _FK_MATRICES_H_
 #define _FK_MATRICES_H_
 
+#include <iostream>
 
 #include "math/Vectors.h"
 

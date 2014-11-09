@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "base/lang/Object.h"
 #include "base/lang/Array.h"
 #include "base/lang/Zone.h"
-#include "base/lang/String.h"
+#include "base/lang/FKString.h"
 
 FLAKOR_NS_BEGIN
 

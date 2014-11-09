@@ -1,6 +1,6 @@
 #include "base/lang/Dictionary.h"
 #include "base/lang/DataVisitor.h"
-#include "base/lang/Integer.h"
+#include "base/lang/Types.h"
 //#include "platform/FileUtils.h"
 
 using namespace std;

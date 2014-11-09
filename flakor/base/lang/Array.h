@@ -24,7 +24,6 @@ THE SOFTWARE.
 #ifndef _FK_ARRAY_H_
 #define _FK_ARRAY_H_
 
-#include "base/lang/Object.h"
 #include "base/lang/DataVisitor.h"
 #include "base/lang/Zone.h"
 #include "base/interface/IMatcher.h"

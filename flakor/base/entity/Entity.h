@@ -175,7 +175,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * Gets the description string. It makes debugging easier.
 		 * @return A string terminated with '\0'
 		 */
-		virtual std::string toString(void) const;
+		virtual std::string toString() const;
 
 		virtual void setPosition(const Point &position);
 		virtual void setPosition(float x, float y);
@@ -264,7 +264,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		int getOrderOfArrival() const;
 
 		virtual bool hasParent();
-		virtual void setParent(const Entity *parent);
+		virtual void setParent(Entity *parent);
 		/**
 		 * Returns a pointer to the parent entity
 		 * 
@@ -493,7 +493,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * @return a CCNode object whose tag equals to the input parameter
 		 */
 		virtual	Entity* getChildByTag(int tag);
-		virtual Entity* getChildByZIndex(int zIndex);
+		virtual Entity* getChildByZOrder(int z);
 		virtual Entity* getFirstChild();
 		virtual Entity* getLastChild();
 
@@ -642,8 +642,8 @@ class Entity : public Object,public IColorable,public IUpdatable
 		/**
 		 * set additional Matrix for extra transform or others
 		 */
-		virtual void setAddtionalMatrix(const Matrix4* matrix);
-		virtual Matrix4 getAddtionalMatrix();
+		virtual void setAddtionalMatrix(Matrix4* matrix);
+		virtual Matrix4* getAddtionalMatrix();
 
 		virtual void setCamera(const Camera* camera);
 		/**
@@ -727,7 +727,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		/** 
 		 * Visits this entity's children and draw them recursively.
 		 */
-		virtual void visit(void);
+		virtual void onVisit(void);
 
 		virtual void onAttached();
 		virtual void onDetached();

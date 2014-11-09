@@ -3,6 +3,8 @@
 
 #include "core/opengl/GL.h"
 
+FLAKOR_NS_BEGIN
+
 //! Blend Function used for textures
 typedef struct _fkBlendFunc
 {
@@ -13,5 +15,7 @@ typedef struct _fkBlendFunc
 } BlendFunc;
 
 static const BlendFunc BlendFuncDisable = {GL_ONE, GL_ZERO};
+
+FLAKOR_NS_END
 
 #endif

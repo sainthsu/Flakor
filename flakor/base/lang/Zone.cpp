@@ -21,8 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#include "Zone.h"
-#include "Object.h"
+#include "base/lang/Zone.h"
+#include "base/lang/Object.h"
 
 FLAKOR_NS_BEGIN
 

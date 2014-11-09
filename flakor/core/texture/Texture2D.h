@@ -3,6 +3,9 @@
 
 FLAKOR_NS_BEGIN
 
+class Size;
+class GLProgram;
+
 /** @typedef Texture2DPixelFormat
   Possible texture pixel formats
  */
@@ -102,7 +105,7 @@ class Texture2D : public Object
 		void load();
 		void unload();
 
-protexted:
+protected:
 
 		PixelFormat pixelFormat;
 		/** width in pixels */
@@ -112,7 +115,7 @@ protexted:
 		int _pixelsHeight;
 
 		/** texture id in gpu */
-		GLuint _textureID
+        GLuint _textureID;
 
 		/** texture max S */
 		GLfloat _maxS;
@@ -121,7 +124,7 @@ protexted:
 		GLfloat _maxT;
 
 		/** content size */
-		Size _contentSize;
+		Size* _contentSize;
 
 		/** whether or not the texture has their Alpha premultiplied */
 		bool _hasPremultipliedAlpha;
@@ -135,7 +138,7 @@ protexted:
 		float _scale;
 		bool rotated;
 		bool flipY;
-}
+};
 
 FLAKOR_NS_END
 

@@ -1,5 +1,9 @@
-#ifndef _FK_STRING_H_
-#define _FK_STRING_H_
+/**********************************************
+ * conficted with C string.h so rename to FKString
+ * 
+ *********************************************/
+#ifndef _FK_STRINGS_H_
+#define _FK_STRINGS_H_
 
 #if (FK_TARGET_PLATFORM == FK_PLATFORM_BLACKBERRY)
 #include <string.h>

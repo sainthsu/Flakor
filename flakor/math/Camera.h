@@ -25,10 +25,10 @@ THE SOFTWARE.
 #ifndef _FK_CAMERA_H_
 #define _FK_CAMERA_H_
 
+#include <string>
 #include "macros.h"
 #include "base/lang/Object.h"
 #include "math/Matrices.h"
-#include <string>
 
 FLAKOR_NS_BEGIN
 

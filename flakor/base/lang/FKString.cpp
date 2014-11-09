@@ -1,4 +1,4 @@
-#include "base/lang/String.h"
+#include "base/lang/FKString.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -128,10 +128,10 @@ int String::compare(const char * pStr) const
 }
 
 /*
-Object* String::copyWithZone(CCZone* pZone)
+Object* String::copyWithZone(Zone* pZone)
 {
-    CCAssert(pZone == NULL, "CCString should not be inherited.");
-    CCString* pStr = new CCString(m_sString.c_str());
+    Assert(pZone == NULL, "String should not be inherited.");
+    String* pStr = new String(m_sString.c_str());
     return pStr;
 }
 */

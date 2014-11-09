@@ -1,5 +1,7 @@
 #include "targetMacros.h"
-#include "Entity.h"
+#include "base/entity/Entity.h"
+#include "base/lang/FKString.h"
+#include "base/event/Touch.h"
 
 FLAKOR_NS_BEGIN
 
@@ -15,7 +17,7 @@ Entity::Entity(void)
 , vertexZ(0.0f)
 , skewX(0.0f)
 , skewY(0.0f)
-, obAnchorPointInPixels(PointZero)
+, anchorPointInPixels(PointZero)
 , anchorPoint(PointZero)
 , additionalMatrix(NULL)
 , camera(NULL)	  
@@ -80,9 +82,9 @@ Entity * Entity::create(float x,float y)
 	return entity;
 }
 
-std::string Entity::toString(void)
+std::string Entity::toString() const
 {
-	return String::createWithFormat("{Entity: | Tag = %d}", tag)->m_sString;
+    return NULL;//String::createWithFormat("{Entity: | Tag = %d}", tag)->m_sString;
 }
 
 void Entity::setPosition(const Point &position)
@@ -151,7 +153,7 @@ const Point& Entity::getAnchorPointInPixels()
 	return anchorPointInPixels;
 }
 
-const Size& Entity::getContentSize()
+const Size& Entity::getContentSize() const
 {
 	return contentSize;
 }
@@ -190,14 +192,14 @@ int Entity::getZOrder()
 	return ZOrder;
 }
 
-void Entity::setOrderofArrival(int arrival)
+void Entity::setOrderOfArrival(int arrival)
 {
-	orderofArrival = arrival;
+	orderOfArrival = arrival;
 }
 
-int Entity::getOrderofArrival(void)
+int Entity::getOrderOfArrival(void) const
 {
-	return orderofArruval;
+	return orderOfArrival;
 }
 
 bool Entity::hasParent()
@@ -205,7 +207,7 @@ bool Entity::hasParent()
 	return (parent != NULL);
 }
 
-void Entity::setParent(const Entity *parent)
+void Entity::setParent(Entity *parent)
 {
 	this->parent = parent;
 }
@@ -227,7 +229,7 @@ float Entity::getVertexZ()
 
 bool Entity::isRotated()
 {
-	return (rotationX != 0.f) || (rotation != 0.f) ;
+	return (rotationX != 0.f) || (rotationY != 0.f) ;
 }
 
 float Entity::getRotation()
@@ -250,7 +252,7 @@ void Entity::setRotationX(float x)
 
 float Entity::getRotationX()
 {
-	return ratationX;
+	return rotationX;
 }
 
 void Entity::setRotationY(float y)
@@ -261,7 +263,7 @@ void Entity::setRotationY(float y)
 
 float Entity::getRotationY()
 {
-	return ratationY;
+	return rotationY;
 }
 
 bool Entity::isScaled()
@@ -300,7 +302,7 @@ void Entity::setScale(float scale)
 float Entity::getScale()
 {
 	FKAssert(scaleX == scaleY, "Entity#scale. scaleX != scaleY. Don't know which one to return!");
-	return sclaleX;
+	return scaleX;
 }
 
 void Entity::setScale(float x,float y)
@@ -340,12 +342,12 @@ float Entity::getSkewY()
 //maybe not need this two method
 void Entity::setVisible(bool visible)
 {
-	this.visible = visible;
+	this->visible = visible;
 }
 
 bool Entity::isVisible()
 {
-	return this.visible;
+	return this->visible;
 }
 
 void Entity::setChildrenVisible(bool visible)
@@ -370,12 +372,12 @@ bool Entity::isChildrenIgnoreUpdate()
 
 void Entity::addChild(Entity * child)
 {
-	addChild(child,child->zOrder,child->tag);
+	addChild(child,child->ZOrder,child->tag);
 }
 
 void Entity::addChild(Entity * child, int zOrder)
 {
-	addChild(child,zOrder,child->tag);
+	addChild(child,ZOrder,child->tag);
 }
 
 void Entity::addChild(Entity* child, int zOrder, int tag)
@@ -426,7 +428,7 @@ Entity* Entity::getChildByZOrder(int z)
 		FK_ARRAY_FOREACH(children,child)
 		{
 			Entity *entity = (Entity *)child;
-			if(entity && entity->zOrder == z)
+			if(entity && entity->ZOrder == z)
 				return entity;
 		}
 	}
@@ -435,12 +437,12 @@ Entity* Entity::getChildByZOrder(int z)
 
 Entity* Entity::getFirstChild()
 {
-	return children.firstObject();
+	return (Entity *)children->firstObject();
 }
 
 Entity* Entity::getLastChild()
 {
-	return chilidren.lastObject();
+	return (Entity *)children->lastObject();
 }
 
 Array* Entity::getChildren()
@@ -448,7 +450,7 @@ Array* Entity::getChildren()
 	return children;
 }
 
-unsigned int Entity::getChildrenCount(void)
+unsigned int Entity::getChildrenCount(void) const
 {
 	return children->count();
 }
@@ -485,7 +487,7 @@ void Entity::removeChildByTag(int tag,bool cleanup)
 
 	if (child == NULL)
 	{
-		FK_LOG("flakor: removeChildByTag(tag = %d): child not found!", tag);
+		FKLOG("flakor: removeChildByTag(tag = %d): child not found!", tag);
 	}
 	else
 	{
@@ -495,15 +497,15 @@ void Entity::removeChildByTag(int tag,bool cleanup)
 
 void Entity::removeChildByZOrder(int z)
 {
-	Entity *child = this->getChildByZOrder(tag);
+	Entity *child = this->getChildByZOrder(z);
 
 	if (child == NULL)
 	{
-		FK_LOG("flakor: removeChildByZOrder(ZOrder = %d): child not found!", tag);
+		FKLOG("flakor: removeChildByZOrder(ZOrder = %d): child not found!", tag);
 	}
 	else
 	{
-		this->removeChild(child, cleanup);
+		this->removeChild(child, true);
 	}
 
 }
@@ -551,7 +553,7 @@ void Entity::reorderChild(Entity * child, int zOrder)
 	FKAssert(child != NULL,"Child must be non-nil!");
 	childrenSortPending = true;
 	child->setOrderOfArrival(s_globalOrderOfArrival++);
-	child->_setZorder(zOrder);
+	child->_setZOrder(zOrder);
 }
 
 void Entity::sortAllChildren()
@@ -574,7 +576,7 @@ void Entity::sortAllChildren(bool immediate)
 			j=i-1;
 
 			while(j>=0 && ((tmp->ZOrder < data[j]->ZOrder)  ||
-						(temp->ZOrder== x[j]->ZOrder && temp->orderOfArrival < x[j]->orderOfArrival ) ))
+						(tmp->ZOrder== data[j]->ZOrder && tmp->orderOfArrival < data[j]->orderOfArrival ) ))
 			{
 				data[j+1] = data[j];
 				j--;
@@ -582,16 +584,16 @@ void Entity::sortAllChildren(bool immediate)
 			data[j+1] = tmp;
 		}
 
-		ChildrenSortPending = false;
+		childrenSortPending = false;
 	}
 	else
 	{
-		ChildrenSortPending = true;
+		childrenSortPending = true;
 	}
 
 }
 
-int Entity::getTag()
+int Entity::getTag() const
 {
 	return tag;
 }
@@ -601,7 +603,7 @@ void Entity::setTag(int tag)
 	this->tag = tag;
 }
 
-void* Entity::getUserData()
+void* Entity::getUserData() const
 {
 	return userData;
 }
@@ -611,18 +613,19 @@ void Entity::setUserData(void *data)
 	this->userData = data;
 }
 
-void Entity::setAddtionalMatrix(const Matrix4 matrix)
+void Entity::setAddtionalMatrix(Matrix4* matrix)
 {
-	this.addtionalMatrix = matrix;
+	this->additionalMatrix = matrix;
 	transformDirty = true;
-	addtionalTransformDirty = true;
+	additionalTransformDirty = true;
 }
 
 Matrix4* Entity::getAddtionalMatrix()
 {
-	return this.addtionalMatrix;
+	return this->additionalMatrix;
 }
 
+/*
 void Entity::setCamera(const Camera* camera);
 {
 	this.camera = camera;
@@ -632,6 +635,7 @@ Camera* Entity::getCamera()
 {
 	return camera;
 }
+*/
 
 bool Entity::isRunning()
 {
@@ -656,7 +660,7 @@ void Entity::onEnter()
 	{
 		Object* child;
 		Entity* entity;
-		FKARRAY_FOREACH(children, child)
+		FK_ARRAY_FOREACH(children, child)
 		{
 			entity = (Entity*)child;
 			if (!entity->isRunning())
@@ -686,7 +690,7 @@ void Entity::onExit()
 
 	running = false;
 
-	arrayMakeObjectsPerformSelector(m_pChildren, onExit, Entity*);
+	arrayMakeObjectsPerformSelector(children, onExit, Entity*);
 
 	/*
 	   if ( scriptType != ScriptTypeNone)
@@ -789,22 +793,24 @@ void Entity::transform(void)
 	transfrom4x4 = this->entityToParentTransform();
 
 	// Update Z vertex manually
-	transfrom4x4.m[14] = vertexZ;
+	transfrom4x4[14] = vertexZ;
 
 	kmGLMultMatrix( &transfrom4x4 );
 
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
 	if ( camera != NULL)/// && !(grid != NULL && grid->isActive()) )
 	{
-		bool translate = (m_obAnchorPointInPoints.x != 0.0f || m_obAnchorPointInPoints.y != 0.0f);
+        /*
+		bool translate = (anchorPointInPixels.x != 0.0f || anchorPointInPixels.y != 0.0f);
 
 		if( translate )
-			kmGLTranslatef(RENDER_IN_SUBPIXEL(m_obAnchorPointInPoints.x), RENDER_IN_SUBPIXEL(m_obAnchorPointInPoints.y), 0 );
+			kmGLTranslatef(RENDER_IN_SUBPIXEL(anchorPointInPixels.x), RENDER_IN_SUBPIXEL(anchorPointInPixels.y), 0 );
 
-		m_pCamera->locate();
+		camera->locate();
 
 		if( translate )
-			kmGLTranslatef(RENDER_IN_SUBPIXEL(-m_obAnchorPointInPoints.x), RENDER_IN_SUBPIXEL(-m_obAnchorPointInPoints.y), 0 );
+			kmGLTranslatef(RENDER_IN_SUBPIXEL(-anchorPointInPixels.x), RENDER_IN_SUBPIXEL(-anchorPointInPixels.y), 0 );
+         */
 	}
 
 }
@@ -832,8 +838,8 @@ void Entity::childrenAlloc(void)
 
 void Entity::insertChild(Entity* child, int z)
 {
-	m_bReorderChildDirty = true;
-	ccArrayAppendObjectWithResize(m_pChildren->data, child);
+	childrenSortPending = true;
+	fkArrayAppendObjectWithResize(children->data, child);
 	child->_setZOrder(z);
 }
 
@@ -854,7 +860,7 @@ void Entity::detachChild(Entity *child, bool doCleanup)
 	children->removeObject(child);
 }
 
-Martrix4 Entity::entityToParentTransform(void)
+Matrix4 Entity::entityToParentTransform(void)
 {
 	if (transformDirty)
 	{
@@ -862,16 +868,16 @@ Martrix4 Entity::entityToParentTransform(void)
 		if(useAnchorPointAsTransformCenter)
 		{
 			// Translate values
-			float x = obPosition.x;
-			float y = obPosition.y;
+			float x = position.x;
+			float y = position.y;
 
-			float obAnchorPointInPointsX = contentSize.width * anchorPoint.x;
-			float obAnchorPointInPointsY = contentSize.height * anchorPoint.y;
+			float anchorPointInPixels.x = contentSize.width * anchorPoint.x;
+			float anchorPointInPixels.y = contentSize.height * anchorPoint.y;
 
 			if (!relativeAnchorPoint)
 			{
-				x += obAnchorPointInPointsX;
-				y += obAnchorPointInPointsY;
+				x += anchorPointInPixels.x;
+				y += anchorPointInPixels.y;
 			}
 
 			// Rotation values
@@ -895,8 +901,8 @@ Martrix4 Entity::entityToParentTransform(void)
 			// Adjusted transform calculation for rotational skew
 			if (! needsSkewMatrix && !m_obAnchorPointInPoints.equals(PointZero))
 			{
-				x += cy * -obAnchorPointInPointX * scaleX + -sx * -obAnchorPointInPointY * scaleY;
-				y += sy * -obAnchorPointInPointX * scaleX +  cx * -obAnchorPointInPointY * scaleY;
+				x += cy * -anchorPointInPixels.x * scaleX + -sx * -anchorPointInPixels.y * scaleY;
+				y += sy * -anchorPointInPixels.x * scaleX +  cx * -anchorPointInPixels.y * scaleY;
 			}
 
 
@@ -911,7 +917,7 @@ Martrix4 Entity::entityToParentTransform(void)
 			if (needsSkewMatrix)
 			{
 				CCAffineTransform skewMatrix = CCAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(m_fSkewY)),
-					tanf(CC_DEGREES_TO_RADIANS(m_fSkewX)), 1.0f,
+					tanf(DEGREES_TO_RADIANS(m_fSkewX)), 1.0f,
 					0.0f, 0.0f );
 				m_sTransform = CCAffineTransformConcat(skewMatrix, m_sTransform);
 
@@ -927,8 +933,8 @@ Martrix4 Entity::entityToParentTransform(void)
 			Matrix4 matrix = new Matrix4();
 			matrix.translate(position.x,position.y);
 
-			float obAnchorPointInPointsX = contentSize.width * anchorPoint.x;
-			float obAnchorPointInPointsY = contentSize.height * anchorPoint.y;
+			float anchorPointInPixels.x = contentSize.width * anchorPoint.x;
+			float anchorPointInPixels.y = contentSize.height * anchorPoint.y;
 
 			if (relativeAnchorPoint)
 			{
@@ -977,13 +983,13 @@ Martrix4 Entity::entityToParentTransform(void)
 				}	
 			}
 
-			transformMatrix = matrix;
+			transformMatrix = &matrix;
 		}
 
 		
 		if (additionalTransformDirty)
 		{
-			transformMatrix =  transformMatrix * additionalTransform; //??pre or post
+			transformMatrix =  transformMatrix * additionalMatrix; //??pre or post
 			additionalTransformDirty = false;
 		}
 
@@ -1013,7 +1019,7 @@ Matrix4 Entity::entityToWorldTransform()
     return t;
 }
 
-Matrix Entity::worldToEntityTransform(void)
+Matrix4 Entity::worldToEntityTransform(void)
 {
     return this->entityToWorldTransform()->inverse();
 }
@@ -1033,12 +1039,12 @@ Point Entity::convertToWorldSpace(const Point& entityPoint)
 Point Entity::convertToEntitySpaceAR(const Point& worldPoint)
 {
     Point entityPoint = convertToEntitySpace(worldPoint);
-    return ccpSub(entityPoint, obAnchorPointInPoints);
+    return entityPoint-anchorPointInPixels;
 }
 
 Point Entity::convertToWorldSpaceAR(const Point& entityPoint)
 {
-    Point pt = ccpAdd(entityPoint, obAnchorPointInPoints);
+    Point pt = entityPoint+anchorPointInPixels;
     return convertToWorldSpace(pt);
 }
 

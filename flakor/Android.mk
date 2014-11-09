@@ -18,7 +18,7 @@ base/lang/AutoreleasePool.cpp \
 base/lang/DataVisitor.cpp \
 base/lang/Dictionary.cpp \
 base/lang/Set.cpp \
-base/lang/String.cpp \
+base/lang/FKString.cpp \
 base/lang/Zone.cpp \
 base/element/Color.cpp \
 base/element/Element.cpp \

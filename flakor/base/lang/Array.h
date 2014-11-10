@@ -34,9 +34,8 @@ THE SOFTWARE.
  * @{
  */
 
-/** @def FKARRAY_FOREACH
+/** @def FK_ARRAY_FOREACH
 A convenience macro to iterate over a Array using. It is faster than the "fast enumeration" interface.
-@since v0.99.4
 */
 #define FK_ARRAY_FOREACH(__array__, __object__)                                                                         \
     if ((__array__) && (__array__)->data->num > 0)                                                                     \

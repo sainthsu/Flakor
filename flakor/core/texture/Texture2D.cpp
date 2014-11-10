@@ -1,50 +1,101 @@
-
-#include "Texture2D.h"
+#include "targetMacros.h"
+#include "core/opengl/GL.h"
+#include "core/texture/Texture2D.h"
+#include "base/element/Element.h"
 
 FLAKOR_NS_BEGIN
 
-Textrue2D::Texture2D()
+Texture2D::Texture2D()
 {
 }
 
-Textrue2D::~Texture2D();
-bool Textrue2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixelFormat,int width,int height,Size size);
+Texture2D::~Texture2D()
+{
 
-bool Textrue2D::initWithFile(const char *fileName)
-{}
+}
+
+bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixelFormat,int width,int height,Size size)
+{
+	return true;
+}
+
+bool Texture2D::initWithFile(const char *fileName)
+{
+	return true;
+}
 
 /** Gets the pixel format of the texture */
-PixelFormat Textrue2D::getPixelFormat() const;
+PixelFormat Texture2D::getPixelFormat() const
+{
+	return _pixelFormat;
+}
 
-void Textrue2D::setTexParams(const TexParams& texParams);
+void Texture2D::setTexParams(const TexParams& texParams)
+{
+	
+}
 
-void Textrue2D::setContentSize(const Size *size);
+void Texture2D::setContentSize(Size *size)
+{
+	_contentSize = size;
+}
 
-Size* Textrue2D::getContentSize();
+Size* Texture2D::getContentSize()
+{
+	return _contentSize;
+}
 	
 /** Gets the width of the texture in pixels */
-int Textrue2D::getPixelsWidth() const;
+int Texture2D::getPixelsWidth() const
+{
+	return _pixelsWidth;
+}
     
 /** Gets the height of the texture in pixels */
-int Textrue2D::getPixelsHeight() const;
+int Texture2D::getPixelsHeight() const
+{
+	return _pixelsHeight;
+}
     
 /** Gets the texture id*/
-GLuint Textrue2D::getTextureID() const;
+GLuint Texture2D::getTextureID() const
+{
+	return _textureID;
+}
     
 /** Gets max S */
-GLfloat Textrue2D::getMaxS() const;
+GLfloat Texture2D::getMaxS() const
+{
+	return _maxS;
+}
+
 /** Sets max S */
-void Textrue2D::setMaxS(GLfloat maxS);
+void Texture2D::setMaxS(GLfloat maxS)
+{
+	_maxS = maxS;
+}
     
 /** Gets max T */
-GLfloat Textrue2D::getMaxT() const;
+GLfloat Texture2D::getMaxT() const
+{
+	return _maxT;
+}
+
 /** Sets max T */
-void Textrue2D::setMaxT(GLfloat maxT);
+void Texture2D::setMaxT(GLfloat maxT)
+{
+	_maxT = maxT;
+}
 
-void Textrue2D::load();
-void Textrue2D::unload();
+void Texture2D::load()
+{
+	
+}
 
+void Texture2D::unload()
+{
+	
+}
 
 FLAKOR_NS_END
 
-#endif

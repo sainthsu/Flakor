@@ -1,6 +1,8 @@
 #ifndef _FK_TEXTURE2D_H_
 #define _FK_TEXTURE2D_H_
 
+#include "base/lang/Object.h"
+
 FLAKOR_NS_BEGIN
 
 class Size;
@@ -79,7 +81,7 @@ class Texture2D : public Object
 
 		void setTexParams(const TexParams& texParams);
 
-		void setContentSize(const Size *size);
+		void setContentSize(Size *size);
 
 		Size* getContentSize();
 	
@@ -107,7 +109,7 @@ class Texture2D : public Object
 
 protected:
 
-		PixelFormat pixelFormat;
+		PixelFormat _pixelFormat;
 		/** width in pixels */
 		int _pixelsWidth;
 

@@ -10,9 +10,9 @@ class ModifierListener<T>
 		// ===========================================================
 		// Methods
 		// ===========================================================
-
-		public void onModifierStarted(final ModifierInterface<T> pModifier, final T pItem);
-		public void onModifierFinished(final ModifierInterface<T> pModifier, final T pItem);
+public:
+		virtual void onModifierStarted(ModifierInterface<T> pModifier,  T pItem) = 0;
+		virtual void onModifierFinished(ModifierInterface<T> pModifier,  T pItem) = 0;
 };
 
 /**
@@ -22,23 +22,23 @@ class IModifier
 {
 public:
 
-	virtual void reset();
+	virtual void reset() = 0;
 
-	virtual bool isFinished();
-	virtual bool isAutoUnregisterWhenFinished();
-	virtual void setAutoUnregisterWhenFinished(final boolean removeWhenFinished);
+	virtual bool isFinished()= 0;
+	virtual bool isAutoUnregisterWhenFinished()= 0;
+	virtual void setAutoUnregisterWhenFinished(boolean removeWhenFinished) = 0;
 
-	virtual ModifierInterface<T> deepCopy() throws DeepCopyNotSupportedException;
+	virtual ModifierInterface<T> deepCopy() = 0;
 
-	virtual float getSecondsElapsed();
-	virtual float getDuration();
+	virtual float getSecondsElapsed() = 0;
+	virtual float getDuration() = 0;
 
-	virtual float onUpdate(const float secondsElapsed, const T item);
+	virtual float onUpdate(const float secondsElapsed, const T item)= 0;
 
-	virtual void addModifierListener(final ModifierListener<T> pModifierListener);
-	virtual bool removeModifierListener(final ModifierListener<T> pModifierListener);
+	virtual void addModifierListener(ModifierListener<T> pModifierListener)= 0;
+	virtual bool removeModifierListener(ModifierListener<T> pModifierListener)= 0;
 };
 
-FLKAOR_NS_END
+FLAKOR_NS_END
 
 #endif

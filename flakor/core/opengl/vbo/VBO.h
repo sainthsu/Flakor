@@ -7,8 +7,12 @@ http://www.feike.org for chinese
 #ifndef _FK_VBO_H_
 #define _FK_VBO_H_
 
+#include "base/lang/Object.h"
 #include "core/opengl/GL.h"
+
 FLAKOR_NS_BEGIN
+
+class Array;
 
 /**
  *void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride,const GLvoid * pointer);
@@ -137,16 +141,16 @@ class VBO : Object
 
 		virtual void onBufferData();
 
-		protected:
-			int sizePerVertex;
-			int vertexNumber;
-			int bufferID;
-			int usage;
-			bool autoDispose;
-			bool dirty;
-			bool dispose;
+	protected:
+		int sizePerVertex;
+		int vertexNumber;
+		int bufferID;
+		int usage;
+		bool autoDispose;
+		bool dirty;
+		bool dispose;
 
-			Array* VBOAttibutes;
+		Array* VBOAttibutes;
 
 };
 

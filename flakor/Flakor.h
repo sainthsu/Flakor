@@ -34,7 +34,15 @@
 #include "base/entity/Scene.h"
 #include "base/entity/Sprite.h"
 
+//opengl
+#include "core/opengl/GLProgram.h"
+#include "core/opengl/shader/Shaders.h"
+#include "core/opengl/vbo/VBO.h"
 #include "core/texture/Texture2D.h"
+
+
+//math
+#include "math/MatrixStack.h"
 
 const char* getFlakorVersion()
 {

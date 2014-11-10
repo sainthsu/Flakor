@@ -6,14 +6,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <math.h>
+#include "macros.h"
 #include "base/element/Element.h"
 #include "Matrices.h"
 
 const float DEG2RAD = 3.141593f / 180;
 
-inline Point* Matrix4::operator*(const Point& rhs) const
+FLAKOR_NS_BEGIN
+
+inline Point Matrix4::operator*(const Point& rhs) const
 {
-    return *Point(m[0]*rhs.x + m[4]*rhs.y + m[8]*rhs.z,
+    return Point(m[0]*rhs.x + m[4]*rhs.y + m[8]*rhs.z,
                    m[1]*rhs.x + m[5]*rhs.y + m[9]*rhs.z,
                    m[2]*rhs.x + m[6]*rhs.y + m[10]*rhs.z);
 }
@@ -110,7 +113,17 @@ Matrix3& Matrix3::invert()
     return *this;
 }
 
-
+Matrix4 Matrix4::make(float xx, float xy, float xz, float xw,
+            float yx, float yy, float yz, float yw,
+            float zx, float zy, float zz, float zw,
+            float wx, float wy, float wz, float ww)
+{
+	Matrix4* matrix = new Matrix4(xx, xy, xz,  xw,
+             yx,  yy,  yz,  yw,
+            zx,  zy,  zz,  zw,
+             wx,  wy, wz, ww);
+	return *matrix;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // transpose 4x4 matrix
@@ -329,7 +342,7 @@ Matrix4& Matrix4::invertGeneral()
     float cofactor12 = getCofactor(m[1],m[5],m[9], m[2],m[6], m[10], m[3],m[7],m[11]);
 
     // get determinant
-    float determinant = m[0] * cofactor0 - m[4] * cofactor1 + m[8] * cofactor2 - m[12] * cofactor3;
+    float determinant = m[0] * cofactor0 - m[4] * cofactor4 + m[8] * cofactor8 - m[12] * cofactor12;
     if(fabs(determinant) <= 0.00001f)
     {
         return identity();
@@ -661,60 +674,60 @@ Matrix4& Matrix4::perspective( float width, float height, float nearPlane, float
 	float n2 = 2.0f * nearPlane;
     float rcpnmf = 1.f / (nearPlane - farPlane);
 
-    Matrix4 result;
-    result.m[0] = n2 / width;
-    result.m[4] = 0;
-    result.m[8] = 0;
-    result.m[12] = 0;
-    result.m[1] = 0;
-    result.m[5] = n2 / height;
-    result.m[9] = 0;
-    result.m[13] = 0;
-    result.m[2] = 0;
-    result.m[6] = 0;
-    result.m[10] = (farPlane + nearPlane) * rcpnmf;
-    result.m[14] = farPlane * rcpnmf * n2;
-    result.m[3] = 0;
-    result.m[7] = 0;
-    result.m[11] = -1.0;
-    result.m[15] = 0;
+    Matrix4* result = new Matrix4();
+    (*result)[0] = n2 / width;
+    (*result)[4] = 0;
+    (*result)[8] = 0;
+    (*result)[12] = 0;
+    (*result)[1] = 0;
+    (*result)[5] = n2 / height;
+    (*result)[9] = 0;
+    (*result)[13] = 0;
+    (*result)[2] = 0;
+    (*result)[6] = 0;
+    (*result)[10] = (farPlane + nearPlane) * rcpnmf;
+    (*result)[14] = farPlane * rcpnmf * n2;
+    (*result)[3] = 0;
+    (*result)[7] = 0;
+    (*result)[11] = -1.0;
+    (*result)[15] = 0;
 
     return *result;
 }
 
 Matrix4& Matrix4::orthographic( float width, float height, float nearPlane, float farPlane )
 {
-  Matrix4 result;
+  Matrix4* result = new Matrix4();
 
-  result.m[0] = 1/ width;
-  result.m[4] = 0;
-  result.m[8] = 0;
-  result.m[12] = 0;
-  result.m[1] = 0;
-  result.m[5] = 1/ height;
-  result.m[9] = 0;
-  result.m[13] = 0;
-  result.m[2] = 0;
-  result.m[6] = 0;
-  result.m[10] = -2/(farPlane - nearPlane);
-  result.m[14] = (farPlane+nearPlane)/(nearPlane-farPlane);
-  result.m[3] = 0;
-  result.m[7] = 0;
-  result.m[11] = 0;
-  result.m[15] = 0;
+  (*result)[0] = 1/ width;
+  (*result)[4] = 0;
+  (*result)[8] = 0;
+  (*result)[12] = 0;
+  (*result)[1] = 0;
+  (*result)[5] = 1/ height;
+  (*result)[9] = 0;
+  (*result)[13] = 0;
+  (*result)[2] = 0;
+  (*result)[6] = 0;
+  (*result)[10] = -2/(farPlane - nearPlane);
+  (*result)[14] = (farPlane+nearPlane)/(nearPlane-farPlane);
+  (*result)[3] = 0;
+  (*result)[7] = 0;
+  (*result)[11] = 0;
+  (*result)[15] = 0;
 
   return *result;
 }
 
 
-Matrix4& Matrix4::lookAt( const Vector3& vEye, const Vector3& vAt, const Vector3& vUp )
+Matrix4& Matrix4::lookAt( const Vector3& vec_eye, const Vector3& vec_at, const Vector3& vec_up )
 {
 	Vector3 vec_forward, vec_up_norm, vec_side;
-    Matrix4 result;
+    Matrix4* result = new Matrix4();
 
-    vec_forward.x_ = vec_eye.x_ - vec_at.x_;
-    vec_forward.y_ = vec_eye.y_ - vec_at.y_;
-    vec_forward.z_ = vec_eye.z_ - vec_at.z_;
+    vec_forward.x = vec_eye.x - vec_at.x;
+    vec_forward.y = vec_eye.y - vec_at.y;
+    vec_forward.z = vec_eye.z - vec_at.z;
 
     vec_forward.normalize();
     vec_up_norm = vec_up;
@@ -722,23 +735,25 @@ Matrix4& Matrix4::lookAt( const Vector3& vEye, const Vector3& vAt, const Vector3
     vec_side = vec_up_norm.cross( vec_forward );
     vec_up_norm = vec_forward.cross( vec_side );
 
-    result.m[0] = vec_side.x_;
-    result.m[4] = vec_side.y_;
-    result.m[8] = vec_side.z_;
-    result.m[12] = 0;
-    result.m[1] = vec_up_norm.x_;
-    result.m[5] = vec_up_norm.y_;
-    result.m[9] = vec_up_norm.z_;
-    result.m[13] = 0;
-    result.m[2] = vec_forward.x_;
-    result.m[6] = vec_forward.y_;
-    result.m[10] = vec_forward.z_;
-    result.m[14] = 0;
-    result.m[3] = 0;
-    result.m[7] = 0;
-    result.m[11] = 0;
-    result.m[15] = 1.0;
+    (*result)[0] = vec_side.x;
+    (*result)[4] = vec_side.y;
+    (*result)[8] = vec_side.z;
+    (*result)[12] = 0;
+    (*result)[1] = vec_up_norm.x;
+    (*result)[5] = vec_up_norm.y;
+    (*result)[9] = vec_up_norm.z;
+    (*result)[13] = 0;
+    (*result)[2] = vec_forward.x;
+    (*result)[6] = vec_forward.y;
+    (*result)[10] = vec_forward.z;
+    (*result)[14] = 0;
+    (*result)[3] = 0;
+    (*result)[7] = 0;
+    (*result)[11] = 0;
+    (*result)[15] = 1.0;
 
-    result.postTranslate( -vec_eye.x_, -vec_eye.y_, -vec_eye.z_ );
+    result->postTranslate( -vec_eye.x, -vec_eye.y, -vec_eye.z );
     return *result;
 }
+
+FLAKOR_NS_END

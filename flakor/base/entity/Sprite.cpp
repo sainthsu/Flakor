@@ -6,7 +6,6 @@ http://www.flakor.org
 
 #include "base/entity/Sprite.h"
 
-
 FLAKOR_NS_BEGIN
 
 #if FK_SPRITEBATCHNODE_RENDER_SUBPIXEL
@@ -83,7 +82,7 @@ Sprite* Sprite::createWithSpriteFrameName(const std::string& spriteFrameName)
 #if FLAKOR_DEBUG > 0
     char msg[256] = {0};
     sprintf(msg, "Invalid spriteFrameName: %s", spriteFrameName.c_str());
-    FKASSERT(frame != nullptr, msg);
+    FKAssert(frame != nullptr, msg);
 #endif
     
     return createWithSpriteFrame(frame);
@@ -108,7 +107,7 @@ bool Sprite::init(void)
 
 bool Sprite::initWithTexture(Texture2D *texture)
 {
-    FKASSERT(texture != nullptr, "Invalid texture for sprite");
+    FKAssert(texture != nullptr, "Invalid texture for sprite");
 
     Rect rect = RectZero;
     rect.size = texture->getContentSize();
@@ -123,7 +122,7 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect)
 
 bool Sprite::initWithFile(const std::string& filename)
 {
-    FKASSERT(filename.size()>0, "Invalid filename for sprite");
+    FKAssert(filename.size()>0, "Invalid filename for sprite");
 
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
@@ -141,7 +140,7 @@ bool Sprite::initWithFile(const std::string& filename)
 
 bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
 {
-    FKASSERT(filename.size()>0, "Invalid filename");
+    FKAssert(filename.size()>0, "Invalid filename");
 
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
@@ -157,7 +156,7 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
 
 bool Sprite::initWithSpriteFrameName(const std::string& spriteFrameName)
 {
-    FKASSERT(spriteFrameName.size() > 0, "Invalid spriteFrameName");
+    FKAssert(spriteFrameName.size() > 0, "Invalid spriteFrameName");
 
     SpriteFrame *frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
     return initWithSpriteFrame(frame);
@@ -165,7 +164,7 @@ bool Sprite::initWithSpriteFrameName(const std::string& spriteFrameName)
 
 bool Sprite::initWithSpriteFrame(SpriteFrame *spriteFrame)
 {
-    FKASSERT(spriteFrame != nullptr, "");
+    FKAssert(spriteFrame != nullptr, "");
 
     bool bRet = initWithTexture(spriteFrame->getTexture(), spriteFrame->getRect());
     setSpriteFrame(spriteFrame);
@@ -233,7 +232,7 @@ Sprite::Sprite(void)
 , _batchNode(nullptr)
 {
 #if FK_SPRITE_DEBUG_DRAW
-    _debugDrawNode = DrawNode::create();
+    _debugDrawNode = DrawEntity::create();
     addChild(_debugDrawNode);
 #endif //CC_SPRITE_DEBUG_DRAW
 }
@@ -281,9 +280,9 @@ void Sprite::setTexture(const std::string &filename)
 void Sprite::setTexture(Texture2D *texture)
 {
     // If batchnode, then texture id should be the same
-    FKASSERT(! _batchNode || texture->getName() == _batchNode->getTexture()->getName(), "CCSprite: Batched sprites should use the same texture as the batchnode");
+    FKAssert(! _batchNode || texture->getName() == _batchNode->getTexture()->getName(), "CCSprite: Batched sprites should use the same texture as the batchnode");
     // accept texture==nil as argument
-    FKASSERT( !texture || dynamic_cast<Texture2D*>(texture), "setTexture expects a Texture2D. Invalid argument");
+    FKAssert( !texture || dynamic_cast<Texture2D*>(texture), "setTexture expects a Texture2D. Invalid argument");
 
     if (texture == nullptr)
     {
@@ -295,18 +294,18 @@ void Sprite::setTexture(Texture2D *texture)
         {
             Image* image = new (std::nothrow) Image();
             bool isOK = image->initWithRawData(cc_2x2_white_image, sizeof(cc_2x2_white_image), 2, 2, 8);
-            CC_UNUSED_PARAM(isOK);
+            FK_UNUSED_PARAM(isOK);
             FKASSERT(isOK, "The 2x2 empty texture was created unsuccessfully.");
 
             texture = Director::getInstance()->getTextureCache()->addImage(image, CC_2x2_WHITE_IMAGE_KEY);
-            CC_SAFE_RELEASE(image);
+            FK_SAFE_RELEASE(image);
         }
     }
 
     if (!_batchNode && _texture != texture)
     {
-        CC_SAFE_RETAIN(texture);
-        CC_SAFE_RELEASE(_texture);
+        FK_SAFE_RETAIN(texture);
+        FK_SAFE_RELEASE(_texture);
         _texture = texture;
         updateBlendFunc();
     }
@@ -540,10 +539,10 @@ void Sprite::updateTransform(void)
 /*    if( _hasChildren )
     {
         // MARMALADE: CHANGED TO USE Node*
-        // NOTE THAT WE HAVE ALSO DEFINED virtual Node::updateTransform()
+        // NOTE THAT WE HAVE ALSO DEFINED virtual Entity::updateTransform()
         arrayMakeObjectsPerformSelector(_children, updateTransform, Sprite*);
     }*/
-    Node::updateTransform();
+    Entity::updateTransform();
 }
 
 // draw
@@ -590,18 +589,18 @@ void Sprite::addChild(Node *child, int zOrder, int tag)
         }
     }
     //CCNode already sets isReorderChildDirty_ so this needs to be after batchNode check
-    Node::addChild(child, zOrder, tag);
+    Entity::addChild(child, zOrder, tag);
 }
 
 void Sprite::addChild(Node *child, int zOrder, const std::string &name)
 {
-    FKASSERT(child != nullptr, "Argument must be non-nullptr");
+    FKAssert(child != nullptr, "Argument must be non-nullptr");
     
     if (_batchNode)
     {
         Sprite* childSprite = dynamic_cast<Sprite*>(child);
-        FKASSERT( childSprite, "CCSprite only supports Sprites as children when using SpriteBatchNode");
-        FKASSERT(childSprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "");
+        FKAssert( childSprite, "CCSprite only supports Sprites as children when using SpriteBatchNode");
+        FKAssert(childSprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "");
         //put it in descendants array of batch node
         _batchNode->appendChild(childSprite);
         
@@ -610,14 +609,14 @@ void Sprite::addChild(Node *child, int zOrder, const std::string &name)
             setReorderChildDirtyRecursively();
         }
     }
-    //CCNode already sets isReorderChildDirty_ so this needs to be after batchNode check
-    Node::addChild(child, zOrder, name);
+    //Entity already sets isReorderChildDirty_ so this needs to be after batchNode check
+    Entity::addChild(child, zOrder, name);
 }
 
 void Sprite::reorderChild(Node *child, int zOrder)
 {
-    FKASSERT(child != nullptr, "child must be non null");
-    FKASSERT(_children.contains(child), "child does not belong to this");
+    FKAssert(child != nullptr, "child must be non null");
+    FKAssert(_children.contains(child), "child does not belong to this");
 
     if( _batchNode && ! _reorderChildDirty)
     {
@@ -625,7 +624,7 @@ void Sprite::reorderChild(Node *child, int zOrder)
         _batchNode->reorderBatch(true);
     }
 
-    Node::reorderChild(child, zOrder);
+    Entity::reorderChild(child, zOrder);
 }
 
 void Sprite::removeChild(Node *child, bool cleanup)
@@ -635,7 +634,7 @@ void Sprite::removeChild(Node *child, bool cleanup)
         _batchNode->removeSpriteFromAtlas((Sprite*)(child));
     }
 
-    Node::removeChild(child, cleanup);
+    Entity::removeChild(child, cleanup);
 }
 
 void Sprite::removeAllChildrenWithCleanup(bool cleanup)
@@ -651,7 +650,7 @@ void Sprite::removeAllChildrenWithCleanup(bool cleanup)
         }
     }
 
-    Node::removeAllChildrenWithCleanup(cleanup);
+    Entity::removeAllChildrenWithCleanup(cleanup);
 }
 
 void Sprite::sortAllChildren()
@@ -716,87 +715,87 @@ void Sprite::setDirtyRecursively(bool bValue)
 
 void Sprite::setPosition(const Vec2& pos)
 {
-    Node::setPosition(pos);
+    Entity::setPosition(pos);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setPosition(float x, float y)
 {
-    Node::setPosition(x, y);
+    Entity::setPosition(x, y);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setRotation(float rotation)
 {
-    Node::setRotation(rotation);
+    Entity::setRotation(rotation);
     
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setRotationSkewX(float fRotationX)
 {
-    Node::setRotationSkewX(fRotationX);
+    Entity::setRotationSkewX(fRotationX);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setRotationSkewY(float fRotationY)
 {
-    Node::setRotationSkewY(fRotationY);
+    Entity::setRotationSkewY(fRotationY);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setSkewX(float sx)
 {
-    Node::setSkewX(sx);
+    Entity::setSkewX(sx);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setSkewY(float sy)
 {
-    Node::setSkewY(sy);
+    Entity::setSkewY(sy);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setScaleX(float scaleX)
 {
-    Node::setScaleX(scaleX);
+    Entity::setScaleX(scaleX);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setScaleY(float scaleY)
 {
-    Node::setScaleY(scaleY);
+    Entity::setScaleY(scaleY);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setScale(float fScale)
 {
-    Node::setScale(fScale);
+    Entity::setScale(fScale);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setScale(float scaleX, float scaleY)
 {
-    Node::setScale(scaleX, scaleY);
+    Entity::setScale(scaleX, scaleY);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setPositionZ(float fVertexZ)
 {
-    Node::setPositionZ(fVertexZ);
+    Entity::setPositionZ(fVertexZ);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::setAnchorPoint(const Vec2& anchor)
 {
-    Node::setAnchorPoint(anchor);
+    Entity::setAnchorPoint(anchor);
     SET_DIRTY_RECURSIVELY();
 }
 
 void Sprite::ignoreAnchorPointForPosition(bool value)
 {
     FKASSERT(! _batchNode, "ignoreAnchorPointForPosition is invalid in Sprite");
-    Node::ignoreAnchorPointForPosition(value);
+    Entity::ignoreAnchorPointForPosition(value);
 }
 
 void Sprite::setVisible(bool bVisible)

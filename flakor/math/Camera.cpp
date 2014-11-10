@@ -22,13 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "Camera.h"
-#include "lang/CCString.h"
-#include "GL.h"
-
-#include "draw_nodes/DrawingPrimitives.h"
-#include "Director.h"
-#include "kazmath/GL/matrix.h"
+#include "math/Camera.h"
+#include "base/lang/FKString.h"
+#include "core/opengl/GL.h"
+#include "math/GLMatrix.h"
 
 using namespace std;
 
@@ -64,7 +61,7 @@ void Camera::restore(void)
     m_fUpY = 1.0f;
     m_fUpZ = 0.0f;
 
-    kmMat4Identity( &m_lookupMatrix );
+    m_lookupMatrix.identity();
 
     m_bDirty = false;
 }
@@ -73,17 +70,15 @@ void Camera::locate(void)
 {
     if (m_bDirty)
     {
-        kmVec3 eye, center, up;
+        Vector3 eye = Vector3(m_fEyeX, m_fEyeY , m_fEyeZ );
+        Vector3 center= Vector3(m_fCenterX, m_fCenterY, m_fCenterZ );
 
-        kmVec3Fill( &eye, m_fEyeX, m_fEyeY , m_fEyeZ );
-        kmVec3Fill( &center, m_fCenterX, m_fCenterY, m_fCenterZ );
-
-        kmVec3Fill( &up, m_fUpX, m_fUpY, m_fUpZ);
-        kmMat4LookAt( &m_lookupMatrix, &eye, &center, &up);
+        Vector3 up= Vector3(m_fUpX, m_fUpY, m_fUpZ);
+        m_lookupMatrix.lookAt(eye, center, up);
 
         m_bDirty = false;
     }
-    kmGLMultMatrix( &m_lookupMatrix );
+    GLMultiply( &m_lookupMatrix );
 }
 
 float Camera::getZEye(void)

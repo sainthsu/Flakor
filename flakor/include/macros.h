@@ -180,13 +180,13 @@ It should work same as apples CFSwapInt32LittleToHost(..)
 */
 
 /// when define returns true it means that our architecture uses big endian
-#define CC_HOST_IS_BIG_ENDIAN (bool)(*(unsigned short *)"\0\xff" < 0x100) 
-#define CC_SWAP32(i)  ((i & 0x000000ff) << 24 | (i & 0x0000ff00) << 8 | (i & 0x00ff0000) >> 8 | (i & 0xff000000) >> 24)
-#define CC_SWAP16(i)  ((i & 0x00ff) << 8 | (i &0xff00) >> 8)   
-#define CC_SWAP_INT32_LITTLE_TO_HOST(i) ((CC_HOST_IS_BIG_ENDIAN == true)? CC_SWAP32(i) : (i) )
-#define CC_SWAP_INT16_LITTLE_TO_HOST(i) ((CC_HOST_IS_BIG_ENDIAN == true)? CC_SWAP16(i) : (i) )
-#define CC_SWAP_INT32_BIG_TO_HOST(i)    ((CC_HOST_IS_BIG_ENDIAN == true)? (i) : CC_SWAP32(i) )
-#define CC_SWAP_INT16_BIG_TO_HOST(i)    ((CC_HOST_IS_BIG_ENDIAN == true)? (i):  CC_SWAP16(i) )
+#define FK_HOST_IS_BIG_ENDIAN (bool)(*(unsigned short *)"\0\xff" < 0x100) 
+#define FK_SWAP32(i)  ((i & 0x000000ff) << 24 | (i & 0x0000ff00) << 8 | (i & 0x00ff0000) >> 8 | (i & 0xff000000) >> 24)
+#define FK_SWAP16(i)  ((i & 0x00ff) << 8 | (i &0xff00) >> 8)   
+#define FK_SWAP_INT32_LITTLE_TO_HOST(i) ((FK_HOST_IS_BIG_ENDIAN == true)? FK_SWAP32(i) : (i) )
+#define FK_SWAP_INT16_LITTLE_TO_HOST(i) ((FK_HOST_IS_BIG_ENDIAN == true)? FK_SWAP16(i) : (i) )
+#define FK_SWAP_INT32_BIG_TO_HOST(i)    ((FK_HOST_IS_BIG_ENDIAN == true)? (i) : FK_SWAP32(i) )
+#define FK_SWAP_INT16_BIG_TO_HOST(i)    ((FK_HOST_IS_BIG_ENDIAN == true)? (i):  FK_SWAP16(i) )
 
 /**********************/
 /** Profiling Macros **/
@@ -228,14 +228,14 @@ It should work same as apples CFSwapInt32LittleToHost(..)
 
 #endif
 
-#if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0
+#if !defined(FLAKOR_DEBUG) || FLAKOR_DEBUG == 0
 #define CHECK_GL_ERROR_DEBUG()
 #else
 #define CHECK_GL_ERROR_DEBUG() \
     do { \
         GLenum __error = glGetError(); \
         if(__error) { \
-            CCLog("OpenGL error 0x%04X in %s %s %d\n", __error, __FILE__, __FUNCTION__, __LINE__); \
+            FKLog("OpenGL error 0x%04X in %s %s %d\n", __error, __FILE__, __FUNCTION__, __LINE__); \
         } \
     } while (false)
 #endif
@@ -245,7 +245,7 @@ It should work same as apples CFSwapInt32LittleToHost(..)
  The number of calls per frame are displayed on the screen when the CCDirector's stats are enabled.
  */
 extern unsigned int FK_DLL g_uNumberOfDraws;
-#define CC_INCREMENT_GL_DRAWS(__n__) g_uNumberOfDraws += __n__
+#define FK_INCREMENT_GL_DRAWS(__n__) g_uNumberOfDraws += __n__
 
 /*******************/
 /** Notifications **/
@@ -253,7 +253,7 @@ extern unsigned int FK_DLL g_uNumberOfDraws;
 /** @def CCAnimationFrameDisplayedNotification
  Notification name when a CCSpriteFrame is displayed
  */
-#define CCAnimationFrameDisplayedNotification "CCAnimationFrameDisplayedNotification"
+#define FKAnimationFrameDisplayedNotification "FKAnimationFrameDisplayedNotification"
 
 #endif // _FK_MACROS_H_
 

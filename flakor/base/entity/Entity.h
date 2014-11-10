@@ -7,12 +7,12 @@
 #include "base/element/Color.h"
 #include "base/lang/Array.h"
 #include "math/Camera.h"
+#include "math/Matrices.h"
 
 FLAKOR_NS_BEGIN
 
 class Color;
 class Camera;
-class Matrix4;
 class Touch;
 
 enum {
@@ -135,10 +135,11 @@ class Entity : public Object,public IColorable,public IUpdatable
 		bool transformDirty;
 		bool additionalTransformDirty;
 		bool inverseDirty;
-			/**
-			 *相机，默认不起作用
-			 */
-			Camera* camera;
+		/**
+		 *相机，默认不起作用
+		 */
+		Camera* camera;
+
 		/**
 		 *子元素队列
 		 */
@@ -153,9 +154,9 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *只有正方形（n×n）的矩阵，亦即方阵，才可能、但非必然有逆矩阵。若方阵A的逆矩阵存在，则称A为非奇异方阵或可逆方阵。
 		 *
 		 */
-		Matrix4 *inverseMatrix;
-		Matrix4 *transformMatrix;
-		Matrix4 *additionalMatrix;
+		Matrix4 inverseMatrix;
+		Matrix4 transformMatrix;
+		Matrix4 additionalMatrix;
 
 		//用户自定义数据指针
 		void* userData;
@@ -642,10 +643,10 @@ class Entity : public Object,public IColorable,public IUpdatable
 		/**
 		 * set additional Matrix for extra transform or others
 		 */
-		virtual void setAddtionalMatrix(Matrix4* matrix);
-		virtual Matrix4* getAddtionalMatrix();
+		virtual void setAddtionalMatrix(Matrix4& matrix);
+		virtual Matrix4 getAddtionalMatrix();
 
-		virtual void setCamera(const Camera* camera);
+		virtual void setCamera(Camera* camera);
 		/**
 		 * Returns a camera object that lets you move the node using a gluLookAt
 		 *
@@ -657,7 +658,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *
 		 * @return A Camera object that lets you move the node like using a gluLookAt in OpenGL 1.0 1.1
 		 */
-		virtual Camera* getCamera();
+		virtual Camera* getCamera() const;
 
 		/** 
 		 * Returns whether or not the node accepts event callbacks.

@@ -2,24 +2,26 @@
 #ifndef _FK_MATRIX_STACK_H_
 #define _FK_MATRIX_STACK_H_
 
-#include "./Matrices.h"
+#include "math/Matrices.h"
 
-static MatrixStack* mainStack = NULL;
+FLAKOR_NS_BEGIN
 
-class MatrixStack :: Object
+class MatrixStack
 {
 	private:
 		int capacity;
 		int itemCount;
-		Matrix* top;
-		Matrix* stack;
+		Matrix4* top;
+		Matrix4* stack;
 	public:
 		MatrixStack(void);
 		~MatrixStack(void);
-		initialize();
-		push(const Matrix4* matrix);
-		pop(Matrix4* outMatrix);
-		release();
-}
+		void initialize();
+		void push(const Matrix4* matrix);
+		void pop(Matrix4* outMatrix);
+		void release();
+};
+
+FLAKOR_NS_END
 
 #endif // define  _FK_MATRIX_STACK_H_

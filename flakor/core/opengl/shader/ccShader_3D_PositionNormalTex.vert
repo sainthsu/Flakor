@@ -1,5 +1,5 @@
 
-const char* cc3D_PositionNormalTex_vert = STRINGIFY(
+const char* Shader::PositionNormalTex_3D_vert = STRINGIFY(
 
 \n#if (MAX_POINT_LIGHT_NUM > 0)\n
 uniform vec3 u_PointLightSourcePosition[MAX_POINT_LIGHT_NUM];

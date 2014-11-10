@@ -7,7 +7,7 @@ http://www.flakor.org
 #include "core/opengl/shader/Shaders.h"
 
 #define _STRINGIFY(A)  #A
-#define _STRINGIFY(A)  STRINGIFY(A)
+#define STRINGIFY(A)  _STRINGIFY(A)
 
 FLAKOR_NS_BEGIN
 //

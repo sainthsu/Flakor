@@ -2,6 +2,13 @@
 #include "base/entity/Entity.h"
 #include "base/lang/FKString.h"
 #include "base/event/Touch.h"
+#include "math/GLMatrix.h"
+
+#if FK_ENTITY_RENDER_SUBPIXEL
+#define RENDER_IN_SUBPIXEL
+#else
+#define RENDER_IN_SUBPIXEL(__ARGS__) (ceil(__ARGS__))
+#endif
 
 FLAKOR_NS_BEGIN
 
@@ -19,7 +26,7 @@ Entity::Entity(void)
 , skewY(0.0f)
 , anchorPointInPixels(PointZero)
 , anchorPoint(PointZero)
-, additionalMatrix(NULL)
+, additionalMatrix()
 , camera(NULL)	  
 , ZOrder(0)
 , orderOfArrival(0)
@@ -518,29 +525,30 @@ void Entity::removeAllChildren()
 void Entity::removeAllChildren(bool cleanup)
 {
 	// not using detachChild improves speed here
-	if ( children && children->count() > 0 )
+	if (children && children->count() > 0 )
 	{
 		Entity* child;
-		FK_ARRAY_FOREACH(children, child)
+		int count = children->count();
+		
+	    for(int i = 0;i<count;child = (Entity*)children->data->arr[i],i++)
 		{
-			Entity* entity = (Entity*) child;
-			if (entity)
+			if (child)
 			{
 				// IMPORTANT:
 				//  -1st do onExit
 				//  -2nd cleanup
 				if(running)
 				{
-					entity->onExitTransitionDidStart();
-					entity->onExit();
+					child->onExitTransitionDidStart();
+					child->onExit();
 				}
 
 				if (cleanup)
 				{
-					entity->cleanup();
+					child->cleanup();
 				}
 				// set parent nil at the end
-				entity->setParent(NULL);
+				child->setParent(NULL);
 			}
 		}
 
@@ -613,29 +621,29 @@ void Entity::setUserData(void *data)
 	this->userData = data;
 }
 
-void Entity::setAddtionalMatrix(Matrix4* matrix)
+void Entity::setAddtionalMatrix(Matrix4& matrix)
 {
 	this->additionalMatrix = matrix;
 	transformDirty = true;
 	additionalTransformDirty = true;
 }
 
-Matrix4* Entity::getAddtionalMatrix()
+Matrix4 Entity::getAddtionalMatrix()
 {
 	return this->additionalMatrix;
 }
 
-/*
-void Entity::setCamera(const Camera* camera);
+
+void Entity::setCamera(Camera* camera)
 {
-	this.camera = camera;
+	this->camera = camera;
 }
 
-Camera* Entity::getCamera()
+Camera* Entity::getCamera() const
 {
 	return camera;
 }
-*/
+
 
 bool Entity::isRunning()
 {
@@ -735,12 +743,12 @@ void Entity::onVisit(void)
 		}
 		int childCount = children->count();
 		int i = 0;
-		Entity child = NULL;
+		Entity* child = NULL;
 
 		//draw children behind this entity
 		for(;i<childCount;i++)
 		{
-			child = (Entity *)children->CArray->arr[i];
+			child = (Entity *)children->data->arr[i];
 			if(child && child->ZOrder < 0)
 			{
 				child->onVisit();
@@ -757,7 +765,7 @@ void Entity::onVisit(void)
 		//draw children in font of this entity
 		for(;i<childCount;i++)
 		{
-			child = (Entity *)children->CArray->arr[i];
+			child = (Entity *)children->data->arr[i];
 			if(child)
 			{
 				child->onVisit();
@@ -795,22 +803,22 @@ void Entity::transform(void)
 	// Update Z vertex manually
 	transfrom4x4[14] = vertexZ;
 
-	kmGLMultMatrix( &transfrom4x4 );
+	GLMultiply( &transfrom4x4 );
 
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
 	if ( camera != NULL)/// && !(grid != NULL && grid->isActive()) )
 	{
-        /*
+        
 		bool translate = (anchorPointInPixels.x != 0.0f || anchorPointInPixels.y != 0.0f);
 
 		if( translate )
-			kmGLTranslatef(RENDER_IN_SUBPIXEL(anchorPointInPixels.x), RENDER_IN_SUBPIXEL(anchorPointInPixels.y), 0 );
+			GLTranslatef(RENDER_IN_SUBPIXEL(anchorPointInPixels.x), RENDER_IN_SUBPIXEL(anchorPointInPixels.y), 0 );
 
 		camera->locate();
 
 		if( translate )
-			kmGLTranslatef(RENDER_IN_SUBPIXEL(-anchorPointInPixels.x), RENDER_IN_SUBPIXEL(-anchorPointInPixels.y), 0 );
-         */
+			GLTranslatef(RENDER_IN_SUBPIXEL(-anchorPointInPixels.x), RENDER_IN_SUBPIXEL(-anchorPointInPixels.y), 0 );
+         
 	}
 
 }
@@ -871,8 +879,8 @@ Matrix4 Entity::entityToParentTransform(void)
 			float x = position.x;
 			float y = position.y;
 
-			float anchorPointInPixels.x = contentSize.width * anchorPoint.x;
-			float anchorPointInPixels.y = contentSize.height * anchorPoint.y;
+			anchorPointInPixels.x = contentSize.width * anchorPoint.x;
+			anchorPointInPixels.y = contentSize.height * anchorPoint.y;
 
 			if (!relativeAnchorPoint)
 			{
@@ -886,20 +894,20 @@ Matrix4 Entity::entityToParentTransform(void)
 			float cx = 1, sx = 0, cy = 1, sy = 0;
 			if (rotationX || rotationY)
 			{
-				float radiansX = -DEGREES_TO_RADIANS(rotationX);
-				float radiansY = -DEGREES_TO_RADIANS(rotationY);
+				float radiansX = -FK_DEGREES_TO_RADIANS(rotationX);
+				float radiansY = -FK_DEGREES_TO_RADIANS(rotationY);
 				cx = cosf(radiansX);
 				sx = sinf(radiansX);
 				cy = cosf(radiansY);
 				sy = sinf(radiansY);
 			}
 
-			bool needsSkewMatrix = ( skewX || skewY );
+			bool needSkewMatrix = ( skewX || skewY );
 
 			// optimization:
 			// inline anchor point calculation if skew is not needed
 			// Adjusted transform calculation for rotational skew
-			if (! needsSkewMatrix && !m_obAnchorPointInPoints.equals(PointZero))
+			if (! needSkewMatrix && !anchorPointInPixels.equals(PointZero))
 			{
 				x += cy * -anchorPointInPixels.x * scaleX + -sx * -anchorPointInPixels.y * scaleY;
 				y += sy * -anchorPointInPixels.x * scaleX +  cx * -anchorPointInPixels.y * scaleY;
@@ -908,82 +916,86 @@ Matrix4 Entity::entityToParentTransform(void)
 
 			// Build Transform Matrix
 			// Adjusted transform calculation for rotational skew
-			transformMatrix = new Matrix4( cy * scaleX,  sy *scaleX,
-				-sx * scaleY, cx * scaleY,
-				x, y );
+			transformMatrix = Matrix4::make( cy * scaleX,  -sx * scaleY,0,x,
+											sy *scaleX, cx * scaleY,0,y,
+											0,0,1,0,
+											0,0,0,1);
 
 			// XXX: Try to inline skew
 			// If skew is needed, apply skew and then anchor point
-			if (needsSkewMatrix)
+			if (needSkewMatrix)
 			{
-				CCAffineTransform skewMatrix = CCAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(m_fSkewY)),
-					tanf(DEGREES_TO_RADIANS(m_fSkewX)), 1.0f,
-					0.0f, 0.0f );
-				m_sTransform = CCAffineTransformConcat(skewMatrix, m_sTransform);
+				Matrix4 skewMatrix = Matrix4::make(1.0f, tanf(FK_DEGREES_TO_RADIANS(skewX)),0.f,0.0f,
+												tanf(FK_DEGREES_TO_RADIANS(skewY)), 1.0f,0.f,0.0f,
+												0.0f, 0.0f ,1,0,
+												0,0,0,1);
+				transformMatrix = skewMatrix*transformMatrix;
 
+				delete(&skewMatrix);			
+				
 				// adjust anchor point
-				if (!m_obAnchorPointInPoints.equals(PointZero))
+				if (!anchorPointInPixels.equals(PointZero))
 				{
-					m_sTransform = CCAffineTransformTranslate(m_sTransform, -m_obAnchorPointInPoints.x, -m_obAnchorPointInPoints.y);
+					transformMatrix = transformMatrix.translate(-anchorPointInPixels.x, -anchorPointInPixels.y,0);
 				}
 			}
 		}
 		else
 		{
-			Matrix4 matrix = new Matrix4();
-			matrix.translate(position.x,position.y);
+			Matrix4 matrix;
+			matrix.translate(position.x,position.y , 0);
 
-			float anchorPointInPixels.x = contentSize.width * anchorPoint.x;
-			float anchorPointInPixels.y = contentSize.height * anchorPoint.y;
+			anchorPointInPixels.x = contentSize.width * anchorPoint.x;
+			anchorPointInPixels.y = contentSize.height * anchorPoint.y;
 
 			if (relativeAnchorPoint)
 			{
-				matrix.translate(-obAnchorPointInPointsX,-obAnchorPointInPointsY);
+				matrix.translate(-anchorPointInPixels.x,-anchorPointInPixels.y,0);
 			}
 
 			if(isScaled())
 			{
-				if(!scaleCenter.equal(PointZero))
+				if(!scaleCenter.equals(PointZero))
 				{
-					matrix.scale(scaleX,scaleY);
+					matrix.scale(scaleX,scaleY , 0);
 				}
 				else
 				{
-					matrix.translate(-scaleCenter.x,-scaleCenter.y);
-					matrix.ratate(scaleX,scaleY);
-					matrix.translate(scaleCenter.x,scaleCenter.y);
+					matrix.translate(-scaleCenter.x,-scaleCenter.y,0);
+					matrix.scale(scaleX,scaleY,0);
+					matrix.translate(scaleCenter.x,scaleCenter.y,0);
 				}	
 			}
 
 			if(isRotated())
 			{
-				if(!rotationCenter.equal(PointZero))
+				if(!rotationCenter.equals(PointZero))
 				{
-					matrix.ratate(rotationX,rotationY);
+					//matrix.rotate(rotationX,rotationY,0);
 				}
 				else
 				{
-					matrix.translate(-rotationCenter.x,-rotationCenter.y);
-					matrix.ratate(rotationX,rotationY);
-					matrix.translate(rotationCenter.x,rotationCenter.y);
+					matrix.translate(-rotationCenter.x,-rotationCenter.y,0);
+					//matrix.rotate(rotationX,rotationY,0);
+					matrix.translate(rotationCenter.x,rotationCenter.y,0);
 				}	
 			}
 
 			if(isSkewed())
 			{
-				if(!skewCenter.equal(PointZero))
+				if(!skewCenter.equals(PointZero))
 				{
-					matrix.ratate(skewX,skewY);
+					matrix.skew2D(skewX,skewY);
 				}
 				else
 				{
-					matrix.translate(-skewCenter.x,-skewCenter.y);
-					matrix.ratate(skewX,skewY);
-					matrix.translate(skewCenter.x,skewCenter.y);
+					matrix.translate(-skewCenter.x,-skewCenter.y,0);
+					matrix.skew2D(skewX,skewY);
+					matrix.translate(skewCenter.x,skewCenter.y,0);
 				}	
 			}
 
-			transformMatrix = &matrix;
+			transformMatrix = matrix;
 		}
 
 		
@@ -1002,11 +1014,12 @@ Matrix4 Entity::entityToParentTransform(void)
 
 Matrix4 Entity::parentToEntityTransform(void)
 {
+		Matrix4* inverse = NULL;
 		if(transformDirty)
 		{
-			inverse = this->entityToParentTransform()->inverse();
+			*inverse = this->entityToParentTransform().invert();
 		}
-		return inverse;
+		return *inverse;
 }
 
 Matrix4 Entity::entityToWorldTransform()
@@ -1021,7 +1034,7 @@ Matrix4 Entity::entityToWorldTransform()
 
 Matrix4 Entity::worldToEntityTransform(void)
 {
-    return this->entityToWorldTransform()->inverse();
+    return this->entityToWorldTransform().invert();
 }
 
 Point Entity::convertToEntitySpace(const Point& worldPoint)
@@ -1048,11 +1061,12 @@ Point Entity::convertToWorldSpaceAR(const Point& entityPoint)
     return convertToWorldSpace(pt);
 }
 
+/*
 Point Entity::convertToWindowSpace(const Point& nodePoint)
 {
     Point worldPoint = this->convertToWorldSpace(nodePoint);
     return Engine::shareEngine()->convertToUI(worldPoint);
-}
+}*/
 
 // convenience methods which take a CCTouch instead of Point
 Point Entity::convertTouchToEntitySpace(Touch *touch)

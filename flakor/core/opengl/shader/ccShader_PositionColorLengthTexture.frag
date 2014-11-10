@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-const char* ccPositionColorLengthTexture_frag = STRINGIFY(
+const char* Shader::PositionColorLengthTexture_frag = STRINGIFY(
 
 \n#ifdef GL_ES\n
 // #extension GL_OES_standard_derivatives : enable\n

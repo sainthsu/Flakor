@@ -1,5 +1,5 @@
 
-const char* cc3D_ColorNormalTex_frag = STRINGIFY(
+const char* Shader::ColorNormalTex_3D_frag = STRINGIFY(
 
 \n#if (MAX_DIRECTIONAL_LIGHT_NUM > 0)\n
 uniform vec3 u_DirLightSourceColor[MAX_DIRECTIONAL_LIGHT_NUM];

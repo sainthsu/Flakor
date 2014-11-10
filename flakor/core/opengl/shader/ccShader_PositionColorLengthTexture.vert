@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-const char* ccPositionColorLengthTexture_vert = STRINGIFY(
+const char* Shader::PositionColorLengthTexture_vert = STRINGIFY(
 
 \n#ifdef GL_ES\n
 attribute mediump vec4 a_position;

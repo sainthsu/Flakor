@@ -1,4 +1,4 @@
-const char* ccLabelDistanceFieldNormal_frag = STRINGIFY(
+const char* Shader::LabelDistanceFieldNormal_frag = STRINGIFY(
 
 \n#ifdef GL_ES\n
 precision lowp float; 

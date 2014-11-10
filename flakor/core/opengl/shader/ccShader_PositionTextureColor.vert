@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-const char* ccPositionTextureColor_vert = STRINGIFY(
+const char* Shader::PositionTextureColor_vert = STRINGIFY(
 attribute vec4 a_position;
 attribute vec2 a_texCoord;
 attribute vec4 a_color;

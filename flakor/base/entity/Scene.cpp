@@ -1,11 +1,12 @@
-#include "./Scene.h"
+#include "targetMacros.h"
+#include "base/entity/Scene.h"
 
 FLAKOR_NS_BEGIN
 
 Scene::Scene()
 {
-	relateAnchorPoint = false;
-	setAnchorPoint(0.5,0.5);
+	relativeAnchorPoint = false;
+	setAnchorPoint(MakePoint(0.5,0.5));
 }
 
 Scene::~Scene()

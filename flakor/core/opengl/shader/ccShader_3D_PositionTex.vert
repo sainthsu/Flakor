@@ -1,5 +1,5 @@
 
-const char* cc3D_PositionTex_vert = STRINGIFY(
+const char* Shader::PositionTex_3D_vert = STRINGIFY(
 
 attribute vec4 a_position;
 attribute vec2 a_texCoord;
@@ -14,7 +14,7 @@ void main(void)
 }
 );
 
-const char* cc3D_SkinPositionTex_vert = STRINGIFY(
+const char* Shader::SkinPositionTex_3D_vert = STRINGIFY(
 attribute vec3 a_position;
 
 attribute vec4 a_blendWeight;

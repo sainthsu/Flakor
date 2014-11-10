@@ -1,4 +1,4 @@
-const char* ccLabelDistanceFieldGlow_frag = STRINGIFY(
+const char* Shader::LabelDistanceFieldGlow_frag = STRINGIFY(
 
 \n#ifdef GL_ES\n
 precision lowp float; 

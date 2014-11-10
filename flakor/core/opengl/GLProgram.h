@@ -1,6 +1,12 @@
 #ifndef _FK_GLPROGRAM_H_
 #define _FK_GLPROGRAM_H_
 
+#include <unordered_map>
+#include "core/opengl/GL.h"
+
+typedef void (*GLInfoFunction)(GLuint program, GLenum pname, GLint* params);
+typedef void (*GLLogFunction) (GLuint program, GLsizei bufsize, GLsizei* length, GLchar* infolog);
+
 FLAKOR_NS_BEGIN
 
 struct VertexAttrib
@@ -19,26 +25,10 @@ struct Uniform
     std::string name;
 };
 
+struct _hashUniformEntry;
+
 class GLProgram : Object
 {
-	protected:
-		GLuint            _programID;
-    	GLuint            _vertShaderID;
-    	GLuint            _fragShaderID;
-		bool 			  _compiled;
-
-		std::unordered_map<std::string, Uniform> _userUniforms;
-    	std::unordered_map<std::string, VertexAttrib> _vertexAttribs;
-
-	protected:
-		bool updateUniformLocation(GLint location, const GLvoid* data, unsigned int bytes);
-    virtual std::string getDescription() const;
-
-    void bindPredefinedVertexAttribs();
-    void parseVertexAttribs();
-    void parseUniforms();
-		bool compileShader(GLuint * shader, GLenum type, const GLchar* source);
-
 	public:
 
 	enum
@@ -130,11 +120,45 @@ class GLProgram : Object
     static const char* ATTRIBUTE_NAME_BLEND_WEIGHT;
     static const char* ATTRIBUTE_NAME_BLEND_INDEX;
 
-		GLProgram();
-		virtual ~GLProgram();
+	protected:
+		GLuint            _programID;
+    	GLuint            _vertShaderID;
+    	GLuint            _fragShaderID;
+		bool 			  _compiled;
+		GLint             _builtInUniforms[UNIFORM_MAX];
+		struct _hashUniformEntry* _hashForUniforms;
 
-		inline const GLuint getProgram() const { return _program; }
-		inline bool isCompiled() const { return _complied; }
+		struct flag_struct {
+        unsigned int usesTime:1;
+        unsigned int usesNormal:1;
+        unsigned int usesMVP:1;
+        unsigned int usesMV:1;
+        unsigned int usesP:1;
+        unsigned int usesRandom:1;
+        // handy way to initialize the bitfield
+        flag_struct() { memset(this, 0, sizeof(*this)); }
+    } _flags;
+
+		std::unordered_map<std::string, Uniform> _userUniforms;
+    	std::unordered_map<std::string, VertexAttrib> _vertexAttribs;
+
+	protected:
+		bool updateUniformLocation(GLint location, const GLvoid* data, unsigned int bytes);
+    	virtual std::string getDescription() const;
+
+    	void bindPredefinedVertexAttribs();
+    	void parseVertexAttribs();
+    	void parseUniforms();
+    	std::string logForOpenGLObject(GLuint object, GLInfoFunction infoFunc, GLLogFunction logFunc) const;
+		bool compileShader(GLuint * shader, GLenum type, const GLchar* source);
+
+	public:
+
+	GLProgram();
+	virtual ~GLProgram();
+
+	inline const GLuint getProgramID() const { return _programID; }
+	inline bool isCompiled() const { return _compiled; }
 		
 /** Initializes the GLProgram with a vertex and fragment with bytes array 
      * @js initWithString
@@ -163,10 +187,10 @@ class GLProgram : Object
     /** calls glGetUniformLocation() */
     GLint getUniformLocation(const std::string& attributeName) const;
 
-		/** links the glProgram */
-	    bool link();
-	    /** it will call glUseProgram() */
-	    void use();
+	/** links the glProgram */
+	bool link();
+	/** it will call glUseProgram() */
+	void use();
 		
 
 	/** It will create 4 uniforms:
@@ -271,9 +295,6 @@ class GLProgram : Object
     // reload all shaders, this function is designed for android
     // when opengl context lost, so don't call it.
     void reset();
-    
-    inline const GLuint getProgram() const { return _program; }
-
 	
 };
 

@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-const char* ccPositionColor_frag = STRINGIFY(
+const char* Shader::PositionColor_frag = STRINGIFY(
 
 \n#ifdef GL_ES\n
 precision lowp float;

@@ -46,7 +46,7 @@ void Log(const char * pszFormat, ...)
 
 void MessageBox(const char * pszMsg, const char * pszTitle)
 {
-    showDialogJNI(pszMsg, pszTitle);
+    //showDialogJNI(pszMsg, pszTitle);
 }
 
 void LuaLog(const char * pszFormat)

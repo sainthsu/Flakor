@@ -1,5 +1,5 @@
 
-const char* cc3D_Color_frag = STRINGIFY(
+const char* Shader::Color_3D_frag = STRINGIFY(
 
 \n#ifdef GL_ES\n
 varying lowp vec4 DestinationColor;

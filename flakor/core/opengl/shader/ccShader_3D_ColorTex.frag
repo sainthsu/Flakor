@@ -1,5 +1,5 @@
 
-const char* cc3D_ColorTex_frag = STRINGIFY(
+const char* Shader::ColorTex_3D_frag = STRINGIFY(
 
 \n#ifdef GL_ES\n
 varying mediump vec2 TextureCoordOut;

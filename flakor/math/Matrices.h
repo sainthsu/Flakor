@@ -22,12 +22,12 @@
 
 #include "math/Vectors.h"
 
-FLAKOR_NS_BEGIN
-
 enum MATRIX_MAJOR{
     ROW_MAJOR=1,
     COLUMN_MAJOR
 };
+
+FLAKOR_NS_BEGIN
 
 class Point;
 
@@ -184,6 +184,11 @@ public:
             float wx, float wy, float wz, float ww);//传入每一项初始化 init with each argument
     Matrix4(const Matrix3& matrix);
 
+	static Matrix4 make(float xx, float xy, float xz, float xw,
+            	  float yx, float yy, float yz, float yw,
+                  float zx, float zy, float zz, float zw,
+                  float wx, float wy, float wz, float ww);
+
 	//settter and getter
     void        set(const float src[16],enum MATRIX_MAJOR major);//通过数组设置
     void        set(float xx, float xy, float xz, float xw,
@@ -242,7 +247,7 @@ public:
     Matrix4&    operator-=(const Matrix4& rhs);         // subtract rhs and update this object
     Vector4     operator*(const Vector4& rhs) const;    // multiplication: v' = M * v
     Vector3     operator*(const Vector3& rhs) const;    // multiplication: v' = M * v
-    Point*     operator*(const Point& rhs) const;     // multiplication: p' = M * p
+    Point     operator*(const Point& rhs) const;     // multiplication: p' = M * p
     Matrix4     operator*(const Matrix4& rhs) const;    // multiplication: M3 = M1 * M2
     Matrix4&    operator*=(const Matrix4& rhs);         // multiplication: M1' = M1 * M2
     bool        operator==(const Matrix4& rhs) const;   // exact compare, no epsilon

@@ -23,7 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "CArray.h"
-#include "lang/Object.h"
+#include "base/lang/Object.h"
 
 FLAKOR_NS_BEGIN
 

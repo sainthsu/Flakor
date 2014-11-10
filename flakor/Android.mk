@@ -12,6 +12,7 @@ main.cpp \
 Flakor.cpp \
 Engine.cpp \
 Application.cpp \
+include/common.cpp \
 base/lang/Object.cpp \
 base/lang/Array.cpp \
 base/lang/AutoreleasePool.cpp \
@@ -23,17 +24,17 @@ base/lang/Zone.cpp \
 base/element/Color.cpp \
 base/element/Element.cpp \
 base/element/Helper.cpp \
-base/entity/Entity.cpp \
-base/entity/Scene.cpp \
-base/entity/Sprite.cpp \
 math/Camera.cpp \
 math/CArray.cpp \
 math/Matrices.cpp \
 math/MatrixStack.cpp \
 core/opengl/GLProgram.cpp \
-core/vbo/VBO.cpp \
-core/shader/Shader.cpp \
-core/texture/texture2D.cpp \
+core/opengl/vbo/VBO.cpp \
+core/opengl/shader/Shaders.cpp \
+core/texture/Texture2D.cpp \
+base/entity/Entity.cpp \
+base/entity/Scene.cpp \
+base/entity/Sprite.cpp \
 
 LOCAL_EXPORT_LDLIBS := -lGLESv1_CM \
                        -lGLESv2 \

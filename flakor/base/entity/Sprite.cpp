@@ -257,7 +257,7 @@ Sprite::~Sprite(void)
  *
  * The test is in "TestCpp/SpriteTest/Sprite without texture".
  */
-static unsigned char cc_2x2_white_image[] = {
+static unsigned char fk_2x2_white_image[] = {
     // RGBA8888
     0xFF, 0xFF, 0xFF, 0xFF,
     0xFF, 0xFF, 0xFF, 0xFF,
@@ -265,7 +265,7 @@ static unsigned char cc_2x2_white_image[] = {
     0xFF, 0xFF, 0xFF, 0xFF
 };
 
-#define FK_2x2_WHITE_IMAGE_KEY  "/cc_2x2_white_image"
+#define FK_2x2_WHITE_IMAGE_KEY  "/fk_2x2_white_image"
 
 // MARK: texture
 void Sprite::setTexture(const std::string &filename)
@@ -281,24 +281,24 @@ void Sprite::setTexture(const std::string &filename)
 void Sprite::setTexture(Texture2D *texture)
 {
     // If batchnode, then texture id should be the same
-    FKAssert(! _batchNode || texture->getName() == _batchNode->getTexture()->getName(), "CCSprite: Batched sprites should use the same texture as the batchnode");
+    FKAssert(! _batchNode || texture->getName() == _batchNode->getTexture()->getName(), "Sprite: Batched sprites should use the same texture as the batchnode");
     // accept texture==nil as argument
     FKAssert( !texture || dynamic_cast<Texture2D*>(texture), "setTexture expects a Texture2D. Invalid argument");
 
     if (texture == nullptr)
     {
         // Gets the texture by key firstly.
-        texture = Director::getInstance()->getTextureCache()->getTextureForKey(CC_2x2_WHITE_IMAGE_KEY);
+        texture = Director::getInstance()->getTextureCache()->getTextureForKey(FK_2x2_WHITE_IMAGE_KEY);
 
         // If texture wasn't in cache, create it from RAW data.
         if (texture == nullptr)
         {
             Image* image = new (std::nothrow) Image();
-            bool isOK = image->initWithRawData(cc_2x2_white_image, sizeof(cc_2x2_white_image), 2, 2, 8);
+            bool isOK = image->initWithRawData(fk_2x2_white_image, sizeof(fk_2x2_white_image), 2, 2, 8);
             FK_UNUSED_PARAM(isOK);
             FKASSERT(isOK, "The 2x2 empty texture was created unsuccessfully.");
 
-            texture = Director::getInstance()->getTextureCache()->addImage(image, CC_2x2_WHITE_IMAGE_KEY);
+            texture = Director::getInstance()->getTextureCache()->addImage(image, FK_2x2_WHITE_IMAGE_KEY);
             FK_SAFE_RELEASE(image);
         }
     }
@@ -392,7 +392,7 @@ void Sprite::setTextureCoords(Rect rect)
 
     if (_rectRotated)
     {
-#if CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
+#if FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL
         left    = (2*rect.origin.x+1)/(2*atlasWidth);
         right   = left+(rect.size.height*2-2)/(2*atlasWidth);
         top     = (2*rect.origin.y+1)/(2*atlasHeight);
@@ -402,16 +402,16 @@ void Sprite::setTextureCoords(Rect rect)
         right   = (rect.origin.x+rect.size.height) / atlasWidth;
         top     = rect.origin.y/atlasHeight;
         bottom  = (rect.origin.y+rect.size.width) / atlasHeight;
-#endif // CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
+#endif // FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL
 
         if (_flippedX)
         {
-            CC_SWAP(top, bottom, float);
+            FK_SWAP(top, bottom, float);
         }
 
         if (_flippedY)
         {
-            CC_SWAP(left, right, float);
+            FK_SWAP(left, right, float);
         }
 
         _quad.bl.texCoords.u = left;
@@ -439,12 +439,12 @@ void Sprite::setTextureCoords(Rect rect)
 
         if(_flippedX)
         {
-            CC_SWAP(left,right,float);
+            FK_SWAP(left,right,float);
         }
 
         if(_flippedY)
         {
-            CC_SWAP(top,bottom,float);
+            FK_SWAP(top,bottom,float);
         }
 
         _quad.bl.texCoords.u = left;
@@ -579,8 +579,8 @@ void Sprite::addChild(Node *child, int zOrder, int tag)
     if (_batchNode)
     {
         Sprite* childSprite = dynamic_cast<Sprite*>(child);
-        FKASSERT( childSprite, "CCSprite only supports Sprites as children when using SpriteBatchNode");
-        FKASSERT(childSprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "");
+        FKAssert( childSprite, "Sprite only supports Sprites as children when using SpriteBatchNode");
+        FKAssert(childSprite->getTexture()->getName() == _textureAtlas->getTexture()->getName(), "");
         //put it in descendants array of batch node
         _batchNode->appendChild(childSprite);
 

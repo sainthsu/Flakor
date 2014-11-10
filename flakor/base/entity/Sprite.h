@@ -226,7 +226,7 @@ public:
      * @js  NA
      * @lua NA
      */
-    inline VBO& getVBO(void) { return *_vbo; } const
+    inline VBO* getVBO(void) { return _vbo; } const
 
     /**
      * Returns whether or not the texture rectangle is rotated.
@@ -512,4 +512,4 @@ private:
 
 FLAKOR_NS_END
 
-#endif // __SPRITE_NODE_CCSPRITE_H__
+#endif // _FK_SPRITE_H_

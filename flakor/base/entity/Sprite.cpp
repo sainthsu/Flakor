@@ -5,13 +5,14 @@ http://www.flakor.org
 ****************************************************************************/
 
 #include "base/entity/Sprite.h"
+#include "base/element/ELement.h"
 
 FLAKOR_NS_BEGIN
 
 #if FK_SPRITEBATCHNODE_RENDER_SUBPIXEL
-#define RENDER_IN_SUBPIXEL
+	#define RENDER_IN_SUBPIXEL
 #else
-#define RENDER_IN_SUBPIXEL(__ARGS__) (ceil(__ARGS__))
+	#define RENDER_IN_SUBPIXEL(__ARGS__) (ceil(__ARGS__))
 #endif
 
 // MARK: create, init, dealloc
@@ -234,7 +235,7 @@ Sprite::Sprite(void)
 #if FK_SPRITE_DEBUG_DRAW
     _debugDrawNode = DrawEntity::create();
     addChild(_debugDrawNode);
-#endif //CC_SPRITE_DEBUG_DRAW
+#endif //FK_SPRITE_DEBUG_DRAW
 }
 
 Sprite::~Sprite(void)
@@ -264,7 +265,7 @@ static unsigned char cc_2x2_white_image[] = {
     0xFF, 0xFF, 0xFF, 0xFF
 };
 
-#define CC_2x2_WHITE_IMAGE_KEY  "/cc_2x2_white_image"
+#define FK_2x2_WHITE_IMAGE_KEY  "/cc_2x2_white_image"
 
 // MARK: texture
 void Sprite::setTexture(const std::string &filename)
@@ -984,7 +985,7 @@ void Sprite::setBatchNode(SpriteBatchNode *spriteBatchNode)
 
 void Sprite::updateBlendFunc(void)
 {
-    FKASSERT(! _batchNode, "Sprite: updateBlendFunc doesn't work when the sprite is rendered using a SpriteBatchNode");
+    FKAssert(! _batchNode, "Sprite: updateBlendFunc doesn't work when the sprite is rendered using a SpriteBatchNode");
 
     // it is possible to have an untextured sprite
     if (! _texture || ! _texture->hasPremultipliedAlpha())
@@ -1006,7 +1007,7 @@ std::string Sprite::getDescription() const
         texture_id = _batchNode->getTextureAtlas()->getTexture()->getName();
     else
         texture_id = _texture->getName();
-    return StringUtils::format("<Sprite | Tag = %d, TextureID = %d>", _tag, texture_id );
+    return String::createWithFormat("<Sprite | Tag = %d, TextureID = %d>", _tag, texture_id )->m_sString;
 }
 
 NS_CC_END

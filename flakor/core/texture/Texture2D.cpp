@@ -21,6 +21,7 @@ bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixel
 
 bool Texture2D::initWithFile(const char *fileName)
 {
+	FILE *fp = fopen(filename,"rb");
 	return true;
 }
 

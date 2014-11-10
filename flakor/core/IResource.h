@@ -16,7 +16,7 @@ typedef enum {
 	LOADED,
 	UNLOADED,
 	DESTROYED
-} ResoureState
+} ResoureState;
 
 class IResource : Object
 {

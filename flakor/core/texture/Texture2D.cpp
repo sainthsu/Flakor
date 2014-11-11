@@ -6,12 +6,27 @@
 FLAKOR_NS_BEGIN
 
 Texture2D::Texture2D()
+: _pixelFormat(Texture2D::PixelFormat::DEFAULT)
+, _pixelsWidth(0)
+, _pixelsHeight(0)
+, _textureID(0)
+, _maxS(0.0)
+, _maxT(0.0)
+, _hasPremultipliedAlpha(false)
+, _hasMipmaps(false)
+, _shaderProgram(nullptr)
+, _antialiasEnabled(true)
 {
+	
 }
 
 Texture2D::~Texture2D()
 {
-
+	FK_FAKE_DELETE(_shaderProgram);
+	if(_textureID)
+	{
+		glDeleteTextures(1,&_textureID);
+	}
 }
 
 bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixelFormat,int width,int height,Size size)
@@ -21,7 +36,8 @@ bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixel
 
 bool Texture2D::initWithFile(const char *fileName)
 {
-	FILE *fp = fopen(filename,"rb");
+	FILE *fp = fopen(fileName,"rb");
+	
 	return true;
 }
 
@@ -90,7 +106,10 @@ void Texture2D::setMaxT(GLfloat maxT)
 
 void Texture2D::load()
 {
-	
+	if(_textureID != 0)
+	{
+		gl
+	}
 }
 
 void Texture2D::unload()

@@ -8,6 +8,19 @@ FLAKOR_NS_BEGIN
 class Entity;
 class AutoReleasePool;
 
+/** Interface that defines how to clone an Object */
+class Clonable
+{
+public:
+    /** returns a copy of the Object */
+    virtual Clonable* clone() const = 0;
+    /**
+     * @js NA
+     * @lua NA
+     */
+    virtual ~Clonable() {};
+};
+
 class Object
 {
 	public:

@@ -69,9 +69,42 @@ typedef struct _TexParams {
 
 class Texture2D : public Object
 {
+	protected:
+		PixelFormat _pixelFormat;
+		/** width in pixels */
+		int _pixelsWidth;
+
+		/** height in pixels */
+		int _pixelsHeight;
+
+		/** texture id in gpu */
+        GLuint _textureID;
+
+		/** texture max S */
+		GLfloat _maxS;
+
+		/** texture max T */
+		GLfloat _maxT;
+
+		/** content size */
+		Size* _contentSize;
+
+		/** whether or not the texture has their Alpha premultiplied */
+		bool _hasPremultipliedAlpha;
+
+		bool _hasMipmaps;
+
+		/** shader program used by drawAtPoint and drawInRect */
+		GLProgram* _shaderProgram;
+
+		//TODO need these attributes later
+		float _scale;
+		bool rotated;
+		bool flipY;
 	public:
 		Texture2D();
 		virtual ~Texture2D();
+		
 		bool initWithData(const void *data,ssize_t dataLen,PixelFormat pixelFormat,int width,int height,Size size);
 
 		bool initWithFile(const char *fileName);
@@ -107,39 +140,6 @@ class Texture2D : public Object
 		void load();
 		void unload();
 
-protected:
-
-		PixelFormat _pixelFormat;
-		/** width in pixels */
-		int _pixelsWidth;
-
-		/** height in pixels */
-		int _pixelsHeight;
-
-		/** texture id in gpu */
-        GLuint _textureID;
-
-		/** texture max S */
-		GLfloat _maxS;
-
-		/** texture max T */
-		GLfloat _maxT;
-
-		/** content size */
-		Size* _contentSize;
-
-		/** whether or not the texture has their Alpha premultiplied */
-		bool _hasPremultipliedAlpha;
-
-		bool _hasMipmaps;
-
-		/** shader program used by drawAtPoint and drawInRect */
-		GLProgram* _shaderProgram;
-
-		//TODO need these attributes later
-		float _scale;
-		bool rotated;
-		bool flipY;
 };
 
 FLAKOR_NS_END

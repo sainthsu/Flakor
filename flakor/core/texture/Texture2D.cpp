@@ -3,6 +3,8 @@
 #include "core/texture/Texture2D.h"
 #include "base/element/Element.h"
 
+#include 
+
 FLAKOR_NS_BEGIN
 
 Texture2D::Texture2D()
@@ -49,7 +51,16 @@ PixelFormat Texture2D::getPixelFormat() const
 
 void Texture2D::setTexParams(const TexParams& texParams)
 {
-	
+	/*FKAssert((_pixelsWide == ccNextPOT(_pixelsWide) || texParams.wrapS == GL_CLAMP_TO_EDGE) &&
+        (_pixelsHigh == ccNextPOT(_pixelsHigh) || texParams.wrapT == GL_CLAMP_TO_EDGE),
+        "GL_CLAMP_TO_EDGE should be used in NPOT dimensions");
+	*/
+
+    glBindTexture2D( GL_TEXTURE_2D,_textureID );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texParams.minFilter );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texParams.magFilter );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, texParams.wrapS );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, texParams.wrapT );
 }
 
 void Texture2D::setContentSize(Size *size)
@@ -108,8 +119,19 @@ void Texture2D::load()
 {
 	if(_textureID != 0)
 	{
-		gl
+		glDeleteTextures(1,&_textureID);
 	}
+	
+	glGenTextures(1,&_textureID);
+	glBindTextures(TEXTURE_2D,_textureID);
+
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _antialiasEnabled ? GL_LINEAR : GL_NEAREST);
+
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _antialiasEnabled ? GL_LINEAR : GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+
+	glTexImage2D(GL_TEXTURE_2D, i, info.internalFormat, (GLsizei)width, (GLsizei)height, 0, info.format, info.type, data);
 }
 
 void Texture2D::unload()

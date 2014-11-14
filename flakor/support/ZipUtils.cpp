@@ -1,39 +1,20 @@
 /****************************************************************************
- Copyright (c) 2010-2012 cocos2d-x.org
- Copyright (c) 2013-2014 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Saint Hsu
 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
+ http://www.flakor.org
  ****************************************************************************/
 
 // FIXME: hack, must be included before ziputils
 #include "unzip.h"
-#include "base/ZipUtils.h"
+#include "support/ZipUtils.h"
 
 #include <zlib.h>
 #include <assert.h>
 #include <stdlib.h>
 
 #include "base/CCData.h"
-#include "base/ccMacros.h"
-#include "platform/CCFileUtils.h"
+#include "macros.h"
+#include "support/FileUtils.h"
 #include <map>
 
 // FIXME: Other platforms should use upstream minizip like mingw-w64  
@@ -42,7 +23,7 @@
 #define unzGoToNextFile64(A,B,C,D) unzGoToNextFile2(A,B,C,D, NULL, 0, NULL, 0)
 #endif
 
-NS_CC_BEGIN
+FLAKOR_NS_BEGIN
 
 unsigned int ZipUtils::s_uEncryptedPvrKeyParts[4] = {0,0,0,0};
 unsigned int ZipUtils::s_uEncryptionKey[1024];
@@ -681,4 +662,4 @@ bool ZipFile::initWithBuffer(const void *buffer, uLong size)
     return true;
 }
 
-NS_CC_END
+FLAKOR_NS_END

@@ -98,7 +98,7 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
         unsigned char* unpackedData = nullptr;
         ssize_t unpackedLen = 0;
         
-        //detect and unzip the compress file
+        /**detect and unzip the compress file
         if (ZipUtils::isCCZBuffer(data, dataLen))
         {
             unpackedLen = ZipUtils::inflateCCZBuffer(data, dataLen, &unpackedData);
@@ -108,10 +108,10 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
             unpackedLen = ZipUtils::inflateMemory(const_cast<unsigned char*>(data), dataLen, &unpackedData);
         }
         else
-        {
+        {*/
             unpackedData = const_cast<unsigned char*>(data);
             unpackedLen = dataLen;
-        }
+        //}
 
         _fileType = detectFormat(unpackedData, unpackedLen);
 
@@ -195,7 +195,7 @@ bool Image::isS3TC(const unsigned char * data, ssize_t dataLen)
     
     if (strncmp(header->fileCode, "DDS", 3) != 0)
     {
-        CCLOG("cocos2d: the file is not a dds file!");
+        FKLOG("flakor: the file is not a dds file!");
         return false;
     }
     return true;
@@ -207,7 +207,7 @@ bool Image::isATITC(const unsigned char *data, ssize_t dataLen)
     
     if (strncmp(&header->identifier[1], "KTX", 3) != 0)
     {
-        CCLOG("cocos3d: the file is not a ktx file!");
+        FKLOG("flakor: the file is not a ktx file!");
         return false;
     }
     return true;

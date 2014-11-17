@@ -1,12 +1,15 @@
 #ifndef _FK_TEXTURE2D_H_
 #define _FK_TEXTURE2D_H_
 
+#include <map>
 #include "base/lang/Object.h"
 
 FLAKOR_NS_BEGIN
 
 class Size;
 class GLProgram;
+class Image;
+
 
 /** @typedef Texture2DPixelFormat
   Possible texture pixel formats
@@ -67,9 +70,32 @@ typedef struct _TexParams {
 	GLuint    wrapT;
 } TexParams;
 
+struct PixelFormatInfo {
+
+        PixelFormatInfo(GLenum anInternalFormat, GLenum aFormat, GLenum aType, int aBpp, bool aCompressed, bool anAlpha)
+            : internalFormat(anInternalFormat)
+            , format(aFormat)
+            , type(aType)
+            , bpp(aBpp)
+            , compressed(aCompressed)
+            , alpha(anAlpha)
+        {}
+
+        GLenum internalFormat;
+        GLenum format;
+        GLenum type;
+        int bpp;
+        bool compressed;
+        bool alpha;
+};
+
+typedef std::map<PixelFormat, const PixelFormatInfo> PixelFormatInfoMap;
+
 class Texture2D : public Object
 {
 	protected:
+		const char* _filename;		
+	
 		PixelFormat _pixelFormat;
 		/** width in pixels */
 		int _pixelsWidth;
@@ -97,15 +123,22 @@ class Texture2D : public Object
 		/** shader program used by drawAtPoint and drawInRect */
 		GLProgram* _shaderProgram;
 
+		static const PixelFormatInfoMap _pixelFormatInfoTables;		
+
+		bool	_antialiasEnabled;
+
 		//TODO need these attributes later
 		float _scale;
 		bool rotated;
 		bool flipY;
+
 	public:
 		Texture2D();
 		virtual ~Texture2D();
 		
 		bool initWithData(const void *data,ssize_t dataLen,PixelFormat pixelFormat,int width,int height,Size size);
+
+		bool initWithAsset(const char *fileName);
 
 		bool initWithFile(const char *fileName);
 
@@ -138,6 +171,7 @@ class Texture2D : public Object
     	void setMaxT(GLfloat maxT);
 
 		void load();
+		Image* loadData();
 		void unload();
 
 };

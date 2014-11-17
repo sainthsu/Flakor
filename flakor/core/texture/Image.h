@@ -1,4 +1,4 @@
-
+#include "core/texture/Texture2D.h"
 
 // premultiply alpha, or the effect will wrong when want to use other pixel format in Texture2D,
 // such as RGB888, RGB5A1
@@ -20,7 +20,7 @@ typedef struct _MipmapInfo
 class Image
 {
 public:
-    friend class TextureManager;
+    //friend class TextureManager;
     /**
      * @js ctor
      */
@@ -82,7 +82,7 @@ public:
     inline unsigned char *   getData()               { return _data; }
     inline ssize_t           getDataLen()            { return _dataLen; }
     inline Format            getFileType()           {return _fileType; }
-    inline Texture2D::PixelFormat getRenderFormat()  { return _renderFormat; }
+    inline PixelFormat getRenderFormat()  { return _renderFormat; }
     inline int               getWidth()              { return _width; }
     inline int               getHeight()             { return _height; }
     inline int               getNumberOfMipmaps()    { return _numberOfMipmaps; }
@@ -143,7 +143,7 @@ protected:
     int _height;
     bool _unpack;
     Format _fileType;
-    Texture2D::PixelFormat _renderFormat;
+    PixelFormat _renderFormat;
     MipmapInfo _mipmaps[MIPMAP_MAX];   // pointer to mipmap images
     int _numberOfMipmaps;
     // false if we cann't auto detect the image is premultiplied or not.
@@ -174,6 +174,6 @@ protected:
     bool isS3TC(const unsigned char * data,ssize_t dataLen);
     bool isATITC(const unsigned char *data, ssize_t dataLen);
 
-}
+};
 
 FLAKOR_NS_END

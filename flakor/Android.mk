@@ -31,6 +31,7 @@ math/MatrixStack.cpp \
 core/opengl/GLProgram.cpp \
 core/opengl/vbo/VBO.cpp \
 core/opengl/shader/Shaders.cpp \
+core/texture/Image.cpp \
 core/texture/Texture2D.cpp \
 base/entity/Entity.cpp \
 base/entity/Scene.cpp \

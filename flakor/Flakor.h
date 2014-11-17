@@ -38,8 +38,8 @@
 #include "core/opengl/GLProgram.h"
 #include "core/opengl/shader/Shaders.h"
 #include "core/opengl/vbo/VBO.h"
+#include "core/texture/Image.h"
 #include "core/texture/Texture2D.h"
-
 
 //math
 #include "math/MatrixStack.h"

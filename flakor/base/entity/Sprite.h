@@ -456,6 +456,7 @@ protected:
     void updateVBO(void);
     virtual void setTextureCoords(Rect rect);
     virtual void updateBlendFunc(void);
+
     virtual void setReorderChildDirtyRecursively(void);
     virtual void setDirtyRecursively(bool bValue);
 

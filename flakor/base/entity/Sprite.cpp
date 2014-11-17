@@ -5,7 +5,7 @@ http://www.flakor.org
 ****************************************************************************/
 
 #include "base/entity/Sprite.h"
-#include "base/element/ELement.h"
+#include "base/element/Element.h"
 
 FLAKOR_NS_BEGIN
 
@@ -78,7 +78,7 @@ Sprite* Sprite::createWithSpriteFrame(SpriteFrame *spriteFrame)
 
 Sprite* Sprite::createWithSpriteFrameName(const std::string& spriteFrameName)
 {
-    SpriteFrame *frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
+    SpriteFrame *frame = nullptr;//SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
     
 #if FLAKOR_DEBUG > 0
     char msg[256] = {0};
@@ -125,7 +125,8 @@ bool Sprite::initWithFile(const std::string& filename)
 {
     FKAssert(filename.size()>0, "Invalid filename for sprite");
 
-    Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
+    Texture2D *texture = new Texture2D();
+	texture->initWithFile(filename);
     if (texture)
     {
         Rect rect = RectZero;
@@ -143,7 +144,8 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
 {
     FKAssert(filename.size()>0, "Invalid filename");
 
-    Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
+    Texture2D *texture = new Texture2D();
+	texture->initWithFile(filename);
     if (texture)
     {
         return initWithTexture(texture, rect);
@@ -159,7 +161,7 @@ bool Sprite::initWithSpriteFrameName(const std::string& spriteFrameName)
 {
     FKAssert(spriteFrameName.size() > 0, "Invalid spriteFrameName");
 
-    SpriteFrame *frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
+    SpriteFrame *frame = nullptr//SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
     return initWithSpriteFrame(frame);
 }
 
@@ -196,17 +198,13 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
         // zwoptex default values
         _offsetPosition = PointZero;
 
-        // add vbo
-        _vbo = VBO::create();
+        // add vbo 3+1+2
+        _vbo = VBO::create(6,4);
         
-        // Atlas: Color
-        _quad.bl.colors = Color::WHITE;
-        _quad.br.colors = Color::WHITE;
-        _quad.tl.colors = Color::WHITE;
-        _quad.tr.colors = Color::WHITE;
-        
+		GLProgram* program = new GLprogram();
+		program->initWithByteArrays(Shader::PositionTextureColor_noMVP_vert,Shader::PositionTextureColor_noMVP_frag);
         // shader state
-        setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP));
+        setGLProgram(program);
 
         // update texture (calls updateBlendFunc)
         setTexture(texture);
@@ -270,7 +268,9 @@ static unsigned char fk_2x2_white_image[] = {
 // MARK: texture
 void Sprite::setTexture(const std::string &filename)
 {
-    Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
+    Texture2D *texture = new Texture2D();
+	texture->initWithFile(filename);
+
     setTexture(texture);
 
     Rect rect = RectZero;
@@ -280,15 +280,14 @@ void Sprite::setTexture(const std::string &filename)
 
 void Sprite::setTexture(Texture2D *texture)
 {
-    // If batchnode, then texture id should be the same
-    FKAssert(! _batchNode || texture->getName() == _batchNode->getTexture()->getName(), "Sprite: Batched sprites should use the same texture as the batchnode");
     // accept texture==nil as argument
     FKAssert( !texture || dynamic_cast<Texture2D*>(texture), "setTexture expects a Texture2D. Invalid argument");
 
     if (texture == nullptr)
     {
         // Gets the texture by key firstly.
-        texture = Director::getInstance()->getTextureCache()->getTextureForKey(FK_2x2_WHITE_IMAGE_KEY);
+        texture = new Texture2d()
+		texture->initData(fk_2x2_white_image,16);
 
         // If texture wasn't in cache, create it from RAW data.
         if (texture == nullptr)
@@ -298,16 +297,17 @@ void Sprite::setTexture(Texture2D *texture)
             FK_UNUSED_PARAM(isOK);
             FKASSERT(isOK, "The 2x2 empty texture was created unsuccessfully.");
 
-            texture = Director::getInstance()->getTextureCache()->addImage(image, FK_2x2_WHITE_IMAGE_KEY);
+            //texture = Director::getInstance()->getTextureCache()->addImage(image, FK_2x2_WHITE_IMAGE_KEY);
             FK_SAFE_RELEASE(image);
         }
     }
 
-    if (!_batchNode && _texture != texture)
+    if (_texture != texture)
     {
         FK_SAFE_RETAIN(texture);
         FK_SAFE_RELEASE(_texture);
         _texture = texture;
+		
         updateBlendFunc();
     }
 }
@@ -345,13 +345,6 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
     _offsetPosition.x = relativeOffset.x + (_contentSize.width - _rect.size.width) / 2;
     _offsetPosition.y = relativeOffset.y + (_contentSize.height - _rect.size.height) / 2;
 
-    // rendering using batch node
-    if (_batchNode)
-    {
-        // update dirty_, don't update recursiveDirty_
-        setDirty(true);
-    }
-    else
     {
         // self rendering
         
@@ -360,12 +353,6 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
         float y1 = 0 + _offsetPosition.y;
         float x2 = x1 + _rect.size.width;
         float y2 = y1 + _rect.size.height;
-
-        // Don't update Z.
-        _quad.bl.vertices = Vec3(x1, y1, 0);
-        _quad.br.vertices = Vec3(x2, y1, 0);
-        _quad.tl.vertices = Vec3(x1, y2, 0);
-        _quad.tr.vertices = Vec3(x2, y2, 0);
     }
 }
 
@@ -379,7 +366,7 @@ void Sprite::setTextureCoords(Rect rect)
 {
     rect = FK_RECT_POINTS_TO_PIXELS(rect);
 
-    Texture2D *tex = _batchNode ? _textureAtlas->getTexture() : _texture;
+    Texture2D *tex = _texture;
     if (! tex)
     {
         return;
@@ -425,7 +412,7 @@ void Sprite::setTextureCoords(Rect rect)
     }
     else
     {
-#if CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
+#if FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL
         left    = (2*rect.origin.x+1)/(2*atlasWidth);
         right    = left + (rect.size.width*2-2)/(2*atlasWidth);
         top        = (2*rect.origin.y+1)/(2*atlasHeight);
@@ -435,7 +422,7 @@ void Sprite::setTextureCoords(Rect rect)
         right    = (rect.origin.x + rect.size.width) / atlasWidth;
         top        = rect.origin.y/atlasHeight;
         bottom    = (rect.origin.y + rect.size.height) / atlasHeight;
-#endif // ! CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
+#endif // ! FK_FIX_ARTIFACTS_BY_STRECHING_TEXEL
 
         if(_flippedX)
         {
@@ -572,7 +559,7 @@ void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 
 // MARK: visit, draw, transform
 
-void Sprite::addChild(Node *child, int zOrder, int tag)
+void Sprite::addChild(Entity *child, int zOrder, int tag)
 {
     FKASSERT(child != nullptr, "Argument must be non-nullptr");
 
@@ -593,7 +580,7 @@ void Sprite::addChild(Node *child, int zOrder, int tag)
     Entity::addChild(child, zOrder, tag);
 }
 
-void Sprite::addChild(Node *child, int zOrder, const std::string &name)
+void Sprite::addChild(Entity *child, int zOrder, const std::string &name)
 {
     FKAssert(child != nullptr, "Argument must be non-nullptr");
     
@@ -614,7 +601,7 @@ void Sprite::addChild(Node *child, int zOrder, const std::string &name)
     Entity::addChild(child, zOrder, name);
 }
 
-void Sprite::reorderChild(Node *child, int zOrder)
+void Sprite::reorderChild(Entity *child, int zOrder)
 {
     FKAssert(child != nullptr, "child must be non null");
     FKAssert(_children.contains(child), "child does not belong to this");
@@ -628,7 +615,7 @@ void Sprite::reorderChild(Node *child, int zOrder)
     Entity::reorderChild(child, zOrder);
 }
 
-void Sprite::removeChild(Node *child, bool cleanup)
+void Sprite::removeChild(Entity *child, bool cleanup)
 {
     if (_batchNode)
     {
@@ -714,7 +701,7 @@ void Sprite::setDirtyRecursively(bool bValue)
                         }                               \
                     }
 
-void Sprite::setPosition(const Vec2& pos)
+void Sprite::setPosition(const Point& pos)
 {
     Entity::setPosition(pos);
     SET_DIRTY_RECURSIVELY();

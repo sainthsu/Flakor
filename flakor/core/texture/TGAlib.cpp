@@ -23,14 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
+#include "targetMacros.h"
 #include <string.h>
 #include <stdlib.h>
 
-#include "TGAlib.h"
-#include "base/CCData.h"
-#include "platform/CCFileUtils.h"
+#include "core/texture/TGAlib.h"
 
-NS_CC_BEGIN
+FLAKOR_NS_BEGIN
 
 static bool tgaLoadRLEImageData(unsigned char* Buffer, unsigned long bufSize, tImageTGA *info);
 void tgaFlipImage( tImageTGA *info );
@@ -43,19 +42,19 @@ bool tgaLoadHeader(unsigned char* buffer, unsigned long bufSize, tImageTGA *info
     do 
     {
         size_t step = sizeof(unsigned char) * 2;
-        CC_BREAK_IF((step + sizeof(unsigned char)) > bufSize);
+        FK_BREAK_IF((step + sizeof(unsigned char)) > bufSize);
         memcpy(&info->type, buffer + step, sizeof(unsigned char));
 
         step += sizeof(unsigned char) * 2;
         step += sizeof(signed short) * 4;
-        CC_BREAK_IF((step + sizeof(signed short) * 2 + sizeof(unsigned char)) > bufSize);
+        FK_BREAK_IF((step + sizeof(signed short) * 2 + sizeof(unsigned char)) > bufSize);
         memcpy(&info->width, buffer + step, sizeof(signed short));
         memcpy(&info->height, buffer + step + sizeof(signed short), sizeof(signed short));
         memcpy(&info->pixelDepth, buffer + step + sizeof(signed short) * 2, sizeof(unsigned char));
 
         step += sizeof(unsigned char);
         step += sizeof(signed short) * 2;
-        CC_BREAK_IF((step + sizeof(unsigned char)) > bufSize);
+        FK_BREAK_IF((step + sizeof(unsigned char)) > bufSize);
         unsigned char cGarbage;
         memcpy(&cGarbage, buffer + step, sizeof(unsigned char));
 
@@ -86,7 +85,7 @@ bool tgaLoadImageData(unsigned char *Buffer, unsigned long bufSize, tImageTGA *i
         total = info->height * info->width * mode;
 
         size_t dataSize = sizeof(unsigned char) * total;
-        CC_BREAK_IF((step + dataSize) > bufSize);
+        FK_BREAK_IF((step + dataSize) > bufSize);
         memcpy(info->imageData, Buffer + step, dataSize);
 
         // mode=3 or 4 implies that the image is RGB(A). However TGA
@@ -131,7 +130,7 @@ static bool tgaLoadRLEImageData(unsigned char* buffer, unsigned long bufSize, tI
         else
         {
             // otherwise, read in the run length token
-            CC_BREAK_IF((step + sizeof(unsigned char)) > bufSize);
+            FK_BREAK_IF((step + sizeof(unsigned char)) > bufSize);
             memcpy(&runlength, buffer + step, sizeof(unsigned char));
             step += sizeof(unsigned char);
 
@@ -148,7 +147,7 @@ static bool tgaLoadRLEImageData(unsigned char* buffer, unsigned long bufSize, tI
         if ( !skip )
         {
             // no, read in the pixel data
-            CC_BREAK_IF((step + sizeof(unsigned char) * mode) > bufSize);
+            FK_BREAK_IF((step + sizeof(unsigned char) * mode) > bufSize);
 
             memcpy(aux, buffer + step, sizeof(unsigned char) * mode);
             step += sizeof(unsigned char) * mode;
@@ -201,7 +200,7 @@ tImageTGA* tgaLoadBuffer(unsigned char* buffer, long size)
     
     do
     {
-        CC_BREAK_IF(! buffer);
+        FK_BREAK_IF(! buffer);
         info = (tImageTGA *)malloc(sizeof(tImageTGA));
 
         // get the file header info
@@ -274,12 +273,12 @@ tImageTGA* tgaLoadBuffer(unsigned char* buffer, long size)
 // this is the function to call when we want to load an image
 tImageTGA * tgaLoad(const char *filename)
 {
-    Data data = FileUtils::getInstance()->getDataFromFile(filename);
+    /*Data data = FileUtils::getInstance()->getDataFromFile(filename);
 
     if (!data.isNull())
     {
         return tgaLoadBuffer(data.getBytes(), data.getSize());
-    }
+    }*/
     
     return nullptr;
 }
@@ -335,4 +334,4 @@ void tgaDestroy(tImageTGA *info) {
         free(info);
     }
 }
-NS_CC_END
+FLAKOR_NS_END

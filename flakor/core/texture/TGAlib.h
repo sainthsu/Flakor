@@ -26,7 +26,7 @@ THE SOFTWARE.
 #ifndef __SUPPORT_DATA_SUPPORT_TGALIB_H__
 #define __SUPPORT_DATA_SUPPORT_TGALIB_H__
 
-namespace cocos2d {
+namespace flakor {
 
 enum {
     TGA_OK,
@@ -71,6 +71,6 @@ void tgaRGBtogreyscale(tImageTGA *info);
 /// releases the memory used for the image
 void tgaDestroy(tImageTGA *info);
 
-}//namespace cocos2d 
+}//namespace flakor 
 
 #endif // __SUPPORT_DATA_SUPPORT_TGALIB_H__

@@ -2,16 +2,34 @@
 #include "core/opengl/GL.h"
 #include "core/texture/Image.h"
 
+#include <vector>
 #include <string>
 #include <ctype.h>
 #include <jpeglib.h>
 #include <png.h>
+
+#include "core/texture/atitc.h"
+#include "core/texture/etc1.h"
+#include "core/texture/pvr.h"
+#include "core/texture/s3tc.h"
+#include "core/texture/TGAlib.h"
 
 #define FK_GL_ATC_RGB_AMD                                          0x8C92
 #define FK_GL_ATC_RGBA_EXPLICIT_ALPHA_AMD                          0x8C93
 #define FK_GL_ATC_RGBA_INTERPOLATED_ALPHA_AMD                      0x87EE
 
 FLAKOR_NS_BEGIN
+
+int FK_NextPOT(int x)
+{
+    x = x - 1;
+    x = x | (x >> 1);
+    x = x | (x >> 2);
+    x = x | (x >> 4);
+    x = x | (x >> 8);
+    x = x | (x >>16);
+    return x + 1;
+}
 
 //////////////////////////////////////////////////////////////////////////
 //struct and data for pvr structure
@@ -346,6 +364,27 @@ namespace
     }
 }
 
+PixelFormat getDevicePixelFormat(PixelFormat format)
+{
+    switch (format) {
+        case PixelFormat::PVRTC4:
+        case PixelFormat::PVRTC4A:
+        case PixelFormat::PVRTC2:
+        case PixelFormat::PVRTC2A:
+            if(Configuration::getInstance()->supportsPVRTC())
+                return format;
+            else
+                return PixelFormat::RGBA8888;
+        case PixelFormat::ETC:
+            if(Configuration::getInstance()->supportsETC())
+                return format;
+            else
+                return PixelFormat::RGB888;
+        default:
+            return format;
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Implement Image
 //////////////////////////////////////////////////////////////////////////
@@ -575,7 +614,7 @@ bool Image::isPvr(const unsigned char * data, ssize_t dataLen)
     const PVRv2TexHeader* headerv2 = static_cast<const PVRv2TexHeader*>(static_cast<const void*>(data));
     const PVRv3TexHeader* headerv3 = static_cast<const PVRv3TexHeader*>(static_cast<const void*>(data));
     
-    return memcmp(&headerv2->pvrTag, gPVRTexIdentifier, strlen(gPVRTexIdentifier)) == 0 || CC_SWAP_INT32_BIG_TO_HOST(headerv3->version) == 0x50565203;
+    return memcmp(&headerv2->pvrTag, gPVRTexIdentifier, strlen(gPVRTexIdentifier)) == 0 || FK_SWAP_INT32_BIG_TO_HOST(headerv3->version) == 0x50565203;
 }
 
 Image::Format Image::detectFormat(const unsigned char * data, ssize_t dataLen)
@@ -1181,8 +1220,8 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
     }
     
     if (! configuration->supportsNPOT() &&
-        (static_cast<int>(header->width) != ccNextPOT(header->width)
-            || static_cast<int>(header->height) != ccNextPOT(header->height)))
+        (static_cast<int>(header->width) != FK_NextPOT(header->width)
+            || static_cast<int>(header->height) != FK_NextPOT(header->height)))
     {
         FKLOG("flakor: ERROR: Loading an NPOT texture (%dx%d) but is not supported on this device", header->width, header->height);
         return false;
@@ -1215,8 +1254,8 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
     _numberOfMipmaps = 0;
 
     //Get size of mipmap
-    _width = width = CC_SWAP_INT32_LITTLE_TO_HOST(header->width);
-    _height = height = CC_SWAP_INT32_LITTLE_TO_HOST(header->height);
+    _width = width = FK_SWAP_INT32_LITTLE_TO_HOST(header->width);
+    _height = height = FK_SWAP_INT32_LITTLE_TO_HOST(header->height);
 
     //Get ptr to where data starts..
     dataLength = FK_SWAP_INT32_LITTLE_TO_HOST(header->dataLength);
@@ -1503,7 +1542,7 @@ bool Image::initWithETCData(const unsigned char * data, ssize_t dataLen)
     {
         //old opengl version has no define for GL_ETC1_RGB8_OES, add macro to make compiler happy. 
 #ifdef GL_ETC1_RGB8_OES
-        _renderFormat = Texture2D::PixelFormat::ETC;
+        _renderFormat = PixelFormat::ETC;
         _dataLen = dataLen - ETC_PKM_HEADER_SIZE;
         _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
         memcpy(_data, static_cast<const unsigned char*>(data) + ETC_PKM_HEADER_SIZE, _dataLen);
@@ -1679,20 +1718,20 @@ bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
         
         if (FOURCC_DXT1 == header->ddsd.DUMMYUNIONNAMEN4.ddpfPixelFormat.fourCC)
         {
-            _renderFormat = Texture2D::PixelFormat::S3TC_DXT1;
+            _renderFormat = PixelFormat::S3TC_DXT1;
         }
         else if (FOURCC_DXT3 == header->ddsd.DUMMYUNIONNAMEN4.ddpfPixelFormat.fourCC)
         {
-            _renderFormat = Texture2D::PixelFormat::S3TC_DXT3;
+            _renderFormat = PixelFormat::S3TC_DXT3;
         }
         else if (FOURCC_DXT5 == header->ddsd.DUMMYUNIONNAMEN4.ddpfPixelFormat.fourCC)
         {
-            _renderFormat = Texture2D::PixelFormat::S3TC_DXT5;
+            _renderFormat = PixelFormat::S3TC_DXT5;
         }
     }
     else
     { //will software decode
-        _renderFormat = Texture2D::PixelFormat::RGBA8888;
+        _renderFormat = PixelFormat::RGBA8888;
     }
     
     /* load the mipmaps */
@@ -1830,13 +1869,13 @@ bool Image::initWithATITCData(const unsigned char *data, ssize_t dataLen)
             switch (header->glInternalFormat)
             {
                 case FK_GL_ATC_RGB_AMD:
-                    _renderFormat = Texture2D::PixelFormat::ATC_RGB;
+                    _renderFormat = PixelFormat::ATC_RGB;
                     break;
                 case FK_GL_ATC_RGBA_EXPLICIT_ALPHA_AMD:
-                    _renderFormat = Texture2D::PixelFormat::ATC_EXPLICIT_ALPHA;
+                    _renderFormat = PixelFormat::ATC_EXPLICIT_ALPHA;
                     break;
                 case FK_GL_ATC_RGBA_INTERPOLATED_ALPHA_AMD:
-                    _renderFormat = Texture2D::PixelFormat::ATC_INTERPOLATED_ALPHA;
+                    _renderFormat = PixelFormat::ATC_INTERPOLATED_ALPHA;
                     break;
                 default:
                     break;
@@ -1853,7 +1892,7 @@ bool Image::initWithATITCData(const unsigned char *data, ssize_t dataLen)
             
             int bytePerPixel = 4;
             unsigned int stride = width * bytePerPixel;
-            _renderFormat = Texture2D::PixelFormat::RGBA8888;
+            _renderFormat = PixelFormat::RGBA8888;
             
             std::vector<unsigned char> decodeImageData(stride * height);
             switch (header->glInternalFormat)
@@ -1947,7 +1986,7 @@ bool Image::initWithRawData(const unsigned char * data, ssize_t dataLen, int wid
         _height   = height;
         _width    = width;
         _hasPremultipliedAlpha = preMulti;
-        _renderFormat = Texture2D::PixelFormat::RGBA8888;
+        _renderFormat = PixelFormat::RGBA8888;
 
         // only RGBA8888 supported
         int bytesPerComponent = 4;
@@ -2245,7 +2284,7 @@ void Image::premultipliedAlpha()
     for(int i = 0; i < _width * _height; i++)
     {
         unsigned char* p = _data + i * 4;
-        fourBytes[i] = CC_RGB_PREMULTIPLY_ALPHA(p[0], p[1], p[2], p[3]);
+        fourBytes[i] = FK_RGB_PREMULTIPLY_ALPHA(p[0], p[1], p[2], p[3]);
     }
     
     _hasPremultipliedAlpha = true;

@@ -173,6 +173,8 @@ class Texture2D : public Object
 		void load();
 		Image* loadData();
 		void unload();
+	public:
+		static const PixelFormatInfoMap& getPixelFormatInfoMap();
 
 };
 

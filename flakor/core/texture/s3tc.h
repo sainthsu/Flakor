@@ -23,10 +23,10 @@
  ****************************************************************************/
 
 
-#ifndef COCOS2DX_PLATFORM_THIRDPARTY_S3TC_
-#define COCOS2DX_PLATFORM_THIRDPARTY_S3TC_
+#ifndef FLAKOR_PLATFORM_THIRDPARTY_S3TC_
+#define FLAKOR_PLATFORM_THIRDPARTY_S3TC_
 
-#include "platform/CCStdC.h"
+#include "stdC.h"
 
 enum class S3TCDecodeFlag
 {

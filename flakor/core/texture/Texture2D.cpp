@@ -261,5 +261,11 @@ void Texture2D::unload()
 	
 }
 
+const Texture2D::PixelFormatInfoMap& Texture2D::getPixelFormatInfoMap()
+{
+    return _pixelFormatInfoTables;
+}
+
+
 FLAKOR_NS_END
 

@@ -31,6 +31,11 @@ math/MatrixStack.cpp \
 core/opengl/GLProgram.cpp \
 core/opengl/vbo/VBO.cpp \
 core/opengl/shader/Shaders.cpp \
+core/texture/atitc.cpp \
+core/texture/etc1.cpp \
+core/texture/pvr.cpp \
+core/texture/s3tc.cpp \
+core/texture/TGAlib.cpp \
 core/texture/Image.cpp \
 core/texture/Texture2D.cpp \
 base/entity/Entity.cpp \

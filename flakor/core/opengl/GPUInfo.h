@@ -102,13 +102,13 @@ public:
     /** returns whether or not an OpenGL is supported */
     bool checkForGLExtension(const std::string &searchName) const;
 
-    bool init();
+    //bool init();
 
 	/** returns the value of a given key as a double */
-	const Value& getValue(const std::string& key, const Value& defaultValue = Value::Null) const;
+	//const Value& getValue(const std::string& key, const Value& defaultValue = Value::Null) const;
 
 	/** sets a new key/value pair  in the configuration dictionary */
-	void setValue(const std::string& key, const Value& value);
+	//void setValue(const std::string& key, const Value& value);
 
     /** returns the GPUInfo info */
     std::string getInfo() const;
@@ -117,7 +117,7 @@ public:
 	void gatherGPUInfo();
 
 	/** Loads a config file. If the keys are already present, then they are going to be replaced. Otherwise the new keys are added. */
-	void loadConfigFile(const std::string& filename);
+	//void loadConfigFile(const std::string& filename);
 
 private:
     GPUInfo(void);
@@ -142,12 +142,12 @@ protected:
     int             _maxPointLightInShader; // max support point light in shader
     int             _maxSpotLightInShader; // max support spot light in shader
 	
-	ValueMap        _valueDict;
+	//ValueMap        _valueDict;
 };
 
 // end of global group
 /// @}
 
-NS_CC_END
+FLAKOR_NS_END
 
-#endif // __CCCONFIGURATION_H__
+#endif // _FK_GPUINFO_H_

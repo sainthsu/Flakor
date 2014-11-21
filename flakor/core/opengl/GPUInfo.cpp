@@ -21,7 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-
+#include "targetMacros.h"
+#include "core/opengl/GL.h"
 #include "core/opengl/GPUInfo.h"
 
 FLAKOR_NS_BEGIN
@@ -50,31 +51,32 @@ GPUInfo::GPUInfo()
 {
 }
 
+/*
 bool GPUInfo::init()
 {
 	_valueDict["flakor.version"] = Value(getFlakorVersion());
 
 
-#if CC_ENABLE_PROFILERS
+#if FK_ENABLE_PROFILERS
 	_valueDict["flakor.compiled_with_profiler"] = Value(true);
 #else
 	_valueDict["flakor.compiled_with_profiler"] = Value(false);
 #endif
 
-#if CC_ENABLE_GL_STATE_CACHE == 0
+#if FK_ENABLE_GL_STATE_CACHE == 0
 	_valueDict["flakor.compiled_with_gl_state_cache"] = Value(false);
 #else
     _valueDict["flakor.compiled_with_gl_state_cache"] = Value(true);
 #endif
 
-#if COCOS2D_DEBUG
+#if FLAKOR_DEBUG
 	_valueDict["flakor.build_type"] = Value("DEBUG");
 #else
     _valueDict["flakor.build_type"] = Value("RELEASE");
 #endif
 
 	return true;
-}
+}*/
 
 GPUInfo::~GPUInfo()
 {
@@ -83,61 +85,61 @@ GPUInfo::~GPUInfo()
 std::string GPUInfo::getInfo() const
 {
 	// And Dump some warnings as well
-#if CC_ENABLE_PROFILERS
-    CCLOG("cocos2d: **** WARNING **** CC_ENABLE_PROFILERS is defined. Disable it when you finish profiling (from ccConfig.h)\n");
+#if FK_ENABLE_PROFILERS
+    FKLOG("flakor: **** WARNING **** FK_ENABLE_PROFILERS is defined. Disable it when you finish profiling (from config.h)\n");
 #endif
 
-#if CC_ENABLE_GL_STATE_CACHE == 0
-    CCLOG("cocos2d: **** WARNING **** CC_ENABLE_GL_STATE_CACHE is disabled. To improve performance, enable it (from ccConfig.h)\n");
+#if FK_ENABLE_GL_STATE_CACHE == 0
+    FKLOG("flakor: **** WARNING **** FK_ENABLE_GL_STATE_CACHE is disabled. To improve performance, enable it (from config.h)\n");
 #endif
 
     // Dump
-    Value forDump = Value(_valueDict);
-    return forDump.getDescription();
+    //Value forDump = Value(_valueDict);
+    return NULL;//forDump.getDescription();
 }
 
 void GPUInfo::gatherGPUInfo()
 {
-	_valueDict["gl.vendor"] = Value((const char*)glGetString(GL_VENDOR));
-	_valueDict["gl.renderer"] = Value((const char*)glGetString(GL_RENDERER));
-	_valueDict["gl.version"] = Value((const char*)glGetString(GL_VERSION));
+	//_valueDict["gl.vendor"] = Value((const char*)glGetString(GL_VENDOR));
+	//_valueDict["gl.renderer"] = Value((const char*)glGetString(GL_RENDERER));
+	//_valueDict["gl.version"] = Value((const char*)glGetString(GL_VERSION));
 
     _glExtensions = (char *)glGetString(GL_EXTENSIONS);
 
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
-	_valueDict["gl.max_texture_size"] = Value((int)_maxTextureSize);
+	//_valueDict["gl.max_texture_size"] = Value((int)_maxTextureSize);
 
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
-	_valueDict["gl.max_texture_units"] = Value((int)_maxTextureUnits);
+	//_valueDict["gl.max_texture_units"] = Value((int)_maxTextureUnits);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#if (FK_TARGET_PLATFORM == CC_PLATFORM_IOS)
     glGetIntegerv(GL_MAX_SAMPLES_APPLE, &_maxSamplesAllowed);
-	_valueDict["gl.max_samples_allowed"] = Value((int)_maxSamplesAllowed);
+	//_valueDict["gl.max_samples_allowed"] = Value((int)_maxSamplesAllowed);
 #endif
     
     _supportsETC1 = checkForGLExtension("GL_OES_compressed_ETC1_RGB8_texture");
-    _valueDict["gl.supports_ETC1"] = Value(_supportsETC1);
+    //_valueDict["gl.supports_ETC1"] = Value(_supportsETC1);
     
     _supportsS3TC = checkForGLExtension("GL_EXT_texture_compression_s3tc");
-    _valueDict["gl.supports_S3TC"] = Value(_supportsS3TC);
+    //_valueDict["gl.supports_S3TC"] = Value(_supportsS3TC);
     
     _supportsATITC = checkForGLExtension("GL_AMD_compressed_ATC_texture");
-    _valueDict["gl.supports_ATITC"] = Value(_supportsATITC);
+    //_valueDict["gl.supports_ATITC"] = Value(_supportsATITC);
     
     _supportsPVRTC = checkForGLExtension("GL_IMG_texture_compression_pvrtc");
-	_valueDict["gl.supports_PVRTC"] = Value(_supportsPVRTC);
+	//_valueDict["gl.supports_PVRTC"] = Value(_supportsPVRTC);
 
     _supportsNPOT = true;
-	_valueDict["gl.supports_NPOT"] = Value(_supportsNPOT);
+	//_valueDict["gl.supports_NPOT"] = Value(_supportsNPOT);
 	
     _supportsBGRA8888 = checkForGLExtension("GL_IMG_texture_format_BGRA888");
-	_valueDict["gl.supports_BGRA8888"] = Value(_supportsBGRA8888);
+	//_valueDict["gl.supports_BGRA8888"] = Value(_supportsBGRA8888);
 
     _supportsDiscardFramebuffer = checkForGLExtension("GL_EXT_discard_framebuffer");
-	_valueDict["gl.supports_discard_framebuffer"] = Value(_supportsDiscardFramebuffer);
+	//_valueDict["gl.supports_discard_framebuffer"] = Value(_supportsDiscardFramebuffer);
 
     _supportsShareableVAO = checkForGLExtension("vertex_array_object");
-	_valueDict["gl.supports_vertex_array_object"] = Value(_supportsShareableVAO);
+	//_valueDict["gl.supports_vertex_array_object"] = Value(_supportsShareableVAO);
 
     CHECK_GL_ERROR_DEBUG();
 }
@@ -147,7 +149,7 @@ GPUInfo* GPUInfo::getInstance()
     if (! s_sharedGPUInfo)
     {
         s_sharedGPUInfo = new (std::nothrow) GPUInfo();
-        s_sharedGPUInfo->init();
+        s_sharedGPUInfo->gatherGPUInfo();
     }
     
     return s_sharedGPUInfo;
@@ -156,18 +158,6 @@ GPUInfo* GPUInfo::getInstance()
 void GPUInfo::destroyInstance()
 {
     FK_SAFE_RELEASE_NULL(s_sharedGPUInfo);
-}
-
-// FIXME: deprecated
-GPUInfo* GPUInfo::sharedGPUInfo()
-{
-    return GPUInfo::getInstance();
-}
-
-// FIXME: deprecated
-void GPUInfo::purgeGPUInfo()
-{
-    GPUInfo::destroyInstance();
 }
 
 
@@ -262,6 +252,7 @@ int GPUInfo::getMaxSupportSpotLightInShader() const
 //
 // generic getters for properties
 //
+/*
 const Value& GPUInfo::getValue(const std::string& key, const Value& defaultValue) const
 {
     auto iter = _valueDict.find(key);
@@ -348,5 +339,6 @@ void GPUInfo::loadConfigFile(const std::string& filename)
     else
         _valueDict[name] = Value(_maxSpotLightInShader);
 }
+*/
 
 FLAKOR_NS_END

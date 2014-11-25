@@ -23,6 +23,7 @@ class Rect;
 class Size;
 class Texture2D;
 class TextureAtlas;
+class GLProgram;
 struct transformValues_;
 
 /**

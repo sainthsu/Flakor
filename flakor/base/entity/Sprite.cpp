@@ -176,7 +176,7 @@ bool Sprite::initWithSpriteFrame(SpriteFrame *spriteFrame)
     //bool bRet = initWithTexture(spriteFrame->getTexture(), spriteFrame->getRect());
     //setSpriteFrame(spriteFrame);
 
-    return bRet;
+    return false;
 }
 
 // designated initializer
@@ -290,7 +290,7 @@ void Sprite::setTexture(Texture2D *texture)
     if (texture == nullptr)
     {
         // Gets the texture by key firstly.
-        texture = new Texture2D()
+        texture = new Texture2D();
 		texture->initData(fk_2x2_white_image,16);
 
         // If texture wasn't in cache, create it from RAW data.
@@ -347,8 +347,8 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
         relativeOffset.y = -relativeOffset.y;
     }
 
-    _offsetPosition.x = relativeOffset.x + (_contentSize.width - _rect.size.width) / 2;
-    _offsetPosition.y = relativeOffset.y + (_contentSize.height - _rect.size.height) / 2;
+    _offsetPosition.x = relativeOffset.x + (contentSize.width - _rect.size.width) / 2;
+    _offsetPosition.y = relativeOffset.y + (contentSize.height - _rect.size.height) / 2;
 
     {
         // self rendering
@@ -457,10 +457,11 @@ void Sprite::updateTransform(void)
     //FKASSERT(_batchNode, "updateTransform is only valid when Sprite is being rendered using an SpriteBatchNode");
 
     // recalculate matrix only if it is dirty
-    if( isDirty() ) {
+    if( isDirty() ) 
+	{
 
         // If it is not visible, or one of its ancestors is not visible, then do nothing:
-        if( !_visible || ( _parent && _parent != _batchNode && static_cast<Sprite*>(_parent)->_shouldBeHidden) )
+        if( !_visible || ( parent && parent != _batchNode && static_cast<Sprite*>(_parent)->_shouldBeHidden) )
         {
             _quad.br.vertices = _quad.tl.vertices = _quad.tr.vertices = _quad.bl.vertices = Vec3(0,0,0);
             _shouldBeHidden = true;
@@ -475,9 +476,9 @@ void Sprite::updateTransform(void)
             }
             else
             {
-                FKAssert( dynamic_cast<Sprite*>(_parent), "Logic error in Sprite. Parent must be a Sprite");
-                const Mat4 &nodeToParent = getNodeToParentTransform();
-                Mat4 &parentTransform = static_cast<Sprite*>(_parent)->_transformToBatch;
+                FKAssert( dynamic_cast<Sprite*>(parent), "Logic error in Sprite. Parent must be a Sprite");
+                const Matrix4 &nodeToParent = getNodeToParentTransform();
+                Matrix4 &parentTransform = static_cast<Sprite*>(parent)->_transformToBatch;
                 _transformToBatch = parentTransform * nodeToParent;
             }
 
@@ -539,8 +540,7 @@ void Sprite::updateTransform(void)
 }
 
 // draw
-
-void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
+void Sprite::draw()
 {
     // Don't do calculate the culling if the transform was not updated
     _insideBounds = (flags & FLAGS_TRANSFORM_DIRTY) ? renderer->checkVisibility(transform, _contentSize) : _insideBounds;
@@ -549,16 +549,6 @@ void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     {
         _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, transform);
         renderer->addCommand(&_quadCommand);
-#if CC_SPRITE_DEBUG_DRAW
-        _debugDrawNode->clear();
-        Vec2 vertices[4] = {
-            Vec2( _quad.bl.vertices.x, _quad.bl.vertices.y ),
-            Vec2( _quad.br.vertices.x, _quad.br.vertices.y ),
-            Vec2( _quad.tr.vertices.x, _quad.tr.vertices.y ),
-            Vec2( _quad.tl.vertices.x, _quad.tl.vertices.y ),
-        };
-        _debugDrawNode->drawPoly(vertices, 4, true, Color4F(1.0, 1.0, 1.0, 1.0));
-#endif //CC_SPRITE_DEBUG_DRAW
     }
 }
 
@@ -566,8 +556,9 @@ void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 
 void Sprite::addChild(Entity *child, int zOrder, int tag)
 {
-    FKASSERT(child != nullptr, "Argument must be non-nullptr");
+    FKAssert(child != nullptr, "Argument must be non-nullptr");
 
+	/*
     if (_batchNode)
     {
         Sprite* childSprite = dynamic_cast<Sprite*>(child);
@@ -580,16 +571,17 @@ void Sprite::addChild(Entity *child, int zOrder, int tag)
         {
             setReorderChildDirtyRecursively();
         }
-    }
+    }*/
+
     //Entity already sets isReorderChildDirty_ so this needs to be after batchNode check
     Entity::addChild(child, zOrder, tag);
 }
 
-void Sprite::addChild(Entity *child, int zOrder, const std::string &name)
+/*void Sprite::addChild(Entity *child, int zOrder, const std::string &name)
 {
     FKAssert(child != nullptr, "Argument must be non-nullptr");
     
-    /*if (_batchNode)
+    if (_batchNode)
     {
         Sprite* childSprite = dynamic_cast<Sprite*>(child);
         FKAssert( childSprite, "CCSprite only supports Sprites as children when using SpriteBatchNode");
@@ -601,10 +593,10 @@ void Sprite::addChild(Entity *child, int zOrder, const std::string &name)
         {
             setReorderChildDirtyRecursively();
         }
-    }*/
+    }
     //Entity already sets isReorderChildDirty_ so this needs to be after batchNode check
     Entity::addChild(child, zOrder, name);
-}
+}*/
 
 void Sprite::reorderChild(Entity *child, int zOrder)
 {
@@ -650,13 +642,13 @@ void Sprite::sortAllChildren()
 {
     if (_reorderChildDirty)
     {
-        std::sort(std::begin(_children), std::end(_children), nodeComparisonLess);
+        std::sort(std::begin(children), std::end(children), nodeComparisonLess);
 
-        if ( _batchNode)
+        /*if ( _batchNode)
         {
             for(const auto &child : _children)
                 child->sortAllChildren();
-        }
+        }*/
 
         _reorderChildDirty = false;
     }
@@ -673,11 +665,11 @@ void Sprite::setReorderChildDirtyRecursively(void)
     if ( ! _reorderChildDirty )
     {
         _reorderChildDirty = true;
-        Node* node = static_cast<Node*>(_parent);
+        Entity* entity = static_cast<Entity*>(parent);
         while (node && node != _batchNode)
         {
-            static_cast<Sprite*>(node)->setReorderChildDirtyRecursively();
-            node=node->getParent();
+            static_cast<Sprite*>(entity)->setReorderChildDirtyRecursively();
+            entity=entity->getParent();
         }
     }
 }
@@ -701,7 +693,7 @@ void Sprite::setDirtyRecursively(bool bValue)
                     if (! _recursiveDirty) {            \
                         _recursiveDirty = true;         \
                         setDirty(true);                 \
-                        if (!_children.empty())         \
+                        if (!children.empty())         \
                             setDirtyRecursively(true);  \
                         }                               \
                     }
@@ -787,7 +779,7 @@ void Sprite::setAnchorPoint(const Vec2& anchor)
 
 void Sprite::ignoreAnchorPointForPosition(bool value)
 {
-    FKASSERT(! _batchNode, "ignoreAnchorPointForPosition is invalid in Sprite");
+    FKAssert(! _batchNode, "ignoreAnchorPointForPosition is invalid in Sprite");
     Entity::ignoreAnchorPointForPosition(value);
 }
 
@@ -909,7 +901,7 @@ void Sprite::setSpriteFrame(SpriteFrame *spriteFrame)
 
 void Sprite::setDisplayFrameWithAnimationName(const std::string& animationName, ssize_t frameIndex)
 {
-    FKASSERT(animationName.size()>0, "CCSprite#setDisplayFrameWithAnimationName. animationName must not be nullptr");
+    FKAssert(animationName.size()>0, "CCSprite#setDisplayFrameWithAnimationName. animationName must not be nullptr");
 
     Animation *a = AnimationCache::getInstance()->getAnimation(animationName);
 
@@ -940,10 +932,12 @@ SpriteFrame* Sprite::getSpriteFrame() const
                                            CC_SIZE_POINTS_TO_PIXELS(_contentSize));
 }
 
+/*
 SpriteBatchNode* Sprite::getBatchNode()
 {
     return _batchNode;
 }
+
 
 void Sprite::setBatchNode(SpriteBatchNode *spriteBatchNode)
 {
@@ -972,33 +966,33 @@ void Sprite::setBatchNode(SpriteBatchNode *spriteBatchNode)
         setTextureAtlas(_batchNode->getTextureAtlas()); // weak ref
     }
 }
-
+*/
 // MARK: Texture protocol
 
 void Sprite::updateBlendFunc(void)
 {
-    FKAssert(! _batchNode, "Sprite: updateBlendFunc doesn't work when the sprite is rendered using a SpriteBatchNode");
+    //FKAssert(! _batchNode, "Sprite: updateBlendFunc doesn't work when the sprite is rendered using a SpriteBatchNode");
 
     // it is possible to have an untextured sprite
     if (! _texture || ! _texture->hasPremultipliedAlpha())
     {
-        _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
+        blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
         setOpacityModifyRGB(false);
     }
     else
     {
-        _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
+        blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
         setOpacityModifyRGB(true);
     }
 }
 
-std::string Sprite::getDescription() const
+std::string Sprite::toString() const
 {
     int texture_id = -1;
-    if( _batchNode )
+    /*if( _batchNode )
         texture_id = _batchNode->getTextureAtlas()->getTexture()->getName();
-    else
-        texture_id = _texture->getName();
+    else*/
+        texture_id = _texture->getTextureID();
     return String::createWithFormat("<Sprite | Tag = %d, TextureID = %d>", _tag, texture_id )->m_sString;
 }
 

@@ -35,6 +35,7 @@
 #include "base/entity/Sprite.h"
 
 //opengl
+#include "core/opengl/GPUInfo.h"
 #include "core/opengl/GLProgram.h"
 #include "core/opengl/shader/Shaders.h"
 #include "core/opengl/vbo/VBO.h"

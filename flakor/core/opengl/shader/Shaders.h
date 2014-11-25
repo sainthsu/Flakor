@@ -17,6 +17,7 @@ FLAKOR_NS_BEGIN
  */
 class Shader
 {
+	public:
 	static const GLchar * Position_uColor_frag;
 	static const GLchar * Position_uColor_vert;
 

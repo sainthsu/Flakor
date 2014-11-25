@@ -28,6 +28,7 @@ math/Camera.cpp \
 math/CArray.cpp \
 math/Matrices.cpp \
 math/MatrixStack.cpp \
+core/opengl/GPUInfo.cpp \
 core/opengl/GLProgram.cpp \
 core/opengl/vbo/VBO.cpp \
 core/opengl/shader/Shaders.cpp \

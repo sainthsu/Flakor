@@ -1,14 +1,14 @@
 #include <android/asset_manager.h>
-#include "targetMacros.h"
+#include "macros.h"
 #include "core/opengl/GL.h"
+#include "core/opengl/GLProgram.h"
 #include "core/texture/Texture2D.h"
 #include "core/texture/Image.h"
-#include "base/element/Element.h"
 
 FLAKOR_NS_BEGIN
 
 namespace {
-    typedef Texture2D::PixelFormatInfoMap::value_type PixelFormatInfoMapValue;
+    typedef PixelFormatInfoMap::value_type PixelFormatInfoMapValue;
     static const PixelFormatInfoMapValue TexturePixelFormatInfoTablesValue[] =
     {
         PixelFormatInfoMapValue(PixelFormat::BGRA8888, PixelFormatInfo(GL_BGRA, GL_BGRA, GL_UNSIGNED_BYTE, 32, false, true)),
@@ -101,14 +101,14 @@ bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixel
 bool Texture2D::initWithAsset(const char *fileName)
 {
 	AAssetManager* assetManager;
-	_filename = filename;
+	_filename = fileName;
 	return true;
 }
 
 
 bool Texture2D::initWithFile(const char *fileName)
 {
-	_filename = filename;
+	_filename = fileName;
 	this->load();
 	
 	return true;
@@ -127,19 +127,19 @@ void Texture2D::setTexParams(const TexParams& texParams)
         "GL_CLAMP_TO_EDGE should be used in NPOT dimensions");
 	*/
 
-    glBindTexture2D( GL_TEXTURE_2D,_textureID );
+    glBindTexture( GL_TEXTURE_2D,_textureID );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texParams.minFilter );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texParams.magFilter );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, texParams.wrapS );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, texParams.wrapT );
 }
 
-void Texture2D::setContentSize(Size *size)
+void Texture2D::setContentSize(Size& size)
 {
 	_contentSize = size;
 }
 
-Size* Texture2D::getContentSize()
+Size Texture2D::getContentSize()
 {
 	return _contentSize;
 }
@@ -214,7 +214,7 @@ void Texture2D::load()
     const PixelFormatInfo& info = _pixelFormatInfoTables.at(pixelFormat);
 
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, info.internalFormat, (GLsizei)image->width, (GLsizei)image->height, 0, info.format, info.type, image->getData());
+	glTexImage2D(GL_TEXTURE_2D, 0, info.internalFormat, (GLsizei)image->getWidth(), (GLsizei)image->getHeight(), 0, info.format, info.type, image->getData());
 }
 
 Image* Texture2D::loadData()
@@ -227,8 +227,8 @@ Image* Texture2D::loadData()
     do
     {
         // Read the file from hardware
-        std::string fullPath = FileUtils::getInstance()->fullPathForFilename(filename);
-        FILE *fp = fopen(fullPath.c_str(), mode);
+        //std::string fullPath = FileUtils::getInstance()->fullPathForFilename(filename);
+        FILE *fp = fopen(_filename, mode);
         FK_BREAK_IF(!fp);
         fseek(fp,0,SEEK_END);
         size = ftell(fp);
@@ -244,7 +244,7 @@ Image* Texture2D::loadData()
     if (nullptr == buffer || 0 == readsize)
     {
         std::string msg = "Get data from file(";
-        msg.append(filename).append(") failed!");
+        msg.append(_filename).append(") failed!");
         FKLOG("%s", msg.c_str());
 		return nullptr;
     }
@@ -261,7 +261,7 @@ void Texture2D::unload()
 	
 }
 
-const Texture2D::PixelFormatInfoMap& Texture2D::getPixelFormatInfoMap()
+const PixelFormatInfoMap& Texture2D::getPixelFormatInfoMap()
 {
     return _pixelFormatInfoTables;
 }

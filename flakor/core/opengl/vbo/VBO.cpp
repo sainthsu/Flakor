@@ -24,7 +24,7 @@ VBO::~VBO()
 	
 }
 
-VBO VBO::create(int sizePerVertex,int vertexNumber)
+VBO* VBO::create(int sizePerVertex,int vertexNumber)
 {
 	VBO* v = new VBO();
 	if(v != NULL)
@@ -32,7 +32,7 @@ VBO VBO::create(int sizePerVertex,int vertexNumber)
 		v->sizePerVertex = sizePerVertex;
 		v->vertexNumber = vertexNumber;
 	}
-	return *v;
+	return v;
 }
 
 /**

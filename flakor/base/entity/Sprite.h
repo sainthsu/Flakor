@@ -228,6 +228,8 @@ public:
      */
     inline VBO* getVBO(void) { return _vbo; } const
 
+	inline void setGLProgram(GLProgram* program) { glProgram = program; } const
+	
     /**
      * Returns whether or not the texture rectangle is rotated.
      */
@@ -495,6 +497,7 @@ protected:
     // vertex coords, texture coords and color info
 	VBO* _vbo;
 
+	GLProgram* glProgram;
     // opacity and RGB protocol
     bool _opacityModifyRGB;
 

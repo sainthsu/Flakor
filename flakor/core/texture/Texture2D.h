@@ -3,10 +3,10 @@
 
 #include <map>
 #include "base/lang/Object.h"
+#include "base/element/Element.h"
 
 FLAKOR_NS_BEGIN
 
-class Size;
 class GLProgram;
 class Image;
 
@@ -113,7 +113,7 @@ class Texture2D : public Object
 		GLfloat _maxT;
 
 		/** content size */
-		Size* _contentSize;
+		Size _contentSize;
 
 		/** whether or not the texture has their Alpha premultiplied */
 		bool _hasPremultipliedAlpha;
@@ -147,9 +147,9 @@ class Texture2D : public Object
 
 		void setTexParams(const TexParams& texParams);
 
-		void setContentSize(Size *size);
+		void setContentSize(Size& size);
 
-		Size* getContentSize();
+		Size getContentSize();
 	
 		/** Gets the width of the texture in pixels */
     	int getPixelsWidth() const;

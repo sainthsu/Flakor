@@ -3,6 +3,8 @@
 
 #include <unordered_map>
 #include "core/opengl/GL.h"
+#include "base/lang/Object.h"
+#include "math/Matrices.h"
 
 typedef void (*GLInfoFunction)(GLuint program, GLenum pname, GLint* params);
 typedef void (*GLLogFunction) (GLuint program, GLsizei bufsize, GLsizei* length, GLchar* infolog);
@@ -27,7 +29,7 @@ struct Uniform
 
 struct _hashUniformEntry;
 
-class GLProgram : Object
+class GLProgram : public Object
 {
 	public:
 

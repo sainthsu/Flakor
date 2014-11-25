@@ -58,7 +58,7 @@ class VBO : Object
 		~VBO();
 		const static int HARDWARE_BUFFER_ID_INVALID = -1;
 
-		static VBO create(int sizePerVertex,int vertexNumber);
+		static VBO* create(int sizePerVertex,int vertexNumber);
 		/**
 		 * 是否使用后自动销毁
 		 * @return true if auto

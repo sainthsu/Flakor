@@ -6,6 +6,10 @@ http://www.flakor.org
 
 #include "base/entity/Sprite.h"
 #include "base/element/Element.h"
+#include "core/texture/Image.h"
+#include "core/texture/Texture2D.h"
+#include "core/opengl/shader/Shaders.h"
+#include "core/opengl/GLProgram.h"
 
 FLAKOR_NS_BEGIN
 
@@ -110,7 +114,7 @@ bool Sprite::initWithTexture(Texture2D *texture)
 {
     FKAssert(texture != nullptr, "Invalid texture for sprite");
 
-    Rect rect = RectZero;
+    Rect rect = MakeRect(0,0,0,0);
     rect.size = texture->getContentSize();
 
     return initWithTexture(texture, rect);
@@ -126,7 +130,7 @@ bool Sprite::initWithFile(const std::string& filename)
     FKAssert(filename.size()>0, "Invalid filename for sprite");
 
     Texture2D *texture = new Texture2D();
-	texture->initWithFile(filename);
+	texture->initWithFile(filename.c_str());
     if (texture)
     {
         Rect rect = RectZero;
@@ -145,7 +149,7 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
     FKAssert(filename.size()>0, "Invalid filename");
 
     Texture2D *texture = new Texture2D();
-	texture->initWithFile(filename);
+	texture->initWithFile(filename.c_str());
     if (texture)
     {
         return initWithTexture(texture, rect);
@@ -161,7 +165,7 @@ bool Sprite::initWithSpriteFrameName(const std::string& spriteFrameName)
 {
     FKAssert(spriteFrameName.size() > 0, "Invalid spriteFrameName");
 
-    SpriteFrame *frame = nullptr//SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
+    SpriteFrame *frame = nullptr;//SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
     return initWithSpriteFrame(frame);
 }
 
@@ -169,8 +173,8 @@ bool Sprite::initWithSpriteFrame(SpriteFrame *spriteFrame)
 {
     FKAssert(spriteFrame != nullptr, "");
 
-    bool bRet = initWithTexture(spriteFrame->getTexture(), spriteFrame->getRect());
-    setSpriteFrame(spriteFrame);
+    //bool bRet = initWithTexture(spriteFrame->getTexture(), spriteFrame->getRect());
+    //setSpriteFrame(spriteFrame);
 
     return bRet;
 }
@@ -181,7 +185,7 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
     bool result;
     if (Entity::init())
     {
-        _batchNode = nullptr;
+        //_batchNode = nullptr;
         
         _recursiveDirty = false;
         setDirty(false);
@@ -201,7 +205,7 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
         // add vbo 3+1+2
         _vbo = VBO::create(6,4);
         
-		GLProgram* program = new GLprogram();
+		GLProgram* program = new GLProgram();
 		program->initWithByteArrays(Shader::PositionTextureColor_noMVP_vert,Shader::PositionTextureColor_noMVP_frag);
         // shader state
         setGLProgram(program);
@@ -212,7 +216,7 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
         
         // by default use "Self Render".
         // if the sprite is added to a batchnode, then it will automatically switch to "batchnode Render"
-        setBatchNode(nullptr);
+        //setBatchNode(nullptr);
         result = true;
     }
     else
@@ -228,7 +232,7 @@ Sprite::Sprite(void)
 : _shouldBeHidden(false)
 , _texture(nullptr)
 , _insideBounds(true)
-, _batchNode(nullptr)
+//, _batchNode(nullptr)
 {
 #if FK_SPRITE_DEBUG_DRAW
     _debugDrawNode = DrawEntity::create();
@@ -269,7 +273,7 @@ static unsigned char fk_2x2_white_image[] = {
 void Sprite::setTexture(const std::string &filename)
 {
     Texture2D *texture = new Texture2D();
-	texture->initWithFile(filename);
+	texture->initWithFile(filename.c_str());
 
     setTexture(texture);
 
@@ -286,7 +290,7 @@ void Sprite::setTexture(Texture2D *texture)
     if (texture == nullptr)
     {
         // Gets the texture by key firstly.
-        texture = new Texture2d()
+        texture = new Texture2D()
 		texture->initData(fk_2x2_white_image,16);
 
         // If texture wasn't in cache, create it from RAW data.
@@ -295,10 +299,11 @@ void Sprite::setTexture(Texture2D *texture)
             Image* image = new (std::nothrow) Image();
             bool isOK = image->initWithRawData(fk_2x2_white_image, sizeof(fk_2x2_white_image), 2, 2, 8);
             FK_UNUSED_PARAM(isOK);
-            FKASSERT(isOK, "The 2x2 empty texture was created unsuccessfully.");
+            FKAssert(isOK, "The 2x2 empty texture was created unsuccessfully.");
 
             //texture = Director::getInstance()->getTextureCache()->addImage(image, FK_2x2_WHITE_IMAGE_KEY);
-            FK_SAFE_RELEASE(image);
+			delete(image );
+            //FK_SAFE_RELEASE(image);
         }
     }
 
@@ -330,7 +335,7 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
     setVertexRect(rect);
     setTextureCoords(rect);
 
-    Vec2 relativeOffset = _unflippedOffsetPositionFromCenter;
+    Point relativeOffset = _unflippedOffsetPositionFromCenter;
 
     // issue #732
     if (_flippedX)
@@ -372,8 +377,8 @@ void Sprite::setTextureCoords(Rect rect)
         return;
     }
 
-    float atlasWidth = (float)tex->getPixelsWide();
-    float atlasHeight = (float)tex->getPixelsHigh();
+    float atlasWidth = (float)tex->getPixelsWidth();
+    float atlasHeight = (float)tex->getPixelsHeight();
 
     float left, right, top, bottom;
 
@@ -449,7 +454,7 @@ void Sprite::setTextureCoords(Rect rect)
 
 void Sprite::updateTransform(void)
 {
-    FKASSERT(_batchNode, "updateTransform is only valid when Sprite is being rendered using an SpriteBatchNode");
+    //FKASSERT(_batchNode, "updateTransform is only valid when Sprite is being rendered using an SpriteBatchNode");
 
     // recalculate matrix only if it is dirty
     if( isDirty() ) {
@@ -470,7 +475,7 @@ void Sprite::updateTransform(void)
             }
             else
             {
-                FKASSERT( dynamic_cast<Sprite*>(_parent), "Logic error in Sprite. Parent must be a Sprite");
+                FKAssert( dynamic_cast<Sprite*>(_parent), "Logic error in Sprite. Parent must be a Sprite");
                 const Mat4 &nodeToParent = getNodeToParentTransform();
                 Mat4 &parentTransform = static_cast<Sprite*>(_parent)->_transformToBatch;
                 _transformToBatch = parentTransform * nodeToParent;
@@ -524,7 +529,7 @@ void Sprite::updateTransform(void)
 
     // MARMALADE CHANGED
     // recursively iterate over children
-/*    if( _hasChildren )
+	/* if( _hasChildren )
     {
         // MARMALADE: CHANGED TO USE Node*
         // NOTE THAT WE HAVE ALSO DEFINED virtual Entity::updateTransform()
@@ -576,7 +581,7 @@ void Sprite::addChild(Entity *child, int zOrder, int tag)
             setReorderChildDirtyRecursively();
         }
     }
-    //CCNode already sets isReorderChildDirty_ so this needs to be after batchNode check
+    //Entity already sets isReorderChildDirty_ so this needs to be after batchNode check
     Entity::addChild(child, zOrder, tag);
 }
 
@@ -584,7 +589,7 @@ void Sprite::addChild(Entity *child, int zOrder, const std::string &name)
 {
     FKAssert(child != nullptr, "Argument must be non-nullptr");
     
-    if (_batchNode)
+    /*if (_batchNode)
     {
         Sprite* childSprite = dynamic_cast<Sprite*>(child);
         FKAssert( childSprite, "CCSprite only supports Sprites as children when using SpriteBatchNode");
@@ -596,7 +601,7 @@ void Sprite::addChild(Entity *child, int zOrder, const std::string &name)
         {
             setReorderChildDirtyRecursively();
         }
-    }
+    }*/
     //Entity already sets isReorderChildDirty_ so this needs to be after batchNode check
     Entity::addChild(child, zOrder, name);
 }
@@ -606,28 +611,28 @@ void Sprite::reorderChild(Entity *child, int zOrder)
     FKAssert(child != nullptr, "child must be non null");
     FKAssert(_children.contains(child), "child does not belong to this");
 
-    if( _batchNode && ! _reorderChildDirty)
+    /*if( _batchNode && ! _reorderChildDirty)
     {
         setReorderChildDirtyRecursively();
         _batchNode->reorderBatch(true);
-    }
+    }*/
 
     Entity::reorderChild(child, zOrder);
 }
 
 void Sprite::removeChild(Entity *child, bool cleanup)
 {
-    if (_batchNode)
+    /*if (_batchNode)
     {
         _batchNode->removeSpriteFromAtlas((Sprite*)(child));
-    }
+    }*/
 
     Entity::removeChild(child, cleanup);
 }
 
 void Sprite::removeAllChildrenWithCleanup(bool cleanup)
 {
-    if (_batchNode)
+    /*if (_batchNode)
     {
         for(const auto &child : _children) {
             Sprite* sprite = dynamic_cast<Sprite*>(child);
@@ -636,7 +641,7 @@ void Sprite::removeAllChildrenWithCleanup(bool cleanup)
                 _batchNode->removeSpriteFromAtlas(sprite);
             }
         }
-    }
+    }*/
 
     Entity::removeAllChildrenWithCleanup(cleanup);
 }
@@ -997,4 +1002,4 @@ std::string Sprite::getDescription() const
     return String::createWithFormat("<Sprite | Tag = %d, TextureID = %d>", _tag, texture_id )->m_sString;
 }
 
-NS_CC_END
+FLAKOR_NS_END

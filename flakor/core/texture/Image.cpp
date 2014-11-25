@@ -1,5 +1,6 @@
 #include "targetMacros.h"
 #include "core/opengl/GL.h"
+#include "core/opengl/GPUInfo.h"
 #include "core/texture/Image.h"
 
 #include <vector>
@@ -371,12 +372,12 @@ PixelFormat getDevicePixelFormat(PixelFormat format)
         case PixelFormat::PVRTC4A:
         case PixelFormat::PVRTC2:
         case PixelFormat::PVRTC2A:
-            if(Configuration::getInstance()->supportsPVRTC())
+            if(GPUInfo::getInstance()->supportsPVRTC())
                 return format;
             else
                 return PixelFormat::RGBA8888;
         case PixelFormat::ETC:
-            if(Configuration::getInstance()->supportsETC())
+            if(GPUInfo::getInstance()->supportsETC())
                 return format;
             else
                 return PixelFormat::RGB888;
@@ -1165,10 +1166,10 @@ namespace
             case PVR3TexturePixelFormat::DXT1:
             case PVR3TexturePixelFormat::DXT3:
             case PVR3TexturePixelFormat::DXT5:
-                return Configuration::getInstance()->supportsS3TC();
+                return GPUInfo::getInstance()->supportsS3TC();
                 
             case PVR3TexturePixelFormat::BGRA8888:
-                return Configuration::getInstance()->supportsBGRA8888();
+                return GPUInfo::getInstance()->supportsBGRA8888();
                 
             case PVR3TexturePixelFormat::PVRTC2BPP_RGB:
             case PVR3TexturePixelFormat::PVRTC2BPP_RGBA:
@@ -1206,7 +1207,7 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
         return false;
     }
     
-    Configuration *configuration = Configuration::getInstance();
+    GPUInfo *configuration = GPUInfo::getInstance();
     
     //can not detect the premultiplied alpha from pvr file, use _PVRHaveAlphaPremultiplied instead.
     _hasPremultipliedAlpha = _PVRHaveAlphaPremultiplied;
@@ -1270,7 +1271,7 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
     {
         switch (formatFlags) {
             case PVR2TexturePixelFormat::PVRTC2BPP_RGBA:
-                if (!Configuration::getInstance()->supportsPVRTC())
+                if (!GPUInfo::getInstance()->supportsPVRTC())
                 {
                     FKLOG("flakor: Hardware PVR decoder not present. Using software decoder");
                     _unpack = true;
@@ -1284,7 +1285,7 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
                 heightBlocks = height / 4;
                 break;
             case PVR2TexturePixelFormat::PVRTC4BPP_RGBA:
-                if (!Configuration::getInstance()->supportsPVRTC())
+                if (!GPUInfo::getInstance()->supportsPVRTC())
                 {
                     FKLOG("flakor: Hardware PVR decoder not present. Using software decoder");
                     _unpack = true;
@@ -1298,7 +1299,7 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
                 heightBlocks = height / 4;
                 break;
             case PVR2TexturePixelFormat::BGRA8888:
-                if (Configuration::getInstance()->supportsBGRA8888() == false)
+                if (GPUInfo::getInstance()->supportsBGRA8888() == false)
                 {
                     FKLOG("flakor: Image. BGRA8888 not supported on this device");
                     return false;
@@ -1424,7 +1425,7 @@ bool Image::initWithPVRv3Data(const unsigned char * data, ssize_t dataLen)
         {
             case PVR3TexturePixelFormat::PVRTC2BPP_RGB :
             case PVR3TexturePixelFormat::PVRTC2BPP_RGBA :
-                if (!Configuration::getInstance()->supportsPVRTC())
+                if (!GPUInfo::getInstance()->supportsPVRTC())
                 {
                     FKLOG("flakor: Hardware PVR decoder not present. Using software decoder");
                     _unpack = true;
@@ -1439,7 +1440,7 @@ bool Image::initWithPVRv3Data(const unsigned char * data, ssize_t dataLen)
                 break;
             case PVR3TexturePixelFormat::PVRTC4BPP_RGB :
             case PVR3TexturePixelFormat::PVRTC4BPP_RGBA :
-                if (!Configuration::getInstance()->supportsPVRTC())
+                if (!GPUInfo::getInstance()->supportsPVRTC())
                 {
                     FKLOG("flakor: Hardware PVR decoder not present. Using software decoder");
                     _unpack = true;
@@ -1453,7 +1454,7 @@ bool Image::initWithPVRv3Data(const unsigned char * data, ssize_t dataLen)
                 heightBlocks = height / 4;
                 break;
             case PVR3TexturePixelFormat::ETC1:
-                if (!Configuration::getInstance()->supportsETC())
+                if (!GPUInfo::getInstance()->supportsETC())
                 {
                     FKLOG("flakor: Hardware ETC1 decoder not present. Using software decoder");
                     int bytePerPixel = 3;
@@ -1471,7 +1472,7 @@ bool Image::initWithPVRv3Data(const unsigned char * data, ssize_t dataLen)
                 heightBlocks = height / 4;
                 break;
             case PVR3TexturePixelFormat::BGRA8888:
-                if (! Configuration::getInstance()->supportsBGRA8888())
+                if (! GPUInfo::getInstance()->supportsBGRA8888())
                 {
                     FKLOG("flakor: Image. BGRA8888 not supported on this device");
                     return false;
@@ -1538,7 +1539,7 @@ bool Image::initWithETCData(const unsigned char * data, ssize_t dataLen)
         return false;
     }
 
-    if (Configuration::getInstance()->supportsETC())
+    if (GPUInfo::getInstance()->supportsETC())
     {
         //old opengl version has no define for GL_ETC1_RGB8_OES, add macro to make compiler happy. 
 #ifdef GL_ETC1_RGB8_OES
@@ -1691,7 +1692,7 @@ bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
     int width = _width;
     int height = _height;
     
-    if (Configuration::getInstance()->supportsS3TC())  //compressed data length
+    if (GPUInfo::getInstance()->supportsS3TC())  //compressed data length
     {
         _dataLen = dataLen - sizeof(S3TCTexHeader);
         _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
@@ -1713,7 +1714,7 @@ bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
     }
     
     /* if hardware supports s3tc, set pixelformat before loading mipmaps, to support non-mipmapped textures  */
-    if (Configuration::getInstance()->supportsS3TC())
+    if (GPUInfo::getInstance()->supportsS3TC())
     {   //decode texture throught hardware
         
         if (FOURCC_DXT1 == header->ddsd.DUMMYUNIONNAMEN4.ddpfPixelFormat.fourCC)
@@ -1747,7 +1748,7 @@ bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
         
         int size = ((width+3)/4)*((height+3)/4)*blockSize;
                 
-        if (Configuration::getInstance()->supportsS3TC())
+        if (GPUInfo::getInstance()->supportsS3TC())
         {   //decode texture throught hardware
             _mipmaps[i].address = (unsigned char *)_data + encodeOffset;
             _mipmaps[i].len = size;
@@ -1827,7 +1828,7 @@ bool Image::initWithATITCData(const unsigned char *data, ssize_t dataLen)
     int width = _width;
     int height = _height;
     
-    if (Configuration::getInstance()->supportsATITC())  //compressed data length
+    if (GPUInfo::getInstance()->supportsATITC())  //compressed data length
     {
         _dataLen = dataLen - sizeof(ATITCTexHeader) - header->bytesOfKeyValueData - 4;
         _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
@@ -1860,7 +1861,7 @@ bool Image::initWithATITCData(const unsigned char *data, ssize_t dataLen)
         
         int size = ((width+3)/4)*((height+3)/4)*blockSize;
         
-        if (Configuration::getInstance()->supportsATITC())
+        if (GPUInfo::getInstance()->supportsATITC())
         {
             /* decode texture throught hardware */
             

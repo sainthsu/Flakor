@@ -68,31 +68,6 @@ Sprite* Sprite::create(const std::string& filename, const Rect& rect)
     return nullptr;
 }
 
-Sprite* Sprite::createWithSpriteFrame(SpriteFrame *spriteFrame)
-{
-    Sprite *sprite = new (std::nothrow) Sprite();
-    if (sprite && spriteFrame && sprite->initWithSpriteFrame(spriteFrame))
-    {
-        sprite->autorelease();
-        return sprite;
-    }
-    FK_SAFE_DELETE(sprite);
-    return nullptr;
-}
-
-Sprite* Sprite::createWithSpriteFrameName(const std::string& spriteFrameName)
-{
-    SpriteFrame *frame = nullptr;//SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
-    
-#if FLAKOR_DEBUG > 0
-    char msg[256] = {0};
-    sprintf(msg, "Invalid spriteFrameName: %s", spriteFrameName.c_str());
-    FKAssert(frame != nullptr, msg);
-#endif
-    
-    return createWithSpriteFrame(frame);
-}
-
 Sprite* Sprite::create()
 {
     Sprite *sprite = new (std::nothrow) Sprite();
@@ -158,24 +133,6 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
     // don't release here.
     // when load texture failed, it's better to get a "transparent" sprite then a crashed program
     // this->release();
-    return false;
-}
-
-bool Sprite::initWithSpriteFrameName(const std::string& spriteFrameName)
-{
-    FKAssert(spriteFrameName.size() > 0, "Invalid spriteFrameName");
-
-    SpriteFrame *frame = nullptr;//SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
-    return initWithSpriteFrame(frame);
-}
-
-bool Sprite::initWithSpriteFrame(SpriteFrame *spriteFrame)
-{
-    FKAssert(spriteFrame != nullptr, "");
-
-    //bool bRet = initWithTexture(spriteFrame->getTexture(), spriteFrame->getRect());
-    //setSpriteFrame(spriteFrame);
-
     return false;
 }
 
@@ -335,30 +292,26 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
     setVertexRect(rect);
     setTextureCoords(rect);
 
-    Point relativeOffset = _unflippedOffsetPositionFromCenter;
 
-    // issue #732
-    if (_flippedX)
-    {
-        relativeOffset.x = -relativeOffset.x;
-    }
-    if (_flippedY)
-    {
-        relativeOffset.y = -relativeOffset.y;
-    }
+    _offsetPosition.x = (contentSize.width - _rect.size.width) / 2;
+    _offsetPosition.y =relativeOffset.y + (contentSize.height - _rect.size.height) / 2;
 
-    _offsetPosition.x = relativeOffset.x + (contentSize.width - _rect.size.width) / 2;
-    _offsetPosition.y = relativeOffset.y + (contentSize.height - _rect.size.height) / 2;
-
-    {
-        // self rendering
+    // self rendering
         
-        // Atlas: Vertex
-        float x1 = 0 + _offsetPosition.x;
-        float y1 = 0 + _offsetPosition.y;
-        float x2 = x1 + _rect.size.width;
-        float y2 = y1 + _rect.size.height;
-    }
+    // Atlas: Vertex
+    float x1 = 0 + _offsetPosition.x;
+    float y1 = 0 + _offsetPosition.y;
+    float x2 = x1 + _rect.size.width;
+    float y2 = y1 + _rect.size.height;
+    
+	/*
+	* ______(x2,y2)
+	  |           |
+	  |(x1,y1)____|	
+	*/
+
+	//leftTop bottomRight;
+	
 }
 
 // override this method to generate "double scale" sprites
@@ -406,14 +359,14 @@ void Sprite::setTextureCoords(Rect rect)
             FK_SWAP(left, right, float);
         }
 
-        _quad.bl.texCoords.u = left;
+        /*_quad.bl.texCoords.u = left;
         _quad.bl.texCoords.v = top;
         _quad.br.texCoords.u = left;
         _quad.br.texCoords.v = bottom;
         _quad.tl.texCoords.u = right;
         _quad.tl.texCoords.v = top;
         _quad.tr.texCoords.u = right;
-        _quad.tr.texCoords.v = bottom;
+        _quad.tr.texCoords.v = bottom;*/
     }
     else
     {
@@ -439,14 +392,7 @@ void Sprite::setTextureCoords(Rect rect)
             FK_SWAP(top,bottom,float);
         }
 
-        _quad.bl.texCoords.u = left;
-        _quad.bl.texCoords.v = bottom;
-        _quad.br.texCoords.u = right;
-        _quad.br.texCoords.v = bottom;
-        _quad.tl.texCoords.u = left;
-        _quad.tl.texCoords.v = top;
-        _quad.tr.texCoords.u = right;
-        _quad.tr.texCoords.v = top;
+
     }
 }
 
@@ -638,35 +584,36 @@ void Sprite::removeAllChildrenWithCleanup(bool cleanup)
     Entity::removeAllChildrenWithCleanup(cleanup);
 }
 
+/*
 void Sprite::sortAllChildren()
 {
     if (_reorderChildDirty)
     {
         std::sort(std::begin(children), std::end(children), nodeComparisonLess);
 
-        /*if ( _batchNode)
+        if ( _batchNode)
         {
             for(const auto &child : _children)
                 child->sortAllChildren();
-        }*/
+        }
 
         _reorderChildDirty = false;
     }
 }
-
+*/
 //
-// Node property overloads
+// Entity property overloads
 // used only when parent is SpriteBatchNode
 //
 
 void Sprite::setReorderChildDirtyRecursively(void)
 {
     //only set parents flag the first time
-    if ( ! _reorderChildDirty )
+    if ( ! childrenSortPending)
     {
-        _reorderChildDirty = true;
+        childrenSortPending = true;
         Entity* entity = static_cast<Entity*>(parent);
-        while (node && node != _batchNode)
+        while (entity)// && node != _batchNode)
         {
             static_cast<Sprite*>(entity)->setReorderChildDirtyRecursively();
             entity=entity->getParent();
@@ -679,7 +626,7 @@ void Sprite::setDirtyRecursively(bool bValue)
     _recursiveDirty = bValue;
     setDirty(bValue);
 
-    for(const auto &child: _children) {
+    for(const auto &child: children) {
         Sprite* sp = dynamic_cast<Sprite*>(child);
         if (sp)
         {
@@ -823,38 +770,23 @@ bool Sprite::isFlippedY(void) const
 
 void Sprite::updateColor(void)
 {
-    Color4B color4( _displayedColor.r, _displayedColor.g, _displayedColor.b, _displayedOpacity );
+    Color color4( color.red, color.green, color.blue, color.alpha);
     
     // special opacity for premultiplied textures
 	if (_opacityModifyRGB)
     {
-		color4.r *= _displayedOpacity/255.0f;
-		color4.g *= _displayedOpacity/255.0f;
-		color4.b *= _displayedOpacity/255.0f;
-    }
-
-    _quad.bl.colors = color4;
-    _quad.br.colors = color4;
-    _quad.tl.colors = color4;
-    _quad.tr.colors = color4;
-
-    // renders using batch node
-    if (_batchNode)
-    {
-        if (_atlasIndex != INDEX_NOT_INITIALIZED)
-        {
-            _textureAtlas->updateQuad(&_quad, _atlasIndex);
-        }
-        else
-        {
-            // no need to set it recursively
-            // update dirty_, don't update recursiveDirty_
-            setDirty(true);
-        }
+		color4.red *= color.alpha;
+		color4.green *= color.alpha;
+		color4.blue *= color.alpha;
     }
 
     // self render
     // do nothing
+}
+
+void Sprite::updateVBO(void)
+{
+	
 }
 
 void Sprite::setOpacityModifyRGB(bool modify)
@@ -869,67 +801,6 @@ void Sprite::setOpacityModifyRGB(bool modify)
 bool Sprite::isOpacityModifyRGB(void) const
 {
     return _opacityModifyRGB;
-}
-
-// MARK: Frames
-
-void Sprite::setSpriteFrame(const std::string &spriteFrameName)
-{
-    SpriteFrameCache *cache = SpriteFrameCache::getInstance();
-    SpriteFrame *spriteFrame = cache->getSpriteFrameByName(spriteFrameName);
-
-    FKASSERT(spriteFrame, "Invalid spriteFrameName");
-
-    setSpriteFrame(spriteFrame);
-}
-
-void Sprite::setSpriteFrame(SpriteFrame *spriteFrame)
-{
-    _unflippedOffsetPositionFromCenter = spriteFrame->getOffset();
-
-    Texture2D *texture = spriteFrame->getTexture();
-    // update texture before updating texture rect
-    if (texture != _texture)
-    {
-        setTexture(texture);
-    }
-
-    // update rect
-    _rectRotated = spriteFrame->isRotated();
-    setTextureRect(spriteFrame->getRect(), _rectRotated, spriteFrame->getOriginalSize());
-}
-
-void Sprite::setDisplayFrameWithAnimationName(const std::string& animationName, ssize_t frameIndex)
-{
-    FKAssert(animationName.size()>0, "CCSprite#setDisplayFrameWithAnimationName. animationName must not be nullptr");
-
-    Animation *a = AnimationCache::getInstance()->getAnimation(animationName);
-
-    FKASSERT(a, "CCSprite#setDisplayFrameWithAnimationName: Frame not found");
-
-    AnimationFrame* frame = a->getFrames().at(frameIndex);
-
-    FKASSERT(frame, "CCSprite#setDisplayFrame. Invalid frame");
-
-    setSpriteFrame(frame->getSpriteFrame());
-}
-
-bool Sprite::isFrameDisplayed(SpriteFrame *frame) const
-{
-    Rect r = frame->getRect();
-
-    return (r.equals(_rect) &&
-            frame->getTexture()->getName() == _texture->getName() &&
-            frame->getOffset().equals(_unflippedOffsetPositionFromCenter));
-}
-
-SpriteFrame* Sprite::getSpriteFrame() const
-{
-    return SpriteFrame::createWithTexture(_texture,
-                                           CC_RECT_POINTS_TO_PIXELS(_rect),
-                                           _rectRotated,
-                                           CC_POINT_POINTS_TO_PIXELS(_unflippedOffsetPositionFromCenter),
-                                           CC_SIZE_POINTS_TO_PIXELS(_contentSize));
 }
 
 /*

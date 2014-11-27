@@ -150,6 +150,8 @@ class VBO : Object
 		bool dirty;
 		bool dispose;
 
+		float *bufferData;
+
 		Array* VBOAttibutes;
 
 };

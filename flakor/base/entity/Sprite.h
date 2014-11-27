@@ -16,15 +16,12 @@ http://www.feike.org for chinese
 
 FLAKOR_NS_BEGIN
 
-class SpriteFrame;
-class Animation;
+
 class Point;
 class Rect;
 class Size;
 class Texture2D;
-class TextureAtlas;
 class GLProgram;
-struct transformValues_;
 
 /**
  * @addtogroup entity
@@ -111,25 +108,6 @@ public:
      */
     static Sprite* createWithTexture(Texture2D *texture, const Rect& rect, bool rotated=false);
 
-    /**
-     * Creates a sprite with an sprite frame.
-     *
-     * @param   spriteFrame    A sprite frame which involves a texture and a rect
-     * @return  An autoreleased sprite object
-     */
-    static Sprite* createWithSpriteFrame(SpriteFrame *spriteFrame);
-
-    /**
-     * Creates a sprite with an sprite frame name.
-     *
-     * A SpriteFrame will be fetched from the SpriteFrameCache by spriteFrameName param.
-     * If the SpriteFrame doesn't exist it will raise an exception.
-     *
-     * @param   spriteFrameName A null terminated string which indicates the sprite frame name.
-     * @return  An autoreleased sprite object
-     */
-    static Sprite* createWithSpriteFrameName(const std::string& spriteFrameName);
-
     /// @}  end of creators group
 
 
@@ -178,34 +156,6 @@ public:
      */
     virtual void setVertexRect(const Rect& rect);
 
-    /**
-     * Sets a new SpriteFrame to the Sprite.
-     */
-    virtual void setSpriteFrame(const std::string &spriteFrameName);
-    virtual void setSpriteFrame(SpriteFrame* newFrame);
-
-    /**
-     * Returns whether or not a SpriteFrame is being displayed
-     */
-    virtual bool isFrameDisplayed(SpriteFrame *pFrame) const;
-
-    /**
-     * Returns the current displayed frame.
-     */
-    virtual SpriteFrame* getSpriteFrame() const;
-
-    /// @} End of frames methods
-
-
-    /// @{
-    /// @name Animation methods
-    /**
-     * Changes the display frame with animation name and index.
-     * The animation name will be get from the AnimationCache
-     */
-    virtual void setDisplayFrameWithAnimationName(const std::string& animationName, ssize_t frameIndex);
-    /// @}
-
 
     /// @{
     /// @name Sprite Properties' setter/getters
@@ -237,30 +187,9 @@ public:
     inline bool isTextureRectRotated(void) const { return _rectRotated; }
 
     /**
-     * Returns the index used on the TextureAtlas.
-     */
-    inline ssize_t getAtlasIndex(void) const { return _atlasIndex; }
-
-    /**
-     * Sets the index used on the TextureAtlas.
-     * @warning Don't modify this value unless you know what you are doing
-     */
-    inline void setAtlasIndex(ssize_t atlasIndex) { _atlasIndex = atlasIndex; }
-
-    /**
      * Returns the rect of the Sprite in points
      */
     inline const Rect& getTextureRect(void) { return _rect; }
-
-    /**
-     * Gets the weak reference of the TextureAtlas when the sprite is rendered using via SpriteBatchNode
-     */
-    inline TextureAtlas* getTextureAtlas(void) { return _textureAtlas; }
-
-    /**
-     * Sets the weak reference of the TextureAtlas when the sprite is rendered using via SpriteBatchNode
-     */
-    inline void setTextureAtlas(TextureAtlas *pobTextureAtlas) { _textureAtlas = pobTextureAtlas; }
 
     /**
      * Gets the offset position of the sprite. Calculated automatically by editors like Zwoptex.
@@ -350,7 +279,7 @@ public:
     using Entity::addChild;
     virtual void addChild(Entity *child, int zOrder, int tag) override;
     //virtual void addChild(Entity *child, int zOrder, const std::string &name) override;
-    virtual void sortAllChildren() override;
+    //virtual void sortAllChildren() override;
     virtual void setScale(float scale) override;
     //virtual void setPositionZ(float positionZ) override;
     virtual void setAnchorPoint(const Point& anchor) override;
@@ -405,24 +334,6 @@ protected:
      */
     virtual bool initWithTexture(Texture2D *texture, const Rect& rect, bool rotated);
 
-    /**
-     * Initializes a sprite with an SpriteFrame. The texture and rect in SpriteFrame will be applied on this sprite
-     *
-     * @param   pSpriteFrame  A SpriteFrame object. It should includes a valid texture and a rect
-     * @return  true if the sprite is initialized properly, false otherwise.
-     */
-    virtual bool initWithSpriteFrame(SpriteFrame *pSpriteFrame);
-
-    /**
-     * Initializes a sprite with an sprite frame name.
-     *
-     * A SpriteFrame will be fetched from the SpriteFrameCache by name.
-     * If the SpriteFrame doesn't exist it will raise an exception.
-     *
-     * @param   spriteFrameName  A key string that can fected a volid SpriteFrame from SpriteFrameCache
-     * @return  true if the sprite is initialized properly, false otherwise.
-     */
-    virtual bool initWithSpriteFrameName(const std::string& spriteFrameName);
 
     /**
      * Initializes a sprite with an image filename.
@@ -463,11 +374,7 @@ protected:
     virtual void setReorderChildDirtyRecursively(void);
     virtual void setDirtyRecursively(bool bValue);
 
-    //
-    // Data used when the sprite is rendered using a SpriteSheet
-    //
-    TextureAtlas*       _textureAtlas;      /// SpriteBatchNode texture atlas (weak reference)
-    ssize_t             _atlasIndex;        /// Absolute (real) Index on the SpriteSheet
+protected:
 
     bool                _dirty;             /// Whether the sprite needs to be updated
     bool                _recursiveDirty;    /// Whether all of the sprite's children needs to be updated

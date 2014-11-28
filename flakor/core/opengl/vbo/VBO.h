@@ -139,6 +139,8 @@ class VBO : Object
 		void draw(int primitiveType, int count);
 		void draw(int primitiveType, int offset, int count);
 
+		void updateData(int index,int size,float data[]);
+
 		virtual void onBufferData();
 
 	protected:

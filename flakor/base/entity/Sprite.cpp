@@ -159,8 +159,8 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
         // zwoptex default values
         _offsetPosition = PointZero;
 
-        // add vbo 3+1+2
-        _vbo = VBO::create(6,4);
+        // add vbo 3+4+2
+        _vbo = VBO::create(VERTEX_SIZE,VERTICES_PER_SPRITE);
         
 		GLProgram* program = new GLProgram();
 		program->initWithByteArrays(Shader::PositionTextureColor_noMVP_vert,Shader::PositionTextureColor_noMVP_frag);
@@ -305,12 +305,17 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
     float y2 = y1 + _rect.size.height;
     
 	/*
-	* ______(x2,y2)
+	* (x1,y1)_____
 	  |           |
-	  |(x1,y1)____|	
+	  |___________(x2,y2)|	
 	*/
 
 	//leftTop bottomRight;
+	float vertexs[] = { x1,y1,0,
+						x1,y2,0,
+						x2,y2,0
+						x2,y1,0};
+	_vbo->updateData(VERTEX_INDEX,3,vertexs);
 	
 }
 
@@ -367,6 +372,12 @@ void Sprite::setTextureCoords(Rect rect)
         _quad.tl.texCoords.v = top;
         _quad.tr.texCoords.u = right;
         _quad.tr.texCoords.v = bottom;*/
+
+		float texCoords[] = {left,top,
+							left,bottom,
+							right,top,
+							right,bottom};
+		_vbo->updateData(TEXTURECOORDINATES_INDEX,2,texCoords);
     }
     else
     {
@@ -407,26 +418,12 @@ void Sprite::updateTransform(void)
 	{
 
         // If it is not visible, or one of its ancestors is not visible, then do nothing:
-        if( !_visible || ( parent && parent != _batchNode && static_cast<Sprite*>(_parent)->_shouldBeHidden) )
+        if( !visible || ( parent && static_cast<Sprite*>(parent)->visible == false) )
         {
-            _quad.br.vertices = _quad.tl.vertices = _quad.tr.vertices = _quad.bl.vertices = Vec3(0,0,0);
-            _shouldBeHidden = true;
+      
         }
         else
         {
-            _shouldBeHidden = false;
-
-            if( ! _parent || _parent == _batchNode )
-            {
-                _transformToBatch = getNodeToParentTransform();
-            }
-            else
-            {
-                FKAssert( dynamic_cast<Sprite*>(parent), "Logic error in Sprite. Parent must be a Sprite");
-                const Matrix4 &nodeToParent = getNodeToParentTransform();
-                Matrix4 &parentTransform = static_cast<Sprite*>(parent)->_transformToBatch;
-                _transformToBatch = parentTransform * nodeToParent;
-            }
 
             //
             // calculate the Quad based on the Affine Matrix
@@ -488,14 +485,20 @@ void Sprite::updateTransform(void)
 // draw
 void Sprite::draw()
 {
+	/*
     // Don't do calculate the culling if the transform was not updated
-    _insideBounds = (flags & FLAGS_TRANSFORM_DIRTY) ? renderer->checkVisibility(transform, _contentSize) : _insideBounds;
+    _insideBounds = transformDirty ? renderer->checkVisibility(transform, _contentSize) : _insideBounds;
 
     if(_insideBounds)
     {
         _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, transform);
         renderer->addCommand(&_quadCommand);
     }
+	*/
+	
+	_vbo->onBufferData();
+	_texture
+
 }
 
 // MARK: visit, draw, transform
@@ -770,23 +773,27 @@ bool Sprite::isFlippedY(void) const
 
 void Sprite::updateColor(void)
 {
-    Color color4( color.red, color.green, color.blue, color.alpha);
+    float red = color.red;
+	float green = color.green;
+	float blue = color.blue;
+	float alpha = color.alpha;
     
     // special opacity for premultiplied textures
 	if (_opacityModifyRGB)
     {
-		color4.red *= color.alpha;
-		color4.green *= color.alpha;
-		color4.blue *= color.alpha;
+		red *= alpha;
+		green *= alpha;
+		blue *= alpha;
     }
 
+	float colors[] = {red,green,blue,alpha,
+					red,green,blue,alpha,
+					red,green,blue,alpha,
+					red,green,blue,alpha}
+	vbo->updateData(COLOR_INDEX,4,colors);
     // self render
     // do nothing
-}
 
-void Sprite::updateVBO(void)
-{
-	
 }
 
 void Sprite::setOpacityModifyRGB(bool modify)

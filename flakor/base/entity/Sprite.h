@@ -54,6 +54,12 @@ class Sprite : public Entity, public ITexture
 public:
 
     static const int INDEX_NOT_INITIALIZED = -1; /// Sprite invalid index on the SpriteBatchNode
+	static const int VERTEX_INDEX = 0;
+    static const int COLOR_INDEX = 3;
+    static const int TEXTURECOORDINATES_INDEX = 7;
+
+    static const int VERTEX_SIZE = 3 + 4 + 2;
+    static const int VERTICES_PER_SPRITE = 4;
 
     /// @{
     /// @name Creators
@@ -367,7 +373,6 @@ protected:
 protected:
 
     void updateColor(void);
-    void updateVBO(void);
     virtual void setTextureCoords(Rect rect);
     virtual void updateBlendFunc(void);
 

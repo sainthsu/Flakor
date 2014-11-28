@@ -126,11 +126,22 @@ VBOManager* VBO::getVBOManager()
 
 }
 */
+
+void VBO::updateData(int index,int size,float data[])
+{
+	int i,j;
+	for(i=0;i<vertexNumber;i++)
+	{
+		for(j=0;j<size;j++)
+			bufferData[index+i*sizePerVertex+j] = data[i*size+j]; 
+	}
+}
 		
 void VBO::draw(int primitiveType, int count)
 {
 
 }
+
 void VBO::draw(int primitiveType, int offset, int count)
 {
 

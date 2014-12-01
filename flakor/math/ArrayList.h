@@ -5,7 +5,7 @@ FLAKOR_NS_BEGIN
 #pragma once
 
 template <typename T>
-class ArratList
+class ArrayList
 {
 	private:
  	//type node

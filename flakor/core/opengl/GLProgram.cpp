@@ -332,8 +332,8 @@ void GLProgram::parseUniforms()
                 uniformName[length] = '\0';
 
                 // Only add uniforms that are not built-in.
-                // The ones that start with 'CC_' are built-ins
-                if(strncmp("CC_", uniformName, 3) != 0) {
+                // The ones that start with 'FK_' are built-ins
+                if(strncmp("FK_", uniformName, 3) != 0) {
 
                     // remove possible array '[]' from uniform name
                     if(length > 3)
@@ -426,7 +426,7 @@ bool GLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* source
         GLchar* src = (GLchar *)malloc(sizeof(GLchar) * length);
         
         glGetShaderSource(*shader, length, nullptr, src);
-        FKLOG("cocos2d: ERROR: Failed to compile shader:\n%s", src);
+        FKLOG("flakor: ERROR: Failed to compile shader:\n%s", src);
         
         if (type == GL_VERTEX_SHADER)
         {
@@ -505,7 +505,7 @@ bool GLProgram::link()
 {
     FKAssert(_programID != 0, "Cannot link invalid program");
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+#if (FK_TARGET_PLATFORM == FK_PLATFORM_WP8)
     if(!_compiled)
     {
         // precompiled shader program is already linked

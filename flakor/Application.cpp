@@ -455,4 +455,9 @@ void Application::main()
     }
 }
 
+void Application::dummy()
+{
+	
+}
+
 FLAKOR_NS_END

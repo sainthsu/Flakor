@@ -27,4 +27,3 @@ THE SOFTWARE.
 #include <stdlib.h>
 
 #include "Flakor.h"
-

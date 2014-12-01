@@ -15,7 +15,8 @@ usage(0),
 autoDispose(true),
 dirty(true),
 dispose(false),
-VBOAttibutes(NULL)
+count(0),
+VBOAttributes(NULL)
 {
 }
 
@@ -106,6 +107,12 @@ int VBO::getGPUMemoryByteSize()
 	return 0;
 }
 
+void VBO::setAttributes(struct VBOAttribute *attributes,int count)
+{
+	this->count = count;
+	VBOAttributes = attributes;
+}
+
 /*
 void VBO::bind(GLState glStatae)
 {
@@ -127,6 +134,12 @@ VBOManager* VBO::getVBOManager()
 }
 */
 
+void VBO::bind()
+{
+	glBindBuffer(GL_ARRAY_BUFFER,bufferID);
+}
+
+
 void VBO::updateData(int index,int size,float data[])
 {
 	int i,j;
@@ -136,15 +149,44 @@ void VBO::updateData(int index,int size,float data[])
 			bufferData[index+i*sizePerVertex+j] = data[i*size+j]; 
 	}
 }
-		
+
+void VBO::onBufferData()
+{
+	int size = sizePerVertex*vertexNumber*sizeof(float);
+	if(!isLoaded())
+	{
+		glGenBuffers(1,&bufferID);
+		glBindBuffer(GL_ARRAY_BUFFER,bufferID);
+
+		glBufferData(GL_ARRAY_BUFFER,size,bufferData,GL_STATIC_DRAW);
+	}
+	else
+	{
+		glBindBuffer(GL_ARRAY_BUFFER,bufferID);
+		if(dirty)
+			glBufferSubData(GL_ARRAY_BUFFER,0,size,bufferData);
+	}
+}
+
+void VBO::enableAndPointer()
+{
+	int i;
+	for(i=0;i<count;i++)
+	{
+		VBOAttribute attri = VBOAttributes[i];
+		glEnableVertexAttribArray(attri._location);
+		glVertexAttribPointer(attri._location,attri._size,GL_FLOAT,attri._normalized,sizePerVertex*sizeof(float),(GLvoid*)attri._offset);
+	}
+}
+
 void VBO::draw(int primitiveType, int count)
 {
-
+	glDrawArrays(primitiveType,0,count);
 }
 
 void VBO::draw(int primitiveType, int offset, int count)
 {
-
+	glDrawArrays(primitiveType,offset,count);
 }
 
 FLAKOR_NS_END

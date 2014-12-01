@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := flakor_test
 
-LOCAL_MODULE_FILENAME := libflakor
+LOCAL_MODULE_FILENAME := libflakor_test
 #还可以在android.mk中设置NDK_MODULE_PATH在import语句之前加入，将一个新的路径加入NDK_MODULE_PATH变量。
 $(call import-add-path,$(LOCAL_PATH)/../../../flakor)
     

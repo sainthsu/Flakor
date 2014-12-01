@@ -186,6 +186,11 @@ void Texture2D::setMaxT(GLfloat maxT)
 	_maxT = maxT;
 }
 
+bool Texture2D::hasPremultipliedAlpha()
+{
+	return _hasPremultipliedAlpha;
+}
+
 void Texture2D::load()
 {
 	if(_textureID != 0)
@@ -193,6 +198,7 @@ void Texture2D::load()
 		glDeleteTextures(1,&_textureID);
 	}
 	
+	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1,&_textureID);
 	glBindTexture(GL_TEXTURE_2D,_textureID);
 
@@ -259,6 +265,12 @@ Image* Texture2D::loadData()
 void Texture2D::unload()
 {
 	
+}
+
+void Texture2D::bind()
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,_textureID);
 }
 
 const PixelFormatInfoMap& Texture2D::getPixelFormatInfoMap()

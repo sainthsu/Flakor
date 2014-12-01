@@ -1,4 +1,3 @@
-
 #ifndef _FK_MATRIX_STACK_H_
 #define _FK_MATRIX_STACK_H_
 
@@ -11,8 +10,9 @@ class MatrixStack
 	private:
 		int capacity;
 		int itemCount;
-		Matrix4* top;
 		Matrix4* stack;
+	public:
+		Matrix4* top;
 	public:
 		MatrixStack(void);
 		~MatrixStack(void);

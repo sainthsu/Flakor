@@ -185,7 +185,7 @@ public:
      */
     inline VBO* getVBO(void) { return _vbo; } const
 
-	inline void setGLProgram(GLProgram* program) { glProgram = program; } const
+	inline void setGLProgram(GLProgram* program) { _glProgram = program; } const
 	
     /**
      * Returns whether or not the texture rectangle is rotated.
@@ -379,6 +379,8 @@ protected:
     virtual void setReorderChildDirtyRecursively(void);
     virtual void setDirtyRecursively(bool bValue);
 
+	void setOpacityModifyRGB(bool modify);
+	bool isOpacityModifyRGB(void) const;
 protected:
 
     bool                _dirty;             /// Whether the sprite needs to be updated
@@ -410,7 +412,7 @@ protected:
     // vertex coords, texture coords and color info
 	VBO* _vbo;
 
-	GLProgram* glProgram;
+	GLProgram* _glProgram;
     // opacity and RGB protocol
     bool _opacityModifyRGB;
 

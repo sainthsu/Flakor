@@ -21,7 +21,7 @@ class Array;
 struct VBOAttribute
 {
 	char* _name;
-	int _location;
+	int _location;//location in Shader
 	int _offset;
 	int _size;
 	int _type;
@@ -121,6 +121,7 @@ class VBO : Object
 		 */
 		int getGPUMemoryByteSize();
 
+		void setAttributes(struct VBOAttribute *attributes,int count);
 		/**
 		 * 与显卡bufferID绑定
 		 * @param glState
@@ -141,12 +142,14 @@ class VBO : Object
 
 		void updateData(int index,int size,float data[]);
 
+		void bind();
 		virtual void onBufferData();
+		void enableAndPointer();
 
 	protected:
 		int sizePerVertex;
 		int vertexNumber;
-		int bufferID;
+		GLuint bufferID;
 		int usage;
 		bool autoDispose;
 		bool dirty;
@@ -154,7 +157,8 @@ class VBO : Object
 
 		float *bufferData;
 
-		Array* VBOAttibutes;
+		int count;
+		VBOAttribute* VBOAttributes;
 
 };
 

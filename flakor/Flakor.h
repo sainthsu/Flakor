@@ -43,7 +43,7 @@
 #include "core/texture/Texture2D.h"
 
 //math
-#include "math/MatrixStack.h"
+#include "math/GLMatrix.h"
 
 const char* getFlakorVersion()
 {

@@ -4,6 +4,7 @@ Copyright (c) 2013-2014 saint(saint@aliyun.com)
 http://www.flakor.org
 ****************************************************************************/
 
+#include "base/lang/FKString.h"
 #include "base/entity/Sprite.h"
 #include "base/element/Element.h"
 #include "core/texture/Image.h"
@@ -248,7 +249,7 @@ void Sprite::setTexture(Texture2D *texture)
     {
         // Gets the texture by key firstly.
         texture = new Texture2D();
-		texture->initData(fk_2x2_white_image,16);
+		//texture->initData(fk_2x2_white_image,16);
 
         // If texture wasn't in cache, create it from RAW data.
         if (texture == nullptr)
@@ -294,7 +295,7 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
 
 
     _offsetPosition.x = (contentSize.width - _rect.size.width) / 2;
-    _offsetPosition.y =relativeOffset.y + (contentSize.height - _rect.size.height) / 2;
+    _offsetPosition.y = (contentSize.height - _rect.size.height) / 2;
 
     // self rendering
         
@@ -313,7 +314,7 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
 	//leftTop bottomRight;
 	float vertexs[] = { x1,y1,0,
 						x1,y2,0,
-						x2,y2,0
+						x2,y2,0,
 						x2,y1,0};
 	_vbo->updateData(VERTEX_INDEX,3,vertexs);
 	
@@ -428,7 +429,7 @@ void Sprite::updateTransform(void)
             //
             // calculate the Quad based on the Affine Matrix
             //
-
+			/*
             Size &size = _rect.size;
 
             float x1 = _offsetPosition.x;
@@ -459,13 +460,14 @@ void Sprite::updateTransform(void)
             _quad.br.vertices = Vec3( RENDER_IN_SUBPIXEL(bx), RENDER_IN_SUBPIXEL(by), _positionZ );
             _quad.tl.vertices = Vec3( RENDER_IN_SUBPIXEL(dx), RENDER_IN_SUBPIXEL(dy), _positionZ );
             _quad.tr.vertices = Vec3( RENDER_IN_SUBPIXEL(cx), RENDER_IN_SUBPIXEL(cy), _positionZ );
-        }
+			*/        
+		}
 
         // MARMALADE CHANGE: ADDED CHECK FOR nullptr, TO PERMIT SPRITES WITH NO BATCH NODE / TEXTURE ATLAS
-        if (_textureAtlas)
+        /*if (_textureAtlas)
 		{
             _textureAtlas->updateQuad(&_quad, _atlasIndex);
-        }
+        }*/
 
         _recursiveDirty = false;
         setDirty(false);
@@ -495,9 +497,14 @@ void Sprite::draw()
         renderer->addCommand(&_quadCommand);
     }
 	*/
-	
+
+	_glProgram->use();
 	_vbo->onBufferData();
-	_texture
+	_texture->bind();
+	_vbo->enableAndPointer();
+	_glProgram->setUniformsForBuiltins();
+
+	_vbo->draw(GL_TRIANGLE_STRIP,4);
 
 }
 
@@ -521,7 +528,7 @@ void Sprite::addChild(Entity *child, int zOrder, int tag)
             setReorderChildDirtyRecursively();
         }
     }*/
-
+ 
     //Entity already sets isReorderChildDirty_ so this needs to be after batchNode check
     Entity::addChild(child, zOrder, tag);
 }
@@ -550,7 +557,7 @@ void Sprite::addChild(Entity *child, int zOrder, int tag)
 void Sprite::reorderChild(Entity *child, int zOrder)
 {
     FKAssert(child != nullptr, "child must be non null");
-    FKAssert(_children.contains(child), "child does not belong to this");
+    FKAssert(children->containsObject(child), "child does not belong to this");
 
     /*if( _batchNode && ! _reorderChildDirty)
     {
@@ -571,7 +578,7 @@ void Sprite::removeChild(Entity *child, bool cleanup)
     Entity::removeChild(child, cleanup);
 }
 
-void Sprite::removeAllChildrenWithCleanup(bool cleanup)
+void Sprite::removeAllChildren(bool cleanup)
 {
     /*if (_batchNode)
     {
@@ -584,7 +591,7 @@ void Sprite::removeAllChildrenWithCleanup(bool cleanup)
         }
     }*/
 
-    Entity::removeAllChildrenWithCleanup(cleanup);
+    Entity::removeAllChildren(cleanup);
 }
 
 /*
@@ -629,7 +636,9 @@ void Sprite::setDirtyRecursively(bool bValue)
     _recursiveDirty = bValue;
     setDirty(bValue);
 
-    for(const auto &child: children) {
+	Object *child;
+	FK_ARRAY_FOREACH(children,child)
+    {
         Sprite* sp = dynamic_cast<Sprite*>(child);
         if (sp)
         {
@@ -643,7 +652,7 @@ void Sprite::setDirtyRecursively(bool bValue)
                     if (! _recursiveDirty) {            \
                         _recursiveDirty = true;         \
                         setDirty(true);                 \
-                        if (!children.empty())         \
+                        if (children->count()>0)         \
                             setDirtyRecursively(true);  \
                         }                               \
                     }
@@ -664,18 +673,6 @@ void Sprite::setRotation(float rotation)
 {
     Entity::setRotation(rotation);
     
-    SET_DIRTY_RECURSIVELY();
-}
-
-void Sprite::setRotationSkewX(float fRotationX)
-{
-    Entity::setRotationSkewX(fRotationX);
-    SET_DIRTY_RECURSIVELY();
-}
-
-void Sprite::setRotationSkewY(float fRotationY)
-{
-    Entity::setRotationSkewY(fRotationY);
     SET_DIRTY_RECURSIVELY();
 }
 
@@ -715,22 +712,10 @@ void Sprite::setScale(float scaleX, float scaleY)
     SET_DIRTY_RECURSIVELY();
 }
 
-void Sprite::setPositionZ(float fVertexZ)
-{
-    Entity::setPositionZ(fVertexZ);
-    SET_DIRTY_RECURSIVELY();
-}
-
-void Sprite::setAnchorPoint(const Vec2& anchor)
+void Sprite::setAnchorPoint(const Point& anchor)
 {
     Entity::setAnchorPoint(anchor);
     SET_DIRTY_RECURSIVELY();
-}
-
-void Sprite::ignoreAnchorPointForPosition(bool value)
-{
-    FKAssert(! _batchNode, "ignoreAnchorPointForPosition is invalid in Sprite");
-    Entity::ignoreAnchorPointForPosition(value);
 }
 
 void Sprite::setVisible(bool bVisible)
@@ -744,7 +729,7 @@ void Sprite::setFlippedX(bool flippedX)
     if (_flippedX != flippedX)
     {
         _flippedX = flippedX;
-        setTextureRect(_rect, _rectRotated, _contentSize);
+        setTextureRect(_rect, _rectRotated, contentSize);
     }
 }
 
@@ -758,7 +743,7 @@ void Sprite::setFlippedY(bool flippedY)
     if (_flippedY != flippedY)
     {
         _flippedY = flippedY;
-        setTextureRect(_rect, _rectRotated, _contentSize);
+        setTextureRect(_rect, _rectRotated, contentSize);
     }
 }
 
@@ -789,8 +774,8 @@ void Sprite::updateColor(void)
 	float colors[] = {red,green,blue,alpha,
 					red,green,blue,alpha,
 					red,green,blue,alpha,
-					red,green,blue,alpha}
-	vbo->updateData(COLOR_INDEX,4,colors);
+					red,green,blue,alpha};
+	_vbo->updateData(COLOR_INDEX,4,colors);
     // self render
     // do nothing
 
@@ -854,12 +839,12 @@ void Sprite::updateBlendFunc(void)
     // it is possible to have an untextured sprite
     if (! _texture || ! _texture->hasPremultipliedAlpha())
     {
-        blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
+        _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
         setOpacityModifyRGB(false);
     }
     else
     {
-        blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
+        _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
         setOpacityModifyRGB(true);
     }
 }
@@ -871,7 +856,7 @@ std::string Sprite::toString() const
         texture_id = _batchNode->getTextureAtlas()->getTexture()->getName();
     else*/
         texture_id = _texture->getTextureID();
-    return String::createWithFormat("<Sprite | Tag = %d, TextureID = %d>", _tag, texture_id )->m_sString;
+    return String::createWithFormat("<Sprite | Tag = %d, TextureID = %d>", tag, texture_id )->m_sString;
 }
 
 FLAKOR_NS_END

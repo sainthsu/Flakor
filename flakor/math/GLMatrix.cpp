@@ -1,13 +1,12 @@
-#ifndef _FK_GLMATRIX_H_
-#define _FK_GLMATRIX_H_
-
+#include "macros.h"
+#include <assert.h>
 #include "math/GLMatrix.h"
 
 FLAKOR_NS_BEGIN
 
-MatrixStack modelviewStack;
-MatrixStack projectionStack;
-MatrixStack textureStack;
+MatrixStack* modelviewStack;
+MatrixStack* projectionStack;
+MatrixStack* textureStack;
 
 MatrixStack* currentStack = NULL;
 
@@ -22,20 +21,20 @@ void lazyInitialize()
 
     if (!initialized) 
 	{
-        Matrix4 identity = new Matrix4(); //Temporary identity matrix
+        Matrix4* identity = new Matrix4(); //Temporary identity matrix
 
         //Initialize all 3 stacks
         modelviewStack = new MatrixStack();
         projectionStack = new MatrixStack();
         textureStack = new MatrixStack();
 
-        currentStack = &modelviewStack;
+        currentStack = modelviewStack;
         initialized = 1;
 
         //Make sure that each stack has the identity matrix
-        modelviewStack->push(&identity);
-        projectionStack->push(&identity);
-        textureStack->push(&identity);
+        modelviewStack->push(identity);
+        projectionStack->push(identity);
+        textureStack->push(identity);
     }
 }
 
@@ -46,13 +45,13 @@ void GLMode(StackMode mode)
     switch(mode)
     {
         case GL_MODELVIEW:
-            currentStack = &modelviewStack;
+            currentStack = modelviewStack;
         break;
         case GL_PROJECTION:
-            currentStack = &projectionStack;
+            currentStack = projectionStack;
         break;
         case GL_TEXTURE:
-            currentStack = &textureStack;
+            currentStack = textureStack;
         break;
         default:
             assert(0 && "Invalid matrix mode specified"); //TODO: Proper error handling
@@ -62,13 +61,13 @@ void GLMode(StackMode mode)
 
 void GLPush(void)
 {
-    Matrix4 top = new Matrix4();;
+    Matrix4* top = new Matrix4();;
 
     lazyInitialize(); //Initialize the stacks if they haven't been already
 
     //Duplicate the top of the stack (i.e the current matrix)
-    top.set(currentStack->top->get(),COLUMN_MAJOR);
-    currentStack->push(&top);
+    top->set(currentStack->top->get(),COLUMN_MAJOR);
+    currentStack->push(top);
 }
 
 void GLPop(void)
@@ -88,9 +87,9 @@ void GLLoadIdentity()
 void GLFreeAll()
 {
     //Clear the matrix stacks
-    modelviewStack.release();
-    projectionStack.release();
-    textureStack.release();
+    modelviewStack->release();
+    projectionStack->release();
+    textureStack->release();
 
     //Delete the matrices
     initialized = 0; //Set to uninitialized
@@ -98,33 +97,33 @@ void GLFreeAll()
     currentStack = NULL; //Set the current stack to point nowhere
 }
 
-void GLMultiply(const Matrix* in)
+void GLMultiply(const Matrix4* in)
 {
     lazyInitialize();
-    currentStack->top = currentStack->top*in;
+    currentStack->top = &((*currentStack->top)*(*in));
 }
 
-void GLLoad(const Matrix* in)
+void GLLoad(const Matrix4* in)
 {
     lazyInitialize();
 	
-    in->set(currentStack->get(),COLUMN_MAJOR);
+    in->set(currentStack->top->get(),COLUMN_MAJOR);
 }
 
-void GLGet(StackMode mode, Matrix* out)
+void GLGet(StackMode mode, Matrix4* out)
 {
     lazyInitialize();
 
     switch(mode)
     {
         case GL_MODELVIEW:
-            out->set(modelviewStack.top->get(),COLUMN_MAJOR);
+            out->set(modelviewStack->top->get(),COLUMN_MAJOR);
         break;
         case GL_PROJECTION:
-            out->set(projectStack.top->get(),COLUMN_MAJOR);
+            out->set(projectStack->top->get(),COLUMN_MAJOR);
         break;
         case GL_TEXTURE:
-            out->set(textureStack.top->get(),COLUMN_MAJOR);
+            out->set(textureStack->top->get(),COLUMN_MAJOR);
         break;
         default:
             assert(1 && "Invalid matrix mode specified"); //TODO: Proper error handling
@@ -134,34 +133,34 @@ void GLGet(StackMode mode, Matrix* out)
 
 void GLTranslatef(float x, float y, float z)
 {
-    Matrix4 translation = new Matrix4();
+    Matrix4 *translation = new Matrix4();
 
     //Create a rotation matrix using the axis and the angle
-    translation.translate(x,y,z);
+    translation->translate(x,y,z);
 
     //Multiply the rotation matrix by the current matrix
-    currentStack->top=currentStack->top*&translation;
+    currentStack->top=(*currentStack->top)*(*translation);
 }
 
 void GLRotatef(float angle, float x, float y, float z)
 {
 	//Create an axis vector
-    Vector3 axis = new Vector3(x, y, z);
-    Matrix4 rotation = new Matrix4();
+    Vector3* axis = new Vector3(x, y, z);
+    Matrix4* rotation = new Matrix4();
 
     //Create a rotation matrix using the axis and the angle
-    rotation.rotate(angle, &axis);
+    rotation->rotate(angle, &axis);
 
     //Multiply the rotation matrix by the current matrix
-    currentStack->top=currentStack->top*&rotation;
+    currentStack->top= (*currentStack->top)*(*rotation);
 }
 
 void GLScalef(float x, float y, float z)
 {
-    Matrix4 scaling = new Matrix4();
-    scaling.scale(x, y, z);
+    Matrix4* scaling = new Matrix4();
+    scaling->scale(x, y, z);
 
-    currentStack->top=currentStack->top*&scaling;
+    currentStack->top= (*currentStack->top)*(*scaling);
 }
 
 #ifdef __cplusplus

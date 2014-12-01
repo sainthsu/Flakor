@@ -26,6 +26,13 @@ Point::Point(const Size& size) : x(size.width),y(size.height),z(0),type(POINT2D)
 {
 }
 
+Point::~Point()
+{
+	x=0;
+	y=0;
+	z=0;
+}
+
 Point& Point::operator= (const Point& other)
 {
 	setPoint(other);

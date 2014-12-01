@@ -9,7 +9,6 @@ LOCAL_CFLAGS    := -Werror
 
 LOCAL_SRC_FILES := \
 main.cpp \
-Flakor.cpp \
 Engine.cpp \
 Application.cpp \
 include/common.cpp \
@@ -28,6 +27,7 @@ math/Camera.cpp \
 math/CArray.cpp \
 math/Matrices.cpp \
 math/MatrixStack.cpp \
+math/GLMatrix.cpp \
 core/opengl/GPUInfo.cpp \
 core/opengl/GLProgram.cpp \
 core/opengl/vbo/VBO.cpp \

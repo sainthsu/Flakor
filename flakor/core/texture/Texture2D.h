@@ -170,9 +170,13 @@ class Texture2D : public Object
     	/** Sets max T */
     	void setMaxT(GLfloat maxT);
 
+		bool hasPremultipliedAlpha();
+
 		void load();
 		Image* loadData();
 		void unload();
+
+		void bind();
 	public:
 		static const PixelFormatInfoMap& getPixelFormatInfoMap();
 

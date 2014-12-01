@@ -1,5 +1,5 @@
-#ifndef _FK_TYPE_H_
-#define _FK_TYPE_H_
+#ifndef _FK_BLENDFUNC_H_
+#define _FK_BLENDFUNC_H_
 
 #include "core/opengl/GL.h"
 
@@ -40,11 +40,6 @@ struct BlendFunc
     }
 
 };
-
-const BlendFunc BlendFunc::DISABLE = {GL_ONE, GL_ZERO};
-const BlendFunc BlendFunc::ALPHA_PREMULTIPLIED = {GL_ONE, GL_ONE_MINUS_SRC_ALPHA};
-const BlendFunc BlendFunc::ALPHA_NON_PREMULTIPLIED = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
-const BlendFunc BlendFunc::ADDITIVE = {GL_SRC_ALPHA, GL_ONE};
 
 FLAKOR_NS_END
 

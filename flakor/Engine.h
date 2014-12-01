@@ -21,6 +21,7 @@ FLAKOR_NS_BEGIN
 
 class Scene;
 class Application;
+class Game;
 
 enum EngineState {
     STATE_INITAL,
@@ -33,7 +34,8 @@ class Engine
 {
 	public:
 		Application* app;
-
+        Game* game;
+    
     	ASensorManager* sensorManager;
     	const ASensor* accelerometerSensor;
     	ASensorEventQueue* sensorEventQueue;
@@ -46,8 +48,6 @@ class Engine
 
 		enum EngineState state;
 		long lastTick;
-		Scene* mainScene;
-		Scene* nextScene;
 
 	public:
 		void setApplication(Application* app);
@@ -57,8 +57,8 @@ class Engine
 		void termDisplay(void);
 		int32_t handleInput(AInputEvent* event);
 		void handleCMD(int32_t cmd);
-		void setMainScene(Scene *scene);
-	private:
+
+    private:
 		int initDisplay(void);
 };
 

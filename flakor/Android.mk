@@ -9,6 +9,8 @@ LOCAL_CFLAGS    := -Werror
 
 LOCAL_SRC_FILES := \
 main.cpp \
+Flakor.cpp \
+Game.cpp \
 Engine.cpp \
 Application.cpp \
 include/common.cpp \
@@ -24,6 +26,7 @@ base/event/Touch.cpp \
 base/element/Color.cpp \
 base/element/Element.cpp \
 base/element/Helper.cpp \
+base/element/Blendfunc.cpp \
 math/Camera.cpp \
 math/CArray.cpp \
 math/Matrices.cpp \

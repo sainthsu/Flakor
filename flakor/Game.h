@@ -4,20 +4,22 @@
 
 FLAKOR_NS_BEGIN
 
-Game *Game::game = 0;
+
 class Game : public IGame
 {
 	public:
 		Game();
 		virtual ~Game();
+    
 		/**
     	@brief    Get current Game instance.
     	@return Current Game instance pointer.
     	*/
-    	static Game* getGame();
+    	static Game* thisGame();
 	protected:
 		static Game *game;
-}
+    
+};
 
 FLAKOR_NS_END
 

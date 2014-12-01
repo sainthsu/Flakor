@@ -1,4 +1,9 @@
-public IGame
+#ifndef _FK_IGAME_H_
+#define _FK_IGAME_H_
+
+FLAKOR_NS_BEGIN
+
+class IGame
 {
 	public:
 		/** Called when the {@link Application} is first created. */
@@ -24,6 +29,8 @@ public IGame
 	/** Called when the {@link Application} is destroyed. Preceded by a call to {@link #pause()}. */
 	virtual void dispose () = 0;
 
-	private:
-		static IGame* game;
-}
+};
+
+FLAKOR_NS_END
+
+#endif

@@ -27,7 +27,7 @@
 #include "base/element/Element.h"
 #include "base/element/Helper.h"
 #include "base/element/Color.h"
-#include "base/element/Type.h"
+#include "base/interface/Interface.h"
 
 //entity
 #include "base/entity/Entity.h"
@@ -45,9 +45,10 @@
 //math
 #include "math/GLMatrix.h"
 
-const char* getFlakorVersion()
-{
-       return "flakor engine 0.1.0beta";
-}
+#include "Engine.h"
+#include "Application.h"
+#include "Game.h"
+
+const char* getFlakorVersion();
 
 #endif

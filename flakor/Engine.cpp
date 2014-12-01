@@ -1,6 +1,6 @@
 #include "Engine.h"
 #include "Application.h"
-#include "../test/android/jni/classes/TestScene.h"
+#include "Game.h"
 
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "engine", __VA_ARGS__))
 
@@ -80,9 +80,9 @@ void Engine::drawFrame() {
         return;
     }
 
-	if (this->mainScene != NULL)
+	if (this->game != NULL)
 	{
-		this->mainScene->onVisit();
+		this->game->render();
 	}
 	
     /* Just fill the screen with a color.
@@ -153,7 +153,8 @@ void Engine::handleCMD(int32_t cmd)
             // The window is being shown, get it ready.
             if (this->app->window != NULL) {
                 this->initDisplay();
-				this->mainScene = TestScene::create();
+				this->game = Game::thisGame();
+                this->game->create();
                 this->drawFrame();
             }
             break;

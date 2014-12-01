@@ -2,7 +2,7 @@
 #define _FK_INTERFACE_H_
 
 #include <string>
-#include "base/element/Type.h"
+#include "base/element/Blendfunc.h"
 
 FLAKOR_NS_BEGIN
 

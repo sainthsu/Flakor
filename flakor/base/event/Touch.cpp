@@ -5,7 +5,7 @@
  ****************************************************************************/
 
 #include "base/event/Touch.h"
-#include "Game.h"
+//#include "Game.h"
 
 FLAKOR_NS_BEGIN
 
@@ -30,19 +30,19 @@ Point Touch::getStartLocationInView() const
 // returns the current touch location in OpenGL coordinates
 Point Touch::getLocation() const
 { 
-    return Game::mainGame()->convertToGL(_point); 
+    return _point;//Game::thisGame()->convertToGL(_point); 
 }
 
 // returns the previous touch location in OpenGL coordinates
 Point Touch::getPreviousLocation() const
 { 
-    return Game::mainGame()->convertToGL(_prevPoint);  
+    return _point;//Game::thisGame()->convertToGL(_prevPoint);  
 }
 
 // returns the start touch location in OpenGL coordinates
 Point Touch::getStartLocation() const
 { 
-    return Game::mainGame()->convertToGL(_startPoint);  
+    return _point;//Game::thisGame()->convertToGL(_startPoint);  
 }
 
 // returns the delta position between the current location and the previous location in OpenGL coordinates

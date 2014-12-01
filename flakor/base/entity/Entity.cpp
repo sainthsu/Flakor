@@ -621,6 +621,16 @@ void Entity::setUserData(void *data)
 	this->userData = data;
 }
 
+Object* Entity::getUserObject() const
+{
+	return userObject;
+}
+
+void Entity::setUserObject(Object *pUserObject)
+{
+	userObject = pUserObject;
+}
+
 void Entity::setAddtionalMatrix(Matrix4& matrix)
 {
 	this->additionalMatrix = matrix;
@@ -1081,6 +1091,80 @@ Point Entity::convertTouchToEntitySpaceAR(Touch *touch)
     return this->convertToEntitySpaceAR(point);
 }
 
+void Entity::setColor(const Color& color)
+{
+
+}
+
+void Entity::setColor(float red,float green,float blue)
+{
+}
+
+void Entity::setColor(float red,float green,float blue,float alpha)
+{
+}
+
+void Entity::setRed(float red)
+{
+
+}
+
+void Entity::setGreen(float green)
+{
+}
+
+void Entity::setBlue(float blue)
+{
+}
+
+void Entity::setAlpha(float alpha)
+{
+}
+
+Color& Entity::getColor()
+{
+	return color;
+}
+
+float Entity::getRed()
+{
+	return color.red;
+}
+
+float Entity::getGreen()
+{
+	return color.green;
+}
+
+float Entity::getBlue()
+{
+	return color.blue;
+}
+
+float Entity::getAlpha()
+{
+	return color.alpha;
+}
+
+void Entity::setIngnoreUpdate(bool ignore)
+{
+}
+
+
+bool Entity::getIngnoreUpdate()
+{
+	return ignoreUpdate;
+}
+
+void Entity::onUpdate(float delta)
+{
+	
+}
+
+void Entity::reset()
+{
+	
+}
 
 FLAKOR_NS_END
 

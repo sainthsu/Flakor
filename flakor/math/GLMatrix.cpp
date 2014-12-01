@@ -100,10 +100,10 @@ void GLFreeAll()
 void GLMultiply(const Matrix4* in)
 {
     lazyInitialize();
-    currentStack->top = &((*currentStack->top)*(*in));
+    *currentStack->top = (*currentStack->top)*(*in);
 }
 
-void GLLoad(const Matrix4* in)
+void GLLoad(Matrix4* in)
 {
     lazyInitialize();
 	
@@ -120,7 +120,7 @@ void GLGet(StackMode mode, Matrix4* out)
             out->set(modelviewStack->top->get(),COLUMN_MAJOR);
         break;
         case GL_PROJECTION:
-            out->set(projectStack->top->get(),COLUMN_MAJOR);
+            out->set(projectionStack->top->get(),COLUMN_MAJOR);
         break;
         case GL_TEXTURE:
             out->set(textureStack->top->get(),COLUMN_MAJOR);
@@ -139,7 +139,7 @@ void GLTranslatef(float x, float y, float z)
     translation->translate(x,y,z);
 
     //Multiply the rotation matrix by the current matrix
-    currentStack->top=(*currentStack->top)*(*translation);
+    *currentStack->top = (*currentStack->top)*(*translation);
 }
 
 void GLRotatef(float angle, float x, float y, float z)
@@ -149,10 +149,10 @@ void GLRotatef(float angle, float x, float y, float z)
     Matrix4* rotation = new Matrix4();
 
     //Create a rotation matrix using the axis and the angle
-    rotation->rotate(angle, &axis);
+    rotation->rotate(angle, *axis);
 
     //Multiply the rotation matrix by the current matrix
-    currentStack->top= (*currentStack->top)*(*rotation);
+    *currentStack->top = (*currentStack->top)*(*rotation);
 }
 
 void GLScalef(float x, float y, float z)
@@ -160,7 +160,7 @@ void GLScalef(float x, float y, float z)
     Matrix4* scaling = new Matrix4();
     scaling->scale(x, y, z);
 
-    currentStack->top= (*currentStack->top)*(*scaling);
+    *currentStack->top = (*currentStack->top)*(*scaling);
 }
 
 #ifdef __cplusplus

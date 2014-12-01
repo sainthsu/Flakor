@@ -829,6 +829,25 @@ class Entity : public Object,public IColorable,public IUpdatable
 		Point convertTouchToEntitySpaceAR(Touch * touch);
 
 
+		void setColor(const Color& color) override;
+		void setColor(float red,float green,float blue) override;
+		void setColor(float red,float green,float blue,float alpha) override;
+		void setRed(float red) override;
+		void setGreen(float green) override;
+		void setBlue(float blue) override;
+		void setAlpha(float alpha) override;
+		Color& getColor() override;
+		float getRed() override;
+		float getGreen() override;
+		float getBlue() override;
+		float getAlpha() override;
+
+		void setIngnoreUpdate(bool ignore) override;
+		bool getIngnoreUpdate() override;
+
+		void onUpdate(float delta) override;
+		void reset() override;
+
 };
 
 FLAKOR_NS_END

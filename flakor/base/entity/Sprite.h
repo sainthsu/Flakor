@@ -275,8 +275,8 @@ public:
     virtual void setPosition(const Point& pos) override;
     virtual void setPosition(float x, float y) override;
     virtual void setRotation(float rotation) override;
-    virtual void setRotationX(float rotationX) override;
-    virtual void setRotationY(float rotationY) override;
+    //virtual void setRotationX(float rotationX) override;
+    //virtual void setRotationY(float rotationY) override;
     virtual void setSkewX(float sx) override;
     virtual void setSkewY(float sy) override;
     virtual void removeChild(Entity* child, bool cleanup) override;
@@ -289,7 +289,7 @@ public:
     virtual void setScale(float scale) override;
     //virtual void setPositionZ(float positionZ) override;
     virtual void setAnchorPoint(const Point& anchor) override;
-    virtual void setRelativeAnchorPoint(bool relative) override;
+    //virtual void setRelativeAnchorPoint(bool relative) override;
     virtual void setVisible(bool bVisible) override;
     virtual void draw() override;
     //virtual void setOpacityModifyRGB(bool modify) override;

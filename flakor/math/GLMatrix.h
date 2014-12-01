@@ -23,7 +23,7 @@ void GLLoadIdentity();
 
 void GLFreeAll();
 void GLMultiply(const Matrix4* in);
-void GLLoad(const Matrix4* in);
+void GLLoad(Matrix4* in);
 void GLGet(StackMode mode, Matrix4* out);
 void GLTranslatef(float x, float y, float z);
 

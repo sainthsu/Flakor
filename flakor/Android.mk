@@ -20,6 +20,7 @@ base/lang/Dictionary.cpp \
 base/lang/Set.cpp \
 base/lang/FKString.cpp \
 base/lang/Zone.cpp \
+base/event/Touch.cpp \
 base/element/Color.cpp \
 base/element/Element.cpp \
 base/element/Helper.cpp \

@@ -11,18 +11,18 @@ class Color;
 class IColorable
 {
 	public:
-		virtual void setColor(const Color& color);
-		virtual void setColor(float red,float green,float blue);
-		virtual void setColor(float red,float green,float blue,float alpha);
-		virtual void setRed(float red);
-		virtual void setGreen(float green);
-		virtual void setBlue(float blue);
-		virtual void setAlpha(float alpha);
-		virtual Color& getColor();
-		virtual float getRed();
-		virtual float getGreen();
-		virtual float getBlue();
-		virtual float getAlpha();
+		virtual void setColor(const Color& color) = 0;
+		virtual void setColor(float red,float green,float blue) = 0;
+		virtual void setColor(float red,float green,float blue,float alpha) = 0;
+		virtual void setRed(float red) = 0;
+		virtual void setGreen(float green) = 0;
+		virtual void setBlue(float blue) = 0;
+		virtual void setAlpha(float alpha) = 0;
+		virtual Color& getColor() = 0;
+		virtual float getRed() = 0;
+		virtual float getGreen() = 0;
+		virtual float getBlue() = 0;
+		virtual float getAlpha() = 0;
 };
 
 FLAKOR_NS_END

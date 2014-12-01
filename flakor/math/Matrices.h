@@ -21,6 +21,7 @@
 #include <iostream>
 
 #include "math/Vectors.h"
+#include "base/element/Element.h"
 
 enum MATRIX_MAJOR{
     ROW_MAJOR=1,
@@ -28,8 +29,6 @@ enum MATRIX_MAJOR{
 };
 
 FLAKOR_NS_BEGIN
-
-class Point;
 
 ///////////////////////////////////////////////////////////////////////////
 // 2x2 matrix
@@ -903,6 +902,12 @@ inline Vector3 Matrix4::operator*(const Vector3& rhs) const
                    m[2]*rhs.x + m[6]*rhs.y + m[10]*rhs.z);
 }
 
+//TODO maybe wrong
+inline Point Matrix4::operator*(const Point& rhs) const
+{
+    return Point(m[0]*rhs.x + m[4]*rhs.y + m[8]*rhs.z,
+                   m[1]*rhs.x + m[5]*rhs.y + m[9]*rhs.z);
+}
 
 inline Matrix4 Matrix4::operator*(const Matrix4& n) const
 {
@@ -916,7 +921,7 @@ inline Matrix4 Matrix4::operator*(const Matrix4& n) const
 
 inline Matrix4& Matrix4::operator*=(const Matrix4& rhs)
 {
-    *this = *this * rhs;
+	*this = (*this) * rhs;
     return *this;
 }
 

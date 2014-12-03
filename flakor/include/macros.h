@@ -34,10 +34,10 @@ THE SOFTWARE.
 
 #ifndef FKAssert
 #if FLAKOR_DEBUG > 0
-extern bool assert_script_compatible(const char *msg);
+//extern bool assert_script_compatible(const char *msg);
 #define FKAssert(cond, msg) do {                              \
       if (!(cond)) {                                          \
-        if (!assert_script_compatible(msg) && strlen(msg)) \
+        if (strlen(msg)) \
           flakor::Log("Assert failed: %s", msg);           \
         FK_ASSERT(cond);                                      \
       } \
@@ -237,7 +237,7 @@ It should work same as apples CFSwapInt32LittleToHost(..)
     do { \
         GLenum __error = glGetError(); \
         if(__error) { \
-            FKLog("OpenGL error 0x%04X in %s %s %d\n", __error, __FILE__, __FUNCTION__, __LINE__); \
+            FKLOG("OpenGL error 0x%04X in %s %s %d\n", __error, __FILE__, __FUNCTION__, __LINE__); \
         } \
     } while (false)
 #endif

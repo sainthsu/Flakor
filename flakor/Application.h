@@ -14,7 +14,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+    
 FLAKOR_NS_BEGIN
 
 	class Application;

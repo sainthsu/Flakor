@@ -429,9 +429,9 @@ void Application::main()
                     while (ASensorEventQueue_getEvents(engine->sensorEventQueue,
                                                        &event, 1) > 0)
                     {
-                        LOGI("accelerometer: x=%f y=%f z=%f",
+                        /*LOGI("accelerometer: x=%f y=%f z=%f",
                              event.acceleration.x, event.acceleration.y,
-                             event.acceleration.z);
+                             event.acceleration.z);*/
                     }
                 }
             }
@@ -458,7 +458,7 @@ void Application::main()
 
 void Application::dummy()
 {
-	
+    
 }
 
 FLAKOR_NS_END

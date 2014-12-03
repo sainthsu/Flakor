@@ -44,6 +44,7 @@ Entity::Entity(void)
 , visible(true)
 // "whole screen" objects. like Scenes and Layers, should set relativeAnchorPoint to false
 , relativeAnchorPoint(false)
+, childrenVisible(true)
 , childrenSortPending(false)
 //, scriptHandler(0)
 //, updateScriptHandler(0)
@@ -730,6 +731,7 @@ void Entity::cleanup(void)
 void Entity::draw(void)
 {
 	//	overwrite to handle your own draw action
+    FKLOG("in base entity draw");
 }
 
 void Entity::onVisit(void)
@@ -739,8 +741,11 @@ void Entity::onVisit(void)
 		return;
 	}
 
-	this->transform();
-
+    if (transformDirty)
+    {
+        this->transform();
+    }
+    
 	if(children == NULL || children->count() <=0 || !this->childrenVisible)
 	{
 		this->draw();
@@ -755,6 +760,7 @@ void Entity::onVisit(void)
 		int i = 0;
 		Entity* child = NULL;
 
+        FKLOG("children count:%d",childCount);
 		//draw children behind this entity
 		for(;i<childCount;i++)
 		{
@@ -812,9 +818,13 @@ void Entity::transform(void)
 
 	// Update Z vertex manually
 	transfrom4x4[14] = vertexZ;
+    
+    FKLOG("entity matrix:%s",transfrom4x4.toString());
 
+    GLMode(GL_MODELVIEW);
 	GLMultiply( &transfrom4x4 );
 
+    GLGet(GL_PROJECTION,&transfrom4x4);
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
 	if ( camera != NULL)/// && !(grid != NULL && grid->isActive()) )
 	{
@@ -952,7 +962,11 @@ Matrix4 Entity::entityToParentTransform(void)
 		}
 		else
 		{
-			Matrix4 matrix;
+            Matrix4 matrix = Matrix4::make(1.0f, 0.f,0.f,0.0f,
+                                           0.0f, 1.0f,0.f,0.0f,
+                                           0.0f, 0.0f ,1,0,
+                                           0,0,0,1);
+            
 			matrix.translate(position.x,position.y , 0);
 
 			anchorPointInPixels.x = contentSize.width * anchorPoint.x;

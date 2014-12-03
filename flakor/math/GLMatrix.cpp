@@ -117,9 +117,11 @@ void GLGet(StackMode mode, Matrix4* out)
     switch(mode)
     {
         case GL_MODELVIEW:
+            FKLOG("MV TOP:%s",modelviewStack->top->toString());
             out->set(modelviewStack->top->get(),COLUMN_MAJOR);
         break;
         case GL_PROJECTION:
+            FKLOG("P TOP:%s",projectionStack->top->toString());
             out->set(projectionStack->top->get(),COLUMN_MAJOR);
         break;
         case GL_TEXTURE:

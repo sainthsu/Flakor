@@ -11,7 +11,6 @@ class Scene : public Entity
 	public:
 		Scene();
 		~Scene();
-		virtual bool init();
 		static Scene* create();
 };
 

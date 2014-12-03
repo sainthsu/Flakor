@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <jpeglib.h>
 #include <png.h>
+#include <zlib.h>
 
 #include "core/texture/atitc.h"
 #include "core/texture/etc1.h"

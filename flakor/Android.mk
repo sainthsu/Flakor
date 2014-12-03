@@ -8,7 +8,6 @@ LOCAL_MODULE_FILENAME := libflakor
 LOCAL_CFLAGS    := -Werror
 
 LOCAL_SRC_FILES := \
-main.cpp \
 Flakor.cpp \
 Game.cpp \
 Engine.cpp \
@@ -107,7 +106,7 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 LOCAL_ARM_NEON  := true
 endif
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 

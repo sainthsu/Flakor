@@ -22,6 +22,10 @@ int Engine::initDisplay(void)
             EGL_RED_SIZE, 8,
             EGL_NONE
     };
+    //set gl version to 2.0
+    const EGLint glversion[] = {
+        EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE};
+    
     EGLint w, h, dummy, format;
     EGLint numConfigs;
     EGLConfig config;
@@ -46,7 +50,7 @@ int Engine::initDisplay(void)
     ANativeWindow_setBuffersGeometry(this->app->window, 0, 0, format);
 
     surface = eglCreateWindowSurface(display, config, this->app->window, NULL);
-    context = eglCreateContext(display, config, NULL, NULL);
+    context = eglCreateContext(display, config, NULL, glversion);
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
         LOGW("Unable to eglMakeCurrent");
@@ -63,9 +67,8 @@ int Engine::initDisplay(void)
     this->height = h;
 
     // Initialize GL state.
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
     glEnable(GL_CULL_FACE);
-    glShadeModel(GL_SMOOTH);
+    glViewport(0,0,w,h);
     glDisable(GL_DEPTH_TEST);
 
     return 0;
@@ -79,17 +82,17 @@ void Engine::drawFrame() {
         // No display.
         return;
     }
+    
+    // Just fill the screen with a color.
+     glClearColor(1.f, 1.f,1.f, 1);
+     glClear(GL_COLOR_BUFFER_BIT);
 
 	if (this->game != NULL)
 	{
+        LOGW("Game render!!!");
 		this->game->render();
 	}
 	
-    /* Just fill the screen with a color.
-    glClearColor(((float)engine->state.x)/engine->width, engine->state.angle,
-            ((float)engine->state.y)/engine->height, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-	*/
 
     eglSwapBuffers(this->display, this->surface);
 }
@@ -152,8 +155,9 @@ void Engine::handleCMD(int32_t cmd)
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.
             if (this->app->window != NULL) {
+                this->game = Game::thisGame();
                 this->initDisplay();
-				this->game = Game::thisGame();
+                LOGW("game create!!!");
                 this->game->create();
                 this->drawFrame();
             }

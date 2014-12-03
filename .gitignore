@@ -1,4 +1,9 @@
 kunkua/
+test/android/bin/
+test/android/gen/
+test/android/libs/
+test/android/obj/
+
 *~
 *.pdf
 

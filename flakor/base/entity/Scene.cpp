@@ -13,10 +13,6 @@ Scene::~Scene()
 {
 }
 
-bool Scene::init()
-{
-
-}
 
 Scene* Scene::create()
 {

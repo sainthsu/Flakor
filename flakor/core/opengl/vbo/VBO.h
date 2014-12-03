@@ -20,7 +20,7 @@ class Array;
 */
 struct VBOAttribute
 {
-	char* _name;
+	const char* _name;
 	int _location;//location in Shader
 	int _offset;
 	int _size;
@@ -28,16 +28,16 @@ struct VBOAttribute
 	bool _normalized;
 
 	VBOAttribute()
-	:_name((char *)"unnamed"),_location(0),_offset(0),_size(0),_type(0),_normalized(false)
+	:_name((const char *)"unnamed"),_location(0),_offset(0),_size(0),_type(0),_normalized(false)
 	{
 	}
 
-	VBOAttribute(char* name,int location,int offset,int size,int type)
+	VBOAttribute(const char* name,int location,int offset,int size,int type)
 	:_name(name),_location(location),_offset(offset),_size(size),_type(type),_normalized(false)
 	{
 	}
 
-	VBOAttribute(char* name,int location,int offset,int size,int type,bool normalized)
+	VBOAttribute(const char* name,int location,int offset,int size,int type,bool normalized)
 	:_name(name),_location(location),_offset(offset),_size(size),_type(type),_normalized(normalized)
 	{
 	}
@@ -121,7 +121,7 @@ class VBO : Object
 		 */
 		int getGPUMemoryByteSize();
 
-		void setAttributes(struct VBOAttribute *attributes,int count);
+		void setAttributes(struct VBOAttribute **attributes,int count);
 		/**
 		 * 与显卡bufferID绑定
 		 * @param glState
@@ -158,7 +158,7 @@ class VBO : Object
 		float *bufferData;
 
 		int count;
-		VBOAttribute* VBOAttributes;
+		VBOAttribute** VBOAttributes;
 
 };
 

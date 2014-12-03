@@ -209,7 +209,10 @@ void Texture2D::load()
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	Image *image = this->loadData();
-	PixelFormat pixelFormat = image->getRenderFormat();
+    if (image == nullptr) {
+        FKLOG("image file error"); return;
+    }
+    PixelFormat pixelFormat = image->getRenderFormat();
 
 	if(_pixelFormatInfoTables.find(pixelFormat) == _pixelFormatInfoTables.end())
     {
@@ -235,6 +238,9 @@ Image* Texture2D::loadData()
         // Read the file from hardware
         //std::string fullPath = FileUtils::getInstance()->fullPathForFilename(filename);
         FILE *fp = fopen(_filename, mode);
+        if (!fp) {
+            FKLOG("openfile error");
+        }
         FK_BREAK_IF(!fp);
         fseek(fp,0,SEEK_END);
         size = ftell(fp);

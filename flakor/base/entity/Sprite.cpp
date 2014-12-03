@@ -48,6 +48,7 @@ Sprite* Sprite::createWithTexture(Texture2D *texture, const Rect& rect, bool rot
 Sprite* Sprite::create(const std::string& filename)
 {
     Sprite *sprite = new (std::nothrow) Sprite();
+    
     if (sprite && sprite->initWithFile(filename))
     {
         sprite->autorelease();
@@ -106,11 +107,13 @@ bool Sprite::initWithFile(const std::string& filename)
     FKAssert(filename.size()>0, "Invalid filename for sprite");
 
     Texture2D *texture = new Texture2D();
+
 	texture->initWithFile(filename.c_str());
     if (texture)
     {
         Rect rect = RectZero;
         rect.size = texture->getContentSize();
+        
         return initWithTexture(texture, rect);
     }
 
@@ -158,13 +161,12 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
         setAnchorPoint(Point(0.5f, 0.5f));
         
         // zwoptex default values
-        _offsetPosition = PointZero;
+        _offsetPosition = Point(0.f, 0.f);
 
         // add vbo 3+4+2
         _vbo = VBO::create(VERTEX_SIZE,VERTICES_PER_SPRITE);
         
-		GLProgram* program = new GLProgram();
-		program->initWithByteArrays(Shader::PositionTextureColor_noMVP_vert,Shader::PositionTextureColor_noMVP_frag);
+        GLProgram* program = GLProgram::createWithByteArrays(Shader::PositionTextureColor_noMVP_vert,Shader::PositionTextureColor_noMVP_frag);
         // shader state
         setGLProgram(program);
 
@@ -404,7 +406,11 @@ void Sprite::setTextureCoords(Rect rect)
             FK_SWAP(top,bottom,float);
         }
 
-
+        float texCoords[] = {0,0,
+            1.f,0.f,
+            1.f,1.f,
+            0.f,1.f};
+        _vbo->updateData(TEXTURECOORDINATES_INDEX,2,texCoords);
     }
 }
 
@@ -498,6 +504,8 @@ void Sprite::draw()
     }
 	*/
 
+    FKLOG("in sprite draw");
+    
 	_glProgram->use();
 	_vbo->onBufferData();
 	_texture->bind();
@@ -652,7 +660,7 @@ void Sprite::setDirtyRecursively(bool bValue)
                     if (! _recursiveDirty) {            \
                         _recursiveDirty = true;         \
                         setDirty(true);                 \
-                        if (children->count()>0)         \
+                        if (children!= NULL && children->count()>0)         \
                             setDirtyRecursively(true);  \
                         }                               \
                     }

@@ -30,6 +30,7 @@ enum EngineState {
     STATE_DESTROYED
 };
 
+
 class Engine
 {
 	public:

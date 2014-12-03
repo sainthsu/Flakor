@@ -10,7 +10,8 @@ $(call import-add-path,$(LOCAL_PATH)/../../../flakor)
     
 
 LOCAL_SRC_FILES := mainGame.cpp \
-                   classes/TestScene.cpp
+                   classes/TestScene.cpp \
+                   main.cpp \
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/classes \
                     $(LOCAL_PATH)/../../../flakor \

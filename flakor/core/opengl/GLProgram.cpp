@@ -209,7 +209,7 @@ bool GLProgram::initWithByteArrays(const GLchar* vShaderByteArray, const GLchar*
     return true;
 }
 
-#if (FK_TARGET_PLATFORM == CC_PLATFORM_WP8)
+#if (FK_TARGET_PLATFORM == FK_PLATFORM_WP8)
 GLProgram* GLProgram::createWithPrecompiledProgramByteArray(const GLchar* vShaderByteArray, const GLchar* fShaderByteArray)
 {
     auto ret = new (std::nothrow) GLProgram();
@@ -430,7 +430,7 @@ bool GLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* source
         
         if (type == GL_VERTEX_SHADER)
         {
-            FKLOG("flakor: %s", getVertexShaderLog().c_str());
+            FKLOG("flakor: vertex shader%s", getVertexShaderLog().c_str());
         }
         else
         {
@@ -438,7 +438,7 @@ bool GLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* source
         }
         free(src);
 
-        return false;;
+        return false;
     }
     return (status == GL_TRUE);
 }
@@ -834,25 +834,25 @@ void GLProgram::setUniformLocationWithMatrix4fv(GLint location, const GLfloat* m
 
 void GLProgram::setUniformsForBuiltins()
 { 
-    Matrix4 *matrixMV;
-	GLGet(GL_MODELVIEW,matrixMV);
+    Matrix4 matrixMV;
+	GLGet(GL_MODELVIEW,&matrixMV);
 
-    setUniformsForBuiltins(*matrixMV);
+    setUniformsForBuiltins(matrixMV);
 }
 
 void GLProgram::setUniformsForBuiltins(const Matrix4 &matrixMV)
 {
-    Matrix4* matrixP;
- 	GLGet(GL_PROJECTION,matrixP);
+    Matrix4 matrixP;
+ 	GLGet(GL_PROJECTION,&matrixP);
 
     if(_flags.usesP)
-        setUniformLocationWithMatrix4fv(_builtInUniforms[UNIFORM_P_MATRIX], matrixP->get(), 1);
+        setUniformLocationWithMatrix4fv(_builtInUniforms[UNIFORM_P_MATRIX], matrixP.get(), 1);
 
     if(_flags.usesMV)
         setUniformLocationWithMatrix4fv(_builtInUniforms[UNIFORM_MV_MATRIX], matrixMV.get(), 1);
 
     if(_flags.usesMVP) {
-        Matrix4 matrixMVP = (*matrixP) * matrixMV;
+        Matrix4 matrixMVP = matrixP * matrixMV;
         setUniformLocationWithMatrix4fv(_builtInUniforms[UNIFORM_MVP_MATRIX], matrixMVP.get(), 1);
     }
 

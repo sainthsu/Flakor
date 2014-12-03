@@ -9,6 +9,7 @@
 #include "macros.h"
 
 #include "Matrices.h"
+#include "base/lang/FKString.h"
 
 const float DEG2RAD = 3.141593f / 180;
 
@@ -747,6 +748,12 @@ Matrix4& Matrix4::lookAt( const Vector3& vec_eye, const Vector3& vec_at, const V
 
     result->postTranslate( -vec_eye.x, -vec_eye.y, -vec_eye.z );
     return *result;
+}
+
+const char* Matrix4::toString(void) const
+{
+    return String::createWithFormat("<Matrix4 | v = (%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f)>",
+                                    m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8],m[9],m[10],m[11],m[12],m[13],m[14],m[15])->getCString();
 }
 
 FLAKOR_NS_END

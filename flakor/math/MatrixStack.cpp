@@ -27,7 +27,7 @@ MatrixStack::~MatrixStack()
 void MatrixStack::push(const Matrix4 *matrix)
 {
 	this->top = &this->stack[this->itemCount];
-	FKAssert(this->top == matrix,"pointer not same type!");
+	//FKAssert(this->top == matrix,"pointer not same type!");
 	memcpy(this->top,matrix,sizeof(Matrix4));
 	this->itemCount++;
 

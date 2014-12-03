@@ -2,6 +2,7 @@
 #define _FK_TARGET_MACROS_H_
 
 #include "targetAssert.h"
+#define FLAKOR_DEBUG 1
 
 // namespace define flakor {}
 #ifdef __cplusplus

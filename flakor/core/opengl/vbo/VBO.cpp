@@ -1,5 +1,8 @@
 #include "targetMacros.h"
 #include "core/opengl/vbo/VBO.h"
+#include "core/opengl/GLProgram.h"
+
+#include <stdlib.h>
 
 FLAKOR_NS_BEGIN
 
@@ -32,6 +35,7 @@ VBO* VBO::create(int sizePerVertex,int vertexNumber)
 	{
 		v->sizePerVertex = sizePerVertex;
 		v->vertexNumber = vertexNumber;
+        v->bufferData = (float *)malloc(sizePerVertex*vertexNumber*sizeof(float));
 	}
 	return v;
 }
@@ -107,7 +111,7 @@ int VBO::getGPUMemoryByteSize()
 	return 0;
 }
 
-void VBO::setAttributes(struct VBOAttribute *attributes,int count)
+void VBO::setAttributes(struct VBOAttribute **attributes,int count)
 {
 	this->count = count;
 	VBOAttributes = attributes;
@@ -170,12 +174,21 @@ void VBO::onBufferData()
 
 void VBO::enableAndPointer()
 {
+    struct VBOAttribute *attributes[3] = {
+        new VBOAttribute(GLProgram::ATTRIBUTE_NAME_POSITION,GLProgram::VERTEX_ATTRIB_POSITION,0,3,GL_FLOAT,false),
+        new VBOAttribute(GLProgram::ATTRIBUTE_NAME_COLOR,GLProgram::VERTEX_ATTRIB_COLOR,3,4,GL_FLOAT,false),
+        new VBOAttribute(GLProgram::ATTRIBUTE_NAME_TEX_COORD,GLProgram::VERTEX_ATTRIB_TEX_COORD,7,2,GL_FLOAT,false)
+    };
+    
+    count = 3;
+    
 	int i;
 	for(i=0;i<count;i++)
 	{
-		VBOAttribute attri = VBOAttributes[i];
-		glEnableVertexAttribArray(attri._location);
-		glVertexAttribPointer(attri._location,attri._size,GL_FLOAT,attri._normalized,sizePerVertex*sizeof(float),(GLvoid*)attri._offset);
+		VBOAttribute *attri = attributes[i];
+        FKLOG("%s index: %d",attri->_name,attri->_location);
+		glEnableVertexAttribArray(attri->_location);
+		glVertexAttribPointer(attri->_location,attri->_size,GL_FLOAT,attri->_normalized,sizePerVertex*sizeof(float),(GLvoid*)attri->_offset);
 	}
 }
 

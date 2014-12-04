@@ -79,4 +79,4 @@ typedef enum {
 
 FLAKOR_NS_END
 
-#endif    // __CC_COMMON_H__
+#endif    // _FK_CONSOLE_H_

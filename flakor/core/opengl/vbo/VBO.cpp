@@ -152,6 +152,7 @@ void VBO::updateData(int index,int size,float data[])
 		for(j=0;j<size;j++)
 			bufferData[index+i*sizePerVertex+j] = data[i*size+j]; 
 	}
+    dirty = true;
 }
 
 void VBO::onBufferData()
@@ -163,6 +164,7 @@ void VBO::onBufferData()
 		glBindBuffer(GL_ARRAY_BUFFER,bufferID);
 
 		glBufferData(GL_ARRAY_BUFFER,size,bufferData,GL_STATIC_DRAW);
+        dirty = false;
 	}
 	else
 	{

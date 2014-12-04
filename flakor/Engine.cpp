@@ -160,6 +160,7 @@ void Engine::handleCMD(int32_t cmd)
                 LOGW("game create!!!");
                 this->game->create();
                 this->drawFrame();
+                this->state = STATE_RUNNING;
             }
             break;
         case APP_CMD_TERM_WINDOW:

@@ -10,7 +10,7 @@ MainGame::~MainGame(){}
 
 void MainGame::create()
 {
-    Matrix4 pMatrix = Matrix4::orthographic(540,800,-10, 10);
+    Matrix4 pMatrix = Matrix4::orthographic(1080,1776,-1000, 1000);
     GLMode(GL_PROJECTION);
     GLMultiply(&pMatrix);
     

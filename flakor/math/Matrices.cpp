@@ -697,18 +697,21 @@ Matrix4& Matrix4::orthographic( float width, float height, float nearPlane, floa
   (*result)[4] = 0;
   (*result)[8] = 0;
   (*result)[12] = 0;
+
   (*result)[1] = 0;
   (*result)[5] = 1/ height;
   (*result)[9] = 0;
   (*result)[13] = 0;
+
   (*result)[2] = 0;
   (*result)[6] = 0;
   (*result)[10] = -2/(farPlane - nearPlane);
   (*result)[14] = (farPlane+nearPlane)/(nearPlane-farPlane);
+
   (*result)[3] = 0;
   (*result)[7] = 0;
   (*result)[11] = 0;
-  (*result)[15] = 0;
+  (*result)[15] = 1;
 
   return *result;
 }

@@ -3,6 +3,8 @@ test/android/bin/
 test/android/gen/
 test/android/libs/
 test/android/obj/
+test/android/.classpath
+test/android/project.properties
 
 *~
 *.pdf

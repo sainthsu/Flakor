@@ -84,7 +84,7 @@ void Engine::drawFrame() {
     }
     
     // Just fill the screen with a color.
-     glClearColor(1.f, 1.f,1.f, 1);
+     glClearColor(0.f, 0.f,0.f, 1);
      glClear(GL_COLOR_BUFFER_BIT);
 
 	if (this->game != NULL)

@@ -113,7 +113,7 @@ bool Sprite::initWithFile(const std::string& filename)
     {
         Rect rect = RectZero;
         rect.size = texture->getContentSize();
-        
+        FKLOG("Sprite size:w %d,h %d",rect.size.width,rect.size.height);
         return initWithTexture(texture, rect);
     }
 
@@ -307,17 +307,23 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
     float x2 = x1 + _rect.size.width;
     float y2 = y1 + _rect.size.height;
     
+	FKLOG("Sprite vertexs:x1 %.4f,y1 %.4f,x2 %.4f,y2 %.4f",x1,y1,x2,y2);
 	/*
-	* (x1,y1)_____
-	  |           |
-	  |___________(x2,y2)|	
+	* _____(x2,y2)
+	  |          | 
+	  |(x1,y1)___|	
+
+	   3_____4
+	  |      |
+	  |1____2|	
 	*/
 
-	//leftTop bottomRight;
-	float vertexs[] = { x1,y1,0,
-						x1,y2,0,
-						x2,y2,0,
-						x2,y1,0};
+	//leftB rightTop;
+	float vertexs[] = {x1,y1,0,
+					   x2,y1,0,
+					   x1,y2,0,
+					   x2,y2,0};
+	//{ -0.5,-0.5,0,0.5,-0.5,0,-0.5,0.5,0,0.5,0.5,0};
 	_vbo->updateData(VERTEX_INDEX,3,vertexs);
 	
 }
@@ -328,6 +334,14 @@ void Sprite::setVertexRect(const Rect& rect)
     _rect = rect;
 }
 
+/*
+	  (0,0) _____
+	  |        | 
+	  |___(1,1)|
+	   3_____4
+	  |      |
+	  |1____2|
+*/
 void Sprite::setTextureCoords(Rect rect)
 {
     rect = FK_RECT_POINTS_TO_PIXELS(rect);
@@ -406,10 +420,11 @@ void Sprite::setTextureCoords(Rect rect)
             FK_SWAP(top,bottom,float);
         }
 
-        float texCoords[] = {0,0,
-            1.f,0.f,
+		
+        float texCoords[] = {0.f,1.f,
             1.f,1.f,
-            0.f,1.f};
+            0.f,0.f,
+            1.f,0.f};
         _vbo->updateData(TEXTURECOORDINATES_INDEX,2,texCoords);
     }
 }

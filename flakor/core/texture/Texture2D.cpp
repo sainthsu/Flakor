@@ -222,7 +222,9 @@ void Texture2D::load()
 
     const PixelFormatInfo& info = _pixelFormatInfoTables.at(pixelFormat);
 
-	
+	_pixelsWidth = 	image->getWidth();
+	_pixelsHeight = image->getHeight();
+	_contentSize.setSize(_pixelsWidth,_pixelsHeight);
 	glTexImage2D(GL_TEXTURE_2D, 0, info.internalFormat, (GLsizei)image->getWidth(), (GLsizei)image->getHeight(), 0, info.format, info.type, image->getData());
 }
 

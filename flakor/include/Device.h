@@ -14,11 +14,7 @@ class Device
 private:
     Device();
 public:
-    /**
-     *  Gets the DPI of device
-     *  @return The DPI of device.
-     */
-    static int getDPI();
+    
 };
 
 

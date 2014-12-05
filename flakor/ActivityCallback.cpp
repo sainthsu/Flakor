@@ -7,6 +7,7 @@
 #include "macros.h"
 #include "Application.h"
 
+
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "native-activity", __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "native-activity", __VA_ARGS__))
 
@@ -81,20 +82,6 @@ static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
     return savedState;
 }
 
-static void onConfigurationChanged(ANativeActivity* activity)
-{
-    Application* app = (Application*)activity->instance;
-    LOGI("ConfigurationChanged: %p\n", activity);
-    app->writeCmd(APP_CMD_CONFIG_CHANGED);
-}
-
-static void onLowMemory(ANativeActivity* activity)
-{
-    Application* app = (Application*)activity->instance;
-    LOGI("LowMemory: %p\n", activity);
-    app->writeCmd(APP_CMD_LOW_MEMORY);
-}
-
 static void onWindowFocusChanged(ANativeActivity* activity, int focused)
 {
     LOGI("WindowFocusChanged: %p -- %d\n", activity, focused);
@@ -108,6 +95,16 @@ static void onNativeWindowCreated(ANativeActivity* activity, ANativeWindow* wind
     Application* app = (Application*)activity->instance;
 
     app->setWindow(window);
+}
+
+static void onNativeWindowResized(ANativeActivity* activity, ANativeWindow* window)
+{
+	LOGI("NativeWindowResized: %p -- %p\n", activity, window);
+}
+
+static void onNativeWindowRedrawNeeded(ANativeActivity* activity, ANativeWindow* window)
+{
+	LOGI("NativeWindowCRedrawNeeded: %p -- %p\n", activity, window);
 }
 
 static void onNativeWindowDestroyed(ANativeActivity* activity, ANativeWindow* window)
@@ -134,34 +131,23 @@ static void onInputQueueDestroyed(ANativeActivity* activity, AInputQueue* queue)
     app->setInput(NULL);
 }
 
-/*create activity*/
-void ANativeActivity_onCreate(ANativeActivity* activity,
-        void* savedState, size_t savedStateSize) 
+static void onContentRectChanged(ANativeActivity* activity, const ARect* rect)
 {
-    LOGI("Creating: %p\n", activity);
-    
-    activity->callbacks->onStart = onStart;
-    activity->callbacks->onResume = onResume;
-    activity->callbacks->onSaveInstanceState = onSaveInstanceState;
-    activity->callbacks->onPause = onPause;
-    activity->callbacks->onStop = onStop;
-    activity->callbacks->onDestroy = onDestroy;
-    
-    activity->callbacks->onWindowFocusChanged = onWindowFocusChanged;
-    activity->callbacks->onNativeWindowCreated = onNativeWindowCreated;
-    activity->callbacks->onNativeWindowResized = NULL;
-    activity->callbacks->onNativeWindowRedrawNeeded = NULL;
-    activity->callbacks->onNativeWindowDestroyed = onNativeWindowDestroyed;
-    
-    activity->callbacks->onInputQueueCreated = onInputQueueCreated;
-    activity->callbacks->onInputQueueDestroyed = onInputQueueDestroyed;
+	LOGI("ContentRectChanged: %p -- %p\n", activity, rect);
+}
 
-    activity->callbacks->onContentRectChanged = NULL;
-    
-    activity->callbacks->onConfigurationChanged = onConfigurationChanged;
-    activity->callbacks->onLowMemory = onLowMemory;
+static void onConfigurationChanged(ANativeActivity* activity)
+{
+    Application* app = (Application*)activity->instance;
+    LOGI("ConfigurationChanged: %p\n", activity);
+    app->writeCmd(APP_CMD_CONFIG_CHANGED);
+}
 
-    activity->instance = Application::create(activity, savedState, savedStateSize);
+static void onLowMemory(ANativeActivity* activity)
+{
+    Application* app = (Application*)activity->instance;
+    LOGI("LowMemory: %p\n", activity);
+    app->writeCmd(APP_CMD_LOW_MEMORY);
 }
 
 

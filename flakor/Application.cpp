@@ -7,9 +7,9 @@
 
 #include <android/log.h>
 #include "Engine.h"
-#include "Application.h"
+#include "ActivityCallback.cpp"
 
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "threaded_app", __VA_ARGS__))
+#define TLOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "threaded_app", __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "threaded_app", __VA_ARGS__))
 
 /* For debug builds, always enable the debug traces in this library */
@@ -21,6 +21,7 @@
 
 FLAKOR_NS_BEGIN
 
+//process input event
 static void process_input(Application* app, struct android_poll_source* source) {
     AInputEvent* event = NULL;
     while (AInputQueue_getEvent(app->inputQueue, &event) >= 0)
@@ -35,6 +36,7 @@ static void process_input(Application* app, struct android_poll_source* source) 
     }
 }
 
+//process activity state cmd
 static void process_cmd(Application* app, struct android_poll_source* source)
 {
     int8_t cmd = app->readCmd();
@@ -261,6 +263,9 @@ void Application::free()
     delete(this);
 }
 
+// 参考：http://zh.wikipedia.org/wiki/%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E7%BD%91%E7%BB%9C%E4%BB%A3%E7%A0%81
+//MCC：Mobile Country Code，移动国家码，MCC的资源由国际电联（ITU）统一分配和管理，唯一识别移动用户所属的国家，共3位，中国为460;
+//MNC（Mobile Network Code，移动网络号码），用于识别移动客户所属的移动网络。由二个十进制数组成，编码范围为十进制的00－99，例如中国移动的MNC为00、02和07 ，中国联通的MNC为01、06，中国电信的MNC为03,05.中国铁通为20。
 void Application::printConfig()
 {
     char lang[2], country[2];
@@ -293,9 +298,10 @@ void Application::printConfig()
 Application* Application::create(ANativeActivity* activity,
                                  void* savedState, size_t savedStateSize)
 {
+	
     Application* app = new Application();
     app->activity = activity;
-    
+
     pthread_mutex_init(&app->mutex, NULL);
     pthread_cond_init(&app->cond, NULL);
     
@@ -328,6 +334,27 @@ Application* Application::create(ANativeActivity* activity,
     }
     pthread_mutex_unlock(&app->mutex);
     
+	activity->callbacks->onStart = onStart;
+    activity->callbacks->onResume = onResume;
+    activity->callbacks->onSaveInstanceState = onSaveInstanceState;
+    activity->callbacks->onPause = onPause;
+    activity->callbacks->onStop = onStop;
+    activity->callbacks->onDestroy = onDestroy;
+    
+    activity->callbacks->onWindowFocusChanged = onWindowFocusChanged;
+    activity->callbacks->onNativeWindowCreated = onNativeWindowCreated;
+    activity->callbacks->onNativeWindowResized = onNativeWindowResized;
+    activity->callbacks->onNativeWindowRedrawNeeded = onNativeWindowRedrawNeeded;
+    activity->callbacks->onNativeWindowDestroyed = onNativeWindowDestroyed;
+    
+    activity->callbacks->onInputQueueCreated = onInputQueueCreated;
+    activity->callbacks->onInputQueueDestroyed = onInputQueueDestroyed;
+
+    activity->callbacks->onContentRectChanged = onContentRectChanged;
+    
+    activity->callbacks->onConfigurationChanged = onConfigurationChanged;
+    activity->callbacks->onLowMemory = onLowMemory;
+
     return app;
 }
 

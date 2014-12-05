@@ -2,7 +2,7 @@
 
 #include "classes/TestScene.h"
 
-#define  LOG_TAG    "main"
+#define  LOG_TAG    "MainGame"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 
 using namespace flakor;

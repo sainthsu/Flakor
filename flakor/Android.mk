@@ -12,6 +12,7 @@ Flakor.cpp \
 Game.cpp \
 Engine.cpp \
 Application.cpp \
+ActivityCallback.cpp \
 include/common.cpp \
 base/lang/Object.cpp \
 base/lang/Array.cpp \

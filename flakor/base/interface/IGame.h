@@ -1,13 +1,14 @@
 #ifndef _FK_IGAME_H_
 #define _FK_IGAME_H_
 
+//game interface that the engine 
 FLAKOR_NS_BEGIN
 
 class IGame
 {
-	public:
-		/** Called when the {@link Application} is first created. */
-		virtual void create () = 0;
+public:
+	/** Called when the {@link Application} is first created. */
+	virtual void create () = 0;
 
 	/** Called when the {@link Application} is resized. This can happen at any point during a non-paused state but will never happen
 	 * before a call to {@link #create()}.

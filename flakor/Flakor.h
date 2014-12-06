@@ -27,7 +27,6 @@
 #include "base/element/Element.h"
 #include "base/element/Helper.h"
 #include "base/element/Color.h"
-#include "base/interface/Interface.h"
 
 //entity
 #include "base/entity/Entity.h"

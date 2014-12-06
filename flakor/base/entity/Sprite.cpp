@@ -166,7 +166,7 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
         // add vbo 3+4+2
         _vbo = VBO::create(VERTEX_SIZE,VERTICES_PER_SPRITE);
         
-        GLProgram* program = GLProgram::createWithByteArrays(Shader::PositionTextureColor_noMVP_vert,Shader::PositionTextureColor_noMVP_frag);
+        GLProgram* program = GLProgram::createWithByteArrays(Shader::PositionTextureColor_vert,Shader::PositionTextureColor_frag);
         // shader state
         setGLProgram(program);
 

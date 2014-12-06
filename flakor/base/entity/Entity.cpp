@@ -46,6 +46,7 @@ Entity::Entity(void)
 , relativeAnchorPoint(false)
 , childrenVisible(true)
 , childrenSortPending(false)
+, useAnchorPointAsTransformCenter(true)
 //, scriptHandler(0)
 //, updateScriptHandler(0)
 {
@@ -339,7 +340,7 @@ float Entity::getSkewX()
 void Entity::setSkewY(float y)
 {
 	skewY = y;
-	transformDirty = inverseDirty = true;	
+	transformDirty = inverseDirty = true;
 }
 
 float Entity::getSkewY()
@@ -967,7 +968,7 @@ Matrix4 Entity::entityToParentTransform(void)
                                            0.0f, 0.0f ,1,0,
                                            0,0,0,1);
             
-			matrix.translate(position.x,position.y , 0);
+			matrix.translate(position.x,position.y,0);
 
 			anchorPointInPixels.x = contentSize.width * anchorPoint.x;
 			anchorPointInPixels.y = contentSize.height * anchorPoint.y;

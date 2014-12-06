@@ -32,12 +32,18 @@ class AudioConfig
 
 class InputConfig
 {
-	
+	protected:
+		bool touchable;
+		bool keypressable;
+		bool enble mutilInput; //mutiltouch or mutil key pressed
 }
 
 class EngineConfig
 {
-	
+	protected:
+		ScreenOrientation orientation;
+		AudiaConfig audioconf;
+		InputConfig inputconf;
 }
 
 #endif

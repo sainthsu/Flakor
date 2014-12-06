@@ -6,7 +6,7 @@ FLAKOR_NS_BEGIN
 class Color;
 
 /**
- * Color interface that affects CCNode's color and opacity
+ * Color interface that affects Entity's color and opacity
  */
 class IColorable
 {

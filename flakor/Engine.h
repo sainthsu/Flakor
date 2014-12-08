@@ -54,8 +54,11 @@ class Engine
 		void setApplication(Application* app);
 		
 		void create(void);
+		void destroy(void);
+
 		void drawFrame(void);
 		void termDisplay(void);
+		
 		int32_t handleInput(AInputEvent* event);
 		void handleCMD(int32_t cmd);
 

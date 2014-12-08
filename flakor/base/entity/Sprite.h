@@ -53,7 +53,7 @@ class Sprite : public Entity, public ITexture
 {
 public:
 
-    static const int INDEX_NOT_INITIALIZED = -1; /// Sprite invalid index on the SpriteBatchNode
+    static const int INDEX_NOT_INITIALIZED = -1; /// Sprite invalid index on the SpriteBatch
 	static const int VERTEX_INDEX = 0;
     static const int COLOR_INDEX = 3;
     static const int TEXTURECOORDINATES_INDEX = 7;

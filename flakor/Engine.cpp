@@ -102,7 +102,16 @@ void Engine::drawFrame() {
  */
 void Engine::termDisplay()
 {
-    if (this->display != EGL_NO_DISPLAY)
+     if( surface_ != EGL_NO_SURFACE )
+    {
+        eglDestroySurface( display, surface );
+        this->surface_ = EGL_NO_SURFACE;
+    }
+}
+
+void Engine::destroy()
+{
+	if (this->display != EGL_NO_DISPLAY)
     {
         eglMakeCurrent(this->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
         if (this->context != EGL_NO_CONTEXT)
@@ -146,11 +155,11 @@ void Engine::handleCMD(int32_t cmd)
     {
         case APP_CMD_SAVE_STATE:
             // The system has asked us to save our current state.  Do so.
-		/*
+		
             this->app->savedState = new Scene();
             *((Scene*)engine->app->savedState) = engine->mainScene;
             this->app->savedStateSize = sizeof(Scene);
-		*/
+		
             break;
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.

@@ -11,10 +11,17 @@ FLAKOR_NS_BEGIN
  */
 class Device
 {
+protected:
+	int cpuCount;
+	int ram;
+	int screenWidth;
+	int screenHeight;
 private:
     Device();
 public:
-    
+    static Device *thisDevice(void);
+	int getCpuCount();
+	int getRAM;
 };
 
 

@@ -3,12 +3,10 @@
 
 FLAKOR_NS_BEGIN
 
-CreateResoure(name, id, "texture", null); //从资源文件加载纹理
-CreateResource(name, id, "texture", textureParam); //直接创建空白纹理
 
-
-CreateResource()
+IResource *ResourceManager::CreateResource(name, id, "texture", textureParam)
 {
+
   if(loadedResource.contains(id))
      retrun loadedResource[id];
   else

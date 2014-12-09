@@ -64,6 +64,16 @@ class ResourceManager
 		Array* _loadedResource;
  		Array* _loaders;
 
+		/**
+     	* Path to this application's internal data directory.
+     	*/
+    	const char* internalDataPath;
+    
+    	/**
+     	 * Path to this application's external (removable/mountable) data directory.
+     	*/
+    	const char* externalDataPath;
+
 		static AAssetManager *assetManager;
 	private:
 		RescourceManager();

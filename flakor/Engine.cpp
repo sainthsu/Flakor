@@ -8,6 +8,12 @@ FLAKOR_NS_BEGIN
 
 int Engine::initDisplay(void)
 {
+    if (this->context != EGL_NO_CONTEXT)
+    {
+        surface_ = eglCreateWindowSurface( display, config, this->app->window, NULL );
+    }
+    else
+    {
 	// initialize OpenGL ES and EGL
 
     /*
@@ -16,10 +22,12 @@ int Engine::initDisplay(void)
      * component compatible with on-screen windows
      */
     const EGLint attribs[] = {
+            EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT, //Request opengl ES2.0
             EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
             EGL_BLUE_SIZE, 8,
             EGL_GREEN_SIZE, 8,
             EGL_RED_SIZE, 8,
+            EGL_DEPTH_SIZE, 24,
             EGL_NONE
     };
     //set gl version to 2.0
@@ -41,6 +49,19 @@ int Engine::initDisplay(void)
      * the first EGLConfig that matches our criteria */
     eglChooseConfig(display, attribs, &config, 1, &numConfigs);
 
+    if( !numConfigs )
+    {
+            //Fall back to 16bit depth buffer
+            const EGLint attribs[] = {
+                EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT, //Request opengl ES2.0
+                EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+                EGL_BLUE_SIZE, 8,
+                EGL_GREEN_SIZE, 8,
+                EGL_RED_SIZE, 8,
+                EGL_DEPTH_SIZE, 16,
+                EGL_NONE };
+            eglChooseConfig( display, attribs, &config, 1, &numConfigs );
+    }
     /* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
      * guaranteed to be accepted by ANativeWindow_setBuffersGeometry().
      * As soon as we picked a EGLConfig, we can safely reconfigure the
@@ -51,7 +72,9 @@ int Engine::initDisplay(void)
 
     surface = eglCreateWindowSurface(display, config, this->app->window, NULL);
     context = eglCreateContext(display, config, NULL, glversion);
-
+    
+    }
+    
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
         LOGW("Unable to eglMakeCurrent");
         return -1;
@@ -109,6 +132,11 @@ void Engine::termDisplay()
     }
 }
 
+void Engine::saveState(void **saveState,int32_t *size)
+{
+
+}
+
 void Engine::destroy()
 {
 	if (this->display != EGL_NO_DISPLAY)
@@ -155,10 +183,8 @@ void Engine::handleCMD(int32_t cmd)
     {
         case APP_CMD_SAVE_STATE:
             // The system has asked us to save our current state.  Do so.
-		
-            this->app->savedState = new Scene();
-            *((Scene*)engine->app->savedState) = engine->mainScene;
-            this->app->savedStateSize = sizeof(Scene);
+            this->saveState(&this->app->savedState,
+                            &this->app->savedStateSize);
 		
             break;
         case APP_CMD_INIT_WINDOW:
@@ -171,6 +197,9 @@ void Engine::handleCMD(int32_t cmd)
                 this->drawFrame();
                 this->state = STATE_RUNNING;
             }
+            break;
+        case APP_CMD_PAUSE:
+            this->state = STATE_STOP;
             break;
         case APP_CMD_TERM_WINDOW:
             // The window is being hidden or closed, clean it up.

@@ -255,7 +255,7 @@ FLAKOR_NS_BEGIN
 			int8_t readCmd();
 
 			/**
-			 * Call with the command returned by android_app_read_cmd() to do the
+			 * Call with the command returned by readCmd() to do the
 			 * initial pre-processing of the given command.  You can perform your own
 			 * actions for the command after calling this function.
 			 */
@@ -265,17 +265,17 @@ FLAKOR_NS_BEGIN
 			void onExecCmd(int32_t cmd);
 
 			/**
-			 * Call with the command returned by android_app_read_cmd() to do the
+			 * Call with the command returned by readCmd() to do the
 			 * final post-processing of the given command.  You must have done your own
 			 * actions for the command before calling this function.
 			 */
 			void postExecCmd(int8_t cmd);
 
 			void writeCmd(int8_t cmd);
-
 			void setInput(AInputQueue* inputQueue);
 			void setWindow(ANativeWindow* window);
-
+            void setActivityState(int8_t cmd);
+            void free();
 
 			// Fill this in with the function to process input events.  At this point
 			// the event has already been pre-dispatched, and it will be finished upon
@@ -293,11 +293,9 @@ FLAKOR_NS_BEGIN
 			 *the main entry to the app.
 			 */
 			void main();
-
-			void setActivityState(int8_t cmd);
+            void destroy();
+			
 			void freeSavedState();
-			void free();
-			void destroy();
 
 			void printConfig();
 	};

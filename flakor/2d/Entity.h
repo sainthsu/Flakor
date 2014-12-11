@@ -15,10 +15,6 @@ class Color;
 class Camera;
 class Touch;
 
-enum {
-	EntityTagInvalid = -1,
-};
-
 enum EntityState {
 	EntityOnEnter,
 	EntityOnExit,
@@ -29,18 +25,20 @@ enum EntityState {
 
 typedef enum {
 	SCRIPT_LUA,
-	SCRIPT_SCRIPT,
 	SCRIPT_KUNKUA
 } ScriptType;
 
-
+/**
+ *TODO float:left,right,top,down
+ *     let entity float;
+ */
 class Entity : public Object,public IColorable,public IUpdatable
 {
 	protected:
 		static int s_globalOrderOfArrival;
-
+        static int EntityTagInvalid = -1;
+    
 		//相对于父类的位置坐标
-		//在屏幕上的绝对坐标
 		Point position;
 		///绝对尺寸，由宽高组成
 		Size contentSize;
@@ -67,6 +65,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		/**
 		 *use AnchorPoint as transformCenter expect translate
 		 *otherwise use its own center point
+         *是否使用锚点作为矩阵变换的中心点
 		 */
 		bool useAnchorPointAsTransformCenter;
 		///opengl Z轴大小，备用
@@ -99,7 +98,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 */
 		bool selected;
 		/**
-		 *是否可用，如果是False渲染将忽略这个元素
+		 *是否可用，如果是False渲染和更新都将忽略这个元素
 		 */
 		bool enabled;
 		/**
@@ -111,6 +110,12 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * @brief visible是否可见，如果不可见，那么将不绘制，但是事件属性还是存在的
 		 */
 		bool visible;
+    
+        /**
+         *子元素是否可见，如果为FALSE将不渲染子元素
+         */
+        bool childrenVisible;
+    
 		/**
 		 *是否剪裁
 		 */
@@ -119,10 +124,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *是否忽略更新
 		 */
 		bool ignoreUpdate;
-		/**
-		 *子元素是否可见，如果为FALSE将不渲染子元素
-		 */
-		bool childrenVisible;
+		
 		/**
 		 *子元素忽略更新
 		 */
@@ -132,6 +134,9 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 */
 		bool childrenSortPending;
 
+        /**
+         *矩阵变换是否过期
+         */
 		bool transformDirty;
 		bool additionalTransformDirty;
 		bool inverseDirty;
@@ -294,7 +299,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		virtual float getRotation();
 		virtual void setRotation(float rotation);
 		/** 
-		 * Sets the X rotation (angle) of the node in degrees which performs a horizontal rotational skew.
+		 * Sets the X rotation (angle) of the entity in degrees which performs a horizontal rotational skew.
 		 * 
 		 * 0 is the default rotation angle. 
 		 * Positive values rotate node clockwise, and negative values for anti-clockwise.
@@ -303,7 +308,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 */
 		virtual void setRotationX(float x);
 		/**
-		 * Gets the X rotation (angle) of the node in degrees which performs a horizontal rotation skew.
+		 * Gets the X rotation (angle) of the entity in degrees which performs a horizontal rotation skew.
 		 *
 		 * @see setRotationX(float)
 		 *
@@ -313,7 +318,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 
 
 		/** 
-		 * Sets the Y rotation (angle) of the node in degrees which performs a vertical rotational skew.
+		 * Sets the Y rotation (angle) of the entity in degrees which performs a vertical rotational skew.
 		 * 
 		 * 0 is the default rotation angle. 
 		 * Positive values rotate node clockwise, and negative values for anti-clockwise.
@@ -322,7 +327,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 */
 		virtual void setRotationY(float y);
 		/**
-		 * Gets the Y rotation (angle) of the node in degrees which performs a vertical rotational skew.
+		 * Gets the Y rotation (angle) of the entity in degrees which performs a vertical rotational skew.
 		 *
 		 * @see setRotationY(float)
 		 *
@@ -491,7 +496,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *
 		 * @param tag   An identifier to find the child node.
 		 *
-		 * @return a CCNode object whose tag equals to the input parameter
+		 * @return a Entity object whose tag equals to the input parameter
 		 */
 		virtual	Entity* getChildByTag(int tag);
 		virtual Entity* getChildByZOrder(int z);
@@ -504,8 +509,8 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * Composing a "tree" structure is a very important feature of CCNode
 		 * Here's a sample code of traversing children array:
 		 * @code
-		 * CCNode* node = NULL;
-		 * CCARRAY_FOREACH(parent->getChildren(), node)
+		 * Entity* entity = NULL;
+		 * ARRAY_FOREACH(parent->getChildren(), node)
 		 * {
 		 *     node->setPosition(0,0);
 		 * }
@@ -555,7 +560,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		virtual void sortAllChildren(bool immediate);
 
 		/**
-		 * Returns a tag that is used to identify the node easily.
+		 * Returns a tag that is used to identify the entity easily.
 		 *
 		 * You can set tags to node then identify them easily.
 		 * @code
@@ -563,17 +568,17 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * #define TAG_MONSTER 2
 		 * #define TAG_BOSS    3
 		 * // set tags
-		 * node1->setTag(TAG_PLAYER);
-		 * node2->setTag(TAG_MONSTER);
-		 * node3->setTag(TAG_BOSS);
+		 * entity1->setTag(TAG_PLAYER);
+		 * entity2->setTag(TAG_MONSTER);
+		 * entity3->setTag(TAG_BOSS);
 		 * parent->addChild(node1);
 		 * parent->addChild(node2);
 		 * parent->addChild(node3);
 		 * // identify by tags
-		 * CCNode* node = NULL;
-		 * CCARRAY_FOREACH(parent->getChildren(), node)
+		 * Entity* entity = NULL;
+		 * ARRAY_FOREACH(parent->getChildren(), node)
 		 * {
-		 *     switch(node->getTag())
+		 *     switch(entity->getTag())
 		 *     {
 		 *         case TAG_PLAYER:
 		 *             break;
@@ -624,19 +629,19 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * 
 		 * Similar to userData, but instead of holding a void* it holds an object
 		 *
-		 * @return A user assigned CCObject
+		 * @return A user assigned Object
 		 * @js NA
 		 */
 		virtual Object* getUserObject() const;
 		/**
-		 * Returns a user assigned CCObject
+		 * Returns a user assigned Object
 		 *
 		 * Similar to UserData, but instead of holding a void* it holds an object.
 		 * The UserObject will be retained once in this method,
 		 * and the previous UserObject (if existed) will be relese.
 		 * The UserObject will be released in CCNode's destructure.
 		 *
-		 * @param A user assigned CCObject
+		 * @param A user assigned Object
 		 */
 		virtual void setUserObject(Object *pUserObject);
 
@@ -671,7 +676,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 
 		/** 
 		 * Event callback that is invoked every time when CCNode enters the 'stage'.
-		 * If the CCNode enters the 'stage' with a transition, this event is called when the transition starts.
+		 * If the Entity enters the 'stage' with a transition, this event is called when the transition starts.
 		 * During onEnter you can't access a "sister/brother" node.
 		 * If you override onEnter, you shall call its parent's one, e.g., CCNode::onEnter().
 		 * @js NA
@@ -680,8 +685,8 @@ class Entity : public Object,public IColorable,public IUpdatable
 		virtual void onEnter();
 
 		/** Event callback that is invoked when the CCNode enters in the 'stage'.
-		 * If the CCNode enters the 'stage' with a transition, this event is called when the transition finishes.
-		 * If you override onEnterTransitionDidFinish, you shall call its parent's one, e.g. CCNode::onEnterTransitionDidFinish()
+		 * If the Entity enters the 'stage' with a transition, this event is called when the transition finishes.
+		 * If you override onEnterTransitionDidFinish, you shall call its parent's one, e.g. Entity::onEnterTransitionDidFinish()
 		 * @js NA
 		 * @lua NA
 		 */
@@ -689,7 +694,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 
 		/** 
 		 * Event callback that is invoked every time the CCNode leaves the 'stage'.
-		 * If the CCNode leaves the 'stage' with a transition, this event is called when the transition finishes.
+		 * If the Entity leaves the 'stage' with a transition, this event is called when the transition finishes.
 		 * During onExit you can't access a sibling node.
 		 * If you override onExit, you shall call its parent's one, e.g., CCNode::onExit().
 		 * @js NA

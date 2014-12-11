@@ -65,6 +65,7 @@ static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)
     app->stateSaved = 0;
     app->writeCmd(APP_CMD_SAVE_STATE);
     
+    //wait child thread to save state
     while (!app->stateSaved) {
         pthread_cond_wait(&app->cond, &app->mutex);
     }

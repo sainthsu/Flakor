@@ -54,6 +54,7 @@ class Engine
 		void setApplication(Application* app);
 		
 		void create(void);
+        void saveState(void **saveState,int32_t *size);
 		void destroy(void);
 
 		void drawFrame(void);

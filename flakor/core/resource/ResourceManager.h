@@ -9,6 +9,7 @@
 #ifndef _FK_RESOURCE_MANAGER_H_
 #define _FK_RESOURCE_MANAGER_H_
 
+#include <map>
 #include "IResource.h"
 
 /*Images 通过 ImageLoader
@@ -42,13 +43,23 @@ class ResourceManager
         static const char* TEXTURE = "texture";
         static const char* MUSIC = "music";
 		static const char* SOUND = "sound";
+    
+        /**
+         * Path to this application's internal data directory.
+         */
+        const char* internalDataPath;
+    
+        /**
+         * Path to this application's external (removable/mountable) data directory.
+         */
+        const char* externalDataPath;
 		
 	public:
 		virtual ~RescourceManager();
 
 		static RescourceManager* thisManager();
 	    //从资源文件加载纹理
-		IResource *CreateResource(const char *filename,const char* type,void *param);
+		IResource *CreateResource(const char *uri,const char* type);
 		IResource *getResourceByName(const char* name);
 		IResource *getResourceById(int id);
 
@@ -60,26 +71,17 @@ class ResourceManager
 		void unregisterLoader(const char *loader);
 
 		static void setAssetManager(AAssetManager *assetMgr);
+        static void getAssetManager(void);
 	protected:
 		Array* _loadedResource;
- 		Array* _loaders;
-
-		/**
-     	* Path to this application's internal data directory.
-     	*/
-    	const char* internalDataPath;
-    
-    	/**
-     	 * Path to this application's external (removable/mountable) data directory.
-     	*/
-    	const char* externalDataPath;
+ 		map<const char*,Loader*> _loaders;
 
 		static AAssetManager *assetManager;
 	private:
 		RescourceManager();
 }
 
-static RescourceManager* resMgr;
+
 
 FLAKOR_NS_END
 

@@ -149,12 +149,16 @@ class VBO : Object
 	protected:
 		int sizePerVertex;
 		int vertexNumber;
+    
 		GLuint bufferID;
 		int usage;
+        //是否画完自动废弃。
 		bool autoDispose;
 		bool dirty;
+        //
 		bool dispose;
 
+        //实际的bufferdata。存到gpu就清空
 		float *bufferData;
 
 		int count;

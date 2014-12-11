@@ -3,11 +3,33 @@
 
 FLAKOR_NS_BEGIN
 
+static RescourceManager* resMgr == NULL;
 
-IResource *ResourceManager::CreateResource(name, id, "texture", textureParam)
+RescourceManager::RescourceManager
 {
+    _loader = new map<const char*,Loader*>();
+    _loadedResource = Array::createWithCapacity(4);
+    _loadedResource->retain();
+}
 
-  if(loadedResource.contains(id))
+RescourceManager::~RescourceManager
+{
+    
+}
+
+RescourceManager* RescourceManager::thisManager(void)
+{
+    if (resMgr == NULL) {
+        resMgr = new RescourceManager();
+    }
+    
+    return resMgr;
+}
+
+IResource *ResourceManager::CreateResource(const char* uri, const char* type, void* param)
+{
+  
+  if(_loadedResource.contains(id))
      retrun loadedResource[id];
   else
   {

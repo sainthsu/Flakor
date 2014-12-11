@@ -26,7 +26,7 @@
 
 #include "JNIHelper.h"
 
-namespace ndk_helper
+namespace flakor
 {
 
 //--------------------------------------------------------------------------------
@@ -120,6 +120,6 @@ public:
     bool CheckExtension( const char* extension );
 };
 
-}   //namespace ndkHelper
+}   //namespace flakor
 
 #endif /* GLCONTEXT_H_ */

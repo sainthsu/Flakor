@@ -174,7 +174,7 @@ void Application::freeSavedState()
     pthread_mutex_lock(&this->mutex);
     if (this->savedState != NULL)
     {
-        free();
+        free(this->savedState);
         this->savedState = NULL;
         this->savedStateSize = 0;
     }
@@ -190,20 +190,22 @@ void Application::destroy()
         AInputQueue_detachLooper(this->inputQueue);
     }
     AConfiguration_delete(this->config);
+    delete(this->engine);
     this->destroyed = 1;
     pthread_cond_broadcast(&this->cond);
     pthread_mutex_unlock(&this->mutex);
+    
     // Can't touch android_app object after this.
 }
 
-
+//run on main thread
 void Application::writeCmd(int8_t cmd)
 {
     if (write(this->msgwrite, &cmd, sizeof(cmd)) != sizeof(cmd)) {
         LOGE("Failure writing android application cmd: %s\n", strerror(errno));
     }
 }
-
+//run on main thread
 void Application::setInput(AInputQueue* inputQueue)
 {
     pthread_mutex_lock(&this->mutex);
@@ -217,6 +219,7 @@ void Application::setInput(AInputQueue* inputQueue)
     pthread_mutex_unlock(&this->mutex);
 }
 
+//run one main thread
 void Application::setWindow(ANativeWindow* window)
 {
     pthread_mutex_lock(&this->mutex);
@@ -235,6 +238,7 @@ void Application::setWindow(ANativeWindow* window)
     pthread_mutex_unlock(&this->mutex);
 }
 
+//run on main thread
 void Application::setActivityState(int8_t cmd)
 {
     pthread_mutex_lock(&this->mutex);
@@ -245,11 +249,12 @@ void Application::setActivityState(int8_t cmd)
     }
     pthread_mutex_unlock(&this->mutex);
 }
-
+//run on main thread
 void Application::free()
 {
     pthread_mutex_lock(&this->mutex);
     this->writeCmd(APP_CMD_DESTROY);
+    //wait for child thread to do destroy action
     while (!this->destroyed)
     {
         pthread_cond_wait(&this->cond, &this->mutex);
@@ -302,6 +307,28 @@ Application* Application::create(ANativeActivity* activity,
     Application* app = new Application();
     app->activity = activity;
 
+    activity->callbacks->onStart = onStart;
+    activity->callbacks->onResume = onResume;
+    activity->callbacks->onSaveInstanceState = onSaveInstanceState;
+    activity->callbacks->onPause = onPause;
+    activity->callbacks->onStop = onStop;
+    activity->callbacks->onDestroy = onDestroy;
+    
+    activity->callbacks->onWindowFocusChanged = onWindowFocusChanged;
+    activity->callbacks->onNativeWindowCreated = onNativeWindowCreated;
+    activity->callbacks->onNativeWindowResized = onNativeWindowResized;
+    activity->callbacks->onNativeWindowRedrawNeeded = onNativeWindowRedrawNeeded;
+    activity->callbacks->onNativeWindowDestroyed = onNativeWindowDestroyed;
+    
+    activity->callbacks->onInputQueueCreated = onInputQueueCreated;
+    activity->callbacks->onInputQueueDestroyed = onInputQueueDestroyed;
+    
+    activity->callbacks->onContentRectChanged = onContentRectChanged;
+    
+    activity->callbacks->onConfigurationChanged = onConfigurationChanged;
+    activity->callbacks->onLowMemory = onLowMemory;
+    
+    
     pthread_mutex_init(&app->mutex, NULL);
     pthread_cond_init(&app->cond, NULL);
     
@@ -333,27 +360,6 @@ Application* Application::create(ANativeActivity* activity,
         pthread_cond_wait(&app->cond, &app->mutex);
     }
     pthread_mutex_unlock(&app->mutex);
-    
-	activity->callbacks->onStart = onStart;
-    activity->callbacks->onResume = onResume;
-    activity->callbacks->onSaveInstanceState = onSaveInstanceState;
-    activity->callbacks->onPause = onPause;
-    activity->callbacks->onStop = onStop;
-    activity->callbacks->onDestroy = onDestroy;
-    
-    activity->callbacks->onWindowFocusChanged = onWindowFocusChanged;
-    activity->callbacks->onNativeWindowCreated = onNativeWindowCreated;
-    activity->callbacks->onNativeWindowResized = onNativeWindowResized;
-    activity->callbacks->onNativeWindowRedrawNeeded = onNativeWindowRedrawNeeded;
-    activity->callbacks->onNativeWindowDestroyed = onNativeWindowDestroyed;
-    
-    activity->callbacks->onInputQueueCreated = onInputQueueCreated;
-    activity->callbacks->onInputQueueDestroyed = onInputQueueDestroyed;
-
-    activity->callbacks->onContentRectChanged = onContentRectChanged;
-    
-    activity->callbacks->onConfigurationChanged = onConfigurationChanged;
-    activity->callbacks->onLowMemory = onLowMemory;
 
     return app;
 }
@@ -464,6 +470,7 @@ void Application::main()
             }
             
             // Check if we are exiting.
+            //if destroy requested,stop render
             if (this->destroyRequested != 0) 
 			{
                 engine->termDisplay();

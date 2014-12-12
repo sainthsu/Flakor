@@ -182,6 +182,16 @@ void Entity::setAnchorPoint(const Point &point)
 	anchorPoint = point;
 }
 
+void Entity::setAnchorPointAsCenter(bool use)
+{
+	anchorPointAsCenter = use;
+}
+
+bool Entity::isAnchorPointAsCenter() const
+{
+	return anchorPointAsCenter;
+}
+
 void Entity::setZOrder(int z)
 {
 	_setZOrder(z);

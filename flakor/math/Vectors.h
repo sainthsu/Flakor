@@ -24,7 +24,7 @@ struct Vector2
     // ctors
     Vector2() : x(0.f), y(0.f) {};
     Vector2(float x, float y) : x(x), y(y) {};
-	Vector2( const Vector2& vec ) : x(vec.x), y(vec.y) {};
+	Vector2( const Vector2& vec ) : x(vec.x), y(vec.y) {};//copy construct
     Vector2( const float* pVec ) : x(*pVec++), y(*pVec++) {};
 
     // utils functions

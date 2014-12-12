@@ -5,6 +5,8 @@ template <class T>
 class IComparator
 {
 	public:
+		virtual ~IComparator() = 0 {};
+
 		int compare(T t,T t1);
 		bool equals(Object* o);
 }

@@ -11,6 +11,8 @@ class ModifierListener<T>
 		// Methods
 		// ===========================================================
 public:
+		virtual ~ModifierListener() = 0 {};
+
 		virtual void onModifierStarted(ModifierInterface<T> pModifier,  T pItem) = 0;
 		virtual void onModifierFinished(ModifierInterface<T> pModifier,  T pItem) = 0;
 };
@@ -21,6 +23,7 @@ public:
 class IModifier
 {
 public:
+	virtual ~IModifier() = 0 {};	
 
 	virtual void reset() = 0;
 

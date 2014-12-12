@@ -24,7 +24,7 @@
 #include "base/element/Element.h"
 
 enum MATRIX_MAJOR{
-    ROW_MAJOR=1,
+    ROW_MAJOR = 1,
     COLUMN_MAJOR
 };
 

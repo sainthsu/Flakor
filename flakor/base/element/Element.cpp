@@ -6,15 +6,15 @@ FLAKOR_NS_BEGIN
 /**
  * 利用成员变量初始化列表初始化类
  */
-Point::Point(void) :x(0),y(0),z(0),type(POINT2D)
+Point::Point(void) :x(0),y(0),z(0),type(POINT_2D)
 {
 }
 
-Point::Point(float x, float y) : x(x),y(y),z(0),type(POINT2D)
+Point::Point(float x, float y) : x(x),y(y),z(0),type(POINT_2D)
 {
 }
 
-Point::Point(float x, float y ,float z) : x(x),y(y),z(z),type(POINT3D)
+Point::Point(float x, float y ,float z) : x(x),y(y),z(z),type(POINT_3D)
 {
 }
 
@@ -22,7 +22,7 @@ Point::Point(const Point& other) : x(other.x),y(other.y),z(other.z),type(other.t
 {
 }
 
-Point::Point(const Size& size) : x(size.width),y(size.height),z(0),type(POINT2D)
+Point::Point(const Size& size) : x(size.width),y(size.height),z(0),type(POINT_2D)
 {
 }
 
@@ -67,6 +67,7 @@ Point Point::operator*(float a) const
 
 Point Point::operator/(float a) const
 {
+	FKAssert(a, "Point division by 0.");
 	//Assert::ok(a, "Point division by 0.");
     return Point(this->x / a, this->y / a);
 }
@@ -91,6 +92,17 @@ void Point::setPoint(const Point& other)
 	this->z = other.z;
 	this->type = other.type;
 }
+
+void Point::setType(PointType type)
+{
+	this->type = type;
+}
+
+PointType Point::getType(PointType type)
+{
+	return this->type;
+}
+
 
 bool Point::equals(const Point& target) const
 {

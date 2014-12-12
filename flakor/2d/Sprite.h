@@ -51,6 +51,50 @@ class GLProgram;
  */
 class Sprite : public Entity, public ITexture
 {
+protected:
+
+    bool                _dirty;             /// Whether the sprite needs to be updated
+    bool                _recursiveDirty;    /// Whether all of the sprite's children needs to be updated
+    bool                _shouldBeHidden;    /// should not be drawn because one of the ancestors is not visible
+    Matrix4             _transformToBatch;
+
+    //
+    // Data used when the sprite is self-rendered
+    //
+    BlendFunc        _blendFunc;            /// It's required for TextureProtocol inheritance
+    Texture2D*       _texture;              /// Texture2D object that is used to render the sprite
+    //QuadCommand      _quadCommand;          /// quad command
+#if FK_SPRITE_DEBUG_DRAW
+    DrawNode *_debugDrawNode;
+#endif //FK_SPRITE_DEBUG_DRAW
+    //
+    // Shared data
+    //
+
+    // texture
+    Rect _rect;                             /// Retangle of Texture2D
+    bool   _rectRotated;                    /// Whether the texture is rotated
+
+    // Offset Position (used by Zwoptex)
+    Point _offsetPosition;
+    Point _unflippedOffsetPositionFromCenter;
+
+    // vertex coords, texture coords and color info
+	VBO* _vbo;
+
+	GLProgram* _glProgram;
+    // opacity and RGB protocol
+    bool _opacityModifyRGB;
+
+    // image is flipped
+    bool _flippedX;                         /// Whether the sprite is flipped horizontally or not
+    bool _flippedY;                         /// Whether the sprite is flipped vertically or not
+
+    bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
+
+private:
+    DISALLOW_COPY_AND_ASSIGN(Sprite);
+
 public:
 
     static const int INDEX_NOT_INITIALIZED = -1; /// Sprite invalid index on the SpriteBatch
@@ -381,48 +425,7 @@ protected:
 
 	void setOpacityModifyRGB(bool modify);
 	bool isOpacityModifyRGB(void) const;
-protected:
 
-    bool                _dirty;             /// Whether the sprite needs to be updated
-    bool                _recursiveDirty;    /// Whether all of the sprite's children needs to be updated
-    bool                _shouldBeHidden;    /// should not be drawn because one of the ancestors is not visible
-    Matrix4              _transformToBatch;
-
-    //
-    // Data used when the sprite is self-rendered
-    //
-    BlendFunc        _blendFunc;            /// It's required for TextureProtocol inheritance
-    Texture2D*       _texture;              /// Texture2D object that is used to render the sprite
-    //QuadCommand      _quadCommand;          /// quad command
-#if FK_SPRITE_DEBUG_DRAW
-    DrawNode *_debugDrawNode;
-#endif //FK_SPRITE_DEBUG_DRAW
-    //
-    // Shared data
-    //
-
-    // texture
-    Rect _rect;                             /// Retangle of Texture2D
-    bool   _rectRotated;                    /// Whether the texture is rotated
-
-    // Offset Position (used by Zwoptex)
-    Point _offsetPosition;
-    Point _unflippedOffsetPositionFromCenter;
-
-    // vertex coords, texture coords and color info
-	VBO* _vbo;
-
-	GLProgram* _glProgram;
-    // opacity and RGB protocol
-    bool _opacityModifyRGB;
-
-    // image is flipped
-    bool _flippedX;                         /// Whether the sprite is flipped horizontally or not
-    bool _flippedY;                         /// Whether the sprite is flipped vertically or not
-
-    bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
-private:
-    DISALLOW_COPY_AND_ASSIGN(Sprite);
 };
 
 

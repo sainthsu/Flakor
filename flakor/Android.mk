@@ -11,10 +11,10 @@ BASE_PATH = $(LOCAL_PATH)/../
 
 LOCAL_SRC_FILES := \
 Flakor.cpp \
-Game.cpp \
-Engine.cpp \
-Application.cpp \
-ActivityCallback.cpp \
+platform/Game.cpp \
+platform/Engine.cpp \
+platform/Application.cpp \
+platform/ActivityCallback.cpp \
 include/common.cpp \
 base/lang/Object.cpp \
 base/lang/Array.cpp \
@@ -45,9 +45,9 @@ core/texture/s3tc.cpp \
 core/texture/TGAlib.cpp \
 core/texture/Image.cpp \
 core/texture/Texture2D.cpp \
-base/entity/Entity.cpp \
-base/entity/Scene.cpp \
-base/entity/Sprite.cpp \
+2d/Entity.cpp \
+2d/Scene.cpp \
+2d/Sprite.cpp \
 
 LOCAL_EXPORT_LDLIBS := -lGLESv1_CM \
                        -lGLESv2 \
@@ -68,7 +68,7 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
                            $(LOCAL_PATH)/. \
                            $(LOCAL_PATH)/.. \
                            $(LOCAL_PATH)/base/element \
-					$(LOCAL_PATH)/base/entity \
+					$(LOCAL_PATH)/platform \
 					$(LOCAL_PATH)/base/lang \
 					$(LOCAL_PATH)/base/interface \
 					$(LOCAL_PATH)/include \

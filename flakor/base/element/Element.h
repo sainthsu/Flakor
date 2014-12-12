@@ -7,8 +7,8 @@
 FLAKOR_NS_BEGIN
 
 typedef enum {
-	POINT2D,
-	POINT3D,
+	POINT_2D,
+	POINT_3D,
 } PointType;
 
 class Size;
@@ -20,6 +20,7 @@ class Point
 		float y;
 		float z;
 		PointType type;
+		const static Point Zero;
 	public:
 
 	Point();	
@@ -28,9 +29,9 @@ class Point
 	Point(const Point& other);
 	Point(const Size& size);
 
-	Point make(float x,float y) const;
-	Point make(float x,float y,float z) const;
-	Point makeZero(void) const;
+	static Point make(float x,float y) const;
+	static Point make(float x,float y,float z) const;
+	static Point makeZero(void) const;
 	
 	~Point(void);
 
@@ -48,6 +49,8 @@ class Point
 	void setPoint(float x, float y);
 	void setPoint(float x, float y, float z);
 	void setPoint(const Point& other);
+	void setType(PointType type);
+	PointType getType();
 
     bool equals(const Point& target) const;
 
@@ -176,15 +179,13 @@ class Point
     	return Point(cosf(a), sinf(a));
     }
 
-	//transform();
-
 };
 
 class Size
 {
 public:
-	int width;
-	int height;
+	float width;
+	float height;
 public:
 	Size();
     Size(float width, float height);
@@ -232,14 +233,14 @@ public:
     bool intersectsRect(const Rect& rect) const;
 };
 
-#define MakePoint(x,y) Point((float)(x),(float)(y))
-const Point PointZero = MakePoint(0,0);
+#define PointMake(x,y) Point((float)(x),(float)(y))
+const Point PointZero = PointMake(0.f,0.f);
 
-#define MakeSize(width, height) Size((float)(width), (float)(height))
-const Size SizeZero = MakeSize(0,0);
+#define SizeMake(width, height) Size((float)(width), (float)(height))
+const Size SizeZero = SizeMake(0.f,0.f);
 
-#define MakeRect(x,y,width, height) Rect((float)(x), (float)(y) , (float)(width), (float)(height))
-const Rect RectZero = MakeRect(0,0,0,0);
+#define RectMake(x,y,width, height) Rect((float)(x), (float)(y) , (float)(width), (float)(height))
+const Rect RectZero = RectMake(0.f,0.f,0.f,0.f);
 
 FLAKOR_NS_END
 

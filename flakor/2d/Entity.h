@@ -35,13 +35,13 @@ typedef enum {
 class Entity : public Object,public IColorable,public IUpdatable
 {
 	protected:
-		static int s_globalOrderOfArrival;
-        static int EntityTagInvalid = -1;
+		static int _globalOrderOfArrival;
+        static const int TAG_INVALID = -1;
     
 		//相对于父类的位置坐标
-		Point position;
+		Point _position;
 		///绝对尺寸，由宽高组成
-		Size contentSize;
+		Size _contentSize;
 
 		/**
 		 *锚点
@@ -53,68 +53,68 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *从图像的展示效果上来看，如果锚点是(x, y)，则指定的是图片中(x, y)坐标的点与节点指定的position重合。
 		 *定位点相对于自身的位置
 		 **************************************/
-		Point anchorPoint;
-		Point anchorPointInPixels;
+		Point _anchorPoint;
+		Point _anchorPointInPixels;
 
 		/**
 		 *锚点是否起作用
 		 *如果锚点起作用，将会使position位置由anchorpoint决定
 		 *否则锚点始终为左下角（0，0）
 		 */
-		bool relativeAnchorPoint;
+		bool _relativeAnchorPoint;
 		/**
-		 *use AnchorPoint as transformCenter expect translate
+		 *use AnchorPoint as transform Center expect translate
 		 *otherwise use its own center point
          *是否使用锚点作为矩阵变换的中心点
 		 */
-		bool useAnchorPointAsTransformCenter;
+		bool _anchorPointAsCenter;
 		///opengl Z轴大小，备用
-		float vertexZ;
+		float _vertexZ;
 
-		Color color;
+		Color _color;
 		///旋转中心点，缩放中心点和倾斜中心点
-		Point rotationCenter;
-		Point scaleCenter;
-		Point skewCenter;
+		Point _rotationCenter;
+		Point _scaleCenter;
+		Point _skewCenter;
 
 		///x,y轴上的旋转，缩放，倾斜尺寸大小
-		float rotationX;
-		float rotationY;
-		float scaleX;
-		float scaleY;
-		float skewX;
-		float skewY;
+		float _rotationX;
+		float _rotationY;
+		float _scaleX;
+		float _scaleY;
+		float _skewX;
+		float _skewY;
 
 		///在父元素排序使用的Z值
-		int ZOrder;
-		int orderOfArrival;            ///< used to preserve sequence while sorting children with the same localZOrder
+		int _Order;
+		int _orderOfArrival;            ///< used to preserve sequence while sorting children with the same localZOrder
 		/**
 		 *标签
 		 */
-		int tag;
+		int _tag;
 
 		/**
 		 *是否选中
 		 */
-		bool selected;
+		bool _selected;
 		/**
 		 *是否可用，如果是False渲染和更新都将忽略这个元素
 		 */
-		bool enabled;
+		bool _enabled;
 		/**
 		 *是否正在运行中
 		 */
-		bool running;                    ///< is running
+		bool _running;                    ///< is running
 
 		/**
 		 * @brief visible是否可见，如果不可见，那么将不绘制，但是事件属性还是存在的
 		 */
-		bool visible;
+		bool _visible;
     
         /**
          *子元素是否可见，如果为FALSE将不渲染子元素
          */
-        bool childrenVisible;
+        bool _childrenVisible;
     
 		/**
 		 *是否剪裁
@@ -217,6 +217,8 @@ class Entity : public Object,public IColorable,public IUpdatable
 		virtual void setContentSize(const Size& size);
 		virtual const Point& getAnchorPoint();
 		virtual void setAnchorPoint(const Point &point);
+		virtual void setAnchorPointAsCenter(bool use);
+		virtual bool isAnchorPointAsCenter() const;
 
 		/**
 		 * Sets the Z order which stands for the drawing order, and reorder this entity in its parent's children array.

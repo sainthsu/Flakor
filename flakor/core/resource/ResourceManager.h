@@ -44,6 +44,9 @@ class ResourceManager
         static const char* MUSIC = "music";
 		static const char* SOUND = "sound";
     
+        static const int MAX_RESOURCE = 1024*5;
+        static int uniqueID = 1; //uid begin with 1
+    
         /**
          * Path to this application's internal data directory.
          */
@@ -63,17 +66,21 @@ class ResourceManager
 		IResource *getResourceByName(const char* name);
 		IResource *getResourceById(int id);
 
-        bool load(IResource* res);
+        bool load(IResource* res,bool asyn);
 		bool unload(IResource* res);
-		bool reload(IResource* res);
+		bool reload(IResource* res,bool asyn);
 
 		void registerLoader(Loader loader);
 		void unregisterLoader(const char *loader);
 
 		static void setAssetManager(AAssetManager *assetMgr);
-        static void getAssetManager(void);
+        static AAssetManager* getAssetManager(void);
+    
 	protected:
 		Array* _loadedResource;
+        Array* _loadingResource;
+        Array* _pendingRecource;
+    
  		map<const char*,Loader*> _loaders;
 
 		static AAssetManager *assetManager;

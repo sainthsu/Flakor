@@ -8,8 +8,13 @@ static RescourceManager* resMgr == NULL;
 RescourceManager::RescourceManager
 {
     _loader = new map<const char*,Loader*>();
+    _pendingResource = Array::createWithCapacity(4);
+    _pendingResource->retain();
+    _loadingResource = Array::createWithCapacity(4);
+    _loadingResource->retain();
     _loadedResource = Array::createWithCapacity(4);
     _loadedResource->retain();
+    
 }
 
 RescourceManager::~RescourceManager
@@ -28,7 +33,6 @@ RescourceManager* RescourceManager::thisManager(void)
 
 IResource *ResourceManager::CreateResource(const char* uri, const char* type, void* param)
 {
-  
   if(_loadedResource.contains(id))
      retrun loadedResource[id];
   else
@@ -43,30 +47,17 @@ IResource *ResourceManager::CreateResource(const char* uri, const char* type, vo
   }
 }
 
-//ver 1:
-CreateResource(……, bool asyn)
-{
-   newRes = CreateResource();
-   if(asyn)
-         add newRes to loadTaskQueue;
-   else
-   {
-     data = loader.Load();
-     newRes.SetData(data);
-   } 
-   return newRes;
-}
-
-//ver 2:
 CreateResource()
 {
    return newRes = CreateResource();
 }
 
-ResourceManager.Load(resource, bool asyn)
+bool ResourceManager::load(resource, bool asyn)
 {
    if(asyn)
-     add to loadTaskQueue;
+   {
+        add to loadTaskQueue;
+   }
    else
    {
       data = loader.load();
@@ -74,9 +65,9 @@ ResourceManager.Load(resource, bool asyn)
    }
 }
 
-Resource.Load(bool asyn)
+void ResourceManager::setAssetManager()
 {
-   ResourceManager.Load(this,asyn);
+    
 }
 
 FLAKOR_NS_END

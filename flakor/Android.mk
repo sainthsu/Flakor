@@ -7,6 +7,8 @@ LOCAL_MODULE_FILENAME := libflakor
 
 LOCAL_CFLAGS    := -Werror
 
+BASE_PATH = $(LOCAL_PATH)/../
+
 LOCAL_SRC_FILES := \
 Flakor.cpp \
 Game.cpp \

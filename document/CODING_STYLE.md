@@ -2845,5 +2845,5 @@ The point of having style guidelines is to have a common vocabulary of coding so
 OK, enough writing about writing code; the code itself is much more interesting. Have fun!
 
 
-[1]: https://lh3.googleusercontent.com/-glwwzmFyUmk/UQgPnlx40uI/AAAAAAAArzg/WPRW10kkecM/s144/cocos2d-x-logo.png
+[1]: http://www.flakor.org/img/flakor_logo.png
 

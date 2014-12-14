@@ -38,15 +38,15 @@
 #include "core/opengl/GLProgram.h"
 #include "core/opengl/shader/Shaders.h"
 #include "core/opengl/vbo/VBO.h"
-#include "core/texture/Image.h"
-#include "core/texture/Texture2D.h"
+#include "core/opengl/texture/Image.h"
+#include "core/opengl/texture/Texture2D.h"
 
 //math
 #include "math/GLMatrix.h"
 
-#include "Engine.h"
-#include "Application.h"
-#include "Game.h"
+#include "platform/Engine.h"
+#include "platform/Application.h"
+#include "platform/Game.h"
 
 const char* getFlakorVersion();
 

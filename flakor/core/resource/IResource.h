@@ -28,6 +28,9 @@ class IResource : Object
 		int type;
         ResourceState state;
     public:
+        IResource()
+        virtual ~IResource();
+    
         virtual bool loadData(bool async);
         ResourceState getState(void);
         const char* getUri(void);

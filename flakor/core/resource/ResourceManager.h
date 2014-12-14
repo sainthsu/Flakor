@@ -77,15 +77,16 @@ class ResourceManager
         static AAssetManager* getAssetManager(void);
     
 	protected:
+        Array* _pendingRecource;
 		Array* _loadedResource;
         Array* _loadingResource;
-        Array* _pendingRecource;
     
  		map<const char*,Loader*> _loaders;
 
 		static AAssetManager *assetManager;
 	private:
 		RescourceManager();
+        parsePath(const char* filename);
 }
 
 

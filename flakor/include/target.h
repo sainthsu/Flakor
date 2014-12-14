@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013 flakor.org
+Copyright (c) 2013~ flakor.org
 
 http://www.flakor.org
 

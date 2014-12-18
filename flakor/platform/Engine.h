@@ -44,6 +44,7 @@ class Engine
     	EGLDisplay display;
     	EGLSurface surface;
     	EGLContext context;
+		EGLConfig config;
     	int32_t width;
     	int32_t height;
 
@@ -54,7 +55,7 @@ class Engine
 		void setApplication(Application* app);
 		
 		void create(void);
-        void saveState(void **saveState,int32_t *size);
+        void saveState(void **saveState,size_t *size);
 		void destroy(void);
 
 		void drawFrame(void);

@@ -1,7 +1,7 @@
 #include "targetMacros.h"
-#include "base/entity/Entity.h"
+#include "2d/Entity.h"
 #include "base/lang/FKString.h"
-#include "base/event/Touch.h"
+#include "core/input/Touch.h"
 #include "math/GLMatrix.h"
 
 #if FK_ENTITY_RENDER_SUBPIXEL

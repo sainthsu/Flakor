@@ -8,7 +8,7 @@ class IGame
 {
 public:
 	
-	virtual ~IGame() = 0 {};
+	virtual ~IGame() = 0;
 
 	/** Called when the {@link Application} is first created. */
 	virtual void create () = 0;

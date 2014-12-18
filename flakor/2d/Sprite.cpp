@@ -5,10 +5,10 @@ http://www.flakor.org
 ****************************************************************************/
 
 #include "base/lang/FKString.h"
-#include "base/entity/Sprite.h"
+#include "2d/Sprite.h"
 #include "base/element/Element.h"
-#include "core/texture/Image.h"
-#include "core/texture/Texture2D.h"
+#include "core/opengl/texture/Image.h"
+#include "core/opengl/texture/Texture2D.h"
 #include "core/opengl/shader/Shaders.h"
 #include "core/opengl/GLProgram.h"
 

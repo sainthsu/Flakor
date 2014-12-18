@@ -27,7 +27,7 @@ THE SOFTWARE.
 #include <string.h>
 #include <stdlib.h>
 
-#include "core/texture/TGAlib.h"
+#include "core/opengl/texture/TGAlib.h"
 
 FLAKOR_NS_BEGIN
 

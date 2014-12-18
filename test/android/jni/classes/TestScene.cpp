@@ -5,18 +5,28 @@
 bool TestScene::init()
 {
     LOGD("testscene init");
-	Sprite *sprite = Sprite::create("/storage/sdcard/flakor_test.png");
+	Sprite *sprite = Sprite::create("asset://flakor_test.png");
 
     // position the sprite on the center of the screen
-    sprite->setPosition(MakePoint(200,200));
+    sprite->setPosition(PointMake(200,200));
 
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
-
-    Matrix4 pMatrix = Matrix4::orthographic(1080,1600,30,100);
-    GLMode(GL_PROJECTION);
-    GLMultiply(&pMatrix);
-    GLGet(GL_PROJECTION,&pMatrix);
     
 	return true;
+}
+
+TestScene* TestScene::create()
+{
+	TestScene *pRet = new TestScene();
+	if (pRet && pRet->init())
+	{
+		pRet->autorelease();
+		return pRet;
+	}
+	else
+	{
+		FK_SAFE_DELETE(pRet);
+		return NULL;
+	}
 }

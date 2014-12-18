@@ -1,4 +1,4 @@
-#include "core/texture/Texture2D.h"
+#include "core/opengl/texture/Texture2D.h"
 
 // premultiply alpha, or the effect will wrong when want to use other pixel format in Texture2D,
 // such as RGB888, RGB5A1

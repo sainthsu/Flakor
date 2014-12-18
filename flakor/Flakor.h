@@ -20,19 +20,18 @@
 #include "base/lang/FKString.h"
 #include "base/lang/Zone.h"
 
-//event
-#include "base/event/Touch.h"
-
 //element
 #include "base/element/Element.h"
 #include "base/element/Helper.h"
 #include "base/element/Color.h"
 
 //entity
-#include "base/entity/Entity.h"
-#include "base/entity/Scene.h"
-#include "base/entity/Sprite.h"
+#include "2d/Entity.h"
+#include "2d/Scene.h"
+#include "2d/Sprite.h"
 
+//input
+#include "core/input/Touch.h"
 //opengl
 #include "core/opengl/GPUInfo.h"
 #include "core/opengl/GLProgram.h"

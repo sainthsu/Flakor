@@ -52,7 +52,7 @@ static void onDestroy(ANativeActivity* activity)
 {
     LOGI("Destroy: %p\n", activity);
     Application* app = (Application*)activity->instance;
-    app->free();
+    app->freePipe();
 }
 
 static void* onSaveInstanceState(ANativeActivity* activity, size_t* outLen)

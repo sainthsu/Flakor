@@ -2,8 +2,8 @@
 #include "macros.h"
 #include "core/opengl/GL.h"
 #include "core/opengl/GLProgram.h"
-#include "core/texture/Texture2D.h"
-#include "core/texture/Image.h"
+#include "core/opengl/texture/Texture2D.h"
+#include "core/opengl/texture/Image.h"
 
 FLAKOR_NS_BEGIN
 

@@ -250,7 +250,7 @@ void Application::setActivityState(int8_t cmd)
     pthread_mutex_unlock(&this->mutex);
 }
 //run on main thread
-void Application::free()
+void Application::freePipe()
 {
     pthread_mutex_lock(&this->mutex);
     this->writeCmd(APP_CMD_DESTROY);

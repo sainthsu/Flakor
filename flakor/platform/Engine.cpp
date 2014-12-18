@@ -10,7 +10,7 @@ int Engine::initDisplay(void)
 {
     if (this->context != EGL_NO_CONTEXT)
     {
-        surface_ = eglCreateWindowSurface( display, config, this->app->window, NULL );
+        surface = eglCreateWindowSurface( this->display, this->config, this->app->window, NULL );
     }
     else
     {
@@ -73,6 +73,17 @@ int Engine::initDisplay(void)
     surface = eglCreateWindowSurface(display, config, this->app->window, NULL);
     context = eglCreateContext(display, config, NULL, glversion);
     
+
+	eglQuerySurface(display, surface, EGL_WIDTH, &w);
+    eglQuerySurface(display, surface, EGL_HEIGHT, &h);
+
+    this->display = display;
+    this->context = context;
+    this->surface = surface;
+	this->config = config;
+    this->width = w;
+    this->height = h;
+
     }
     
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
@@ -80,18 +91,10 @@ int Engine::initDisplay(void)
         return -1;
     }
 
-    eglQuerySurface(display, surface, EGL_WIDTH, &w);
-    eglQuerySurface(display, surface, EGL_HEIGHT, &h);
-
-    this->display = display;
-    this->context = context;
-    this->surface = surface;
-    this->width = w;
-    this->height = h;
-
+    
     // Initialize GL state.
     glEnable(GL_CULL_FACE);
-    glViewport(0,0,w,h);
+    glViewport(0,0,this->width,this->height);
     glDisable(GL_DEPTH_TEST);
 
     return 0;
@@ -125,14 +128,14 @@ void Engine::drawFrame() {
  */
 void Engine::termDisplay()
 {
-     if( surface_ != EGL_NO_SURFACE )
+     if( surface != EGL_NO_SURFACE )
     {
         eglDestroySurface( display, surface );
-        this->surface_ = EGL_NO_SURFACE;
+        this->surface = EGL_NO_SURFACE;
     }
 }
 
-void Engine::saveState(void **saveState,int32_t *size)
+void Engine::saveState(void **saveState,size_t *size)
 {
 
 }

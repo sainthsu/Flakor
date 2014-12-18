@@ -9,7 +9,7 @@ LOCAL_MODULE_FILENAME := libflakor_test
 $(call import-add-path,$(LOCAL_PATH)/../../../flakor)
     
 
-LOCAL_SRC_FILES := MainGame.cpp \
+LOCAL_SRC_FILES := classes/MainGame.cpp \
                    classes/TestScene.cpp \
                    main.cpp \
 

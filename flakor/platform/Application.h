@@ -275,7 +275,7 @@ FLAKOR_NS_BEGIN
 			void setInput(AInputQueue* inputQueue);
 			void setWindow(ANativeWindow* window);
             void setActivityState(int8_t cmd);
-            void free();
+            void freePipe();
 
 			// Fill this in with the function to process input events.  At this point
 			// the event has already been pre-dispatched, and it will be finished upon

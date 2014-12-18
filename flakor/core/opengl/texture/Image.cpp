@@ -1,7 +1,7 @@
 #include "targetMacros.h"
 #include "core/opengl/GL.h"
 #include "core/opengl/GPUInfo.h"
-#include "core/texture/Image.h"
+#include "core/opengl/texture/Image.h"
 
 #include <vector>
 #include <string>
@@ -10,11 +10,11 @@
 #include <png.h>
 #include <zlib.h>
 
-#include "core/texture/atitc.h"
-#include "core/texture/etc1.h"
-#include "core/texture/pvr.h"
-#include "core/texture/s3tc.h"
-#include "core/texture/TGAlib.h"
+#include "core/opengl/texture/atitc.h"
+#include "core/opengl/texture/etc1.h"
+#include "core/opengl/texture/pvr.h"
+#include "core/opengl/texture/s3tc.h"
+#include "core/opengl/texture/TGAlib.h"
 
 #define FK_GL_ATC_RGB_AMD                                          0x8C92
 #define FK_GL_ATC_RGBA_EXPLICIT_ALPHA_AMD                          0x8C93

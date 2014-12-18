@@ -30,4 +30,3 @@ void ANativeActivity_onCreate(ANativeActivity* activity,
 #ifdef __cplusplus
 }
 #endif
-//END_INCLUDE(all)

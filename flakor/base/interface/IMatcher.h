@@ -6,7 +6,7 @@ FLAKOR_NS_BEGIN
 template <typename T>
 class IMatcher
 {
-	virtual ~IMatcher() = 0 {};
+	virtual ~IMatcher() = 0;
 	virtual bool matches(T item) = 0;
 };
 

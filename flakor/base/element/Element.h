@@ -29,9 +29,9 @@ class Point
 	Point(const Point& other);
 	Point(const Size& size);
 
-	static Point make(float x,float y) const;
-	static Point make(float x,float y,float z) const;
-	static Point makeZero(void) const;
+	static Point make(float x,float y);
+	static Point make(float x,float y,float z);
+	static Point makeZero(void);
 	
 	~Point(void);
 

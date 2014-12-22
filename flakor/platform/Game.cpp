@@ -7,7 +7,7 @@ Game *Game::game = 0;
 
 Game::Game()
 {
-	FKAssert(! game, "");
+	FKAssert(! game, "No game inited");
     game = this;
 }
 
@@ -19,7 +19,7 @@ Game::~Game()
 
 Game* Game::thisGame()
 {
-	FKAssert(! game, "");
+	FKAssert(! game, "No game inited");
     return game;
 }
 

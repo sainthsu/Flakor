@@ -35,13 +35,13 @@ typedef enum {
 class Entity : public Object,public IColorable,public IUpdatable
 {
 	protected:
-		static int _globalOrderOfArrival;
+		static int globalOrderOfArrival;
         static const int TAG_INVALID = -1;
     
 		//相对于父类的位置坐标
-		Point _position;
+		Point position;
 		///绝对尺寸，由宽高组成
-		Size _contentSize;
+		Size contentSize;
 
 		/**
 		 *锚点
@@ -53,68 +53,68 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *从图像的展示效果上来看，如果锚点是(x, y)，则指定的是图片中(x, y)坐标的点与节点指定的position重合。
 		 *定位点相对于自身的位置
 		 **************************************/
-		Point _anchorPoint;
-		Point _anchorPointInPixels;
+		Point anchorPoint;
+		Point anchorPointInPixels;
 
 		/**
 		 *锚点是否起作用
 		 *如果锚点起作用，将会使position位置由anchorpoint决定
 		 *否则锚点始终为左下角（0，0）
 		 */
-		bool _relativeAnchorPoint;
+		bool relativeAnchorPoint;
 		/**
 		 *use AnchorPoint as transform Center expect translate
 		 *otherwise use its own center point
          *是否使用锚点作为矩阵变换的中心点
 		 */
-		bool _anchorPointAsCenter;
+		bool anchorPointAsCenter;
 		///opengl Z轴大小，备用
-		float _vertexZ;
+		float vertexZ;
 
-		Color _color;
+		Color color;
 		///旋转中心点，缩放中心点和倾斜中心点
 		Point _rotationCenter;
 		Point _scaleCenter;
 		Point _skewCenter;
 
 		///x,y轴上的旋转，缩放，倾斜尺寸大小
-		float _rotationX;
-		float _rotationY;
-		float _scaleX;
-		float _scaleY;
-		float _skewX;
-		float _skewY;
+		float rotationX;
+		float rotationY;
+		float scaleX;
+		float scaleY;
+		float skewX;
+		float skewY;
 
 		///在父元素排序使用的Z值
-		int _Order;
-		int _orderOfArrival;            ///< used to preserve sequence while sorting children with the same localZOrder
+		int zOrder;
+		int orderOfArrival;            ///< used to preserve sequence while sorting children with the same localZOrder
 		/**
 		 *标签
 		 */
-		int _tag;
+		int tag;
 
 		/**
 		 *是否选中
 		 */
-		bool _selected;
+		bool selected;
 		/**
 		 *是否可用，如果是False渲染和更新都将忽略这个元素
 		 */
-		bool _enabled;
+		bool enabled;
 		/**
 		 *是否正在运行中
 		 */
-		bool _running;                    ///< is running
+		bool running;                    ///< is running
 
 		/**
 		 * @brief visible是否可见，如果不可见，那么将不绘制，但是事件属性还是存在的
 		 */
-		bool _visible;
+		bool visible;
     
         /**
          *子元素是否可见，如果为FALSE将不渲染子元素
          */
-        bool _childrenVisible;
+        bool childrenVisible;
     
 		/**
 		 *是否剪裁

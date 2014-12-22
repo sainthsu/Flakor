@@ -111,7 +111,7 @@ void Engine::drawFrame() {
     
     // Just fill the screen with a color.
      glClearColor(0.f, 0.f,0.f, 1);
-     glClear(GL_COLOR_BUFFER_BIT);
+     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (this->game != NULL)
 	{
@@ -203,6 +203,7 @@ void Engine::handleCMD(int32_t cmd)
             break;
         case APP_CMD_PAUSE:
             this->state = STATE_STOP;
+			this->game->pause();
             break;
         case APP_CMD_TERM_WINDOW:
             // The window is being hidden or closed, clean it up.

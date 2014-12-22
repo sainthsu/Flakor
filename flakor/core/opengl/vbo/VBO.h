@@ -99,9 +99,10 @@ class VBO : Object
 		 */
 		void setDirty();
 
-
 		int getSizePerVertex() const;
 		int getVertexNumber() const;
+
+		void setUsage(GLenum usage);
 
 		/**
 		 * 浮点数的容量数
@@ -151,7 +152,7 @@ class VBO : Object
 		int vertexNumber;
     
 		GLuint bufferID;
-		int usage;
+		GLenum usage;
         //是否画完自动废弃。
 		bool autoDispose;
 		bool dirty;

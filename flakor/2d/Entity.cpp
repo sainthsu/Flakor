@@ -1118,32 +1118,37 @@ Point Entity::convertTouchToEntitySpaceAR(Touch *touch)
 
 void Entity::setColor(const Color& color)
 {
-
+	this->color = color;
 }
 
 void Entity::setColor(float red,float green,float blue)
 {
+	this->color.setColor(red,green,blue);
 }
 
 void Entity::setColor(float red,float green,float blue,float alpha)
 {
+	this->color.setColor(red,green,blue,alpha);
 }
 
 void Entity::setRed(float red)
 {
-
+	this->color.red = red;
 }
 
 void Entity::setGreen(float green)
 {
+	this->color.green = green;
 }
 
 void Entity::setBlue(float blue)
 {
+	this->color.blue = blue;
 }
 
 void Entity::setAlpha(float alpha)
 {
+	this->color.alpha = alpha;
 }
 
 Color& Entity::getColor()
@@ -1173,6 +1178,7 @@ float Entity::getAlpha()
 
 void Entity::setIngnoreUpdate(bool ignore)
 {
+	ignoreUpdate = ignore;
 }
 
 

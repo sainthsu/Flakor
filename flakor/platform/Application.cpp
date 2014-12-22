@@ -482,7 +482,6 @@ void Application::main()
         {
             // Done with events; draw next animation frame.
            	
-            
             // Drawing is throttled to the screen update rate, so there
             // is no need to do timing here.
             engine->drawFrame();

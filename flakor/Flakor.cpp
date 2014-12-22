@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2010 flakor.org
+Copyright (c) 2013-2015 flakor.org
 
 http://www.flakor.org
 
@@ -26,6 +26,6 @@ THE SOFTWARE.
 
 const char* getFlakorVersion()
 {
-    return "flakor engine 0.1.0beta";
+    return "Flakor Engine 0.1.0beta";
 }
 

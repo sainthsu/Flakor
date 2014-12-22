@@ -14,7 +14,7 @@ VBO::VBO():
 sizePerVertex(0),
 vertexNumber(0),
 bufferID(HARDWARE_BUFFER_ID_INVALID),
-usage(0),
+usage(GL_STATIC_DRAW),
 autoDispose(true),
 dirty(true),
 dispose(false),
@@ -143,6 +143,10 @@ void VBO::bind()
 	glBindBuffer(GL_ARRAY_BUFFER,bufferID);
 }
 
+void VBO::setUsage(GLenum usage)
+{
+	this->usage = usage;
+}
 
 void VBO::updateData(int index,int size,float data[])
 {
@@ -163,7 +167,7 @@ void VBO::onBufferData()
 		glGenBuffers(1,&bufferID);
 		glBindBuffer(GL_ARRAY_BUFFER,bufferID);
 
-		glBufferData(GL_ARRAY_BUFFER,size,bufferData,GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER,size,bufferData,usage);
         dirty = false;
 	}
 	else

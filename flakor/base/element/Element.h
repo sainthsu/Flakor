@@ -50,7 +50,7 @@ class Point
 	void setPoint(float x, float y, float z);
 	void setPoint(const Point& other);
 	void setType(PointType type);
-	PointType getType();
+	PointType getType() const;
 
     bool equals(const Point& target) const;
 

@@ -12,7 +12,7 @@
 
 FLAKOR_NS_BEGIN
 
-int Entity::s_globalOrderOfArrival = 1;
+int Entity::globalOrderOfArrival = 1;
 
 Entity::Entity(void)
 : position(PointZero)
@@ -28,12 +28,12 @@ Entity::Entity(void)
 , anchorPoint(PointZero)
 , additionalMatrix()
 , camera(NULL)	  
-, ZOrder(0)
+, zOrder(0)
 , orderOfArrival(0)
 // children (lazy allocs)
 , children(NULL)
 , parent(NULL)
-, tag(EntityTagInvalid)
+, tag(Entity::TAG_INVALID)
 // userData is always inited as null
 , userData(NULL)
 , cullingEnabled(true)
@@ -46,7 +46,7 @@ Entity::Entity(void)
 , relativeAnchorPoint(false)
 , childrenVisible(true)
 , childrenSortPending(false)
-, useAnchorPointAsTransformCenter(true)
+, anchorPointAsCenter(true)
 //, scriptHandler(0)
 //, updateScriptHandler(0)
 {
@@ -203,12 +203,12 @@ void Entity::setZOrder(int z)
 
 void Entity::_setZOrder(int z)
 {
-	ZOrder = z;
+	zOrder = z;
 }
 
 int Entity::getZOrder()
 {
-	return ZOrder;
+	return zOrder;
 }
 
 void Entity::setOrderOfArrival(int arrival)
@@ -391,12 +391,12 @@ bool Entity::isChildrenIgnoreUpdate()
 
 void Entity::addChild(Entity * child)
 {
-	addChild(child,child->ZOrder,child->tag);
+	addChild(child,child->zOrder,child->tag);
 }
 
 void Entity::addChild(Entity * child, int zOrder)
 {
-	addChild(child,ZOrder,child->tag);
+	addChild(child,zOrder,child->tag);
 }
 
 void Entity::addChild(Entity* child, int zOrder, int tag)
@@ -414,7 +414,7 @@ void Entity::addChild(Entity* child, int zOrder, int tag)
 	child->tag = tag;
 
 	child->setParent(this);
-	child->setOrderOfArrival(s_globalOrderOfArrival++);
+	child->setOrderOfArrival(globalOrderOfArrival++);
 
 	if( running )
 	{
@@ -447,7 +447,7 @@ Entity* Entity::getChildByZOrder(int z)
 		FK_ARRAY_FOREACH(children,child)
 		{
 			Entity *entity = (Entity *)child;
-			if(entity && entity->ZOrder == z)
+			if(entity && entity->zOrder == z)
 				return entity;
 		}
 	}
@@ -500,7 +500,7 @@ void Entity::removeChildByTag(int tag)
 
 void Entity::removeChildByTag(int tag,bool cleanup)
 {
-	FKAssert( tag != EntityTagInvalid, "Invalid tag");
+	FKAssert( tag != Entity::TAG_INVALID, "Invalid tag");
 
 	Entity *child = this->getChildByTag(tag);
 
@@ -572,7 +572,7 @@ void Entity::reorderChild(Entity * child, int zOrder)
 {
 	FKAssert(child != NULL,"Child must be non-nil!");
 	childrenSortPending = true;
-	child->setOrderOfArrival(s_globalOrderOfArrival++);
+	child->setOrderOfArrival(globalOrderOfArrival++);
 	child->_setZOrder(zOrder);
 }
 
@@ -595,8 +595,8 @@ void Entity::sortAllChildren(bool immediate)
 			tmp = data[i];
 			j=i-1;
 
-			while(j>=0 && ((tmp->ZOrder < data[j]->ZOrder)  ||
-						(tmp->ZOrder== data[j]->ZOrder && tmp->orderOfArrival < data[j]->orderOfArrival ) ))
+			while(j>=0 && ((tmp->zOrder < data[j]->zOrder)  ||
+						(tmp->zOrder== data[j]->zOrder && tmp->orderOfArrival < data[j]->orderOfArrival ) ))
 			{
 				data[j+1] = data[j];
 				j--;
@@ -776,7 +776,7 @@ void Entity::onVisit(void)
 		for(;i<childCount;i++)
 		{
 			child = (Entity *)children->data->arr[i];
-			if(child && child->ZOrder < 0)
+			if(child && child->zOrder < 0)
 			{
 				child->onVisit();
 			}
@@ -817,7 +817,9 @@ void Entity::onDetached()
 
 void Entity::update(float delta)
 {
-
+	if(!enabled)
+		return;
+	onUpdate(delta);
 }
 
 void Entity::transform(void)
@@ -904,7 +906,7 @@ Matrix4 Entity::entityToParentTransform(void)
 	if (transformDirty)
 	{
 
-		if(useAnchorPointAsTransformCenter)
+		if(anchorPointAsCenter)
 		{
 			// Translate values
 			float x = position.x;

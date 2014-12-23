@@ -91,7 +91,7 @@ bool Sprite::initWithTexture(Texture2D *texture)
 {
     FKAssert(texture != nullptr, "Invalid texture for sprite");
 
-    Rect rect = MakeRect(0,0,0,0);
+    Rect rect = RectMake(0,0,0,0);
     rect.size = texture->getContentSize();
 
     return initWithTexture(texture, rect);
@@ -113,7 +113,7 @@ bool Sprite::initWithFile(const std::string& filename)
     {
         Rect rect = RectZero;
         rect.size = texture->getContentSize();
-        FKLOG("Sprite size:w %d,h %d",rect.size.width,rect.size.height);
+        FKLOG("Sprite size:w %f,h %f",rect.size.width,rect.size.height);
         return initWithTexture(texture, rect);
     }
 

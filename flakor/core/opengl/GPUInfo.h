@@ -46,14 +46,11 @@ public:
 	int getMaxModelviewStackDepth() const;
 
     /** returns the maximum texture units
-     @since v2.0.0
      */
 	int getMaxTextureUnits() const;
 
     /** Whether or not the GPU supports NPOT (Non Power Of Two) textures.
      OpenGL ES 2.0 already supports NPOT (iOS).
-     
-     @since v0.99.2
      */
 	bool supportsNPOT() const;
 
@@ -75,27 +72,22 @@ public:
 	bool supportsBGRA8888() const;
 
     /** Whether or not glDiscardFramebufferEXT is supported
-     @since v0.99.2
      */
 	bool supportsDiscardFramebuffer() const;
 
     /** Whether or not shareable VAOs are supported.
-     @since v2.0.0
      */
 	bool supportsShareableVAO() const;
     
     /** Max support directional light in shader, for Sprite3D
-     @since v3.3
      */
     int getMaxSupportDirLightInShader() const;
     
     /** Max support point light in shader, for Sprite3D
-     *since v3.3
      */
     int getMaxSupportPointLightInShader() const;
     
     /** Max support spot light in shader, for Sprite3D
-     *since v3.3
      */
     int getMaxSupportSpotLightInShader() const;
 

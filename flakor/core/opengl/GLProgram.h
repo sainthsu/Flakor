@@ -45,9 +45,6 @@ class GLProgram : public Object
         VERTEX_ATTRIB_BLEND_WEIGHT,
         VERTEX_ATTRIB_BLEND_INDEX,
         VERTEX_ATTRIB_MAX,
-
-        // backward compatibility
-        VERTEX_ATTRIB_TEX_COORDS = VERTEX_ATTRIB_TEX_COORD,
     };
     
     enum

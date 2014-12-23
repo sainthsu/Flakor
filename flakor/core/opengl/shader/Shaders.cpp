@@ -31,10 +31,6 @@ FLAKOR_NS_BEGIN
 #include "ccShader_PositionTextureColor.vert"
 
 //
-#include "ccShader_PositionTextureColor_noMVP.frag"
-#include "ccShader_PositionTextureColor_noMVP.vert"
-
-//
 #include "ccShader_PositionTextureColorAlphaTest.frag"
 
 //

@@ -115,7 +115,7 @@ do {                                                            \
     __director->end();                                            \
 } while(0)
 
-/** @def CC_CONTENT_SCALE_FACTOR
+/** @def FK_CONTENT_SCALE_FACTOR
 On Mac it returns 1;
 On iPhone it returns 2 if RetinaDisplay is On. Otherwise it returns 1
 */
@@ -127,18 +127,18 @@ On iPhone it returns 2 if RetinaDisplay is On. Otherwise it returns 1
 /** RETINA DISPLAY ENABLED **/
 /****************************/
 
-/** @def CC_RECT_PIXELS_TO_POINTS
+/** @def FK_RECT_PIXELS_TO_POINTS
  Converts a rect in pixels to points
  */
 #define FK_RECT_PIXELS_TO_POINTS(__rect_in_pixels__)                                                                        \
-    MakeRect( (__rect_in_pixels__).origin.x / FK_CONTENT_SCALE_FACTOR(), (__rect_in_pixels__).origin.y / FK_CONTENT_SCALE_FACTOR(),    \
+    RectMake( (__rect_in_pixels__).origin.x / FK_CONTENT_SCALE_FACTOR(), (__rect_in_pixels__).origin.y / FK_CONTENT_SCALE_FACTOR(),    \
             (__rect_in_pixels__).size.width / FK_CONTENT_SCALE_FACTOR(), (__rect_in_pixels__).size.height / FK_CONTENT_SCALE_FACTOR() )
 
-/** @def CC_RECT_POINTS_TO_PIXELS
+/** @def FK_RECT_POINTS_TO_PIXELS
  Converts a rect in points to pixels
  */
 #define FK_RECT_POINTS_TO_PIXELS(__rect_in_points_points__)                                                                        \
-    MakeRect( (__rect_in_points_points__).origin.x * FK_CONTENT_SCALE_FACTOR(), (__rect_in_points_points__).origin.y * FK_CONTENT_SCALE_FACTOR(),    \
+    RectMake( (__rect_in_points_points__).origin.x * FK_CONTENT_SCALE_FACTOR(), (__rect_in_points_points__).origin.y * FK_CONTENT_SCALE_FACTOR(),    \
             (__rect_in_points_points__).size.width * FK_CONTENT_SCALE_FACTOR(), (__rect_in_points_points__).size.height * FK_CONTENT_SCALE_FACTOR() )
 
 /** @def CC_POINT_PIXELS_TO_POINTS

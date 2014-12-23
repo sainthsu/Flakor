@@ -24,7 +24,7 @@ base/lang/Dictionary.cpp \
 base/lang/Set.cpp \
 base/lang/FKString.cpp \
 base/lang/Zone.cpp \
-base/event/Touch.cpp \
+core/input/Touch.cpp \
 base/element/Color.cpp \
 base/element/Element.cpp \
 base/element/Helper.cpp \
@@ -38,13 +38,13 @@ core/opengl/GPUInfo.cpp \
 core/opengl/GLProgram.cpp \
 core/opengl/vbo/VBO.cpp \
 core/opengl/shader/Shaders.cpp \
-core/texture/atitc.cpp \
-core/texture/etc1.cpp \
-core/texture/pvr.cpp \
-core/texture/s3tc.cpp \
-core/texture/TGAlib.cpp \
-core/texture/Image.cpp \
-core/texture/Texture2D.cpp \
+core/opengl/texture/atitc.cpp \
+core/opengl/texture/etc1.cpp \
+core/opengl/texture/pvr.cpp \
+core/opengl/texture/s3tc.cpp \
+core/opengl/texture/TGAlib.cpp \
+core/opengl/texture/Image.cpp \
+core/opengl/texture/Texture2D.cpp \
 2d/Entity.cpp \
 2d/Scene.cpp \
 2d/Sprite.cpp \
@@ -68,10 +68,10 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
                            $(LOCAL_PATH)/. \
                            $(LOCAL_PATH)/.. \
                            $(LOCAL_PATH)/base/element \
-					$(LOCAL_PATH)/platform \
-					$(LOCAL_PATH)/base/lang \
-					$(LOCAL_PATH)/base/interface \
-					$(LOCAL_PATH)/include \
+                           $(LOCAL_PATH)/platform \
+                           $(LOCAL_PATH)/base/lang \
+                           $(LOCAL_PATH)/base/interface \
+                           $(LOCAL_PATH)/include \
 					$(LOCAL_PATH)/core/opengl/ \
 					$(LOCAL_PATH)/core/opengl/vbo \
 					$(LOCAL_PATH)/core/opengl/shader \

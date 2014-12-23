@@ -4,7 +4,7 @@
  http://www.flakor.org
  ****************************************************************************/
 
-#include "base/event/Touch.h"
+#include "core/input/Touch.h"
 //#include "Game.h"
 
 FLAKOR_NS_BEGIN

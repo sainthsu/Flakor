@@ -23,6 +23,7 @@ protected:
 	GLuint arrayID;
 	unsigned short count;
 	GLuint bufferID[2];//0: vertex  1: indices
+	GLenum usage[2];
 
 	float *vertexs;
 	GLushort *indices;
@@ -34,9 +35,11 @@ protected:
 	bool dispose;
 
 public:
-	static VAO* create(int sizePerVertex,int vertexNumber);
+	static VAO* create(int sizePerVertex,int vertexNumber,GLenum usage);
 	void bind();
-	
+	void setUsage(GLenum usage);
+	void setVertexData();
+	void setIndexData(GLushort *data,int length);
 };
 
 FLAKOR_NS_END

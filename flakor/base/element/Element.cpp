@@ -98,7 +98,7 @@ void Point::setType(PointType type)
 	this->type = type;
 }
 
-PointType Point::getType(PointType type)
+PointType Point::getType() const
 {
 	return this->type;
 }

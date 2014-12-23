@@ -119,7 +119,7 @@ Rect RectFromString(const char* pszContent)
         float width  = (float) atof(sizeInfo[0].c_str());
         float height = (float) atof(sizeInfo[1].c_str());
 
-        result = MakeRect(x, y, width, height);
+        result = RectMake(x, y, width, height);
     } while (0);
 
     return result;
@@ -137,7 +137,7 @@ Point PointFromString(const char* pszContent)
         float x = (float) atof(strs[0].c_str());
         float y = (float) atof(strs[1].c_str());
 
-        ret = MakePoint(x, y);
+        ret = PointMake(x, y);
     } while (0);
 
     return ret;
@@ -155,7 +155,7 @@ Size SizeFromString(const char* pszContent)
         float width  = (float) atof(strs[0].c_str());
         float height = (float) atof(strs[1].c_str());
 
-        ret = MakeSize(width, height);
+        ret = SizeMake(width, height);
     } while (0);
 
     return ret;

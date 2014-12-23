@@ -73,9 +73,9 @@ class Entity : public Object,public IColorable,public IUpdatable
 
 		Color color;
 		///旋转中心点，缩放中心点和倾斜中心点
-		Point _rotationCenter;
-		Point _scaleCenter;
-		Point _skewCenter;
+		Point rotationCenter;
+		Point scaleCenter;
+		Point skewCenter;
 
 		///x,y轴上的旋转，缩放，倾斜尺寸大小
 		float rotationX;

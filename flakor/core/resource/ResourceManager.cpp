@@ -1,4 +1,4 @@
-
+#include "targetMacros.h"
 #include "ResourceManager.h"
 
 FLAKOR_NS_BEGIN
@@ -65,9 +65,20 @@ bool ResourceManager::load(resource, bool asyn)
    }
 }
 
-void ResourceManager::setAssetManager()
+void ResourceManager::setAssetManager(AAssetManager *assetMgr)
 {
-    
+    assetManager = assetMgr;
 }
+
+AAssetManager* ResourceManager::getAssetManager(void)
+{
+    return assetManager;
+}
+
+ResourceManager::parsePath(const char* filepath)
+{
+
+}
+
 
 FLAKOR_NS_END

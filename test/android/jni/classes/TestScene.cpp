@@ -5,7 +5,7 @@
 bool TestScene::init()
 {
     LOGD("testscene init");
-	Sprite *sprite = Sprite::create("asset://flakor_test.png");
+    Sprite *sprite = Sprite::create("asset://flakor_test.png");
 
     // position the sprite on the center of the screen
     sprite->setPosition(PointMake(200,200));
@@ -13,7 +13,7 @@ bool TestScene::init()
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
     
-	return true;
+    return true;
 }
 
 TestScene* TestScene::create()

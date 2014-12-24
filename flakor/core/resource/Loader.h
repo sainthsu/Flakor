@@ -7,7 +7,7 @@
 
 class Lorder
 {
-	protected:
+    protected:
         const char* type;
     public:
         virtual bool loadData(bool async);

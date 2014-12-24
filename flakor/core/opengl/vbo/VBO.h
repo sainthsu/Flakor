@@ -157,7 +157,7 @@ class VBO : Object
 		bool autoDispose;
 		bool dirty;
         //
-		bool dispose;
+                bool dispose;
 
         //实际的bufferdata。存到gpu就清空
 		float *bufferData;

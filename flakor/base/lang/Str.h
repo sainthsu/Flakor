@@ -14,7 +14,7 @@ class String : public Object
 {
 	protected:
 		char _string[];
-		unsigned int _max;
+		unsigned int _length;
 		unsigned int _free;
 	public:
 		String(void);

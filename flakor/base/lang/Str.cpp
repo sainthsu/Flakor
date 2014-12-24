@@ -7,25 +7,48 @@ FLAKOR_NS_BEGIN
 #define MAX_STRING_LEN (1024*100)
 
 String::String(void)
-:_string("")
+:_string(""),
+_length(0),
+_free(0)
 {}
 
 String::String(const char * str)
-    :_string(str)
-{}
+{
+	int len = str == NULL? 0 : strlen(str);
+	if(str)
+	{
+		_string = malloc(len+1)
+	}
+	else
+	{
+		_string = calloc(1,len+1);
+	}
+
+	if(_string == NULL) _string = str;
+
+	_length = len;
+	_free = 0;
+	if(len && str)
+	{
+		memcpy(_string,str,len);
+	}	
+	_string[_length] = '\0';
+}
 
 String::String(const std::string& str)
-    :_string(str)
-{}
+{
+
+}
 
 String::String(const String& str)
-    :_string(str.getCString())
-{}
+{
+	
+}
 
 String::~String()
 { 
     free(_string);
-	_max = _len = 0;
+	_free = _length = 0;
 }
 
 String& String::operator= (const String& other)

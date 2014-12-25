@@ -1,29 +1,61 @@
-#ifndef _FLAKOR_STR_H_
-#define _FLAKOR_STR_H_
+#ifndef _FK_STR_H_
+#define _FK_STR_H_
 
 #if (FK_TARGET_PLATFORM == FK_PLATFORM_BLACKBERRY)
 #include <string.h>
 #endif
 
+#include <sys/types.h>
 #include <stdarg.h>
 #include <string>
 #include <functional>
 #include "base/lang/DataVisitor.h"
 
+#define MAX_STRING_LEN (1024*10)
+#define STRING_MAX_PREALLOC (1024*1024)
+
+FLAKOR_NS_BEGIN
+
 class String : public Object
 {
-	protected:
-		char _string[];
-		unsigned int _length;
-		unsigned int _free;
-	public:
-		String(void);
-		String(const char* str);
-    	String(const std::string& str);
-    	String(const String& str);
+protected:
+        char _string[];
+        unsigned int _length;
+        unsigned int _free;
+public:
+        String(void);
+        String(const String& str);
+        virtual ~String();
 
-    	virtual ~String();
-		/* override assignment operator
+        static String* create(const char* str);
+        static String* create(const char* str,size_t len);
+        /** create a string with std string
+         *  @return A String pointer which is an autorelease object pointer,
+         *          it means that you needn't do a release operation unless you retain it.
+         */
+        static String* create(const std::string& str);
+
+        /** create a string with format, it's similar with the c function 'sprintf', the default buffer size is (1024*100) bytes,
+         *  if you want to change it, you should modify the kMaxStringLen macro in CCString.cpp file.
+         *  `@return A String pointer which is an autorelease object pointer,
+         *          it means that you needn't do a release operation unless you retain it.
+         *  @lua NA
+         */
+        static String* createWithFormat(const char* format, ...) FK_FORMAT_PRINTF(1, 2);
+
+        /** create a string with binary data
+         *  @return A String pointer which is an autorelease object pointer,
+         *          it means that you needn't do a release operation unless you retain it.
+         */
+        static String* createWithData(const unsigned char* pData, unsigned long nLen);
+
+        /** create a string with a file,
+         *  @return A String pointer which is an autorelease object pointer,
+         *          it means that you needn't do a release operation unless you retain it.
+         */
+        static String* createWithContentsOfFile(const char* pszFileName);
+
+        /* override assignment operator
      	* @lua NA
      	*/
     	String& operator= (const String& other);
@@ -54,37 +86,48 @@ class String : public Object
     	/** get the length of string */
     	unsigned int length() const;
 
+        /** get the available free */
+        unsigned int avail() const;
+
     	/** compare to a c string */
     	int compare(const char *) const;
 	
     	//virtual Object* copyWithZone(Zone* pZone);
     	virtual bool equal(const Object* pObject);
 
-    	/** create a string with std string, you can also pass a c string pointer because the default constructor of std::string can access a c string pointer. 
-     	*  @return A String pointer which is an autorelease object pointer,
-     	*          it means that you needn't do a release operation unless you retain it.
-     	*/
-    	static String* create(const std::string& str);
+        /* Modify a String on-place to make it empty (zero length).
+         * However all the existing buffer is not discarded but set as free space
+         * so that next append operations will not require allocations up to the
+         * number of bytes previously available. */
+        void clear();
 
-    	/** create a string with format, it's similar with the c function 'sprintf', the default buffer size is (1024*100) bytes,
-     	*  if you want to change it, you should modify the kMaxStringLen macro in CCString.cpp file.
-     	*  `@return A String pointer which is an autorelease object pointer,
-     	*          it means that you needn't do a release operation unless you retain it.
-     	*  @lua NA
-     	*/ 
-    	static String* createWithFormat(const char* format, ...) FK_FORMAT_PRINTF(1, 2);
+        //trim the blank
+        void trim();
 
-    	/** create a string with binary data 
-     	*  @return A String pointer which is an autorelease object pointer,
-     	*          it means that you needn't do a release operation unless you retain it.
-     	*/
-    	static String* createWithData(const unsigned char* pData, unsigned long nLen);
+        //Apply tolower() to every character of _string
+        void toLower();
 
-    	/** create a string with a file, 
-     	*  @return A String pointer which is an autorelease object pointer,
-     	*          it means that you needn't do a release operation unless you retain it.
-     	*/
-    	static String* createWithContentsOfFile(const char* pszFileName);
+        //Apply toupper() to every character of _string
+        void toUpper();
+
+        /* Return the total size of the allocation of the specifed String,
+         * including:
+         * 1) The String pointer.
+         * 2) The string.
+         * 3) The free buffer at the end if any.
+         * 4) The implicit null term.
+         */
+        size_t getAllocSize();
+
+        /* Append the specified binary-safe string pointed by 't' of 'len' bytes to the
+         * end of the specified sds string 's'.
+         *
+         * After the call, the passed String is no longer valid
+         */
+        bool append(const void *t, size_t len);
+
+        bool append(const char* cat);
+
     	/**
      	* @lua NA
      	*/
@@ -94,8 +137,24 @@ private:
 
     	/** only for internal use */
     	bool initWithFormatAndValist(const char* format, va_list ap);
-		
+
+        /* Enlarge the free space at the end of the String so that the caller
+         * is sure that after calling this function can overwrite up to addlen
+         * bytes after the end of the string, plus one more byte for nul term.
+         *
+         * Note: this does not change the *length* of the String as returned
+         * by length(), but only the free buffer space we have. */
+        void makeRoomFor(size_t addlen);
+
+        /* Append the specified binary-safe string pointed by 't' of 'len' bytes to the
+         * end of the specified sds string 's'.
+         *
+         * After the call, the passed sds string is no longer valid and all the
+         * references must be substituted with the new pointer returned by the call. */
+        void catlen(const void *t, size_t len);
 }
+
+FLAKOR_NS_END
 
 #endif
 

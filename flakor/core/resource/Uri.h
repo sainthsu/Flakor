@@ -40,30 +40,31 @@ FLAKOR_NS_BEGIN
 class Uri
 {
     protected:
-		static char* DEFAULT_ENCODING = "UTF-8";
+        static char* DEFAULT_ENCODING = "UTF-8";
 		
-		int type;		
-		const char* realPath;
-		const char* filename;
+        int type;
+        const char* realPath;
+        const char* filename;
 
-		//both decoded
-		const char* scheme;
-		const char* host;
-		const char* port;
-		const char* path;
-		//TODO const char* authority;
-		const char* fregment;
-		const char* query;
+        //both decoded
+        const char* scheme;
+        const char* host;
+        const char* port;
+        const char* path;
+        //TODO const char* authority;
+        const char* fregment;
+        const char* query;
     public:
-		enum {
-                ASSET,
-                LOCAL,
-                INTERNET
+
+        enum {
+           ASSET,
+           LOCAL,
+           INTERNET
         };
 
-		static Uri* parse(String uriString);
-                static Uri* parse(std::string uriString);
-		static Uri* parse(char* uriString);
+        static Uri* parse(String uriString);
+        static Uri* parse(std::string uriString);
+        static Uri* parse(char* uriString);
 
         /**
      	* Returns true if this URI is relative, i.e.&nbsp;if it doesn't contain an

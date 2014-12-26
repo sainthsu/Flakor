@@ -22,6 +22,7 @@ class Rect;
 class Size;
 class Texture2D;
 class GLProgram;
+class String;
 
 /**
  * @addtogroup entity
@@ -305,7 +306,7 @@ public:
     inline const BlendFunc& getBlendFunc() const override { return _blendFunc; }
     /// @}
 
-    virtual std::string toString() const override;
+    virtual String* toString() const override;
 
     /// @{
     /// @name Functions inherited from Entity

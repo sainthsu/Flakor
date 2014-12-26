@@ -10,7 +10,7 @@ http://www.flakor.org
 #include <assert.h>
 #include "macros.h"
 #include "math/uthash.h"
-#include "base/lang/FKString.h"
+#include "base/lang/Str.h"
 #include "math/GLMatrix.h"
 
 #if (FK_TARGET_PLATFORM == FK_PLATFORM_WP8) || defined(WP8_SHADER_COMPILER)
@@ -376,12 +376,12 @@ VertexAttrib* GLProgram::getVertexAttrib(const std::string &name)
     return nullptr;
 }
 
-std::string GLProgram::getDescription() const
+String* GLProgram::getDescription() const
 {
     return String::createWithFormat("<GLProgram = "
                                       FK_FORMAT_PRINTF_SIZE_T
                                       " | Program = %i, VertexShader = %i, FragmentShader = %i>",
-                                      (size_t)this, _programID, _vertShaderID, _fragShaderID)->m_sString;
+                                      (size_t)this, _programID, _vertShaderID, _fragShaderID);
 }
 
 bool GLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* source)

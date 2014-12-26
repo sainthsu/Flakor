@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-FLAKOR_NS_BEGIN
-
 namespace {
 
     /* Helper function for sdssplitargs() that returns non zero if 'c'
@@ -38,6 +36,8 @@ namespace {
     }
 }
 
+FLAKOR_NS_BEGIN
+
 String::String(void)
 :_string(NULL),
 _length(0),
@@ -48,7 +48,7 @@ String::String(const String& str)
 {
     _length = str._length;
     _free = str._free;
-    _string = malloc(_length+_free+1);
+    _string = (char*)malloc(_length+_free+1);
     if(_string != NULL)
     {
         memcpy(_string,str._string,_length);
@@ -67,42 +67,26 @@ String::~String()
     _free = _length = 0;
 }
 
-static String* String::create(const char * str)
+String* String::create(const char * str)
 {
 	int len = str == NULL? 0 : strlen(str);
         return String::create(str,len);
 }
 
 
-static String* String::create(const char * str,size_t len)
+String* String::create(const char * str,size_t len)
 {
     String* string = new String();
-    if(str)
-    {
-            string->_string = malloc(len+1);
-    }
-    else
-    {
-            string->_string = calloc(1,len+1);
-    }
-
-    if(string->_string == NULL) return NULL;
-
-    string->_length = len;
-
-    if(len && str)
-    {
-            memcpy(string->_string,str,len);
-    }
-    string->_string[_length] = '\0';
-    string->autorelease();
-
-    return string;
+	if(string && string->initLength(str,len))
+	{
+    	return string;
+	}
+	return NULL;
 }
 
-static String* String::create(const std::string& str)
+String* String::create(const std::string& str)
 {
-    int len = str == NULL? 0 : str.length();
+    int len = str.length();
     return String::create(str.c_str(),len);
 }
 
@@ -151,10 +135,39 @@ String* String::createWithContentsOfFile(const char* pszFileName)
 
 String& String::operator= (const String& other)
 {
-        _string = other._string;
-        _length = other._length;
-        _free = other._free;
-	return *this;
+		//不是自赋值
+		if(this != &other)
+		{
+			if(_string != NULL) free(_string);
+        	_string = other._string;
+        	_length = other._length;
+        	_free = other._free;
+		}
+		return *this;
+}
+
+bool String::initLength(const char* str,size_t len)
+{
+	if(str)
+    {
+            _string = (char*)malloc(len+1);
+    }
+    else
+    {
+            _string = (char*)calloc(1,len+1);
+    }
+
+    if(_string == NULL) return false;
+
+    _length = len;
+
+    if(len && str)
+    {
+            memcpy(_string,str,len);
+    }
+    _string[_length] = '\0';
+	
+	return true;
 }
 
 bool String::initWithFormatAndValist(const char* format, va_list ap)
@@ -166,7 +179,7 @@ bool String::initWithFormatAndValist(const char* format, va_list ap)
         vsnprintf(buf, MAX_STRING_LEN, format, ap);
 
         int len = strlen(buf);
-        _string = malloc(len+1);
+        _string = (char*)malloc(len+1);
 
         if(_string != NULL)
         {
@@ -177,7 +190,7 @@ bool String::initWithFormatAndValist(const char* format, va_list ap)
             ret = true;
         }
 
-        free(pBuf);
+        free(buf);
     }
     return ret;
 }
@@ -185,7 +198,7 @@ bool String::initWithFormatAndValist(const char* format, va_list ap)
 bool String::initWithFormat(const char* format, ...)
 {
     bool bRet = false;
-    m_sString.clear();
+    if(_string != NULL) free(_string);
 
     va_list ap;
     va_start(ap, format);
@@ -257,9 +270,19 @@ unsigned int String::length() const
     return _length;
 }
 
+unsigned int String::avail() const
+{
+	return _free;
+}
+
 int String::compare(const char * pStr) const
 {
     return strcmp(_string, pStr);
+}
+
+int String::compare(const String *str) const
+{
+	return compare(str->getCString());
 }
 
 /*
@@ -273,16 +296,16 @@ Object* String::copyWithZone(Zone* pZone)
 
 bool String::equal(const Object* pObject)
 {
-    bool bRet = false;
-    const String* pStr = dynamic_cast<const String*>(pObject);
-    if (pStr != NULL)
+    bool ret = false;
+    const String* str = dynamic_cast<const String*>(pObject);
+    if (str != NULL)
     {
-        if (0 == m_sString.compare(pStr->m_sString))
+        if (0 == this->compare(str))
         {
-            bRet = true;
+            ret = true;
         }
     }
-    return bRet;
+    return ret;
 }
 
 void String::acceptVisitor(DataVisitor &visitor)
@@ -290,9 +313,28 @@ void String::acceptVisitor(DataVisitor &visitor)
     visitor.visit(this);
 }
 
-void String::trim(char* cset=" \t\v")
+void String::clear()
 {
-    char* start,end;
+	_free += _length;
+	_string[0] = '\0';
+	_length = 0;
+}
+
+void String::trim(const char* cset)
+{
+    char *start,*end,*sp,*ep;
+	size_t len;
+
+	start = sp = _string;
+	end = ep = _string+_length-1;
+	while(sp <= end && strchr(cset,*sp)) sp++;
+	while(ep >= start && strchr(cset,*ep)) ep--;
+	len = (sp > ep)? 0 : ((ep-sp)+1);
+	if(_string != sp) memmove(_string,sp,len);
+
+	_string[len] = '\0';
+	_length = len;
+	_free = _free + (_length - len);
 
 }
 
@@ -309,10 +351,148 @@ void String::toUpper()
     for (j = 0; j < len; j++) _string[j] = toupper(_string[j]);
 }
 
-void String::makeRoomFor(size_t addlen)
+size_t String::getAllocSize()
 {
-    if(_free > addlen) return;
+	return sizeof(String)+_length+_free+1;
+}
 
+bool String::append(const String* str)
+{
+	if(str == NULL || str->length() <= 0) return false;
+	return catlen(str->getCString(),str->length());
+}
+
+bool String::append(const char* cat)
+{
+	int len = strlen(cat);
+	if(len <= 0) return false;
+	return catlen(cat,len);
+}
+
+void String::range(int start,int end)
+{
+	size_t newLen;
+	if(_length == 0) return;
+	if(start < 0)
+	{
+		start = _length + start;
+		if(start < 0) start = 0;
+	}
+	if(end < 0)
+	{
+		end = _length + end;
+		if(end < 0) end = 0;
+	}
+
+	newLen = (start > end)? 0 : (end-start)+1;
+	if (newLen != 0) 
+	{
+		if (start >= (signed)_length)
+		{
+			newLen = 0;
+		}
+		else if (end >= (signed)_length)
+		{
+			end = _length-1;
+			newLen = (start > end) ? 0 : (end-start)+1;
+		}
+	}
+	else
+	{
+		start = 0;
+	}
+	if (start && newLen) memmove(_string, _string+start, newLen);
+	_string[newLen] = '\0';
+	_free = _free+(_length-newLen);
+	_length = newLen;
+
+}
+
+String** String::split(const char* sep,int *count)
+{
+	int len = strlen(sep);
+	//position array contain start end pairs
+	String **strArray;
+	if(_length <= 0 || len < 1) return NULL;
+
+	int elements = 0,slots = 5,start = 0,j;
+	int search = _length - len + 1;
+
+	strArray = (String **)malloc(sizeof(String *)*slots);
+	if(strArray == NULL)
+	{
+		*count = 0;
+		return NULL;
+	}
+
+	for(j=0;j < search;j++)
+	{
+		if( slots < elements+2)
+		{
+			String** newArray;
+			slots *= 2;
+			
+			newArray = (String **)realloc(strArray,sizeof(String *)*slots);
+			if(newArray == NULL) goto cleanup;
+			strArray = newArray;
+		}
+
+		if((len == 1 && *(_string+j) == sep[0]) || (memcmp(_string+j,sep,len) == 0))
+		{
+			strArray[elements] = String::create(_string+j,j-start);
+			if(strArray[elements] == NULL) goto cleanup;
+			
+			elements++;
+			start = j+len;
+			j = start-1;
+		}
+	}
+	
+	/* Add the final element. We are sure there is room in the tokens array. */
+    strArray[elements] = String::create(_string+start,_length-start);
+    if (strArray[elements] == NULL) goto cleanup;
+    elements++;
+    *count = elements;
+    return strArray;
+cleanup:
+	{
+        int i;
+        for (i = 0; i < elements; i++) free(strArray[i]);
+        free(strArray);
+        *count = 0;
+        return NULL;
+    }
+}
+
+
+bool String::makeRoomFor(size_t addlen)
+{
+	size_t newLen;
+    if(_free > addlen) return true;
+	newLen = _length + addlen;
+	if(newLen < STRING_MAX_PREALLOC)
+		newLen *= 2;
+	else
+		newLen += STRING_MAX_PREALLOC;
+	
+	_string = (char*)realloc(_string,newLen);
+	if(_string == NULL) return false;
+	_free = newLen - _length;
+	return true;
+}
+
+bool String::catlen(const void* t, size_t len)
+{
+	size_t curlen = _length;
+
+    if (!this->makeRoomFor(len)) return false;
+
+    memcpy(_string+curlen, t, len);
+    _length = curlen+len;
+    _free = _free-len;
+    _string[curlen+len] = '\0';
+	
+	return true;
 }
 
 FLAKOR_NS_END

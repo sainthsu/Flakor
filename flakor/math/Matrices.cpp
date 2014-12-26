@@ -9,7 +9,7 @@
 #include "macros.h"
 
 #include "Matrices.h"
-#include "base/lang/FKString.h"
+#include "base/lang/Str.h"
 
 const float DEG2RAD = 3.141593f / 180;
 

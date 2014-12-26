@@ -5,7 +5,7 @@
 #include "base/lang/Types.h"
 #include "base/lang/Dictionary.h"
 #include "base/lang/Set.h"
-#include "base/lang/FKString.h"
+#include "base/lang/Str.h"
 
 FLAKOR_NS_BEGIN
 

@@ -4,7 +4,7 @@ Copyright (c) 2013-2014 saint(saint@aliyun.com)
 http://www.flakor.org
 ****************************************************************************/
 
-#include "base/lang/FKString.h"
+#include "base/lang/Str.h"
 #include "2d/Sprite.h"
 #include "base/element/Element.h"
 #include "core/opengl/texture/Image.h"
@@ -872,14 +872,14 @@ void Sprite::updateBlendFunc(void)
     }
 }
 
-std::string Sprite::toString() const
+String* Sprite::toString() const
 {
     int texture_id = -1;
     /*if( _batchNode )
         texture_id = _batchNode->getTextureAtlas()->getTexture()->getName();
     else*/
         texture_id = _texture->getTextureID();
-    return String::createWithFormat("<Sprite | Tag = %d, TextureID = %d>", tag, texture_id )->m_sString;
+    return String::createWithFormat("<Sprite | Tag = %d, TextureID = %d>", tag, texture_id );
 }
 
 FLAKOR_NS_END

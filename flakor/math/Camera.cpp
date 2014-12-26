@@ -23,7 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "math/Camera.h"
-#include "base/lang/FKString.h"
+#include "base/lang/Str.h"
 #include "core/opengl/GL.h"
 #include "math/GLMatrix.h"
 

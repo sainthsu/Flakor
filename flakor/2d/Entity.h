@@ -14,6 +14,7 @@ FLAKOR_NS_BEGIN
 class Color;
 class Camera;
 class Touch;
+class String;
 
 enum EntityState {
 	EntityOnEnter,
@@ -181,7 +182,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * Gets the description string. It makes debugging easier.
 		 * @return A string terminated with '\0'
 		 */
-		virtual std::string toString() const;
+		virtual String* toString() const;
 
 		virtual void setPosition(const Point &position);
 		virtual void setPosition(float x, float y);

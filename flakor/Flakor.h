@@ -17,7 +17,7 @@
 #include "base/lang/DataVisitor.h"
 #include "base/lang/Dictionary.h"
 #include "base/lang/Set.h"
-#include "base/lang/FKString.h"
+#include "base/lang/Str.h"
 #include "base/lang/Zone.h"
 
 //element

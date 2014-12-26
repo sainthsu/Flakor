@@ -71,7 +71,7 @@ Array* Dictionary::allKeys(void)
     {
         HASH_ITER(hh, m_pItems, pItem, tmp) 
         {
-            String* pOneKey = new String(pItem->m_szKey);
+            String* pOneKey = String::create(pItem->m_szKey);
             pArray->addObject(pOneKey);
             FK_SAFE_RELEASE(pOneKey);
         }
@@ -103,7 +103,7 @@ Array* Dictionary::allKeysForObject(Object* object)
         {
             if (object == pItem->m_pObject)
             {
-                String* pOneKey = new String(pItem->m_szKey);
+                String* pOneKey = String::create(pItem->m_szKey);
                 pArray->addObject(pOneKey);
                 FK_SAFE_RELEASE(pOneKey);
             }

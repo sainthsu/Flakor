@@ -11,7 +11,7 @@
 #include <functional>
 #include "base/lang/DataVisitor.h"
 
-#define MAX_STRING_LEN (1024*10)
+#define MAX_STRING_LEN (1024*1024)
 #define STRING_MAX_PREALLOC (1024*1024)
 
 FLAKOR_NS_BEGIN
@@ -19,7 +19,7 @@ FLAKOR_NS_BEGIN
 class String : public Object
 {
 protected:
-        char _string[];
+        char *_string;
         unsigned int _length;
         unsigned int _free;
 public:
@@ -91,6 +91,8 @@ public:
 
     	/** compare to a c string */
     	int compare(const char *) const;
+		/** compare to a String */
+		int compare(const String *str) const;
 	
     	//virtual Object* copyWithZone(Zone* pZone);
     	virtual bool equal(const Object* pObject);
@@ -101,8 +103,18 @@ public:
          * number of bytes previously available. */
         void clear();
 
-        //trim the blank
-        void trim();
+        /* Remove the part of the string from left and from right composed just of
+		 * contiguous characters found in 'cset', that is a null terminted C string.
+		 *
+	     * Example:
+		 *
+		 * String *s = String::create("AA...AA.a.aa.aHelloWorld     :::");
+		 * s->trim("A. :");
+		 * printf("%s\n", s->getCString());
+		 *
+		 * Output will be just "Hello World".
+		 */
+        void trim(const char *cset);
 
         //Apply tolower() to every character of _string
         void toLower();
@@ -119,22 +131,36 @@ public:
          */
         size_t getAllocSize();
 
-        /* Append the specified binary-safe string pointed by 't' of 'len' bytes to the
-         * end of the specified sds string 's'.
-         *
-         * After the call, the passed String is no longer valid
-         */
-        bool append(const void *t, size_t len);
-
+        bool append(const String* str);
         bool append(const char* cat);
 
+		/* Turn the string into a smaller (or equal) string containing only the
+		 * substring specified by the 'start' and 'end' indexes.
+		 *
+	     * start and end can be negative, where -1 means the last character of the
+		 * string, -2 the penultimate character, and so forth.
+		 *
+		 * The interval is inclusive, so the start and end characters will be part
+		 * of the resulting string.
+		 *
+		 * The string is modified in-place.
+		 *
+		 * Example:
+		 *
+		 * String* s = String::create("Hello World");
+		 * s->range(1,-1); => "ello World"
+		 */
+		void range(int start,int end);
+
+		String** split(const char* sep,int *count);
     	/**
      	* @lua NA
      	*/
     	virtual void acceptVisitor(DataVisitor &visitor);
 
 private:
-
+		bool initLength(const char* str,size_t len);	
+		
     	/** only for internal use */
     	bool initWithFormatAndValist(const char* format, va_list ap);
 
@@ -144,15 +170,15 @@ private:
          *
          * Note: this does not change the *length* of the String as returned
          * by length(), but only the free buffer space we have. */
-        void makeRoomFor(size_t addlen);
+        bool makeRoomFor(size_t addlen);
 
         /* Append the specified binary-safe string pointed by 't' of 'len' bytes to the
          * end of the specified sds string 's'.
          *
          * After the call, the passed sds string is no longer valid and all the
          * references must be substituted with the new pointer returned by the call. */
-        void catlen(const void *t, size_t len);
-}
+        bool catlen(const void *t, size_t len);
+};
 
 FLAKOR_NS_END
 

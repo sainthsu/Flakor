@@ -1,6 +1,6 @@
 #include "targetMacros.h"
 #include "2d/Entity.h"
-#include "base/lang/FKString.h"
+#include "base/lang/Str.h"
 #include "core/input/Touch.h"
 #include "math/GLMatrix.h"
 
@@ -91,9 +91,9 @@ Entity * Entity::create(float x,float y)
 	return entity;
 }
 
-std::string Entity::toString() const
+String* Entity::toString() const
 {
-    return NULL;//String::createWithFormat("{Entity: | Tag = %d}", tag)->m_sString;
+    return String::createWithFormat("{Entity: | Tag = %d}", tag);
 }
 
 void Entity::setPosition(const Point &position)

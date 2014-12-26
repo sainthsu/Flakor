@@ -22,9 +22,8 @@ base/lang/AutoreleasePool.cpp \
 base/lang/DataVisitor.cpp \
 base/lang/Dictionary.cpp \
 base/lang/Set.cpp \
-base/lang/FKString.cpp \
+base/lang/Str.cpp \
 base/lang/Zone.cpp \
-core/input/Touch.cpp \
 base/element/Color.cpp \
 base/element/Element.cpp \
 base/element/Helper.cpp \
@@ -34,6 +33,7 @@ math/CArray.cpp \
 math/Matrices.cpp \
 math/MatrixStack.cpp \
 math/GLMatrix.cpp \
+core/input/Touch.cpp \
 core/opengl/GPUInfo.cpp \
 core/opengl/GLProgram.cpp \
 core/opengl/vbo/VBO.cpp \

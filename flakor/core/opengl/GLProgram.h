@@ -11,6 +11,8 @@ typedef void (*GLLogFunction) (GLuint program, GLsizei bufsize, GLsizei* length,
 
 FLAKOR_NS_BEGIN
 
+class String;
+
 struct VertexAttrib
 {
     GLuint index;
@@ -143,7 +145,7 @@ class GLProgram : public Object
 
 	protected:
 		bool updateUniformLocation(GLint location, const GLvoid* data, unsigned int bytes);
-    	virtual std::string getDescription() const;
+    	virtual String* getDescription() const;
 
     	void bindPredefinedVertexAttribs();
     	void parseVertexAttribs();

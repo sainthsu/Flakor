@@ -43,17 +43,17 @@ class Uri
         static char* DEFAULT_ENCODING = "UTF-8";
 		
         int type;
-        const char* realPath;
-        const char* filename;
+        String* realPath;
+        String* filename;
 
         //both decoded
-        const char* scheme;
-        const char* host;
-        const char* port;
-        const char* path;
+        String* scheme;
+        String* host;
+        String* port;
+        String* path;
         //TODO const char* authority;
-        const char* fregment;
-        const char* query;
+        String* fregment;
+        String* query;
     public:
 
         enum {
@@ -112,16 +112,16 @@ class Uri
      	 */
     	 virtual String getEncodedSchemeSpecificPart();
 
-    /**
-     * Gets the decoded authority part of this URI. For
-     * server addresses, the authority is structured as follows:
-     * {@code [ userinfo '@' ] host [ ':' port ]}
-     *
-     * <p>Examples: "google.com", "bob@google.com:80"
-     *
-     * @return the authority for this URI or null if not present
-     */
-     virtual String getAuthority();
+    	/**
+     	* Gets the decoded authority part of this URI. For
+     	* server addresses, the authority is structured as follows:
+     	* {@code [ userinfo '@' ] host [ ':' port ]}
+     	*
+     	* <p>Examples: "google.com", "bob@google.com:80"
+     	*
+     	* @return the authority for this URI or null if not present
+     	*/
+     	virtual String getAuthority();
 
     /**
      * Gets the encoded authority part of this URI. For

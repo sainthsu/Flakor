@@ -1,7 +1,8 @@
 #ifndef _FK_RESOURCE_H_
 #define _FK_RESOURCE_H_
 
-#include "base/lang/FKString.h"
+#include "base/lang/Object.h"
+#include "base/lang/Str.h"
 
 /**
  * inited : 默认值，资源已经创建；
@@ -19,11 +20,12 @@ typedef enum {
 	DESTROYED
 } ResoureState;
 
-class IResource : Object
+class Uri;
+
+class Resource : Object
 {
     protected:
-        const char* uri;
-        const char* filename;
+        Uri* uri;
         int uid;
         int type;
         ResourceState state;
@@ -33,7 +35,7 @@ class IResource : Object
     
         virtual bool loadData(bool async);
         ResourceState getState(void);
-        const char* getUri(void);
+        Uri* getUri(void);
         const char* getFilename(void);
         const char* getType(void);
 }

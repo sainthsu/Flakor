@@ -18,10 +18,13 @@
 
 FLAKOR_NS_BEGIN
 
+class Reource;
+
 class ResourceManager
 {
     public:
         enum {
+                UNKNOW,
                 IMAGE,
                 TEXTURE,
                 MUSIC,
@@ -45,21 +48,31 @@ class ResourceManager
          * Path to this application's external (removable/mountable) data directory.
          */
         const char* externalDataPath;
+
+        pthread_mutex_t mutex;
+        pthread_cond_t cond;
+
+        int msgread;
+        int msgwrite;
+        int waitLoads;//resource waiting for loading to memory by loadthread
+
+        int threadNum;
+        LoadThread** thread;
 		
     public:
         virtual ~RescourceManager();
 
         static RescourceManager* thisManager();
         //从资源文件加载纹理
-        IResource *CreateResource(const char *uri,const char* type);
-        IResource *getResourceByName(const char* name);
-        IResource *getResourceById(int id);
+        Resource *CreateResource(const char *uri,const char* type);
+        Resource *getResourceByName(const char* name);
+        Resource *getResourceById(int id);
 
-        bool load(IResource* res,bool asyn);
-        bool unload(IResource* res);
-        bool reload(IResource* res,bool asyn);
+        bool load(Resource* res);
+        bool unload(Resource* res);
+        bool reload(Resource* res,bool asyn);
 
-        void registerLoader(Loader loader);
+        void registerLoader(const char* type,Loader loader);
         void unregisterLoader(const char *loader);
 
         static void setAssetManager(AAssetManager *assetMgr);
@@ -75,7 +88,7 @@ class ResourceManager
         static AAssetManager *assetManager;
     private:
         RescourceManager();
-        parsePath(const char* filepath);
+        void prepare();
 }
 
 

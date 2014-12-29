@@ -1,5 +1,6 @@
 #include "targetMacros.h"
-#include "ResourceManager.h"
+#include "core/resource/ResourceManager.h"
+#include "core/resource/Loader.h"
 
 FLAKOR_NS_BEGIN
 
@@ -31,38 +32,76 @@ RescourceManager* RescourceManager::thisManager(void)
     return resMgr;
 }
 
-IResource *ResourceManager::CreateResource(const char* uri, const char* type, void* param)
+Resource *RescourceManager::getResourceByName(const char* name)
+{
+
+}
+
+Resource *RescourceManager::getResourceById(int id)
+{
+
+}
+
+Resource *ResourceManager::CreateResource(const char* uri, const char* type, void* param)
 {
   if(_loadedResource.contains(id))
-     retrun loadedResource[id];
+     retrun _loadedResource[id];
   else
   {
-     loader = loaders[type];
-     if(loader != null)
+     Loader* loader = loaders[type];
+     if(loader != NULL)
      {
-       newRes = loader.CreateResource();
-       loadedResource.add(newRes);
+       Resource* newRes = loader->Create(uri);
+       _pendingResource->add(newRes);
        return newRes;
      }
   }
 }
 
-CreateResource()
-{
-   return newRes = CreateResource();
-}
-
-bool ResourceManager::load(resource, bool asyn)
+bool ResourceManager::load(Resource* res, bool asyn)
 {
    if(asyn)
    {
-        add to loadTaskQueue;
+        //add to loadTaskQueue
    }
    else
    {
-      data = loader.load();
-      resource.SetData(data);
+      _pendingRecource->remove(res);
+      _loadingResource->add(res);
+      return loader->load(resource);
    }
+}
+
+bool ResourceManager::unload(Resource* res)
+{
+
+}
+
+bool ResourceManager::reload(Resource* res,bool asyn)
+{
+
+}
+
+void ResourceManager::registerLoader(Loader* loader)
+{
+
+}
+
+void ResourceManager::unregisterLoader(const char *loader)
+{
+
+}
+
+void ResourceManager::prepare()
+{
+
+
+    // Wait for thread to start.
+    pthread_mutex_lock(&app->mutex);
+    while (!app->running) {
+        pthread_cond_wait(&app->cond, &app->mutex);
+    }
+    pthread_mutex_unlock(&app->mutex);
 }
 
 void ResourceManager::setAssetManager(AAssetManager *assetMgr)
@@ -73,11 +112,6 @@ void ResourceManager::setAssetManager(AAssetManager *assetMgr)
 AAssetManager* ResourceManager::getAssetManager(void)
 {
     return assetManager;
-}
-
-ResourceManager::parsePath(const char* filepath)
-{
-
 }
 
 

@@ -11,7 +11,7 @@
  *http://flakor.org/img/image.png
  *https://flakor.org/img/image.png
  */
-#include "base/lang/FKString.h"
+#include "base/lang/Str.h"
 
 /** HierarchicalUri implementation for resource
  For reference, from RFC 2396:
@@ -39,7 +39,7 @@ FLAKOR_NS_BEGIN
 
 class Uri
 {
-    protected:
+    public:
         static char* DEFAULT_ENCODING = "UTF-8";
 		
         int type;
@@ -49,20 +49,24 @@ class Uri
         //both decoded
         String* scheme;
         String* host;
-        String* port;
+        int port;
         String* path;
         //TODO const char* authority;
-        String* fregment;
+        String* fragment;
         String* query;
     public:
 
         enum {
-           ASSET,
+           ASSET=1,
            LOCAL,
-           INTERNET
+           INTERNET,
+           OTHER
         };
 
-        static Uri* parse(String uriString);
+        Uri();
+        virtual ~Uri();
+
+        static Uri* parse(String* uriString);
         static Uri* parse(std::string uriString);
         static Uri* parse(char* uriString);
 
@@ -72,7 +76,7 @@ class Uri
      	*
      	* @return true if this URI is relative, false if it's absolute
      	*/
-    	bool isRelative();
+        bool isRelative() const;
 
     	/**
      	* Returns true if this URI is absolute, i.e.&nbsp;if it contains an
@@ -80,14 +84,14 @@ class Uri
      	*
      	* @return true if this URI is absolute, false if it's relative
      	*/
-    	bool isAbsolute();
+        bool isAbsolute() const;
 
 		/**
      	* Gets the scheme of this URI. Example: "http"
      	*
      	* @return the scheme or null if this is a relative URI
      	*/
-    	String getScheme();
+        String* getScheme() const;
 
     	/**
      	 * Gets the scheme-specific part of this URI, i.e.&nbsp;everything between
@@ -98,7 +102,7 @@ class Uri
      	 *
      	 * @return the decoded scheme-specific-part
      	 */
-         String getSchemeSpecificPart();
+         String* getSchemeSpecificPart() const;
 
     	/**
      	 * Gets the scheme-specific part of this URI, i.e.&nbsp;everything between
@@ -110,7 +114,7 @@ class Uri
          *
      	 * @return the decoded scheme-specific-part
      	 */
-    	 virtual String getEncodedSchemeSpecificPart();
+         virtual String* getEncodedSchemeSpecificPart() const;
 
     	/**
      	* Gets the decoded authority part of this URI. For
@@ -121,86 +125,86 @@ class Uri
      	*
      	* @return the authority for this URI or null if not present
      	*/
-     	virtual String getAuthority();
+        virtual String* getAuthority() const;
 
-    /**
-     * Gets the encoded authority part of this URI. For
-     * server addresses, the authority is structured as follows:
-     * {@code [ userinfo '@' ] host [ ':' port ]}
-     *
-     * <p>Examples: "google.com", "bob@google.com:80"
-     *
-     * @return the authority for this URI or null if not present
-     */
-     virtual String getEncodedAuthority();
+        /**
+        * Gets the encoded authority part of this URI. For
+        * server addresses, the authority is structured as follows:
+        * {@code [ userinfo '@' ] host [ ':' port ]}
+        *
+        * <p>Examples: "google.com", "bob@google.com:80"
+        *
+        * @return the authority for this URI or null if not present
+        */
+        virtual String* getEncodedAuthority() const;
 
-	
-	    /**
-     * Gets the encoded host from the authority for this URI. For example,
-     * if the authority is "bob@google.com", this method will return
-     * "google.com".
-     *
-     * @return the host for this URI or null if not present
-     */
-     virtual String getHost();
 
-    /**
-     * Gets the port from the authority for this URI. For example,
-     * if the authority is "google.com:80", this method will return 80.
-     *
-     * @return the port for this URI or -1 if invalid or not present
-     */
-     virtual int getPort();
+        /**
+        * Gets the encoded host from the authority for this URI. For example,
+        * if the authority is "bob@google.com", this method will return
+        * "google.com".
+        *
+        * @return the host for this URI or null if not present
+        */
+        virtual String* getHost() const;
 
-    /**
-     * Gets the decoded path.
-     *
-     * @return the decoded path, or null if this is not a hierarchical URI
-     * (like "mailto:nobody@google.com") or the URI is invalid
-     */
-     virtual String getPath();
+        /**
+        * Gets the port from the authority for this URI. For example,
+        * if the authority is "google.com:80", this method will return 80.
+        *
+        * @return the port for this URI or -1 if invalid or not present
+        */
+        virtual int getPort() const;
 
-    /**
-     * Gets the encoded path.
-     *
-     * @return the encoded path, or null if this is not a hierarchical URI
-     * (like "mailto:nobody@google.com") or the URI is invalid
-     */
-    virtual String getEncodedPath();
+        /**
+        * Gets the decoded path.
+        *
+        * @return the decoded path, or null if this is not a hierarchical URI
+        * (like "mailto:nobody@google.com") or the URI is invalid
+        */
+        virtual String* getPath() const;
 
-    /**
-     * Gets the decoded query component from this URI. The query comes after
-     * the query separator ('?') and before the fragment separator ('#'). This
-     * method would return "q=android" for
-     * "http://www.google.com/search?q=android".
-     *
-     * @return the decoded query or null if there isn't one
-     */
-     virtual String getQuery();
+        /**
+        * Gets the encoded path.
+        *
+        * @return the encoded path, or null if this is not a hierarchical URI
+        * (like "mailto:nobody@google.com") or the URI is invalid
+        */
+        virtual String getEncodedPath() const;
 
-    /**
-     * Gets the encoded query component from this URI. The query comes after
-     * the query separator ('?') and before the fragment separator ('#'). This
-     * method would return "q=android" for
-     * "http://www.google.com/search?q=android".
-     *
-     * @return the encoded query or null if there isn't one
-     */
-     virtual String getEncodedQuery();
+        /**
+        * Gets the decoded query component from this URI. The query comes after
+        * the query separator ('?') and before the fragment separator ('#'). This
+        * method would return "q=android" for
+        * "http://www.google.com/search?q=android".
+        *
+        * @return the decoded query or null if there isn't one
+        */
+        virtual String* getQuery() const;
 
-    /**
-     * Gets the decoded fragment part of this URI, everything after the '#'.
-     *
-     * @return the decoded fragment or null if there isn't one
-     */
-     virtual String getFragment();
+        /**
+        * Gets the encoded query component from this URI. The query comes after
+        * the query separator ('?') and before the fragment separator ('#'). This
+        * method would return "q=android" for
+        * "http://www.google.com/search?q=android".
+        *
+        * @return the encoded query or null if there isn't one
+        */
+        virtual String* getEncodedQuery() const;
 
-    /**
-     * Gets the encoded fragment part of this URI, everything after the '#'.
-     *
-     * @return the encoded fragment or null if there isn't one
-     */
-     virtual String getEncodedFragment();
+        /**
+        * Gets the decoded fragment part of this URI, everything after the '#'.
+        *
+        * @return the decoded fragment or null if there isn't one
+        */
+        virtual String* getFragment() const;
+
+        /**
+        * Gets the encoded fragment part of this URI, everything after the '#'.
+        *
+        * @return the encoded fragment or null if there isn't one
+        */
+        virtual String* getEncodedFragment() const;
 }
 
 FLAKOR_NS_END

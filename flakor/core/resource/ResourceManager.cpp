@@ -68,6 +68,8 @@ bool ResourceManager::load(Resource* res, bool asyn)
    {
       _pendingRecource->remove(res);
       _loadingResource->add(res);
+
+	  Loader* loader = loaders[res->getType()];
       return loader->load(resource);
    }
 }
@@ -94,8 +96,6 @@ void ResourceManager::unregisterLoader(const char *loader)
 
 void ResourceManager::prepare()
 {
-
-
     // Wait for thread to start.
     pthread_mutex_lock(&app->mutex);
     while (!app->running) {

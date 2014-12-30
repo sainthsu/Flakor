@@ -16,7 +16,7 @@ typedef enum {
 	LOADING,
 	LOADED,
 	UNLOADED,
-        FAILED,
+    FAILED,
 	DESTROYED
 } ResoureState;
 
@@ -25,19 +25,25 @@ class Uri;
 class Resource : Object
 {
     protected:
-        Uri* uri;
-        int uid;
-        int type;
-        ResourceState state;
+        Uri* _uri;
+        int _uid;
+        int _type;
+        ResourceState _state;
+		Loader* _loader;
     public:
         Resource();
         virtual ~Resource();
     
-        virtual bool loadData(bool async);
+        virtual bool load(bool async);
+        virtual bool unload();
+
         ResourceState getState(void);
+		void setState(ResourceState state);
         Uri* getUri(void);
+		void setUri(Uri* uri);
         const char* getFilename(void);
         const char* getType(void);
+		void setType(int type);
 }
 
 #endif

@@ -1,11 +1,10 @@
 /*filename 规则采用URI的定义
  */
-
 #ifndef _FK_RESOURCE_MANAGER_H_
 #define _FK_RESOURCE_MANAGER_H_
 
 #include <map>
-#include "IResource.h"
+#include "Resource.h"
 
 /*Images 通过 ImageLoader
 · Textures 通过 TextureLoader
@@ -31,10 +30,11 @@ class ResourceManager
                 SOUND
         };
 
-        static const char* IMAGE = "image";
-        static const char* TEXTURE = "texture";
-        static const char* MUSIC = "music";
-        static const char* SOUND = "sound";
+		static const char* UNKOWN_NAME = "unknow";
+        static const char* IMAGE_NAME = "image";
+        static const char* TEXTURE_NAME = "texture";
+        static const char* MUSIC_NAME = "music";
+        static const char* SOUND_NAME = "sound";
     
         static const int MAX_RESOURCE = 1024*5;
         static int uniqueID = 1; //uid begin with 1

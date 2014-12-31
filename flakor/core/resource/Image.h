@@ -2,6 +2,8 @@
 #define _FK_IMAGE_H_
 
 #include "core/opengl/texture/Texture2D.h"
+#include "core/resource/ResourceManager.h"
+
 
 // premultiply alpha, or the effect will wrong when want to use other pixel format in Texture2D,
 // such as RGB888, RGB5A1
@@ -63,15 +65,8 @@ public:
 
 	virtual bool load(bool async) override;
     virtual bool unload() override;
-
-    /**
-    @brief Load the image from the specified path.
-    @param path   the absolute file path.
-    @return true if loaded correctly.
-    */
-    bool initWithUri(Uri *uri);
-
-    /**
+    
+	/**
     @brief Load image from stream buffer.
     @param data  stream buffer which holds the image data.
     @param dataLen  data length expressed in (number of) bytes.

@@ -21,8 +21,6 @@ struct BlendFunc
     static const BlendFunc ALPHA_NON_PREMULTIPLIED;
     //! Enables Additive blending. Uses {GL_SRC_ALPHA, GL_ONE}
     static const BlendFunc ADDITIVE;
-	
-	
 
 	bool operator==(const BlendFunc &a) const
     {

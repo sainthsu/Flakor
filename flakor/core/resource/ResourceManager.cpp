@@ -42,8 +42,10 @@ Resource *RescourceManager::getResourceById(int id)
 
 }
 
-Resource *ResourceManager::CreateResource(const char* uri, const char* type, void* param)
+Resource *ResourceManager::CreateResource(const char* uriChar, const char* type, void* param)
 {
+	Uri *uri = Uri::parse(uriChar);
+	
   if(_loadedResource.contains(id))
      retrun _loadedResource[id];
   else

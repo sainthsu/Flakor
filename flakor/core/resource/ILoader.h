@@ -6,6 +6,7 @@
 
 class ILoader
 {
+public:
 	ILoader* createLoader() = 0;
 	Resource* createRes(Uri* uri) = 0;
 	bool Load(Resource* res) = 0;

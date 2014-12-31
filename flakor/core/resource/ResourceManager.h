@@ -64,7 +64,8 @@ class ResourceManager
 
         static RescourceManager* thisManager();
         //从资源文件加载纹理
-        Resource *CreateResource(const char *uri,const char* type);
+		//Resource *CreateResource(const String *str,const char* type);
+        Resource *CreateResource(const char *uriChar,const char* type);
         Resource *getResourceByName(const char* name);
         Resource *getResourceById(int id);
 

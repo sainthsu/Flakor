@@ -2,6 +2,7 @@
 #define _FK_FLAKOR_H_
 
 #define FLAKOR_VERSION 0x00000100
+#define FLAKOR_AUTHOR "Saint Hsu(saint@aliyun.com)"
 
 //macro
 #include "macros.h"
@@ -30,6 +31,7 @@
 #include "2d/Scene.h"
 #include "2d/Sprite.h"
 
+//core systems
 //input
 #include "core/input/Touch.h"
 //opengl

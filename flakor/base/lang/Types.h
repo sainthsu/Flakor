@@ -1,6 +1,9 @@
 #ifndef _FK_TYPES_H_
 #define _FK_TYPES_H_
 
+/**
+  *Maybe this file is unusable!
+  */
 #include "base/lang/DataVisitor.h"
 
 FLAKOR_NS_BEGIN

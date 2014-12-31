@@ -128,7 +128,7 @@ class Texture2D : public Object
 		bool	_antialiasEnabled;
 
 		//TODO need these attributes later
-		float _scale; 
+		float _scale;
 		bool rotated;
 		bool flipY;
 

@@ -416,20 +416,14 @@ Image::~Image()
         FK_SAFE_FREE(_data);
 }
 
-bool Image::initWithImageFile(const std::string& path)
+bool Image::load(bool aync)
 {
-    bool ret = false;
+    return ResourceManager::thisManager->load(this,aync);
+}
 
-    /*_filePath = FileUtils::getInstance()->fullPathForFilename(path);
-    Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
-
-    if (!data.isNull())
-    {
-        ret = initWithImageData(data.getBytes(), data.getSize());
-    }
-	*/
-
-    return ret;
+bool Image::unload()
+{
+    return ResourceManager::thisManager->unload(this);
 }
 
 bool Image::initWithImageFileThreadSafe(const std::string& fullpath)

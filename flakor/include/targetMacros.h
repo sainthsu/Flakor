@@ -17,7 +17,9 @@
 
 /* Define NULL pointer value */
 #ifndef NULL
-  #ifdef __cplusplus
+  #if defined(__cplusplus) && (__cplusplus > 199711L) //C11
+      #define NULL    nullptr
+  #elif defined(__cplusplus)
       #define NULL    0
   #else
 	  #define NULL    ((void *)0)

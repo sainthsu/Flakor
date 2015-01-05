@@ -1,6 +1,7 @@
 #include "targetMacros.h"
 #include "core/resource/ResourceManager.h"
 #include "core/resource/Loader.h"
+#include "core/resource/Uri.h"
 
 FLAKOR_NS_BEGIN
 
@@ -20,7 +21,8 @@ RescourceManager::RescourceManager
 
 RescourceManager::~RescourceManager
 {
-    
+    _loader.clear();
+	
 }
 
 RescourceManager* RescourceManager::thisManager(void)
@@ -34,12 +36,12 @@ RescourceManager* RescourceManager::thisManager(void)
 
 Resource *RescourceManager::getResourceByName(const char* name)
 {
-
+	
 }
 
 Resource *RescourceManager::getResourceById(int id)
 {
-
+	
 }
 
 Resource *ResourceManager::CreateResource(const char* uriChar, const char* type, void* param)
@@ -71,7 +73,7 @@ bool ResourceManager::load(Resource* res, bool asyn)
       _pendingRecource->remove(res);
       _loadingResource->add(res);
 
-	  Loader* loader = loaders[res->getType()];
+	  Loader* loader = _loaders[res->getType()];
       return loader->load(resource);
    }
 }
@@ -86,14 +88,14 @@ bool ResourceManager::reload(Resource* res,bool asyn)
 
 }
 
-void ResourceManager::registerLoader(Loader* loader)
+void ResourceManager::registerLoader(const char* type, Loader* loader)
 {
-
+	_loader->insert(map<const char*,Loader*>::value_type(type,loader));
 }
 
 void ResourceManager::unregisterLoader(const char *loader)
 {
-
+	_loader->erase(loader);
 }
 
 void ResourceManager::prepare()

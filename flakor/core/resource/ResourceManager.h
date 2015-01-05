@@ -4,7 +4,7 @@
 #define _FK_RESOURCE_MANAGER_H_
 
 #include <map>
-#include "Resource.h"
+#include "core/resource/Resource.h"
 
 /*Images 通过 ImageLoader
 · Textures 通过 TextureLoader

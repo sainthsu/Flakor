@@ -80,7 +80,10 @@ Texture2D::Texture2D()
 , _shaderProgram(nullptr)
 , _antialiasEnabled(true)
 {
-	
+	_texParams.minFilter = GL_LINEAR;
+    _texParams.magFilter = GL_LINEAR;
+    _texParams.wrapS = GL_CLAMP_TO_EDGE;
+    _texParams.wrapT = GL_CLAMP_TO_EDGE;
 }
 
 Texture2D::~Texture2D()
@@ -92,10 +95,249 @@ Texture2D::~Texture2D()
 	}
 }
 
-bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixelFormat,int width,int height,Size size)
+bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixelFormat,int width,int height,const Size& size)
 {
-	return true;
+	FKAssert(dataLen>0 && width>0 && pixelsHigh>0, "Invalid size");
+
+    //if data has no mipmaps, we will consider it has only one mipmap
+    MipmapInfo mipmap;
+    mipmap.address = (unsigned char*)data;
+    mipmap.len = static_cast<int>(dataLen);
+    return initWithMipmaps(&mipmap, 1, pixelFormat, width, height);
 }
+
+bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat pixelFormat, int pixelsWidth, int pixelsHeight)
+{
+
+    //the pixelFormat must be a certain value 
+    FKAssert(pixelFormat != PixelFormat::NONE && pixelFormat != PixelFormat::AUTO, "the \"pixelFormat\" param must be a certain value!");
+    FKAssert(pixelsWidth>0 && pixelsHeight>0, "Invalid size");
+
+    if (mipmapsNum <= 0)
+    {
+        FKLOG("Flakor: WARNING: mipmap number is less than 1");
+        return false;
+    }
+    
+
+    if(_pixelFormatInfoTables.find(pixelFormat) == _pixelFormatInfoTables.end())
+    {
+        FKLOG("Flakor:: WARNING: unsupported pixelformat: %lx", (unsigned long)pixelFormat );
+        return false;
+    }
+
+    const PixelFormatInfo& info = _pixelFormatInfoTables.at(pixelFormat);
+
+    if (info.compressed && !GPUInfo::getInstance()->supportsPVRTC()
+                        && !GPUInfo::getInstance()->supportsETC()
+                        && !GPUInfo::getInstance()->supportsS3TC()
+                        && !GPUInfo::getInstance()->supportsATITC())
+    {
+        FKLOG("Flakor: WARNING: PVRTC/ETC images are not supported");
+        return false;
+    }
+
+    //Set the row align only when mipmapsNum == 1 and the data is uncompressed
+    if (mipmapsNum == 1 && !info.compressed)
+    {
+        unsigned int bytesPerRow = pixelsWidth * info.bpp / 8;
+
+        if(bytesPerRow % 8 == 0)
+        {
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 8);
+        }
+        else if(bytesPerRow % 4 == 0)
+        {
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+        }
+        else if(bytesPerRow % 2 == 0)
+        {
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
+        }
+        else
+        {
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        }
+    }
+	else
+    {
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    }
+
+    if(_textureID != 0)
+    {
+        glDeleteTextures(1,&_textureID);
+        _textureID = 0;
+    }
+
+    glGenTextures(1, &_textureID);
+    glBindTexture(GL_TEXTURE_2D, _textureID);
+
+    if (mipmapsNum == 1)
+    {
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _antialiasEnabled ? GL_LINEAR : GL_NEAREST);
+    }else
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _antialiasEnabled ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_NEAREST);
+    }
+    
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _antialiasEnabled ? GL_LINEAR : GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+
+#if FK_ENABLE_CACHE_TEXTURE_DATA
+    if (_antialiasEnabled)
+    {
+        TexParams texParams = {(GLuint)(_hasMipmaps?GL_LINEAR_MIPMAP_NEAREST:GL_LINEAR),GL_LINEAR,GL_NONE,GL_NONE};
+        
+    } 
+    else
+    {
+        TexParams texParams = {(GLuint)(_hasMipmaps?GL_NEAREST_MIPMAP_NEAREST:GL_NEAREST),GL_NEAREST,GL_NONE,GL_NONE};
+        //VolatileTextureMgr::setTexParameters(this, texParams);
+    }
+#endif
+
+    CHECK_GL_ERROR_DEBUG(); // clean possible GL error
+    
+    // Specify OpenGL texture image
+    int width = pixelsWidth;
+    int height = pixelsHeight;
+    
+    for (int i = 0; i < mipmapsNum; ++i)
+    {
+        unsigned char *data = mipmaps[i].address;
+        GLsizei datalen = mipmaps[i].len;
+
+        if (info.compressed)
+        {
+            glCompressedTexImage2D(GL_TEXTURE_2D, i, info.internalFormat, (GLsizei)width, (GLsizei)height, 0, datalen, data);
+        }
+        else
+        {
+            glTexImage2D(GL_TEXTURE_2D, i, info.internalFormat, (GLsizei)width, (GLsizei)height, 0, info.format, info.type, data);
+        }
+
+        if (i > 0 && (width != height || FK_NextPOT(width) != width ))
+        {
+            FKLOG("Flakor: Texture2D. WARNING. Mipmap level %u is not squared. Texture won't render correctly. width=%d != height=%d", i, width, height);
+        }
+
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            FKLOG("Flakor: Texture2D: Error uploading compressed texture level: %u . glError: 0x%04X", i, err);
+            return false;
+        }
+
+        width = MAX(width >> 1, 1);
+        height = MAX(height >> 1, 1);
+    }
+
+    _contentSize = Size((float)pixelsWidth, (float)pixelsHeight);
+    _pixelsWide = pixelsWidth;
+    _pixelsHigh = pixelsHeight;
+    _pixelFormat = pixelFormat;
+    _maxS = 1;
+    _maxT = 1;
+
+    _hasPremultipliedAlpha = false;
+    _hasMipmaps = mipmapsNum > 1;
+
+    // shader
+    //setGLProgram(GLProgram::SHADER_NAME_POSITION_TEXTURE);
+    return true;
+}
+
+bool Texture2D::updateWithData(const void *data,int offsetX,int offsetY,int width,int height)
+{
+    if (_name)
+    {
+        glBindTexture(GL_TEXTURE_2D,_textureID);
+        const PixelFormatInfo& info = _pixelFormatInfoTables.at(_pixelFormat);
+        glTexSubImage2D(GL_TEXTURE_2D,0,offsetX,offsetY,width,height,info.format, info.type,data);
+
+        return true;
+    }
+    return false;
+}
+
+// implementation Texture2D (Image)
+bool Texture2D::initWithImage(Image *image)
+{
+    return initWithImage(image, g_defaultAlphaPixelFormat);
+}
+
+bool Texture2D::initWithImage(Image *image, PixelFormat format)
+{
+    if (image == NULL)
+    {
+        FKLOG("Flakor: Texture2D. Can't create Texture. Image is nil");
+        return false;
+    }
+
+    int imageWidth = image->getWidth();
+    int imageHeight = image->getHeight();
+
+    GPUInfo *info = GPUInfo::getInstance();
+
+    int maxTextureSize = info->getMaxTextureSize();
+    if (imageWidth > maxTextureSize || imageHeight > maxTextureSize) 
+    {
+        FKLOG("Flakor: WARNING: Image (%u x %u) is bigger than the supported %u x %u", imageWidth, imageHeight, maxTextureSize, maxTextureSize);
+        return false;
+    }
+
+    unsigned char*   tempData = image->getData();
+    Size             imageSize = Size((float)imageWidth, (float)imageHeight);
+    PixelFormat      pixelFormat = ((PixelFormat::NONE == format) || (PixelFormat::AUTO == format)) ? image->getRenderFormat() : format;
+    PixelFormat      renderFormat = image->getRenderFormat();
+    size_t	         tempDataLen = image->getDataLen();
+
+
+    if (image->getNumberOfMipmaps() > 1)
+    {
+        if (pixelFormat != image->getRenderFormat())
+        {
+            FKLOG("Flakor: WARNING: This image has more than 1 mipmaps and we will not convert the data format");
+        }
+
+        initWithMipmaps(image->getMipmaps(), image->getNumberOfMipmaps(), image->getRenderFormat(), imageWidth, imageHeight);
+        
+        return true;
+    }
+    else if (image->isCompressed())
+    {
+        if (pixelFormat != image->getRenderFormat())
+        {
+            FKLOG("Flakor: WARNING: This image is compressed and we cann't convert it for now");
+        }
+
+        initWithData(tempData, tempDataLen, image->getRenderFormat(), imageWidth, imageHeight, imageSize);
+        return true;
+    }
+    else
+    {
+        unsigned char* outTempData = nullptr;
+        ssize_t outTempDataLen = 0;
+
+        pixelFormat = TexUtils::convertDataToFormat(tempData, tempDataLen, renderFormat, pixelFormat, &outTempData, &outTempDataLen);
+
+        initWithData(outTempData, outTempDataLen, pixelFormat, imageWidth, imageHeight, imageSize);
+
+
+        if (outTempData != nullptr && outTempData != tempData)
+        {
+            free(outTempData);
+        }
+
+        // set the premultiplied tag
+        _hasPremultipliedAlpha = image->hasPremultipliedAlpha();
+        
+        return true;
+    }
+}
+
 
 /** Gets the pixel format of the texture */
 PixelFormat Texture2D::getPixelFormat() const
@@ -174,88 +416,37 @@ bool Texture2D::hasPremultipliedAlpha()
 	return _hasPremultipliedAlpha;
 }
 
-void Texture2D::load()
+bool Texture2D::hasMipmaps() const
 {
-	if(_textureID != 0)
+    return _hasMipmaps;
+}
+
+void Texture2D::generateMipmap()
+{
+    FKAssert(_pixelsWidth == FK_NextPOT(_pixelsWidth) && _pixelsHeight == FK_NextPOT(_pixelsHeight), "Mipmap texture only works in POT textures");
+    glBindTexture(GL_TEXTURE_2D,_textureID);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    _hasMipmaps = true;
+}
+
+bool Texture2D::load(bool aync)
+{
+	return ResourceManager::thisManager->load(this,aync);
+}
+
+bool Texture2D::unload()
+{
+	return ResourceManager::thisManager->unload(this);
+}
+
+void Texture2D::delFromGPU()
+{
+	if(_textureID)
 	{
 		glDeleteTextures(1,&_textureID);
 	}
 	
-	glActiveTexture(GL_TEXTURE0);
-	glGenTextures(1,&_textureID);
-	glBindTexture(GL_TEXTURE_2D,_textureID);
-
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _antialiasEnabled ? GL_LINEAR : GL_NEAREST);
-
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _antialiasEnabled ? GL_LINEAR : GL_NEAREST );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-
-	Image *image = this->loadData();
-    if (image == nullptr) {
-        FKLOG("image file error"); return;
-    }
-    PixelFormat pixelFormat = image->getRenderFormat();
-
-	if(_pixelFormatInfoTables.find(pixelFormat) == _pixelFormatInfoTables.end())
-    {
-        FKLOG("cocos2d: WARNING: unsupported pixelformat: %lx", (unsigned long)pixelFormat );
-        return ;
-    }
-
-    const PixelFormatInfo& info = _pixelFormatInfoTables.at(pixelFormat);
-
-	_pixelsWidth = 	image->getWidth();
-	_pixelsHeight = image->getHeight();
-	_contentSize.setSize(_pixelsWidth,_pixelsHeight);
-	glTexImage2D(GL_TEXTURE_2D, 0, info.internalFormat, (GLsizei)image->getWidth(), (GLsizei)image->getHeight(), 0, info.format, info.type, image->getData());
-}
-
-Image* Texture2D::loadData()
-{
-	unsigned char* buffer = nullptr;
-    ssize_t size = 0;
-    size_t readsize;
-    const char* mode = "rb";
-    
-    do
-    {
-        // Read the file from hardware
-        //std::string fullPath = FileUtils::getInstance()->fullPathForFilename(filename);
-        FILE *fp = fopen(_filename, mode);
-        if (!fp) {
-            FKLOG("openfile error");
-        }
-        FK_BREAK_IF(!fp);
-        fseek(fp,0,SEEK_END);
-        size = ftell(fp);
-        fseek(fp,0,SEEK_SET);
-        
-        buffer = (unsigned char*)malloc(sizeof(unsigned char) * size);
-        
-        readsize = fread(buffer, sizeof(unsigned char), size, fp);
-        fclose(fp);
-
-    } while (0);
-    
-    if (nullptr == buffer || 0 == readsize)
-    {
-        std::string msg = "Get data from file(";
-        msg.append(_filename).append(") failed!");
-        FKLOG("%s", msg.c_str());
-		return nullptr;
-    }
-
-	Image *image = new Image();
-	image->initWithImageData(buffer, readsize);
-	
-	return image;
-
-}
-
-void Texture2D::unload()
-{
-	
+	_textureID = 0;
 }
 
 void Texture2D::bind()

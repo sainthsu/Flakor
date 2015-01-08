@@ -97,6 +97,9 @@ class Texture2D : public Resource
 		static const PixelFormatInfoMap _pixelFormatInfoTables;
 
 		PixelFormat _pixelFormat;
+
+		TexParams _texParams;
+
 		/** width in pixels */
 		int _pixelsWidth;
 
@@ -118,10 +121,7 @@ class Texture2D : public Resource
 		/** whether or not the texture has their Alpha premultiplied */
 		bool _hasPremultipliedAlpha;
 
-		bool _hasMipmaps;
-
-		/** shader program used by drawAtPoint and drawInRect */
-		GLProgram* _shaderProgram;		
+		bool _hasMipmaps;		
 
 		bool	_antialiasEnabled;
 
@@ -134,9 +134,30 @@ class Texture2D : public Resource
 		Texture2D();
 		virtual ~Texture2D();
 		
-		bool initWithData(const void *data,ssize_t dataLen,PixelFormat pixelFormat,int width,int height,Size size);
+		bool initWithData(const void *data,ssize_t dataLen,PixelFormat pixelFormat,int width,int height,const Size& size);
 
-		bool initWithFile(const char *fileName);
+		/** Initializes with mipmaps */
+    	bool initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat pixelFormat, int pixelsWidth, int pixelsHeight);
+
+		/**
+    	  create a Texture2D object from an image file.
+    	*/
+    	/** 
+		Initializes a texture from a Image resource.
+    	We will use the format you specified with setDefaultAlphaPixelFormat to convert the image for texture.
+    	NOTE: It will not convert the pvr image file.
+		*/
+    	bool initWithImage(Image * image);
+    
+    	/** 
+		Initializes a texture from a Image resource.
+		we will use the format you passed to the function to convert the image format to the texture format.
+    	If you pass PixelFormat::Automatic, we will auto detect the image render type and use that type for texture to render.
+    	**/
+    	bool initWithImage(Image * image, PixelFormat format);
+
+		/** Update with texture data*/
+	    bool updateWithData(const void *data,int offsetX,int offsetY,int width,int height);
 
 		/** Gets the pixel format of the texture */
 	    PixelFormat getPixelFormat() const;
@@ -168,11 +189,18 @@ class Texture2D : public Resource
 
 		bool hasPremultipliedAlpha();
 
-		void load();
-		Image* loadData();
-		void unload();
+		bool hasMipmaps() const;
+		/** Generates mipmap images for the texture.
+    	It only works if the texture size is POT (power of 2).
+    	*/
+    	void generateMipmap();
+
+		virtual bool load(bool async) override;
+    	virtual bool unload() override;
 
 		void bind();
+		void delFromGPU();
+
 	public:
 		static const PixelFormatInfoMap& getPixelFormatInfoMap();
 

@@ -347,11 +347,15 @@ PixelFormat Texture2D::getPixelFormat() const
 
 void Texture2D::setTexParams(const TexParams& texParams)
 {
-	/*FKAssert((_pixelsWide == ccNextPOT(_pixelsWide) || texParams.wrapS == GL_CLAMP_TO_EDGE) &&
-        (_pixelsHigh == ccNextPOT(_pixelsHigh) || texParams.wrapT == GL_CLAMP_TO_EDGE),
+	FKAssert((_pixelsWidth == FK_NextPOT(_pixelsWidth) || texParams.wrapS == GL_CLAMP_TO_EDGE) &&
+        (_pixelsHeight == FK_NextPOT(_pixelsHeight) || texParams.wrapT == GL_CLAMP_TO_EDGE),
         "GL_CLAMP_TO_EDGE should be used in NPOT dimensions");
-	*/
 
+	_texParams.minFilter = texParams.minFilter;
+    _texParams.magFilter = texParams.magFilter;
+    _texParams.wrapS = texParams.wrapS;
+    _texParams.wrapT = texParams.wrapT;
+	
     glBindTexture( GL_TEXTURE_2D,_textureID );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texParams.minFilter );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texParams.magFilter );

@@ -8,13 +8,13 @@ bool load(Resource* res)
 	ResouceState state = res->getState();
 	if(state == LOADING) return false;
 	
-	img = dynamic_castM<Image*>(res);
+	img = dynamic_cast<Image*>(res);
 	if(img)
 	{
 		if(state == LOADED) img->unload();
 		Uri* uri = img->getUri();
 		BitData* data = BitData::createFromUri(uri);
-		img->initWithImageData(data->getBytes(), data->getSize);
+		img->initWithImageData(data->getBytes(), data->getSize());
 		return true;
 	}
 	

@@ -1,6 +1,11 @@
 #include "core/resource/BitData.h"
-#include <string>
+#include "core/resource/Uri.h"
+#include "core/resource/ResourceManager.h"
+#include "base/lang/Str.h"
+#include <string.h>
 #include <stdio.h>
+#include <android/asset_manager.h>
+
 
 FLAKOR_NS_BEGIN
 
@@ -35,30 +40,30 @@ BitData::~BitData()
 	clear();
 }
 
-BitData* BitData::createFromFile(Uri* uri)
+BitData* BitData::createFromUri(Uri* uri)
 {
-	if(uri->getType == ASSET)
-		return BitData::createFromAsset(uri->realPath)
-	else if(uri->getType == LOCAL)
+	if(uri->type == Uri::ASSET)
+		return BitData::createFromAsset(uri->realPath);
+	else if(uri->type == Uri::LOCAL)
 		return BitData::createFromFile(uri->realPath);
 	else
 		return NULL;
 }
 
 
-BitData* BitData::createFromAsset(String* filePath)
+BitData* BitData::createFromAsset(const String* filePath)
 {
 	// read asset data
 	unsigned char* buffer = NULL;
-	ssite_t size = 0;
+	ssize_t size = 0;
 	BitData* data = NULL;
 
-	AAsset* asset = AAssetManager_open(FileUtilsAndroid::assetmanager,
-			filePath.getCString(),
+	AAsset* asset = AAssetManager_open(ResourceManager::getAssetManager(),
+			filePath->getCString(),
 			AASSET_MODE_UNKNOWN);
 	if (NULL == asset) {
 		FKLOG("asset is nullptr");
-		return BitData::Null;
+		return NULL;
 	}
 
 	off_t fileSize = AAsset_getLength(asset);
@@ -86,6 +91,7 @@ BitData* BitData::createFromAsset(String* filePath)
 
 
 }
+
 BitData* BitData::createFromFile(const String* filePath)
 {
 	unsigned char* buffer = NULL;
@@ -93,7 +99,7 @@ BitData* BitData::createFromFile(const String* filePath)
 	size_t readsize;
 	const char* mode = "rb";
 	BitData* data = NULL;
-	char* file = filePath->getCString();
+	const char* file = filePath->getCString();
 
 	do
 	{

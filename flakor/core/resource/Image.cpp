@@ -1,7 +1,8 @@
 #include "targetMacros.h"
 #include "core/opengl/GL.h"
 #include "core/opengl/GPUInfo.h"
-#include "core/opengl/texture/Image.h"
+#include "core/resource/Image.h"
+#include "core/resource/Uri.h"
 
 #include <vector>
 #include <string>
@@ -418,18 +419,17 @@ Image::~Image()
 
 bool Image::load(bool aync)
 {
-    return ResourceManager::thisManager->load(this,aync);
+    return ResourceManager::thisManager()->load(dynamic_cast<Resource*>(this),aync);
 }
 
 bool Image::unload()
 {
-    return ResourceManager::thisManager->unload(this);
+    return ResourceManager::thisManager()->unload(dynamic_cast<Resource*>(this));
 }
 
 bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
 {
     bool ret = false;
-    _filePath = fullpath;
 
     return ret;
 }
@@ -1599,7 +1599,7 @@ bool Image::initWithTGAData(tImageTGA* tgaData)
             }
             else
             {
-                FKLOG("Image WARNING: unsupport true color tga data pixel format. FILE: %s", _filePath.c_str());
+                FKLOG("Image WARNING: unsupport true color tga data pixel format. FILE: %s", getUri()->realPath->getCString());
                 break;
             }
         }
@@ -1613,7 +1613,7 @@ bool Image::initWithTGAData(tImageTGA* tgaData)
             else
             {
                 // actually this won't happen, if it happens, maybe the image file is not a tga
-                FKLOG("Image WARNING: unsupport gray tga data pixel format. FILE: %s", _filePath.c_str());
+                FKLOG("Image WARNING: unsupport gray tga data pixel format. FILE: %s", getUri()->realPath->getCString());
                 break;
             }
         }
@@ -1633,11 +1633,13 @@ bool Image::initWithTGAData(tImageTGA* tgaData)
     if (ret)
     {
         const unsigned char tgaSuffix[] = ".tga";
+		const char* _filePath = getUri()->realPath->getCString();
+
         for(int i = 0; i < 4; ++i)
         {
-            if (tolower(_filePath[_filePath.length() - i - 1]) != tgaSuffix[3 - i])
+            if (tolower(_filePath[strlen(_filePath) - i - 1]) != tgaSuffix[3 - i])
             {
-                FKLOG("Image WARNING: the image file suffix is not tga, but parsed as a tga image file. FILE: %s", _filePath.c_str());
+                FKLOG("Image WARNING: the image file suffix is not tga, but parsed as a tga image file. FILE: %s", getUri()->realPath->getCString());
                 break;
             };
         }

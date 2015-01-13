@@ -47,14 +47,6 @@ class ITexture : public IBlendFunc
     virtual void setTexture(Texture2D *texture) = 0;
 };
 
-class ITextureListener {
-	public:
-		virtual void onBeginLoad(ITexture *tex) const = 0;
-		virtual void onFinishLoad(ITexture *tex) const = 0;
-		virtual void onBeginUnload(ITexture *tex) const = 0;
-		virtual void onFinishUnLoad(ITexture *tex) const = 0;
-};
-
 FLAKOR_NS_END
 
 #endif

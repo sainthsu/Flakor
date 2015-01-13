@@ -8,18 +8,19 @@ FLAKOR_NS_BEGIN
 class LoaderThread
 {
     protected:
-        pid_t pid;
-        pthread_t thread;
+        pid_t _pid;
+        pthread_t _thread;
     public:
         LoaderThread();
         ~LoaderThread();
 
         static LoaderThread* create();
-        static void run(void);
+        static void* run(void* param);
 
+		void start();
         pid_t getPid();
 
-}
+};
 
 #endif
 

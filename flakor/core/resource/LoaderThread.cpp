@@ -1,37 +1,40 @@
-#ifndef _FK_LOADER_THREAD_H_
-#define _FK_LOADER_THREAD_H_
-
+#include "targetMacros.h"
 #include "core/resource/LoaderThread.h"
+#include "core/resource/ResourceManager.h"
+#include "core/resource/Resource.h"
+
+#include   <unistd.h>
+
 
 FLAKOR_NS_BEGIN
 
 LoaderThread::LoaderThread()
-:pid(0)
-,thread(NULL)
+:_pid(0)
+,_thread(0)
 {}
 
 LoaderThread::~LoaderThread()
 {
-
+	
 }
 
 LoaderThread* LoaderThread::create()
 {
-    LoaderThread thread = NULL;
+    LoaderThread* thread = NULL;
     thread = new LoaderThread();
 
     return thread;
 }
 
-void start()
+void LoaderThread::start()
 {
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    pthread_create(&thread, &attr, LoadThread::run, NULL);
+    pthread_create(&_thread, &attr, LoaderThread::run, NULL);
 }
 
-void LoaderThread::run(void)
+void* LoaderThread::run(void* param)
 {
     ResourceManager *mgr = ResourceManager::thisManager();
 
@@ -40,16 +43,16 @@ void LoaderThread::run(void)
         if(mgr->waitLoads >= 1)
         {
 
-            pthread_mutex_lock(mgr->mutex);
+            pthread_mutex_lock(&mgr->mutex);
 			Resource* res = mgr->getWaitingRes();
-			res->load();
+			//res->load();
 
             mgr->waitLoads--;
-            pthread_mutex_unlock(mgr->mutex);
+            pthread_mutex_unlock(&mgr->mutex);
         }
         else
         {
-            sleep(80);
+            usleep(80);
         }
     }
 }
@@ -57,11 +60,9 @@ void LoaderThread::run(void)
 
 pid_t LoaderThread::getPid()
 {
-    if(pid == 0)
-        pid = getpid();
-    return pid;
+    if(_pid == 0)
+        _pid = getpid();
+    return _pid;
 }
-
-#endif
 
 FLAKOR_NS_END

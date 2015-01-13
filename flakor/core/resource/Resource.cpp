@@ -1,8 +1,11 @@
-#ifndef _FK_RESOURCE_H_
-#define _FK_RESOURCE_H_
-
+#include "targetMacros.h"
 #include "core/resource/Resource.h"
+#include "core/resource/Uri.h"
+#include "core/resource/ILoader.h"
 #include "core/resource/ResourceManager.h"
+
+
+FLAKOR_NS_BEGIN
 
 Resource::Resource()
 :_uri(NULL)
@@ -10,6 +13,7 @@ Resource::Resource()
 ,_type(ResourceManager::UNKNOW)
 ,_state(INITED)
 ,_loader(NULL)
+,_listener(NULL)
 {}
 
 Resource::~Resource()
@@ -52,24 +56,24 @@ void Resource::setUri(Uri* uri)
 
 const char* Resource::getFilename(void)
 {
-    return _uri->filename;
+    return _uri->filename->getCString();
 }
 
 const char* Resource::getType(void)
 {
-	char* typeChar;
+	const char* typeChar;
 	switch(_type)
 	{
-		case:ResourceManager::IMAGE:
+		case ResourceManager::IMAGE:
 			typeChar =  ResourceManager::IMAGE_NAME;
 			break;
-		case:ResourceManager::TEXTURE:
+		case ResourceManager::TEXTURE:
 			typeChar =  ResourceManager::TEXTURE_NAME;
 			break;
-		case:ResourceManager::MUSICE:
-			typeChar =  ResourceManager::MUSICE_NAME;
+		case ResourceManager::MUSIC:
+			typeChar =  ResourceManager::MUSIC_NAME;
 			break;
-		case:ResourceManager::SOUND:
+		case ResourceManager::SOUND:
 			typeChar =  ResourceManager::SOUND_NAME;
 			break;
 		default:
@@ -78,11 +82,23 @@ const char* Resource::getType(void)
 		
 	}
 
-    return typeName;
+    return typeChar;
 }
 
 void Resource::setType(int type)
 {
 	_type = type;
 }
+
+ResourceListener* Resource::getListener()
+{
+	return _listener;
+}
+
+void Resource::setListener(ResourceListener* listener)
+{
+	_listener = listener;
+}
+
+FLAKOR_NS_END
 

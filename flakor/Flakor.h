@@ -32,6 +32,14 @@
 #include "2d/Sprite.h"
 
 //core systems
+//resource
+#include "core/resource/BitData.h"
+#include "core/resource/Image.h"
+#include "core/resource/ImageLoader.h"
+#include "core/resource/LoaderThread.h"
+#include "core/resource/Resource.h"
+#include "core/resource/ResourceManager.h"
+#include "core/resource/Uri.h"
 //input
 #include "core/input/Touch.h"
 //opengl
@@ -39,7 +47,7 @@
 #include "core/opengl/GLProgram.h"
 #include "core/opengl/shader/Shaders.h"
 #include "core/opengl/vbo/VBO.h"
-#include "core/opengl/texture/Image.h"
+//#include "core/opengl/texture/Image.h"
 #include "core/opengl/texture/Texture2D.h"
 
 //math

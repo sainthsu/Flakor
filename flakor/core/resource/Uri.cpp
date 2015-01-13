@@ -6,6 +6,8 @@
 
 FLAKOR_NS_BEGIN
 
+char* Uri::DEFAULT_ENCODING = "UTF-8";
+
 Uri::Uri()
 :type(0)
 ,realPath(NULL)

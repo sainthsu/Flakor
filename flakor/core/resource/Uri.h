@@ -40,7 +40,7 @@ FLAKOR_NS_BEGIN
 class Uri
 {
     public:
-        static char* DEFAULT_ENCODING = "UTF-8";
+        static char* DEFAULT_ENCODING;
 		
         int type;
         String* realPath;
@@ -205,7 +205,7 @@ class Uri
         * @return the encoded fragment or null if there isn't one
         */
         virtual String* getEncodedFragment() const;
-}
+};
 
 FLAKOR_NS_END
 

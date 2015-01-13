@@ -1,11 +1,17 @@
 #include "core/resource/ImageLoader.h"
+#include "core/opengl/GL.h"
 #include "core/resource/Resource.h"
+#include "core/resource/Image.h"
+#include "core/resource/BitData.h"
 
-bool load(Resource* res)
+
+FLAKOR_NS_BEGIN
+
+bool ImageLoader::load(Resource* res)
 {
 	Image* img = NULL;
 
-	ResouceState state = res->getState();
+	ResourceState state = res->getState();
 	if(state == LOADING) return false;
 	
 	img = dynamic_cast<Image*>(res);
@@ -22,16 +28,17 @@ bool load(Resource* res)
 	
 }
 
-Loader* createLoader()
+ILoader* ImageLoader::createLoader()
 {
     ImageLoader* loader = new ImageLoader();
-    return loader;
+    return dynamic_cast<ILoader*>(loader);
 }
 
-Resource* createRes(Uri* uri)
+Resource* ImageLoader::createRes(Uri* uri)
 {
 	Image *res = new Image();
 	res->setUri(uri);
 	return res;
 }
 
+FLAKOR_NS_END

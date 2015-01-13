@@ -8,6 +8,7 @@ test/android/project.properties
 
 *~
 *.pdf
+*backup
 
 flakor.config
 flakor.creator

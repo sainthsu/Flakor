@@ -4,7 +4,7 @@
 #define _FK_RESOURCE_MANAGER_H_
 
 #include <map>
-#include "core/resource/Resource.h"
+#include <android/asset_manager.h>
 
 /*Images 通过 ImageLoader
 · Textures 通过 TextureLoader
@@ -17,7 +17,10 @@
 
 FLAKOR_NS_BEGIN
 
-class Reource;
+class Resource;
+class LoadThread;
+class ILoader;
+class Array;
 
 class ResourceManager
 {
@@ -30,14 +33,14 @@ class ResourceManager
                 SOUND
         };
 
-		static const char* UNKOWN_NAME = "unknow";
-        static const char* IMAGE_NAME = "image";
-        static const char* TEXTURE_NAME = "texture";
-        static const char* MUSIC_NAME = "music";
-        static const char* SOUND_NAME = "sound";
+		static const char* UNKNOW_NAME;
+        static const char* IMAGE_NAME;
+        static const char* TEXTURE_NAME;
+        static const char* MUSIC_NAME;
+        static const char* SOUND_NAME;
     
         static const int MAX_RESOURCE = 1024*5;
-        static int uniqueID = 1; //uid begin with 1
+        static int uniqueID; //uid begin with 1
     
         /**
          * Path to this application's internal data directory.
@@ -51,6 +54,7 @@ class ResourceManager
 
         pthread_mutex_t mutex;
         pthread_cond_t cond;
+		bool running;
 
         int msgread;
         int msgwrite;
@@ -60,38 +64,38 @@ class ResourceManager
         LoadThread** thread;
 		
     public:
-        virtual ~RescourceManager();
+        virtual ~ResourceManager();
 
-        static RescourceManager* thisManager();
+        static ResourceManager* thisManager();
         //从资源文件加载纹理
 		//Resource *CreateResource(const String *str,const char* type);
         Resource *CreateResource(const char *uriChar,const char* type);
         Resource *getResourceByName(const char* name);
         Resource *getResourceById(int id);
+		Resource *getWaitingRes();
 
-        bool load(Resource* res);
+        bool load(Resource* res,bool asyn);
         bool unload(Resource* res);
         bool reload(Resource* res,bool asyn);
 
-        void registerLoader(const char* type,Loader loader);
+        void registerLoader(const char* type,ILoader* loader);
         void unregisterLoader(const char *loader);
 
         static void setAssetManager(AAssetManager *assetMgr);
         static AAssetManager* getAssetManager(void);
     
     protected:
-        Array* _pendingRecource;
+        Array* _pendingResource;
         Array* _loadingResource;
         Array* _loadedResource;
     
-        map<const char*,Loader*> _loaders;
+        std::map<const char*,ILoader*> _loaders;
 
         static AAssetManager *assetManager;
     private:
-        RescourceManager();
+        ResourceManager();
         void prepare();
-}
-
+};
 
 
 FLAKOR_NS_END

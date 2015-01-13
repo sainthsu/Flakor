@@ -33,6 +33,13 @@ math/CArray.cpp \
 math/Matrices.cpp \
 math/MatrixStack.cpp \
 math/GLMatrix.cpp \
+core/resource/BitData.cpp \
+core/resource/Image.cpp \
+core/resource/ImageLoader.cpp \
+core/resource/LoaderThread.cpp \
+core/resource/Resource.cpp \
+core/resource/ResourceManager.cpp \
+core/resource/Uri.cpp \
 core/input/Touch.cpp \
 core/opengl/GPUInfo.cpp \
 core/opengl/GLProgram.cpp \

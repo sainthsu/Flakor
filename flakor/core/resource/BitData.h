@@ -9,8 +9,10 @@
 
 FLAKOR_NS_BEGIN
 
+class Uri;
+class String;
 /**
-  *a class to store bitData from a file
+  *a class to store bit data from a file
   */
 class BitData
 {
@@ -18,17 +20,17 @@ public:
     static const BitData Null;
 
     BitData();
-    BitData(BitData& data);
-    BitData(Data&& other);
+    BitData(const BitData& data);
+    BitData(BitData&& other);
     ~BitData();
 
-    static BitData* createFromFile(Uri* uri);
+    static BitData* createFromUri(Uri* uri);
     static BitData* createFromAsset(const String* filePath);
     static BitData* createFromFile(const String* filePath);
 
     // Assignment operator
-    Data& operator= (const Data& other);
-    Data& operator= (Data&& other);
+    BitData& operator= (const BitData& other);
+    BitData& operator= (BitData&& other);
 
     /**
     * @js NA
@@ -64,7 +66,7 @@ public:
     bool isNull() const;
 
 private:
-    void move(Data& other);
+    void move(BitData& other);
 
 protected:
     unsigned char* _bytes;

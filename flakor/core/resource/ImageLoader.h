@@ -3,17 +3,19 @@
 
 #include "core/resource/ILoader.h"
 
-class Uri;
-class Resource;
+FLAKOR_NS_BEGIN
 
 class ImageLoader : public ILoader
 {
 	public:
 		ImageLoader();
 		~ImageLoader();
+
 		virtual bool load(Resource* res) override;
-		virtual Loader* createLoader() override;
+		virtual ILoader* createLoader() override;
 		virtual Resource* createRes(Uri* uri) override;
-}
+};
+
+FLAKOR_NS_END
 
 #endif

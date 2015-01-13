@@ -1,16 +1,21 @@
 #ifndef _FK_ILOADER_H_
 #define _FK_ILOADER_H_
 
-#include "core/resource/Uri.h"
-#include "core/resource/Resource.h"
+#include "targetMacros.h"
+
+FLAKOR_NS_BEGIN
+
+class Uri;
+class Resource;
 
 class ILoader
 {
 public:
-	ILoader* createLoader() = 0;
-	Resource* createRes(Uri* uri) = 0;
-	bool Load(Resource* res) = 0;
-}
+	virtual ILoader* createLoader() = 0;
+	virtual Resource* createRes(Uri* uri) = 0;
+	virtual bool load(Resource* res) = 0;
+};
 
+FLAKOR_NS_END
 
 #endif

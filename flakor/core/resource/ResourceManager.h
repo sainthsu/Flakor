@@ -3,6 +3,7 @@
 #ifndef _FK_RESOURCE_MANAGER_H_
 #define _FK_RESOURCE_MANAGER_H_
 
+#include <unordered_set>
 #include <map>
 #include <android/asset_manager.h>
 
@@ -70,6 +71,7 @@ class ResourceManager
         //从资源文件加载纹理
 		//Resource *CreateResource(const String *str,const char* type);
         Resource *CreateResource(const char *uriChar,const char* type);
+		Resource *getResourceByUri(Uri* uri);
         Resource *getResourceByName(const char* name);
         Resource *getResourceById(int id);
 		Resource *getWaitingRes();
@@ -89,6 +91,7 @@ class ResourceManager
         Array* _loadingResource;
         Array* _loadedResource;
     
+		std::unordered_set<Resource*> _managedResource;
         std::map<const char*,ILoader*> _loaders;
 
         static AAssetManager *assetManager;

@@ -10,6 +10,7 @@ char* Uri::DEFAULT_ENCODING = "UTF-8";
 
 Uri::Uri()
 :type(0)
+,origin(NULL)
 ,realPath(NULL)
 ,filename(NULL)
 ,scheme(NULL)
@@ -34,9 +35,10 @@ Uri* parse(const char* uriString)
     char* position,name;
 
     Uri* u = new Uri();
+	u->origin = new String(uriString);
     position = strstr(uriString,"://");
     u->scheme = new String(uriString,position-uriString);
-
+	
     position += 3;
     realPath = new String(position);
     //暂时只支持asset和local
@@ -68,6 +70,16 @@ Uri* parse(const char* uriString)
     }
 
     return u;
+}
+
+bool Uri::isFrom(char* source)
+{
+		return (origin->compare(source) == 0);
+}
+
+bool Uri::equal(Uri* other)
+{
+	return (origin->compare(other->origin) == 0);
 }
 
 bool Uri::isRelative() const

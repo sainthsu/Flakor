@@ -47,12 +47,17 @@ ResourceManager* ResourceManager::thisManager(void)
     return resMgr;
 }
 
-Resource *ResourceManager::getResourceByName(const char* name)
+Resource *ResourceManager::getResourceByUri(Uri* uri)
 {
 	
 }
 
-Resource *ResourceManager::getResourceById(int id)
+Resource *ResourceManager::getResourceByName(const char* name)
+{
+		
+}
+
+Resource *ResourceManager::getResourceById(int uid)
 {
 	
 }
@@ -66,19 +71,19 @@ Resource *ResourceManager::getWaitingRes()
 Resource *ResourceManager::CreateResource(const char* uriChar, const char* type)
 {
 	Uri *uri = Uri::parse(uriChar);
-	
-  if(_loadedResource->contains(id))
-     return _loadedResource[id];
-  else
-  {
-     ILoader* loader = _loaders[type];
-     if(loader != NULL)
-     {
-       Resource* newRes = loader->CreateRes(uri);
-       _pendingResource->addObject(newRes);
-       return newRes;
-     }
-  }
+	Resource* newRes = NULL;
+  	if(_loadedResource->contains(id))
+    	return _loadedResource[id];
+  	else
+  	{
+    	ILoader* loader = _loaders[type];
+    	if(loader != NULL)
+    	{
+    		Resource* newRes = loader->CreateRes(uri);
+    	   _pendingResource->addObject(newRes);
+    	   return newRes;
+    	 }
+  	}
 }
 
 bool ResourceManager::load(Resource* res, bool asyn)
@@ -99,12 +104,13 @@ bool ResourceManager::load(Resource* res, bool asyn)
 
 bool ResourceManager::unload(Resource* res)
 {
-
+	
 }
 
 bool ResourceManager::reload(Resource* res,bool asyn)
 {
-
+	this->unload(res);
+	return this->load(res,asyn);
 }
 
 void ResourceManager::registerLoader(const char* type, ILoader* loader)

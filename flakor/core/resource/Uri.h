@@ -43,6 +43,7 @@ class Uri
         static char* DEFAULT_ENCODING;
 		
         int type;
+		String* origin;
         String* realPath;
         String* filename;
 
@@ -69,6 +70,9 @@ class Uri
         static Uri* parse(String* uriString);
         static Uri* parse(std::string uriString);
         static Uri* parse(char* uriString);
+
+		bool isFrom(char* source);
+		bool equal(Uri* other);
 
         /**
      	* Returns true if this URI is relative, i.e.&nbsp;if it doesn't contain an

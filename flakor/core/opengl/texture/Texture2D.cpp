@@ -1,8 +1,10 @@
 #include "macros.h"
 #include "core/opengl/GL.h"
+#include "core/opengl/GPUInfo.h"
 #include "core/opengl/GLProgram.h"
 #include "core/opengl/texture/Texture2D.h"
-#include "core/opengl/texture/Image.h"
+#include "core/resource/Image.h"
+#include "tool/utility/TexUtils.h"
 
 FLAKOR_NS_BEGIN
 
@@ -77,7 +79,6 @@ Texture2D::Texture2D()
 , _maxT(0.0)
 , _hasPremultipliedAlpha(false)
 , _hasMipmaps(false)
-, _shaderProgram(nullptr)
 , _antialiasEnabled(true)
 {
 	_texParams.minFilter = GL_LINEAR;
@@ -88,7 +89,6 @@ Texture2D::Texture2D()
 
 Texture2D::~Texture2D()
 {
-	FK_SAFE_DELETE(_shaderProgram);
 	if(_textureID)
 	{
 		glDeleteTextures(1,&_textureID);
@@ -97,7 +97,7 @@ Texture2D::~Texture2D()
 
 bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixelFormat,int width,int height,const Size& size)
 {
-	FKAssert(dataLen>0 && width>0 && pixelsHigh>0, "Invalid size");
+	FKAssert(dataLen>0 && width>0 && height>0, "Invalid size");
 
     //if data has no mipmaps, we will consider it has only one mipmap
     MipmapInfo mipmap;
@@ -235,8 +235,8 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
     }
 
     _contentSize = Size((float)pixelsWidth, (float)pixelsHeight);
-    _pixelsWide = pixelsWidth;
-    _pixelsHigh = pixelsHeight;
+    _pixelsWidth = pixelsWidth;
+    _pixelsHeight = pixelsHeight;
     _pixelFormat = pixelFormat;
     _maxS = 1;
     _maxT = 1;
@@ -251,7 +251,7 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
 
 bool Texture2D::updateWithData(const void *data,int offsetX,int offsetY,int width,int height)
 {
-    if (_name)
+    if (_textureID)
     {
         glBindTexture(GL_TEXTURE_2D,_textureID);
         const PixelFormatInfo& info = _pixelFormatInfoTables.at(_pixelFormat);
@@ -431,16 +431,6 @@ void Texture2D::generateMipmap()
     glBindTexture(GL_TEXTURE_2D,_textureID);
     glGenerateMipmap(GL_TEXTURE_2D);
     _hasMipmaps = true;
-}
-
-bool Texture2D::load(bool aync)
-{
-	return ResourceManager::thisManager->load(this,aync);
-}
-
-bool Texture2D::unload()
-{
-	return ResourceManager::thisManager->unload(this);
 }
 
 void Texture2D::delFromGPU()

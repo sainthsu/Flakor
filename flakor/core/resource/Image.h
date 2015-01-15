@@ -2,8 +2,8 @@
 #define _FK_IMAGE_H_
 
 #include "core/opengl/texture/Texture2D.h"
+#include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
-
 
 // premultiply alpha, or the effect will wrong when want to use other pixel format in Texture2D,
 // such as RGB888, RGB5A1
@@ -12,6 +12,17 @@
     ((unsigned)((unsigned char)(vg) * ((unsigned char)(va) + 1) >> 8) << 8) | \
     ((unsigned)((unsigned char)(vb) * ((unsigned char)(va) + 1) >> 8) << 16) | \
     ((unsigned)(unsigned char)(va) << 24))
+
+static int FK_NextPOT(int x)
+{
+    x = x - 1;
+    x = x | (x >> 1);
+    x = x | (x >> 2);
+    x = x | (x >> 4);
+    x = x | (x >> 8);
+    x = x | (x >>16);
+    return x + 1;
+}
 
 FLAKOR_NS_BEGIN
 

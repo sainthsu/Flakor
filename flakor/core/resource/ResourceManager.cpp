@@ -13,6 +13,7 @@ const char* ResourceManager::TEXTURE_NAME = "texture";
 const char* ResourceManager::MUSIC_NAME = "music";
 const char* ResourceManager::SOUND_NAME = "sound";
 int ResourceManager::uniqueID = 1;
+AAssetManager* ResourceManager::assetManager = NULL;
 
 static ResourceManager* resMgr = NULL;
 
@@ -49,7 +50,20 @@ ResourceManager* ResourceManager::thisManager(void)
 
 Resource *ResourceManager::getResourceByUri(Uri* uri)
 {
-	
+	Uri* u;
+	Resource* r = NULL;
+
+	for(Resource* res : _managedResource)
+	{
+		u = res->getUri();
+		if(u->equal(uri))
+		{
+			r = res;
+			break;
+		}	
+	}
+
+	return r;
 }
 
 Resource *ResourceManager::getResourceByName(const char* name)
@@ -68,22 +82,25 @@ Resource *ResourceManager::getWaitingRes()
 }
 
 
-Resource *ResourceManager::CreateResource(const char* uriChar, const char* type)
+Resource *ResourceManager::createResource(const char* uriChar, const char* type)
 {
+	FKLOG("res create");
 	Uri *uri = Uri::parse(uriChar);
-	Resource* newRes = NULL;
-  	if(_loadedResource->contains(id))
-    	return _loadedResource[id];
-  	else
+
+	Resource* newRes = getResourceByUri(uri);
+	
+  	if(newRes == NULL)
   	{
     	ILoader* loader = _loaders[type];
     	if(loader != NULL)
     	{
-    		Resource* newRes = loader->CreateRes(uri);
+    	   newRes = loader->createRes(uri);
     	   _pendingResource->addObject(newRes);
-    	   return newRes;
-    	 }
+		   _managedResource.insert(newRes);
+    	}
   	}
+
+	return newRes;
 }
 
 bool ResourceManager::load(Resource* res, bool asyn)
@@ -97,14 +114,15 @@ bool ResourceManager::load(Resource* res, bool asyn)
       _pendingResource->removeObject(res);
       _loadingResource->addObject(res);
 
-	  ILoader* loader = _loaders[res->getType()];
+	  FKLOG("res->getType %s",res->getType());
+	  ImageLoader* loader = dynamic_cast<ImageLoader*>(_loaders[res->getType()]);
       return loader->load(res);
    }
 }
 
 bool ResourceManager::unload(Resource* res)
 {
-	
+	//res->setState();
 }
 
 bool ResourceManager::reload(Resource* res,bool asyn)
@@ -135,12 +153,16 @@ void ResourceManager::prepare()
 
 void ResourceManager::setAssetManager(AAssetManager *assetMgr)
 {
-    assetManager = assetMgr;
+	if(assetMgr == NULL)
+	{
+		return;
+	}
+    ResourceManager::assetManager = assetMgr;
 }
 
 AAssetManager* ResourceManager::getAssetManager(void)
 {
-    return assetManager;
+    return ResourceManager::assetManager;
 }
 
 

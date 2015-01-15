@@ -6,7 +6,7 @@
 
 FLAKOR_NS_BEGIN
 
-char* Uri::DEFAULT_ENCODING = "UTF-8";
+const char* Uri::DEFAULT_ENCODING = "UTF-8";
 
 Uri::Uri()
 :type(0)
@@ -16,57 +16,75 @@ Uri::Uri()
 ,scheme(NULL)
 ,port(0)
 ,path(NULL)
-,fregment(NULL)
+,fragment(NULL)
 ,query(NULL)
 {}
+
+Uri::~Uri()
+{
+	FK_SAFE_DELETE(origin);
+	FK_SAFE_DELETE(realPath);
+	FK_SAFE_DELETE(filename);
+	FK_SAFE_DELETE(scheme);
+	FK_SAFE_DELETE(path);
+	FK_SAFE_DELETE(fragment);
+	FK_SAFE_DELETE(query);
+	port=0;
+	type=0;
+}
 
 Uri* Uri::parse(String* uriString)
 {
     return parse(uriString->getCString());
 }
 
-Uri* Uri::parse(std::string uriString)
+Uri* Uri::parse(const std::string&& uriString)
 {
-    return parse(uriString->c_char());
+	FKLOG("uri:here %s",uriString.c_str());
+    return parse(uriString.c_str());
 }
 
-Uri* parse(const char* uriString)
+Uri* Uri::parse(const char* uriString)
 {
-    char* position,name;
+    char* position=NULL;
+	char* name=NULL;
 
     Uri* u = new Uri();
-	u->origin = new String(uriString);
+
+	u->origin = String::create(uriString);
     position = strstr(uriString,"://");
-    u->scheme = new String(uriString,position-uriString);
+
+    u->scheme = String::create(uriString,position-uriString);
 	
     position += 3;
-    realPath = new String(position);
+	FKLOG("uri:here %s",position);
+    u->realPath = String::create(position);
     //暂时只支持asset和local
     name = strchr(position,'/');
-    if(name == NULL)
+    if(name != NULL)
     {
-        u->filename = new String(name+1);
+        u->filename = String::create(name+1);
     }
     else
     {
-        u->filename = new String(position);
+        u->filename = String::create(position);
     }
 
     if(u->scheme->compare("asset") == 0)
     {
-        u->type = ASSET;
+        u->type = Uri::ASSET;
     }
-    else if(scheme->compare("local") == 0 || scheme->compare("file") == 0)
+    else if(u->scheme->compare("local") == 0 || u->scheme->compare("file") == 0)
     {
-        u->type = LOCAL;
+        u->type = Uri::LOCAL;
     }
-    else if(scheme->compare("http") == 0 || scheme->compare("https") == 0)
+    else if(u->scheme->compare("http") == 0 || u->scheme->compare("https") == 0)
     {
-        u->type = INTERNET;
+        u->type = Uri::INTERNET;
     }
     else
     {
-        u->type = OTHER;
+        u->type = Uri::OTHER;
     }
 
     return u;

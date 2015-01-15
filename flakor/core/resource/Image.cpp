@@ -23,17 +23,6 @@
 
 FLAKOR_NS_BEGIN
 
-int FK_NextPOT(int x)
-{
-    x = x - 1;
-    x = x | (x >> 1);
-    x = x | (x >> 2);
-    x = x | (x >> 4);
-    x = x | (x >> 8);
-    x = x | (x >>16);
-    return x + 1;
-}
-
 //////////////////////////////////////////////////////////////////////////
 //struct and data for pvr structure
 
@@ -403,7 +392,7 @@ Image::Image()
 , _numberOfMipmaps(0)
 , _hasPremultipliedAlpha(true)
 {
-
+	_type = ResourceManager::IMAGE;
 }
 
 Image::~Image()

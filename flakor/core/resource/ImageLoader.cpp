@@ -7,6 +7,16 @@
 
 FLAKOR_NS_BEGIN
 
+ImageLoader::ImageLoader()
+{
+	
+}
+
+ImageLoader::~ImageLoader()
+{
+
+}
+
 bool ImageLoader::load(Resource* res)
 {
 	Image* img = NULL;

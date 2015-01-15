@@ -1,6 +1,10 @@
 #ifndef _FK_TEXUTILS_H_
 #define _FK_TEXUTILS_H_
 
+#include "core/opengl/texture/Texture2D.h"
+
+FLAKOR_NS_BEGIN
+
 class TexUtils 
 {
 public:
@@ -50,6 +54,8 @@ public:
     static void convertRGBA8888ToAI88(const unsigned char* data, ssize_t dataLen, unsigned char* outData);
     static void convertRGBA8888ToRGBA4444(const unsigned char* data, ssize_t dataLen, unsigned char* outData);
     static void convertRGBA8888ToRGB5A1(const unsigned char* data, ssize_t dataLen, unsigned char* outData);
-}
+};
+
+FLAKOR_NS_END
 
 #endif

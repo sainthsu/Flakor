@@ -7,10 +7,11 @@ http://www.flakor.org
 #include "base/lang/Str.h"
 #include "2d/Sprite.h"
 #include "base/element/Element.h"
-#include "core/opengl/texture/Image.h"
+#include "core/resource/Image.h"
 #include "core/opengl/texture/Texture2D.h"
 #include "core/opengl/shader/Shaders.h"
 #include "core/opengl/GLProgram.h"
+#include "core/resource/ResourceManager.h"
 
 FLAKOR_NS_BEGIN
 
@@ -107,8 +108,11 @@ bool Sprite::initWithFile(const std::string& filename)
     FKAssert(filename.size()>0, "Invalid filename for sprite");
 
     Texture2D *texture = new Texture2D();
+		FKLOG("create image here");
+	Image* image = dynamic_cast<Image*>(ResourceManager::thisManager()->createResource(filename.c_str(),ResourceManager::IMAGE_NAME));
+	image->load(false);
 
-	texture->initWithFile(filename.c_str());
+	texture->initWithImage(image);
     if (texture)
     {
         Rect rect = RectZero;
@@ -128,7 +132,10 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
     FKAssert(filename.size()>0, "Invalid filename");
 
     Texture2D *texture = new Texture2D();
-	texture->initWithFile(filename.c_str());
+	Image* image = dynamic_cast<Image*>(ResourceManager::thisManager()->createResource(filename.c_str(),ResourceManager::IMAGE_NAME));
+	image->load(false);
+	texture->initWithImage(image);
+
     if (texture)
     {
         return initWithTexture(texture, rect);
@@ -173,7 +180,7 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
         // update texture (calls updateBlendFunc)
         setTexture(texture);
         setTextureRect(rect, rotated, rect.size);
-        
+
         // by default use "Self Render".
         // if the sprite is added to a batchnode, then it will automatically switch to "batchnode Render"
         //setBatchNode(nullptr);
@@ -233,7 +240,9 @@ static unsigned char fk_2x2_white_image[] = {
 void Sprite::setTexture(const std::string &filename)
 {
     Texture2D *texture = new Texture2D();
-	texture->initWithFile(filename.c_str());
+	Image* image = dynamic_cast<Image*>(ResourceManager::thisManager()->createResource(filename.c_str(),ResourceManager::IMAGE_NAME));
+	image->load(false);
+	texture->initWithImage(image);
 
     setTexture(texture);
 
@@ -273,6 +282,7 @@ void Sprite::setTexture(Texture2D *texture)
         FK_SAFE_RELEASE(_texture);
         _texture = texture;
 		
+		updateColor();
         updateBlendFunc();
     }
 }
@@ -425,8 +435,11 @@ void Sprite::setTextureCoords(Rect rect)
             1.f,1.f,
             0.f,0.f,
             1.f,0.f};
+
         _vbo->updateData(TEXTURECOORDINATES_INDEX,2,texCoords);
     }
+
+	FKLOG("Sprite updateTexCoords!");
 }
 
 // MARK: visit, draw, transform
@@ -798,6 +811,8 @@ void Sprite::updateColor(void)
 					red,green,blue,alpha,
 					red,green,blue,alpha,
 					red,green,blue,alpha};
+
+	FKLOG("Sprite color:r %.4f,g %.4f,b %.4f,a %.4f",red,green,blue,alpha);
 	_vbo->updateData(COLOR_INDEX,4,colors);
     // self render
     // do nothing

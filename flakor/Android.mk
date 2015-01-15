@@ -34,12 +34,12 @@ math/Matrices.cpp \
 math/MatrixStack.cpp \
 math/GLMatrix.cpp \
 core/resource/BitData.cpp \
-core/resource/Image.cpp \
-core/resource/ImageLoader.cpp \
+core/resource/Uri.cpp \
 core/resource/LoaderThread.cpp \
 core/resource/Resource.cpp \
+core/resource/Image.cpp \
+core/resource/ImageLoader.cpp \
 core/resource/ResourceManager.cpp \
-core/resource/Uri.cpp \
 core/input/Touch.cpp \
 core/opengl/GPUInfo.cpp \
 core/opengl/GLProgram.cpp \
@@ -50,8 +50,8 @@ core/opengl/texture/etc1.cpp \
 core/opengl/texture/pvr.cpp \
 core/opengl/texture/s3tc.cpp \
 core/opengl/texture/TGAlib.cpp \
-core/opengl/texture/Image.cpp \
 core/opengl/texture/Texture2D.cpp \
+tool/utility/TexUtils.cpp \
 2d/Entity.cpp \
 2d/Scene.cpp \
 2d/Sprite.cpp \

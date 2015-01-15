@@ -2,8 +2,10 @@
 #define _FK_TEXTURE2D_H_
 
 #include <map>
-#include "core/resource/Resource.h"
+
+#include "base/lang/Object.h"
 #include "base/element/Element.h"
+#include "core/opengl/GL.h"
 
 FLAKOR_NS_BEGIN
 
@@ -93,7 +95,7 @@ typedef std::map<PixelFormat, const PixelFormatInfo> PixelFormatInfoMap;
 typedef struct _MipmapInfo MipmapInfo;
 class Image;
 
-class Texture2D : public Resource
+class Texture2D : public Object
 {
 	protected:	
 		static const PixelFormatInfoMap _pixelFormatInfoTables;
@@ -196,9 +198,6 @@ class Texture2D : public Resource
     	It only works if the texture size is POT (power of 2).
     	*/
     	void generateMipmap();
-
-		virtual bool load(bool async) override;
-    	virtual bool unload() override;
 
 		void bind();
 		void delFromGPU();

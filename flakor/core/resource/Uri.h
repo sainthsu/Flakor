@@ -40,7 +40,7 @@ FLAKOR_NS_BEGIN
 class Uri
 {
     public:
-        static char* DEFAULT_ENCODING;
+        static const char* DEFAULT_ENCODING;
 		
         int type;
 		String* origin;
@@ -68,8 +68,8 @@ class Uri
         virtual ~Uri();
 
         static Uri* parse(String* uriString);
-        static Uri* parse(std::string uriString);
-        static Uri* parse(char* uriString);
+        static Uri* parse(const std::string&& uriString);
+        static Uri* parse(const char* uriString);
 
 		bool isFrom(char* source);
 		bool equal(Uri* other);
@@ -174,7 +174,7 @@ class Uri
         * @return the encoded path, or null if this is not a hierarchical URI
         * (like "mailto:nobody@google.com") or the URI is invalid
         */
-        virtual String getEncodedPath() const;
+        virtual String* getEncodedPath() const;
 
         /**
         * Gets the decoded query component from this URI. The query comes after

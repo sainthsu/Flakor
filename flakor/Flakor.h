@@ -53,6 +53,9 @@
 //math
 #include "math/GLMatrix.h"
 
+//tool
+#include "tool/utility/TexUtils.h"
+
 #include "platform/Engine.h"
 #include "platform/Application.h"
 #include "platform/Game.h"

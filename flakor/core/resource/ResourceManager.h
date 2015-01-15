@@ -22,6 +22,7 @@ class Resource;
 class LoadThread;
 class ILoader;
 class Array;
+class Uri;
 
 class ResourceManager
 {
@@ -70,7 +71,7 @@ class ResourceManager
         static ResourceManager* thisManager();
         //从资源文件加载纹理
 		//Resource *CreateResource(const String *str,const char* type);
-        Resource *CreateResource(const char *uriChar,const char* type);
+        Resource *createResource(const char *uriChar,const char* type);
 		Resource *getResourceByUri(Uri* uri);
         Resource *getResourceByName(const char* name);
         Resource *getResourceById(int id);

@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "Application.h"
 #include "Game.h"
+#include "core/resource/ResourceManager.h"
 
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "engine", __VA_ARGS__))
 
@@ -196,6 +197,7 @@ void Engine::handleCMD(int32_t cmd)
                 this->game = Game::thisGame();
                 this->initDisplay();
                 LOGW("game create!!!");
+				ResourceManager::setAssetManager(this->app->activity->assetManager);
                 this->game->create();
                 this->drawFrame();
                 this->state = STATE_RUNNING;

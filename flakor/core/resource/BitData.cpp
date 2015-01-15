@@ -56,11 +56,14 @@ BitData* BitData::createFromAsset(const String* filePath)
 	// read asset data
 	unsigned char* buffer = NULL;
 	ssize_t size = 0;
-	BitData* data = NULL;
-
+	BitData* data = NULL; 
+	
+	if(ResourceManager::getAssetManager())
+		FKLOG("OPEN %s",filePath->getCString());
 	AAsset* asset = AAssetManager_open(ResourceManager::getAssetManager(),
 			filePath->getCString(),
 			AASSET_MODE_UNKNOWN);
+
 	if (NULL == asset) {
 		FKLOG("asset is nullptr");
 		return NULL;

@@ -115,7 +115,7 @@ bool ResourceManager::load(Resource* res, bool asyn)
       _loadingResource->addObject(res);
 
 	  FKLOG("res->getType %s",res->getType());
-	  ImageLoader* loader = dynamic_cast<ImageLoader*>(_loaders[res->getType()]);
+	  ILoader* loader = _loaders[res->getType()];
       return loader->load(res);
    }
 }

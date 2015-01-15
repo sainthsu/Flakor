@@ -83,10 +83,10 @@ public:
         int getSizePerVertex() const;
         int getVertexNumber() const;
 
-	void bind();
-	void setUsage(GLenum usage);
+		void bind();
+		void setUsage(GLenum usage);
         void setVertexData(int index,int size,float data[]);
-	void setIndexData(GLushort *data,int length);
+		void setIndexData(GLushort *data,int length);
 
         //draw VAO
         void draw(GLenum mode, int count);

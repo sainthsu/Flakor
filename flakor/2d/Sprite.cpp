@@ -172,7 +172,14 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect, bool rotated)
 
         // add vbo 3+4+2
         _vbo = VBO::create(VERTEX_SIZE,VERTICES_PER_SPRITE);
+		struct VBOAttribute *attributes[3] = {
+        	new VBOAttribute(GLProgram::ATTRIBUTE_NAME_POSITION,GLProgram::VERTEX_ATTRIB_POSITION,0,3,GL_FLOAT,false),
+        	new VBOAttribute(GLProgram::ATTRIBUTE_NAME_COLOR,GLProgram::VERTEX_ATTRIB_COLOR,3*sizeof(float),4,GL_FLOAT,false),
+        	new VBOAttribute(GLProgram::ATTRIBUTE_NAME_TEX_COORD,GLProgram::VERTEX_ATTRIB_TEX_COORD,7*sizeof(float),2,GL_FLOAT,false)
+    	};
+		_vbo->setAttributes(attributes,3);
         
+
         GLProgram* program = GLProgram::createWithByteArrays(Shader::PositionTextureColor_vert,Shader::PositionTextureColor_frag);
         // shader state
         setGLProgram(program);

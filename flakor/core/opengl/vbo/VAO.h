@@ -13,6 +13,9 @@
 #ifndef _FK_VAO_H_
 #define _FK_VAO_H_
 
+#include "base/lang/Object.h"
+#include "core/opengl/GL.h"
+
 FLAKOR_NS_BEGIN
 
 class VAO : public Object
@@ -28,8 +31,8 @@ protected:
 	float *vertexs;
 	GLushort *indices;
 
-        int count;
-        VBOAttribute** VBOAttributes;bvczvvvvv
+    int count;
+    VBOAttribute** VBOAttributes;
 
 	//是否画完自动废弃。
 	bool autoDispose;

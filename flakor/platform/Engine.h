@@ -49,9 +49,19 @@ class Engine
     	int32_t height;
 
 		enum EngineState state;
-		long lastTick;
+		struct timeval* lastTick;
+		/* delta time since last tick to main loop */
+		float deltaTime;
+		/* whether or not the next delta time will be zero */
+    	bool nextDeltaTimeZero;
+
+		/* How many frames were called since the director started */
+    	unsigned int totalFrames;
+    	float secondsPerFrame;
 
 	public:
+		Engine();
+		~Engine();
 		void setApplication(Application* app);
 		
 		void create(void);
@@ -64,6 +74,9 @@ class Engine
 		int32_t handleInput(AInputEvent* event);
 		void handleCMD(int32_t cmd);
 
+	protected:
+		/** calculates delta time since last time it was called */    
+    	void calculateDeltaTime();
     private:
 		int initDisplay(void);
 };

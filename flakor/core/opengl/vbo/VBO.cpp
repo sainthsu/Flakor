@@ -114,7 +114,13 @@ int VBO::getGPUMemoryByteSize()
 void VBO::setAttributes(struct VBOAttribute **attributes,int count)
 {
 	this->count = count;
-	VBOAttributes = attributes;
+
+	VBOAttributes = (VBOAttribute **)malloc(count*sizeof(VBOAttribute *));
+	int i;
+	for(i=0;i<count;i++)
+	{
+		VBOAttributes[i] = attributes[i];
+	}
 }
 
 /*
@@ -134,7 +140,7 @@ void VBO::unbind(GLState glState, ShaderProgram shaderProgram)
 
 VBOManager* VBO::getVBOManager()
 {
-
+	
 }
 */
 
@@ -180,18 +186,10 @@ void VBO::onBufferData()
 
 void VBO::enableAndPointer()
 {
-    struct VBOAttribute *attributes[3] = {
-        new VBOAttribute(GLProgram::ATTRIBUTE_NAME_POSITION,GLProgram::VERTEX_ATTRIB_POSITION,0,3,GL_FLOAT,false),
-        new VBOAttribute(GLProgram::ATTRIBUTE_NAME_COLOR,GLProgram::VERTEX_ATTRIB_COLOR,3*sizeof(float),4,GL_FLOAT,false),
-        new VBOAttribute(GLProgram::ATTRIBUTE_NAME_TEX_COORD,GLProgram::VERTEX_ATTRIB_TEX_COORD,7*sizeof(float),2,GL_FLOAT,false)
-    };
-    
-    count = 3;
-    
 	int i;
 	for(i=0;i<count;i++)
 	{
-		VBOAttribute *attri = attributes[i];
+		VBOAttribute *attri = VBOAttributes[i];
         FKLOG("%s index: %d",attri->_name,attri->_location);
 		glEnableVertexAttribArray(attri->_location);
 		glVertexAttribPointer(attri->_location,attri->_size,GL_FLOAT,attri->_normalized,sizePerVertex*sizeof(float),(GLvoid*)attri->_offset);

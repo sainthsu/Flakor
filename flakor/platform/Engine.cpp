@@ -7,6 +7,50 @@
 
 FLAKOR_NS_BEGIN
 
+Engine::Engine()
+{
+	totalFrames = 0;
+    lastTick = new struct timeval;
+}
+
+Engine::~Engine()
+{
+}
+
+void Engine::calculateDeltaTime()
+{
+    struct timeval now;
+
+    if (gettimeofday(&now, NULL) != 0)
+    {
+        FKLOG("error in gettimeofday");
+        deltaTime = 0;
+        return;
+    }
+
+    // new delta time. Re-fixed issue #1277
+    if (nextDeltaTimeZero)
+    {
+        deltaTime = 0;
+        nextDeltaTimeZero = false;
+    }
+    else
+    {
+        deltaTime = (now.tv_sec - lastTick->tv_sec) + (now.tv_usec - lastTick->tv_usec) / 1000000.0f;
+        deltaTime = MAX(0, deltaTime);
+    }
+
+#if FLAKOR_DEBUG
+    // If we are debugging our code, prevent big delta time
+    if (deltaTime > 0.2f)
+    {
+        deltaTime = 1 / 60.0f;
+    }
+#endif
+
+    *lastUpdate = now;
+}
+
 int Engine::initDisplay(void)
 {
     if (this->context != EGL_NO_CONTEXT)
@@ -117,7 +161,14 @@ void Engine::drawFrame() {
 	if (this->game != NULL)
 	{
         LOGW("Game render!!!");
+		this->calculateDeltaTime();
+		// skip one flame when _deltaTime equal to zero.
+	    if(deltaTime < FLT_EPSILON)
+	    {
+	        return;
+	    }
 		this->game->render();
+		totalFrames++;
 	}
 	
 

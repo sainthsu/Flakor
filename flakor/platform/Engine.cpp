@@ -48,7 +48,7 @@ void Engine::calculateDeltaTime()
     }
 #endif
 
-    *lastUpdate = now;
+    *lastTick = now;
 }
 
 int Engine::initDisplay(void)
@@ -155,7 +155,7 @@ void Engine::drawFrame() {
     }
     
     // Just fill the screen with a color.
-     glClearColor(0.f, 0.f,0.f, 1);
+     glClearColor(1.f, 1.f,1.f, 1);
      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (this->game != NULL)
@@ -250,7 +250,7 @@ void Engine::handleCMD(int32_t cmd)
                 LOGW("game create!!!");
 				ResourceManager::setAssetManager(this->app->activity->assetManager);
                 this->game->create();
-                this->drawFrame();
+                //this->drawFrame();
                 this->state = STATE_RUNNING;
             }
             break;

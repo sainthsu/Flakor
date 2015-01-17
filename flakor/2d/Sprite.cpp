@@ -544,6 +544,17 @@ void Sprite::draw()
 	_glProgram->use();
 	_vbo->onBufferData();
 	_texture->bind();
+    
+    if (_blendFunc.src == GL_ONE && _blendFunc.dst == GL_ZERO)
+    {
+        glDisable(GL_BLEND);
+    }
+    else
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(_blendFunc.src, _blendFunc.dst);
+    }
+    
 	_vbo->enableAndPointer();
 	_glProgram->setUniformsForBuiltins();
 

@@ -61,7 +61,7 @@ void GLMode(StackMode mode)
 
 void GLPush(void)
 {
-    Matrix4* top = new Matrix4();;
+    Matrix4* top = new Matrix4();
 
     lazyInitialize(); //Initialize the stacks if they haven't been already
 
@@ -125,6 +125,7 @@ void GLGet(StackMode mode, Matrix4* out)
             out->set(projectionStack->top->get(),COLUMN_MAJOR);
         break;
         case GL_TEXTURE:
+            FKLOG("Tex TOP:%s",textureStack->top->toString());
             out->set(textureStack->top->get(),COLUMN_MAJOR);
         break;
         default:

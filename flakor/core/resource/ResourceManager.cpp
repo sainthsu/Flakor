@@ -12,6 +12,7 @@ const char* ResourceManager::IMAGE_NAME = "image";
 const char* ResourceManager::TEXTURE_NAME = "texture";
 const char* ResourceManager::MUSIC_NAME = "music";
 const char* ResourceManager::SOUND_NAME = "sound";
+
 int ResourceManager::uniqueID = 1;
 AAssetManager* ResourceManager::assetManager = NULL;
 
@@ -30,7 +31,6 @@ ResourceManager::ResourceManager()
 
 	ImageLoader* imgLoader = new ImageLoader();
 	registerLoader(IMAGE_NAME,imgLoader);
-    
 }
 
 ResourceManager::~ResourceManager()

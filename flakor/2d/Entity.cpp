@@ -752,10 +752,11 @@ void Entity::onVisit(void)
 		return;
 	}
 
-    if (transformDirty)
-    {
-        this->transform();
-    }
+    GLMode(GL_MODELVIEW);
+    GLPush();
+    
+
+    this->transform();
     
 	if(children == NULL || children->count() <=0 || !this->childrenVisible)
 	{
@@ -800,6 +801,9 @@ void Entity::onVisit(void)
 		}
 
 	}
+    
+    GLMode(GL_MODELVIEW);
+    GLPop();
 }
 
 /**
@@ -837,7 +841,6 @@ void Entity::transform(void)
     GLMode(GL_MODELVIEW);
 	GLMultiply( &transfrom4x4 );
 
-    GLGet(GL_PROJECTION,&transfrom4x4);
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
 	if ( camera != NULL)/// && !(grid != NULL && grid->isActive()) )
 	{

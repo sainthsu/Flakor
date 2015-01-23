@@ -45,7 +45,8 @@ void* LoaderThread::run(void* param)
 
             pthread_mutex_lock(&mgr->mutex);
 			Resource* res = mgr->getWaitingRes();
-			//res->load();
+            ILoader *loader = res->createLoader();
+			loader->load(res);
 
             mgr->waitLoads--;
             pthread_mutex_unlock(&mgr->mutex);

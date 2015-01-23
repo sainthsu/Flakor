@@ -5,6 +5,7 @@
 
 #include <unordered_set>
 #include <map>
+#include <queue>
 #include <android/asset_manager.h>
 
 /*Images 通过 ImageLoader
@@ -63,7 +64,7 @@ class ResourceManager
         int waitLoads;//resource waiting for loading to memory by loadthread
 
         int threadNum;
-        LoadThread** thread;
+        LoadThread** threads;
 		
     public:
         virtual ~ResourceManager();
@@ -94,6 +95,8 @@ class ResourceManager
     
 		std::unordered_set<Resource*> _managedResource;
         std::map<const char*,ILoader*> _loaders;
+
+		std::queue<Resource*> _resourceQueue;
 
         static AAssetManager *assetManager;
     private:

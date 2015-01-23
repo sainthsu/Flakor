@@ -20,6 +20,8 @@ static ResourceManager* resMgr = NULL;
 
 ResourceManager::ResourceManager()
 :running(false)
+,threadNum(0)
+,threads(NULL)
 {
     //_loaders = new std::map<const char*,ILoader*>();
     _pendingResource = Array::createWithCapacity(4);
@@ -108,6 +110,17 @@ bool ResourceManager::load(Resource* res, bool asyn)
    if(asyn)
    {
         //add to loadTaskQueue
+       resourceQueue.push(res);
+       waitLoads++;
+       if (threads == NULL) {
+           
+           threadNum = 2;
+           threads = (LoadThread**)malloc(sizeof(LoadThread *)*2);
+           threads[0] = new LoadThread();
+           threads[0].start();
+           threads[1] = new LoadThread();
+           threads[1].start();
+       }
    }
    else
    {

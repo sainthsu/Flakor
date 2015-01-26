@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "console/Console.h"
+#include "base/console/Console.h"
 #include <android/log.h>
 #include <stdio.h>
 #include <jni.h>

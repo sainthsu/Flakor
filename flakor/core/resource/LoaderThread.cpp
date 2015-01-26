@@ -1,9 +1,10 @@
 #include "targetMacros.h"
 #include "core/resource/LoaderThread.h"
+#include "core/resource/ILoader.h"
 #include "core/resource/ResourceManager.h"
 #include "core/resource/Resource.h"
 
-#include   <unistd.h>
+#include <unistd.h>
 
 
 FLAKOR_NS_BEGIN
@@ -45,7 +46,7 @@ void* LoaderThread::run(void* param)
 
             pthread_mutex_lock(&mgr->mutex);
 			Resource* res = mgr->getWaitingRes();
-            ILoader *loader = res->createLoader();
+            ILoader* loader = res->getLoader();
 			loader->load(res);
 
             mgr->waitLoads--;

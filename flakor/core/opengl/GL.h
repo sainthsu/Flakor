@@ -7,6 +7,9 @@ http://www.FLAKOR.org
 #ifndef _FK_GL_H_
 #define _FK_GL_H_
 
+#include "target.h"
+
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 //带OES为<GLES2/gl2ext.h>里的扩展函数
 #define	glClearDepth				glClearDepthf
 #define glDeleteVertexArrays		glDeleteVertexArraysOES
@@ -44,5 +47,21 @@ extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArraysOESEXT;
 #define glBindVertexArrayOES glBindVertexArrayOESEXT
 #define glDeleteVertexArraysOES glDeleteVertexArraysOESEXT
 
+#elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
+
+#define	glClearDepth				glClearDepthf
+#define glDeleteVertexArrays		glDeleteVertexArraysOES
+#define glGenVertexArrays			glGenVertexArraysOES
+#define glBindVertexArray			glBindVertexArrayOES
+#define glMapBuffer					glMapBufferOES
+#define glUnmapBuffer				glUnmapBufferOES
+
+#define GL_DEPTH24_STENCIL8			GL_DEPTH24_STENCIL8_OES
+#define GL_WRITE_ONLY				GL_WRITE_ONLY_OES
+
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+
+#endif
 
 #endif // _FK_GL_H_

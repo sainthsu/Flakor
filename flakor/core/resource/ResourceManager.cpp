@@ -1,6 +1,7 @@
 #include "targetMacros.h"
 #include "core/resource/ResourceManager.h"
 #include "core/resource/Resource.h"
+#include "core/resource/LoaderThread.h"
 #include "core/resource/ImageLoader.h"
 #include "core/resource/Uri.h"
 #include "base/lang/Array.h"
@@ -14,8 +15,9 @@ const char* ResourceManager::MUSIC_NAME = "music";
 const char* ResourceManager::SOUND_NAME = "sound";
 
 int ResourceManager::uniqueID = 1;
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 AAssetManager* ResourceManager::assetManager = NULL;
-
+#endif
 static ResourceManager* resMgr = NULL;
 
 ResourceManager::ResourceManager()
@@ -70,17 +72,46 @@ Resource *ResourceManager::getResourceByUri(Uri* uri)
 
 Resource *ResourceManager::getResourceByName(const char* name)
 {
-		
+    Resource* r = NULL;
+    const char* u;
+    
+    for(Resource* res : _managedResource)
+    {
+        u = res->getFilename();
+        if(strcmp(u,name) == 0)
+        {
+            r = res;
+            break;
+        }	
+    }
+    
+    return r;
 }
 
 Resource *ResourceManager::getResourceById(int uid)
 {
-	
+    Resource* r = NULL;
+    unsigned int u;
+    
+    for(Resource* res : _managedResource)
+    {
+        u = res->getUid();
+        if(u == uid)
+        {
+            r = res;
+            break;
+        }	
+    }
+    
+    return r;
 }
 
 Resource *ResourceManager::getWaitingRes()
 {
-	
+    Resource * res = _resourceQueue.front();
+    _resourceQueue.pop();
+    
+    return res;
 }
 
 
@@ -110,17 +141,18 @@ bool ResourceManager::load(Resource* res, bool asyn)
    if(asyn)
    {
         //add to loadTaskQueue
-       resourceQueue.push(res);
+       _resourceQueue.push(res);
        waitLoads++;
        if (threads == NULL) {
            
            threadNum = 2;
-           threads = (LoadThread**)malloc(sizeof(LoadThread *)*2);
-           threads[0] = new LoadThread();
-           threads[0].start();
-           threads[1] = new LoadThread();
-           threads[1].start();
+           threads = (LoaderThread**)malloc(sizeof(LoaderThread *)*2);
+           threads[0] = new LoaderThread();
+           threads[0]->start();
+           threads[1] = new LoaderThread();
+           threads[1]->start();
        }
+       return true;
    }
    else
    {
@@ -136,6 +168,7 @@ bool ResourceManager::load(Resource* res, bool asyn)
 bool ResourceManager::unload(Resource* res)
 {
 	//res->setState();
+    return true;
 }
 
 bool ResourceManager::reload(Resource* res,bool asyn)
@@ -164,6 +197,8 @@ void ResourceManager::prepare()
     pthread_mutex_unlock(&mutex);
 }
 
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
+
 void ResourceManager::setAssetManager(AAssetManager *assetMgr)
 {
 	if(assetMgr == NULL)
@@ -178,5 +213,5 @@ AAssetManager* ResourceManager::getAssetManager(void)
     return ResourceManager::assetManager;
 }
 
-
+#endif
 FLAKOR_NS_END

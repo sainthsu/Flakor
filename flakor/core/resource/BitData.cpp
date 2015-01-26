@@ -1,10 +1,14 @@
+#include "target.h"
 #include "core/resource/BitData.h"
 #include "core/resource/Uri.h"
 #include "core/resource/ResourceManager.h"
 #include "base/lang/Str.h"
 #include <string.h>
 #include <stdio.h>
+
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 #include <android/asset_manager.h>
+#endif
 
 
 FLAKOR_NS_BEGIN
@@ -43,7 +47,11 @@ BitData::~BitData()
 BitData* BitData::createFromUri(Uri* uri)
 {
 	if(uri->type == Uri::ASSET)
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 		return BitData::createFromAsset(uri->realPath);
+#else
+    return NULL;
+#endif
 	else if(uri->type == Uri::LOCAL)
 		return BitData::createFromFile(uri->realPath);
 	else
@@ -51,6 +59,7 @@ BitData* BitData::createFromUri(Uri* uri)
 }
 
 
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 BitData* BitData::createFromAsset(const String* filePath)
 {
 	// read asset data
@@ -94,12 +103,13 @@ BitData* BitData::createFromAsset(const String* filePath)
 
 
 }
+#endif
 
 BitData* BitData::createFromFile(const String* filePath)
 {
 	unsigned char* buffer = NULL;
 	ssize_t size = 0;
-	size_t readsize;
+	size_t readsize = 0;
 	const char* mode = "rb";
 	BitData* data = NULL;
 	const char* file = filePath->getCString();

@@ -48,8 +48,11 @@ class Resource : public Object
         Uri* getUri(void);
 		void setUri(Uri* uri);
         const char* getFilename(void);
+    
+        inline ILoader * getLoader(void) { return _loader;}
         const char* getType(void);
 		void setType(int type);
+    
 		ResourceListener* getListener();
 		void setListener(ResourceListener* listener);
 };

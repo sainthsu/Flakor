@@ -3,7 +3,7 @@
 
 FLAKOR_NS_BEGIN
 
-VAO* VAO::create(int sizePerVertex,int vertexNumber)
+VAO* VAO::create(int sizePerVertex,int vertexNumber,GLenum usage)
 {
 	
 }

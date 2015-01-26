@@ -1,9 +1,14 @@
 #ifndef _FK_THREADPOOL_H_
 #define _FK_THREADPOOL_H_
 
+#include "targetMacros.h"
 #include <pthread.h>
 
 FLAKOR_NS_BEGIN
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* 要执行的任务链表 */
 typedef struct tpool_work {
@@ -44,6 +49,10 @@ tpool_destroy();
 int
 tpool_add_work(void*(*routine)(void*), void *arg);
 
+FLAKOR_NS_END
+
+#ifdef __cplusplus
+}
 #endif
 
-FLAKOR_NS_END
+#endif

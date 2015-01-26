@@ -54,13 +54,13 @@ Config of flakor project, define which target platform to be run in.
 #define FK_TARGET_PLATFORM             FK_PLATFORM_UNKNOWN
 
 // mac
-#if defined(FK_TARGET_OS_MAC)
+#if defined(FK_TARGET_OS_MAC) || defined(__APPLE__)
 #undef  FK_TARGET_PLATFORM
 #define FK_TARGET_PLATFORM         FK_PLATFORM_MAC
 #endif
 
 // iphone
-#if defined(FK_TARGET_OS_IPHONE)
+#if defined(FK_TARGET_OS_IPHONE) || defined(TARGET_OS_IPHONE)
     #undef  FK_TARGET_PLATFORM
     #define FK_TARGET_PLATFORM         FK_PLATFORM_IOS
 #endif

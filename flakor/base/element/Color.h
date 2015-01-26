@@ -3,7 +3,7 @@
 #define _FK_COLOR_H_
 
 #include <stdint.h>
-#include <GLES/gl.h>
+#include "core/opengl/GL.h"
 
 FLAKOR_NS_BEGIN
 

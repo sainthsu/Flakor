@@ -25,13 +25,13 @@ Resource::~Resource()
 bool Resource::load(bool async)
 {
 	ResourceManager* mgr = ResourceManager::thisManager();
-	mgr->load(this,async);
+	return mgr->load(this,async);
 }
 
 bool Resource::unload()
 {
 	ResourceManager* mgr = ResourceManager::thisManager();
-	mgr->unload(this);
+	return mgr->unload(this);
 }
 
 ResourceState Resource::getState(void)

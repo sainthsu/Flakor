@@ -31,7 +31,7 @@ protected:
 	float *vertexs;
 	GLushort *indices;
 
-    int count;
+    int attrCount;
     VBOAttribute** VBOAttributes;
 
 	//是否画完自动废弃。

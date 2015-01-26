@@ -1,7 +1,9 @@
 #ifndef _FK_LOADER_THREAD_H_
 #define _FK_LOADER_THREAD_H_
 
+#include <sys/types.h>
 #include <pthread.h>
+
 
 FLAKOR_NS_BEGIN
 

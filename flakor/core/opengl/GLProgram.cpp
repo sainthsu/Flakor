@@ -543,7 +543,7 @@ bool GLProgram::link()
     
     if (status == GL_FALSE)
     {
-        FKLOG("flakor: ERROR: Failed to link program: %i", _program);
+        FKLOG("flakor: ERROR: Failed to link program: %i", _programID);
         glDeleteProgram(_programID);
         _programID = 0;
     }

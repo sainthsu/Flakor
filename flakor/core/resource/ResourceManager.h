@@ -3,10 +3,16 @@
 #ifndef _FK_RESOURCE_MANAGER_H_
 #define _FK_RESOURCE_MANAGER_H_
 
+#include "target.h"
 #include <unordered_set>
 #include <map>
 #include <queue>
+
+#include <pthread.h>
+
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 #include <android/asset_manager.h>
+#endif
 
 /*Images 通过 ImageLoader
 · Textures 通过 TextureLoader
@@ -20,7 +26,7 @@
 FLAKOR_NS_BEGIN
 
 class Resource;
-class LoadThread;
+class LoaderThread;
 class ILoader;
 class Array;
 class Uri;
@@ -64,7 +70,7 @@ class ResourceManager
         int waitLoads;//resource waiting for loading to memory by loadthread
 
         int threadNum;
-        LoadThread** threads;
+        LoaderThread** threads;
 		
     public:
         virtual ~ResourceManager();
@@ -85,8 +91,10 @@ class ResourceManager
         void registerLoader(const char* type,ILoader* loader);
         void unregisterLoader(const char *loader);
 
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
         static void setAssetManager(AAssetManager *assetMgr);
         static AAssetManager* getAssetManager(void);
+#endif
     
     protected:
         Array* _pendingResource;
@@ -98,7 +106,10 @@ class ResourceManager
 
 		std::queue<Resource*> _resourceQueue;
 
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
         static AAssetManager *assetManager;
+#endif
+    
     private:
         ResourceManager();
         void prepare();

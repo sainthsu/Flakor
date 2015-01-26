@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef _FK_SPRITEFRAME_H_
 #define _FK_SPRITEFRAME_H_
 
-#include "base/entity/Entity.h"
+#include "2d/Entity.h"
 #include "base/element/Element.h"
 
 FLAKOR_NS_BEGIN

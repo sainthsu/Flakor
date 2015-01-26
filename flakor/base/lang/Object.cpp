@@ -39,6 +39,7 @@ Object::~Object(void)
 
 Object* Object::copy()
 {
+    return NULL;
 }
 
 void Object::release(void)

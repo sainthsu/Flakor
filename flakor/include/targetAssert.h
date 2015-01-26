@@ -1,6 +1,10 @@
 #ifndef _FK_TARGET_ASSERT_H_
 #define _FK_TARGET_ASSERT_H_
 
+#include "target.h"
+
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
+
 #include <android/log.h>
 
 #define FK_DLL
@@ -24,5 +28,18 @@
 #define FK_ASSERT(cond) FK_NO_MESSAGE_PSEUDOASSERT(cond)
 
 #define FK_UNUSED_PARAM(unusedparam) (void)unusedparam
+
+#elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
+
+#include <assert.h>
+
+#define FK_DLL
+
+#define FK_ASSERT(cond) assert(cond)
+
+
+#define FK_UNUSED_PARAM(unusedparam) (void)unusedparam
+
+#endif
 
 #endif

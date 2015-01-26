@@ -25,9 +25,9 @@ THE SOFTWARE.
 #ifndef _FK_CONFIGURATION_H_
 #define _FK_CONFIGURATION_H_
 
-#include "lang/Object.h"
+#include "base/lang/Object.h"
 #include "GL.h"
-#include "lang/String.h"
+#include "base/lang/Str.h"
 #include <string>
 
 FLAKOR_NS_BEGIN

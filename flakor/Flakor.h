@@ -4,6 +4,8 @@
 #define FLAKOR_VERSION 0x00000100
 #define FLAKOR_AUTHOR "Saint Hsu(saint@aliyun.com)"
 
+//config
+#include "config.h"
 //macro
 #include "macros.h"
 
@@ -56,8 +58,11 @@
 //tool
 #include "tool/utility/TexUtils.h"
 
-#include "platform/Engine.h"
-#include "platform/Application.h"
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
+#include "platform/android/Engine.h"
+#include "platform/android/Application.h"
+#endif
+
 #include "platform/Game.h"
 
 const char* getFlakorVersion();

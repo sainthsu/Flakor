@@ -12,9 +12,9 @@ BASE_PATH = $(LOCAL_PATH)/../
 LOCAL_SRC_FILES := \
 Flakor.cpp \
 platform/Game.cpp \
-platform/Engine.cpp \
-platform/Application.cpp \
-platform/ActivityCallback.cpp \
+platform/android/Engine.cpp \
+platform/android/Application.cpp \
+platform/android/ActivityCallback.cpp \
 include/common.cpp \
 base/lang/Object.cpp \
 base/lang/Array.cpp \

@@ -4,7 +4,6 @@
 
 FLAKOR_NS_BEGIN
 
-
 class Game : public IGame
 {
 	public:

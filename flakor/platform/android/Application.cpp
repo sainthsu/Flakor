@@ -6,8 +6,8 @@
 #include <sys/resource.h>
 
 #include <android/log.h>
-#include "Engine.h"
-#include "platform/ActivityCallback.cpp"
+#include "platform/android/Engine.h"
+#include "platform/android/ActivityCallback.cpp"
 
 #define TLOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "threaded_app", __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "threaded_app", __VA_ARGS__))

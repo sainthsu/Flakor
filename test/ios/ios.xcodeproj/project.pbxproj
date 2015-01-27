@@ -11,7 +11,7 @@
 		8509E90B1A7252AE00F66057 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8509E90A1A7252AE00F66057 /* AppDelegate.mm */; };
 		8509E90D1A7252AE00F66057 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8509E90C1A7252AE00F66057 /* Shader.fsh */; };
 		8509E90F1A7252AE00F66057 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 8509E90E1A7252AE00F66057 /* Shader.vsh */; };
-		8509E9121A7252AE00F66057 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8509E9111A7252AE00F66057 /* GameViewController.m */; };
+		8509E9121A7252AE00F66057 /* GameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8509E9111A7252AE00F66057 /* GameViewController.mm */; };
 		8509E9171A7252AE00F66057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8509E9161A7252AE00F66057 /* Images.xcassets */; };
 		8509E91A1A7252AE00F66057 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8509E9181A7252AE00F66057 /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
@@ -35,7 +35,7 @@
 		8509E90C1A7252AE00F66057 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
 		8509E90E1A7252AE00F66057 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
 		8509E9101A7252AE00F66057 /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
-		8509E9111A7252AE00F66057 /* GameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		8509E9111A7252AE00F66057 /* GameViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GameViewController.mm; sourceTree = "<group>"; };
 		8509E9161A7252AE00F66057 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8509E9191A7252AE00F66057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		859BAC8D1A733A8100E57FFF /* flakor_lib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = flakor_lib.xcodeproj; path = ../../build/flakor_lib.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -77,7 +77,7 @@
 				8509E90C1A7252AE00F66057 /* Shader.fsh */,
 				8509E90E1A7252AE00F66057 /* Shader.vsh */,
 				8509E9101A7252AE00F66057 /* GameViewController.h */,
-				8509E9111A7252AE00F66057 /* GameViewController.m */,
+				8509E9111A7252AE00F66057 /* GameViewController.mm */,
 				8509E9161A7252AE00F66057 /* Images.xcassets */,
 				8509E9181A7252AE00F66057 /* LaunchScreen.xib */,
 				8509E9051A7252AE00F66057 /* Supporting Files */,
@@ -190,7 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8509E90B1A7252AE00F66057 /* AppDelegate.mm in Sources */,
-				8509E9121A7252AE00F66057 /* GameViewController.m in Sources */,
+				8509E9121A7252AE00F66057 /* GameViewController.mm in Sources */,
 				8509E9081A7252AE00F66057 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

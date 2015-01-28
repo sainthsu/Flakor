@@ -9,9 +9,6 @@
 //macro
 #include "macros.h"
 
-//core opengl
-#include "core/opengl/GL.h"
-
 //lang include
 #include "base/lang/Object.h"
 #include "base/lang/Array.h"
@@ -45,6 +42,7 @@
 //input
 #include "core/input/Touch.h"
 //opengl
+#include "core/opengl/GL.h"
 #include "core/opengl/GPUInfo.h"
 #include "core/opengl/GLProgram.h"
 #include "core/opengl/shader/Shaders.h"

@@ -17,17 +17,14 @@
 //--------------------------------------------------------------------------------
 // GLContext.h
 //--------------------------------------------------------------------------------
-#ifndef GLCONTEXT_H_
-#define GLCONTEXT_H_
+#ifndef _FK_GLCONTEXT_H_
+#define _FK_GLCONTEXT_H_
 
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
 #include <android/log.h>
 
-#include "JNIHelper.h"
-
-namespace flakor
-{
+FLAKOR_NS_BEGIN
 
 //--------------------------------------------------------------------------------
 // Constants
@@ -120,6 +117,6 @@ public:
     bool CheckExtension( const char* extension );
 };
 
-}   //namespace flakor
+FLAKOR_NS_END   //namespace flakor
 
 #endif /* GLCONTEXT_H_ */

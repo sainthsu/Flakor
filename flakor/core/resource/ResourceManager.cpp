@@ -147,9 +147,9 @@ bool ResourceManager::load(Resource* res, bool asyn)
            
            threadNum = 2;
            threads = (LoaderThread**)malloc(sizeof(LoaderThread *)*2);
-           threads[0] = new LoaderThread();
+           threads[0] = LoaderThread::create();
            threads[0]->start();
-           threads[1] = new LoaderThread();
+           threads[1] = LoaderThread::create();
            threads[1]->start();
        }
        return true;
@@ -167,7 +167,10 @@ bool ResourceManager::load(Resource* res, bool asyn)
 
 bool ResourceManager::unload(Resource* res)
 {
-	//res->setState();
+    res->unload();
+    _loadedResource->removeObject(res);
+    _managedResource.erase(res);
+    
     return true;
 }
 

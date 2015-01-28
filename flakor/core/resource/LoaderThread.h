@@ -12,15 +12,18 @@ class LoaderThread
     protected:
         pid_t _pid;
         pthread_t _thread;
+        bool _running;
     public:
         LoaderThread();
         ~LoaderThread();
 
         static LoaderThread* create();
-        static void* run(void* param);
+        static void* run(void* thread);
 
 		void start();
         pid_t getPid();
+        inline bool isRunning() {return _running;};
+        inline void setRun(bool run) {_running = run;};
 
 };
 

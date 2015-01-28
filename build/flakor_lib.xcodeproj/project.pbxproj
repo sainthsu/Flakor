@@ -129,7 +129,6 @@
 		859BAC9C1A733AE000E57FFF /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		859BAC9D1A733AE000E57FFF /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
 		859BAC9E1A733AE000E57FFF /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
-		859BACA21A733AE000E57FFF /* 3dcodehere.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 3dcodehere.txt; sourceTree = "<group>"; };
 		859BACA51A733AE000E57FFF /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		859BACB11A733AE000E57FFF /* Blendfunc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blendfunc.cpp; sourceTree = "<group>"; };
 		859BACB21A733AE000E57FFF /* Blendfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blendfunc.h; sourceTree = "<group>"; };
@@ -298,7 +297,6 @@
 				859BAD3E1A733AE100E57FFF /* Flakor.h */,
 				85520C431A75EA280017565D /* Framework */,
 				859BAC981A733AE000E57FFF /* 2d */,
-				859BACA11A733AE000E57FFF /* 3d */,
 				859BACA31A733AE000E57FFF /* base */,
 				859BACDE1A733AE100E57FFF /* core */,
 				859BAD3F1A733AE100E57FFF /* include */,
@@ -322,15 +320,6 @@
 			);
 			name = 2d;
 			path = ../flakor/2d;
-			sourceTree = "<group>";
-		};
-		859BACA11A733AE000E57FFF /* 3d */ = {
-			isa = PBXGroup;
-			children = (
-				859BACA21A733AE000E57FFF /* 3dcodehere.txt */,
-			);
-			name = 3d;
-			path = ../flakor/3d;
 			sourceTree = "<group>";
 		};
 		859BACA31A733AE000E57FFF /* base */ = {

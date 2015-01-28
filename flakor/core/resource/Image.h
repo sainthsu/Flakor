@@ -13,9 +13,28 @@
     ((unsigned)((unsigned char)(vb) * ((unsigned char)(va) + 1) >> 8) << 16) | \
     ((unsigned)(unsigned char)(va) << 24))
 
+/**
+ * @brief FK_NextPOT
+ * @param x
+ * @return the 'next highest' power of two
+ * another way of obtaining the 'next highest' power of two:
+ * while (n & (n-1)) {
+ *  n = n & (n-1);
+ *  }
+ *
+ *  n = n << 1;
+ */
 static int FK_NextPOT(int x)
 {
+    //x is a power of 2, so return directly.
+    //已经是2的幂，直接返回
+    if (!(x & (x-1))) {
+         return (x);
+     }
+
     x = x - 1;
+    //setting all bits on the right-hand side of the most significant flagged bit to 1
+    //将最高位1右边的bit位全设为1
     x = x | (x >> 1);
     x = x | (x >> 2);
     x = x | (x >> 4);

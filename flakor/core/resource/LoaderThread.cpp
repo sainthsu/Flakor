@@ -32,14 +32,16 @@ void LoaderThread::start()
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    pthread_create(&_thread, &attr, LoaderThread::run, NULL);
+    pthread_create(&_thread, &attr, LoaderThread::run, this);
 }
 
-void* LoaderThread::run(void* param)
+void* LoaderThread::run(void* thread)
 {
     ResourceManager *mgr = ResourceManager::thisManager();
-
-    for(;;)
+    LoaderThread* thr = (LoaderThread*)thread;
+    thr->setRun(true);
+    
+    while(thr->isRunning())
     {
         if(mgr->waitLoads >= 1)
         {
@@ -57,6 +59,8 @@ void* LoaderThread::run(void* param)
             usleep(80);
         }
     }
+    
+    return NULL;
 }
 
 

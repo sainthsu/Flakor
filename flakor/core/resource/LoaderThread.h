@@ -27,6 +27,6 @@ class LoaderThread
 
 };
 
-#endif
-
 FLAKOR_NS_END
+
+#endif

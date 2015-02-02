@@ -16,7 +16,6 @@ LoaderThread::LoaderThread()
 
 LoaderThread::~LoaderThread()
 {
-	
 }
 
 LoaderThread* LoaderThread::create()
@@ -48,11 +47,13 @@ void* LoaderThread::run(void* thread)
 
             pthread_mutex_lock(&mgr->mutex);
 			Resource* res = mgr->getWaitingRes();
+			pthread_mutex_unlock(&mgr->mutex);
+
             ILoader* loader = res->getLoader();
 			loader->load(res);
 
             mgr->waitLoads--;
-            pthread_mutex_unlock(&mgr->mutex);
+            
         }
         else
         {
@@ -62,7 +63,6 @@ void* LoaderThread::run(void* thread)
     
     return NULL;
 }
-
 
 pid_t LoaderThread::getPid()
 {

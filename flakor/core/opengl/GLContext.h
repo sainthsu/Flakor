@@ -106,17 +106,20 @@ public:
     {
         return color_size_;
     }
+
     int32_t GetBufferDepthSize()
     {
         return depth_size_;
     }
+
     float GetGLVersion()
     {
         return gl_version_;
     }
+
     bool CheckExtension( const char* extension );
 };
 
 FLAKOR_NS_END   //namespace flakor
 
-#endif /* GLCONTEXT_H_ */
+#endif /* _FK_GLCONTEXT_H_ */

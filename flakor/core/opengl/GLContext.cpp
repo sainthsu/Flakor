@@ -21,11 +21,11 @@
 // includes
 //--------------------------------------------------------------------------------
 #include <unistd.h>
-#include "GLContext.h"
-#include "gl3stub.h"
+#include "targetMacros.h"
+#include "core/opengl/GLContext.h"
+#include "core/opengl/gl3stub.h"
 
-namespace ndk_helper
-{
+FLAKOR_NS_BEGIN
 
 //--------------------------------------------------------------------------------
 // eGLContext
@@ -291,4 +291,4 @@ bool GLContext::CheckExtension( const char* extension )
     return false;
 }
 
-}   //namespace ndkHelper
+FLAKOR_NS_BEGIN   //namespace ndkHelper

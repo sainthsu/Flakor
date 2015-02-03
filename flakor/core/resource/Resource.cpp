@@ -2,6 +2,7 @@
 #include "core/resource/Resource.h"
 #include "core/resource/Uri.h"
 #include "core/resource/ILoader.h"
+#include "core/resource/ImageLoader.h"
 #include "core/resource/ResourceManager.h"
 
 
@@ -57,6 +58,14 @@ void Resource::setUri(Uri* uri)
 const char* Resource::getFilename(void)
 {
     return _uri->filename->getCString();
+}
+
+ILoader* Resource::getLoader(void)
+{
+
+	_loader = new ImageLoader();
+
+    return _loader;
 }
 
 const char* Resource::getType(void)

@@ -145,12 +145,11 @@ bool ResourceManager::load(Resource* res, bool asyn)
        waitLoads++;
        if (threads == NULL) {
            
-           threadNum = 2;
-           threads = (LoaderThread**)malloc(sizeof(LoaderThread *)*2);
+           threadNum = 1;
+           threads = (LoaderThread**)malloc(sizeof(LoaderThread *)*1);
            threads[0] = LoaderThread::create();
            threads[0]->start();
-           threads[1] = LoaderThread::create();
-           threads[1]->start();
+           
        }
        return true;
    }

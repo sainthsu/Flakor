@@ -3,6 +3,8 @@ CXX = g++
 
 all:
 
+OBJS=flakor.o 
+
 
 %.o : % .cpp
 

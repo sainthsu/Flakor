@@ -49,8 +49,11 @@ void* LoaderThread::run(void* thread)
 			Resource* res = mgr->getWaitingRes();
 			pthread_mutex_unlock(&mgr->mutex);
 
+			if(res == NULL) FKLOG("LOADER FAIL");
             ILoader* loader = res->getLoader();
+			
 			loader->load(res);
+			res->doCallback();
 
             mgr->waitLoads--;
             

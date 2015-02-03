@@ -2,6 +2,7 @@
 #define _FK_RESOURCE_H_
 
 #include "base/lang/Object.h"
+#include <functional>
 
 /**
  * inited : 默认值，资源已经创建；
@@ -35,6 +36,9 @@ class Resource : public Object
         ResourceState _state;
 		ILoader* _loader;
 		ResourceListener* _listener;
+		
+		std::function<void(Resource*)> _callback;
+
     public:
         Resource();
         virtual ~Resource();
@@ -49,12 +53,15 @@ class Resource : public Object
 		void setUri(Uri* uri);
         const char* getFilename(void);
     
-        inline ILoader * getLoader(void) { return _loader;}
+        ILoader * getLoader(void);
         const char* getType(void);
 		void setType(int type);
     
 		ResourceListener* getListener();
 		void setListener(ResourceListener* listener);
+
+		inline void doCallback(){_callback(this);};
+		inline void setCallback(const std::function<void(Resource*)>& callback) {_callback = callback;};
 };
 
 class ResourceListener

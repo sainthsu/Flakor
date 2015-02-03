@@ -5,13 +5,18 @@
 bool TestScene::init()
 {
     LOGD("testscene init");
-    Sprite *sprite = Sprite::create("asset://flakor_test.png");
 
-    // position the sprite on the center of the screen
-    sprite->setPosition(PointMake(200,500));
-
-    // add the sprite as a child to this layer
-    this->addChild(sprite, 0);
+	TestScene* s = this;
+	Image* image = dynamic_cast<Image*>(ResourceManager::thisManager()->createResource("asset://flakor_test.png",ResourceManager::IMAGE_NAME));
+	image->setCallback([=](Resource*){
+		Texture2D* tex = new Texture2D();
+		tex->initWithImage(image);
+    	Sprite *sprite = Sprite::createWithTexture(tex);
+    	sprite->setPosition(PointMake(200,500));
+	    s->addChild(sprite, 1);
+	});
+	image->load(true);
+	
     
     Sprite *logo = Sprite::create("asset://flakor_logo.png");
     
@@ -19,7 +24,7 @@ bool TestScene::init()
     logo->setPosition(PointMake(200,20));
     
     // add the sprite as a child to this layer
-    this->addChild(logo);
+    this->addChild(logo,2);
     
     return true;
 }

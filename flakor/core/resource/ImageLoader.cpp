@@ -48,6 +48,7 @@ Resource* ImageLoader::createRes(Uri* uri)
 {
 	Image *res = new Image();
 	res->setUri(uri);
+
 	return res;
 }
 

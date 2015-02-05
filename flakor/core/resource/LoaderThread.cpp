@@ -53,7 +53,7 @@ void* LoaderThread::run(void* thread)
             ILoader* loader = res->getLoader();
 			
 			loader->load(res);
-			res->doCallback();
+			res->schedule();
 
             mgr->waitLoads--;
             

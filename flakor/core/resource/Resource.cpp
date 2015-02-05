@@ -4,7 +4,7 @@
 #include "core/resource/ILoader.h"
 #include "core/resource/ImageLoader.h"
 #include "core/resource/ResourceManager.h"
-
+#include "core/resource/Scheduler.h"
 
 FLAKOR_NS_BEGIN
 
@@ -107,6 +107,11 @@ ResourceListener* Resource::getListener()
 void Resource::setListener(ResourceListener* listener)
 {
 	_listener = listener;
+}
+
+void Resource::schedule()
+{
+	Scheduler::thisScheduler()->schedule(this);
 }
 
 FLAKOR_NS_END

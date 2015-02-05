@@ -40,6 +40,7 @@ core/resource/Resource.cpp \
 core/resource/Image.cpp \
 core/resource/ImageLoader.cpp \
 core/resource/ResourceManager.cpp \
+core/resource/Scheduler.cpp \
 core/input/Touch.cpp \
 core/opengl/GPUInfo.cpp \
 core/opengl/GLProgram.cpp \

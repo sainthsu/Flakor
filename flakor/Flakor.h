@@ -39,6 +39,7 @@
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
 #include "core/resource/Uri.h"
+#include "core/resource/Scheduler.h"
 //input
 #include "core/input/Touch.h"
 //opengl

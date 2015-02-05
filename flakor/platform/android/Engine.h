@@ -22,6 +22,7 @@ FLAKOR_NS_BEGIN
 class Scene;
 class Application;
 class Game;
+class Scheduler;
 
 enum EngineState {
     STATE_INITAL,
@@ -59,6 +60,7 @@ class Engine
     	unsigned int totalFrames;
     	float secondsPerFrame;
 
+		Scheduler* schedule;
 	public:
 		Engine();
 		~Engine();

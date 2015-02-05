@@ -62,6 +62,7 @@ class Resource : public Object
 
 		inline void doCallback(){_callback(this);};
 		inline void setCallback(const std::function<void(Resource*)>& callback) {_callback = callback;};
+		void schedule();
 };
 
 class ResourceListener

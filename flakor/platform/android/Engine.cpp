@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "Application.h"
 #include "platform/Game.h"
+#include "core/resource/Scheduler.h"
 #include "core/resource/ResourceManager.h"
 
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "engine", __VA_ARGS__))
@@ -11,6 +12,7 @@ Engine::Engine()
 {
 	totalFrames = 0;
     lastTick = new struct timeval;
+	schedule = Scheduler::thisScheduler();
 }
 
 Engine::~Engine()
@@ -151,6 +153,7 @@ int Engine::initDisplay(void)
 void Engine::drawFrame() {
     if (this->display == NULL) {
         // No display.
+		LOGW("no display!");
         return;
     }
     
@@ -167,12 +170,15 @@ void Engine::drawFrame() {
 	    {
 	        return;
 	    }
+		
+		schedule->update(deltaTime);
 		this->game->render();
+		
 		totalFrames++;
 	}
-	
 
     eglSwapBuffers(this->display, this->surface);
+
 }
 
 /**

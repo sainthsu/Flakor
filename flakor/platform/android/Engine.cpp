@@ -19,39 +19,11 @@ Engine::~Engine()
 {
 }
 
-void Engine::calculateDeltaTime()
+Engine::create()
 {
-    struct timeval now;
-
-    if (gettimeofday(&now, NULL) != 0)
-    {
-        FKLOG("error in gettimeofday");
-        deltaTime = 0;
-        return;
-    }
-
-    // new delta time. Re-fixed issue #1277
-    if (nextDeltaTimeZero)
-    {
-        deltaTime = 0;
-        nextDeltaTimeZero = false;
-    }
-    else
-    {
-        deltaTime = (now.tv_sec - lastTick->tv_sec) + (now.tv_usec - lastTick->tv_usec) / 1000000.0f;
-        deltaTime = MAX(0, deltaTime);
-    }
-
-#if FLAKOR_DEBUG
-    // If we are debugging our code, prevent big delta time
-    if (deltaTime > 0.2f)
-    {
-        deltaTime = 1 / 60.0f;
-    }
-#endif
-
-    *lastTick = now;
+	
 }
+
 
 int Engine::initDisplay(void)
 {
@@ -260,6 +232,15 @@ void Engine::handleCMD(int32_t cmd)
                 this->state = STATE_RUNNING;
             }
             break;
+		case APP_CMD_START:
+			// Wait for thread to start.
+    		pthread_mutex_lock(&this->mutex);
+    		while (!app->running) {
+        		pthread_cond_wait(&this->ready, &this->mutex);
+    		}
+    		pthread_mutex_unlock(this->mutex);
+		
+			break;
         case APP_CMD_PAUSE:
             this->state = STATE_STOP;
 			this->game->pause();
@@ -291,6 +272,40 @@ void Engine::handleCMD(int32_t cmd)
             this->drawFrame();
             break;
     }
+}
+
+void Engine::calculateDeltaTime()
+{
+    struct timeval now;
+
+    if (gettimeofday(&now, NULL) != 0)
+    {
+        FKLOG("error in gettimeofday");
+        deltaTime = 0;
+        return;
+    }
+
+    // new delta time. Re-fixed issue #1277
+    if (nextDeltaTimeZero)
+    {
+        deltaTime = 0;
+        nextDeltaTimeZero = false;
+    }
+    else
+    {
+        deltaTime = (now.tv_sec - lastTick->tv_sec) + (now.tv_usec - lastTick->tv_usec) / 1000000.0f;
+        deltaTime = MAX(0, deltaTime);
+    }
+
+#if FLAKOR_DEBUG
+    // If we are debugging our code, prevent big delta time
+    if (deltaTime > 0.2f)
+    {
+        deltaTime = 1 / 60.0f;
+    }
+#endif
+
+    *lastTick = now;
 }
 
 FLAKOR_NS_END

@@ -11,7 +11,7 @@ bool TestScene::init()
 	image->setCallback([=](Resource*){
 		Texture2D* tex = new Texture2D();
 		tex->initWithImage(image);
-    	Sprite *sprite = Sprite::createWithTexture(tex);
+    	Sprite *sprite = Sprite::createWithTexture(tex); 
     	sprite->setPosition(PointMake(200,500));
 	    s->addChild(sprite, 1);
 	});

@@ -249,6 +249,7 @@ void Application::setActivityState(int8_t cmd)
     }
     pthread_mutex_unlock(&this->mutex);
 }
+
 //run on main thread
 void Application::freePipe()
 {

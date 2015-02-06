@@ -14,8 +14,10 @@ class Scheduler
 		~Scheduler();
 
 		static Scheduler* thisScheduler();
-		void update(float delta);
-		void schedule(Resource* res);
+
+		void update(float delta);//in GL thread
+
+		void schedule(Resource* res);//in load thread
 	protected:
 		std::queue<Resource*>* _queue;
 };

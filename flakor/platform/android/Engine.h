@@ -49,6 +49,9 @@ class Engine
     	int32_t width;
     	int32_t height;
 
+		pthread_mutex_t mutex;
+		pthread_cond_t ready;
+
 		enum EngineState state;
 		struct timeval* lastTick;
 		/* delta time since last tick to main loop */
@@ -67,11 +70,10 @@ class Engine
 		void setApplication(Application* app);
 		
 		void create(void);
-        void saveState(void **saveState,size_t *size);
-		void destroy(void);
-
 		void drawFrame(void);
+        void saveState(void **saveState,size_t *size);
 		void termDisplay(void);
+		void destroy(void);
 		
 		int32_t handleInput(AInputEvent* event);
 		void handleCMD(int32_t cmd);

@@ -418,7 +418,7 @@ void Application::main()
     
     //app->onAppCmd = engine_handle_cmd;
     //app->onInputEvent = engine_handle_input;
-    
+	
     engine->app = this;
     
     // Prepare to monitor accelerometer
@@ -430,7 +430,7 @@ void Application::main()
     
     if (this->savedState != NULL) {
         // We are starting with a previous saved state; restore from it.
-        engine->app = (Application *)this->savedState;
+        engine->initFromState(this->savedState,this->savedStateSize);
     }
     
     // loop waiting for stuff to do.
@@ -463,9 +463,9 @@ void Application::main()
                     while (ASensorEventQueue_getEvents(engine->sensorEventQueue,
                                                        &event, 1) > 0)
                     {
-                        /*LOGI("accelerometer: x=%f y=%f z=%f",
+                        LOGE("accelerometer: x=%f y=%f z=%f",
                              event.acceleration.x, event.acceleration.y,
-                             event.acceleration.z);*/
+                             event.acceleration.z);
                     }
                 }
             }
@@ -479,7 +479,7 @@ void Application::main()
             }
         }
         
-        if (engine->state == STATE_RUNNING)
+        if (engine->isFocus())
         {
             // Done with events; draw next animation frame.
            	

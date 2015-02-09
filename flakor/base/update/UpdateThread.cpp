@@ -1,4 +1,5 @@
-#include "targetMacros.h"
+#include "macros.h"
+#include "platform/android/Engine.h"
 #include "base/update/UpdateThread.h"
 
 #include <unistd.h>
@@ -8,16 +9,20 @@ FLAKOR_NS_BEGIN
 UpdateThread::UpdateThread()
 :_pid(0)
 ,_thread(0)
+,_running(false)
+,_engine(NULL)
 {}
 
 UpdateThread::~UpdateThread()
 {
+	_running = false;
 }
 
-UpdateThread* UpdateThread::create()
+UpdateThread* UpdateThread::create(Engine* engine)
 {
     UpdateThread* thread = NULL;
     thread = new UpdateThread();
+	thread->setEngine(engine);
 
     return thread;
 }
@@ -35,13 +40,22 @@ void* UpdateThread::run(void* thread)
     UpdateThread* thr = (UpdateThread*)thread;
     thr->setRun(true);
     
-	thr->firstUpdate();
+	Engine* engine = thr->getEngine();
+	engine->firstUpdate();
 
     while(thr->isRunning())
     {
-       pthread_mutex_lock(&mgr->mutex);
-	   Resource* res = mgr->getWaitingRes();
-	   pthread_mutex_unlock(&mgr->mutex);
+		if(engine->updated && !engine->drawed)
+		{
+			FKLOG("updateThread clear memory!!!");
+			continue;
+		}
+
+		engine->onTickUpdate();
+		pthread_mutex_lock(&engine->mutex);
+    	engine->updated = true;
+    	pthread_mutex_unlock(&engine->mutex);
+		
     }
     
     return NULL;

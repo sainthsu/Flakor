@@ -18,6 +18,7 @@ public:
 	 * @param height the new height in pixels */
 	virtual void resize (int width, int height) = 0;
 
+	virtual void update (float delta) = 0;
 	/** Called when the {@link Application} should render itself. */
 	virtual void render () = 0;
 

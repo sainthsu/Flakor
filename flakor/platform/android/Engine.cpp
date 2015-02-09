@@ -1,156 +1,134 @@
 #include "Engine.h"
 #include "Application.h"
 #include "platform/Game.h"
+#include "core/opengl/GLContext.h"
 #include "core/resource/Scheduler.h"
 #include "core/resource/ResourceManager.h"
+#include "base/update/UpdateThread.h"
+#include "math/GLMatrix.h"
+
+#include <unistd.h>
 
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "engine", __VA_ARGS__))
 
 FLAKOR_NS_BEGIN
 
 Engine::Engine()
+:drawed(true)
+,updated(false)
 {
 	totalFrames = 0;
     lastTick = new struct timeval;
 	schedule = Scheduler::thisScheduler();
+	glContext = GLContext::GetInstance();
+	updateThread = UpdateThread::create(this);
 }
 
 Engine::~Engine()
 {
 }
 
-Engine::create()
+//run in update thread
+void Engine::firstUpdate()
 {
+	this->onTickUpdate();
+	sleep(1);
+	pthread_mutex_lock(&engine->mutex);
+	engine->drawed = false;
+    engine->updated = true;
+    pthread_mutex_unlock(&engine->mutex);
+}
+
+//run in update thread
+void Engine::onTickUpdate()
+{
+	LOGW("Engine tickupdate!!!");
+	this->calculateDeltaTime();
+	sleep(1);
+	// skip one flame when _deltaTime equal to zero.
+	if(deltaTime < FLT_EPSILON)
+	{
+	     return;
+	}
 	
+	if (this->game != NULL)
+	{
+		game->update(deltaTime);
+	}
 }
 
 
 int Engine::initDisplay(void)
 {
-    if (this->context != EGL_NO_CONTEXT)
+	if( !initialized)
     {
-        surface = eglCreateWindowSurface( this->display, this->config, this->app->window, NULL );
+        glContext->Init( app->window );
+        //LoadResources();
+        initialized = true;
     }
     else
     {
-	// initialize OpenGL ES and EGL
-
-    /*
-     * Here specify the attributes of the desired configuration.
-     * Below, we select an EGLConfig with at least 8 bits per color
-     * component compatible with on-screen windows
-     */
-    const EGLint attribs[] = {
-            EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT, //Request opengl ES2.0
-            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-            EGL_BLUE_SIZE, 8,
-            EGL_GREEN_SIZE, 8,
-            EGL_RED_SIZE, 8,
-            EGL_DEPTH_SIZE, 24,
-            EGL_NONE
-    };
-    //set gl version to 2.0
-    const EGLint glversion[] = {
-        EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE};
-    
-    EGLint w, h, dummy, format;
-    EGLint numConfigs;
-    EGLConfig config;
-    EGLSurface surface;
-    EGLContext context;
-
-    EGLDisplay display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-
-    eglInitialize(display, 0, 0);
-
-    /* Here, the application chooses the configuration it desires. In this
-     * sample, we have a very simplified selection process, where we pick
-     * the first EGLConfig that matches our criteria */
-    eglChooseConfig(display, attribs, &config, 1, &numConfigs);
-
-    if( !numConfigs )
-    {
-            //Fall back to 16bit depth buffer
-            const EGLint attribs[] = {
-                EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT, //Request opengl ES2.0
-                EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-                EGL_BLUE_SIZE, 8,
-                EGL_GREEN_SIZE, 8,
-                EGL_RED_SIZE, 8,
-                EGL_DEPTH_SIZE, 16,
-                EGL_NONE };
-            eglChooseConfig( display, attribs, &config, 1, &numConfigs );
-    }
-    /* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
-     * guaranteed to be accepted by ANativeWindow_setBuffersGeometry().
-     * As soon as we picked a EGLConfig, we can safely reconfigure the
-     * ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID. */
-    eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format);
-
-    ANativeWindow_setBuffersGeometry(this->app->window, 0, 0, format);
-
-    surface = eglCreateWindowSurface(display, config, this->app->window, NULL);
-    context = eglCreateContext(display, config, NULL, glversion);
-    
-
-	eglQuerySurface(display, surface, EGL_WIDTH, &w);
-    eglQuerySurface(display, surface, EGL_HEIGHT, &h);
-
-    this->display = display;
-    this->context = context;
-    this->surface = surface;
-	this->config = config;
-    this->width = w;
-    this->height = h;
-
-    }
-    
-    if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
-        LOGW("Unable to eglMakeCurrent");
-        return -1;
+        // initialize OpenGL ES and EGL
+        if( EGL_SUCCESS != glContext->Resume( app->window ))
+        {
+            //UnloadResources();
+            //LoadResources();
+        }
     }
 
-    
     // Initialize GL state.
-    glEnable(GL_CULL_FACE);
-    glViewport(0,0,this->width,this->height);
-    glDisable(GL_DEPTH_TEST);
+    glEnable( GL_CULL_FACE );
+    glEnable( GL_DEPTH_TEST );
+    glDepthFunc( GL_LEQUAL );
+
+    updateViewport();
 
     return 0;
+}
+
+void Engine::updateViewport()
+{
+	int32_t width = glContext->GetScreenWidth();
+	int32_t height = glContext->GetScreenHeight();
+	//Note that screen size might have been changed
+    glViewport( 0, 0, width, height );
+	Matrix4 pMatrix = Matrix4::orthographic(width,height,-width/2, width/2);
+    GLMode(GL_PROJECTION);
+    GLMultiply(&pMatrix);
 }
 
 /**
  * Just the current frame in the display.
  */
 void Engine::drawFrame() {
-    if (this->display == NULL) {
-        // No display.
-		LOGW("no display!");
-        return;
-    }
     
+	if(drawed && !updated)
+	{
+		schedule->update(deltaTime);
+		return;
+	}
+
     // Just fill the screen with a color.
      glClearColor(1.f, 1.f,1.f, 1);
      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (this->game != NULL)
 	{
-        LOGW("Game render!!!");
-		this->calculateDeltaTime();
-		// skip one flame when _deltaTime equal to zero.
-	    if(deltaTime < FLT_EPSILON)
-	    {
-	        return;
-	    }
 		
-		schedule->update(deltaTime);
 		this->game->render();
-		
 		totalFrames++;
 	}
 
-    eglSwapBuffers(this->display, this->surface);
+    // Swap
+    if( EGL_SUCCESS != glContext->Swap())
+    {
+        //UnloadResources();
+        //LoadResources();
+    }
 
+	pthread_mutex_lock(&engine->mutex);
+    engine->drawed = true;
+    pthread_mutex_unlock(&engine->mutex);
 }
 
 /**
@@ -158,36 +136,31 @@ void Engine::drawFrame() {
  */
 void Engine::termDisplay()
 {
-     if( surface != EGL_NO_SURFACE )
-    {
-        eglDestroySurface( display, surface );
-        this->surface = EGL_NO_SURFACE;
+    glContext->Suspend();
+}
+
+void Engine::saveState(void **savedState,size_t *size)
+{
+	
+}
+
+void Engine::initFromState(void *savedState,size_t size)
+{
+	if (savedState != NULL) {
+        // We are starting with a previous saved state; restore from it.
+        
     }
 }
 
-void Engine::saveState(void **saveState,size_t *size)
+void Engine::trimMemory()
 {
-
+    LOGW( "Trimming memory" );
+    glContext->Invalidate();
 }
 
 void Engine::destroy()
 {
-	if (this->display != EGL_NO_DISPLAY)
-    {
-        eglMakeCurrent(this->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-        if (this->context != EGL_NO_CONTEXT)
-        {
-            eglDestroyContext(this->display, this->context);
-        }
-        if (this->surface != EGL_NO_SURFACE) {
-            eglDestroySurface(this->display, this->surface);
-        }
-        eglTerminate(this->display);
-    }
-    this->state = STATE_DESTROYED;
-    this->display = EGL_NO_DISPLAY;
-    this->context = EGL_NO_CONTEXT;
-    this->surface = EGL_NO_SURFACE;
+	
 }
 
 /**
@@ -206,6 +179,56 @@ int32_t Engine::handleInput(AInputEvent* event)
     }
     return 0;
 }
+
+//-------------------------------------------------------------------------
+//Sensor handlers
+//-------------------------------------------------------------------------
+void Engine::initSensors()
+{
+    sensorManager = ASensorManager_getInstance();
+    accelerometerSensor = ASensorManager_getDefaultSensor( sensorManager,
+            ASENSOR_TYPE_ACCELEROMETER );
+    sensorEventQueue = ASensorManager_createEventQueue( sensorManager, app->looper,
+            LOOPER_ID_USER, NULL, NULL );
+}
+
+void Engine::processSensors( int32_t id )
+{
+    // If a sensor has data, process it now.
+    if( id == LOOPER_ID_USER )
+    {
+        if( accelerometerSensor != NULL )
+        {
+            ASensorEvent event;
+            while( ASensorEventQueue_getEvents(sensorEventQueue, &event, 1 ) > 0 )
+            {
+            }
+        }
+    }
+}
+
+void Engine::resumeSensors()
+{
+    // When our app gains focus, we start monitoring the accelerometer.
+    if( accelerometerSensor != NULL )
+    {
+        ASensorEventQueue_enableSensor( sensorEventQueue, accelerometerSensor );
+        // We'd like to get 60 events per second (in us).
+        ASensorEventQueue_setEventRate( sensorEventQueue, accelerometerSensor,
+                (1000L / 60) * 1000 );
+    }
+}
+
+void Engine::suspendSensors()
+{
+    // When our app loses focus, we stop monitoring the accelerometer.
+    // This is to avoid consuming battery while not being used.
+    if( accelerometerSensor != NULL )
+    {
+        ASensorEventQueue_disableSensor( sensorEventQueue, accelerometerSensor );
+    }
+}
+
 
 /**
  * Process the next main command.
@@ -228,18 +251,13 @@ void Engine::handleCMD(int32_t cmd)
                 LOGW("game create!!!");
 				ResourceManager::setAssetManager(this->app->activity->assetManager);
                 this->game->create();
-                //this->drawFrame();
+                this->drawFrame();
                 this->state = STATE_RUNNING;
             }
             break;
-		case APP_CMD_START:
-			// Wait for thread to start.
-    		pthread_mutex_lock(&this->mutex);
-    		while (!app->running) {
-        		pthread_cond_wait(&this->ready, &this->mutex);
-    		}
-    		pthread_mutex_unlock(this->mutex);
-		
+		case APP_CMD_RESUME:
+			// Wait for first update is done.
+			
 			break;
         case APP_CMD_PAUSE:
             this->state = STATE_STOP;
@@ -248,6 +266,7 @@ void Engine::handleCMD(int32_t cmd)
         case APP_CMD_TERM_WINDOW:
             // The window is being hidden or closed, clean it up.
             this->termDisplay();
+			hasFocus = false;
             break;
         case APP_CMD_GAINED_FOCUS:
             // When our app gains focus, we start monitoring the accelerometer.
@@ -259,6 +278,9 @@ void Engine::handleCMD(int32_t cmd)
                 ASensorEventQueue_setEventRate(this->sensorEventQueue,
                         this->accelerometerSensor, (1000L/60)*1000);
             }
+			hasFocus = true;
+			updateThread->start();
+		
             break;
         case APP_CMD_LOST_FOCUS:
             // When our app loses focus, we stop monitoring the accelerometer.
@@ -268,9 +290,14 @@ void Engine::handleCMD(int32_t cmd)
                         this->accelerometerSensor);
             }
             // Also stop animating.
+			hasFocus = false;
             this->state = STATE_STOP;
             this->drawFrame();
             break;
+		 case APP_CMD_LOW_MEMORY:
+	        //Free up GL resources
+	        this->trimMemory();
+	        break;
     }
 }
 

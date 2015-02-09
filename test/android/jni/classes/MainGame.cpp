@@ -12,10 +12,7 @@ MainGame::~MainGame()
 
 void MainGame::create()
 {
-	    LOGD("main game create!");
-    Matrix4 pMatrix = Matrix4::orthographic(1080,1776,-1028, 1028);
-    GLMode(GL_PROJECTION);
-    GLMultiply(&pMatrix);
+	LOGD("main game create!");
     
     runningScene = TestScene::create();
     
@@ -24,6 +21,13 @@ void MainGame::create()
 void MainGame::resize(int width, int height)
 {
         LOGD("main game resize!");
+}
+
+void MainGame::update(float delta)
+{
+    LOGD("main game update!");
+    
+    runningScene->update(delta);
 }
 
 void MainGame::render()

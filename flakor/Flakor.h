@@ -25,6 +25,9 @@
 #include "base/element/Helper.h"
 #include "base/element/Color.h"
 
+//update
+#include "base/update/UpdateThread.h"
+
 //entity
 #include "2d/Entity.h"
 #include "2d/Scene.h"
@@ -45,6 +48,7 @@
 //opengl
 #include "core/opengl/GL.h"
 #include "core/opengl/GPUInfo.h"
+#include "core/opengl/GLContext.h"
 #include "core/opengl/GLProgram.h"
 #include "core/opengl/shader/Shaders.h"
 #include "core/opengl/vbo/VBO.h"

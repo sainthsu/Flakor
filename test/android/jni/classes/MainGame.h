@@ -16,6 +16,7 @@ public:
     virtual void create ();
     virtual void resize (int width, int height);
     
+	virtual void update (float delta);
     virtual void render ();
     virtual void pause ();
     virtual void resume ();

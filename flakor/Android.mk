@@ -28,6 +28,7 @@ base/element/Color.cpp \
 base/element/Element.cpp \
 base/element/Helper.cpp \
 base/element/Blendfunc.cpp \
+base/update/UpdateThread.cpp \
 math/Camera.cpp \
 math/CArray.cpp \
 math/Matrices.cpp \
@@ -43,6 +44,8 @@ core/resource/ResourceManager.cpp \
 core/resource/Scheduler.cpp \
 core/input/Touch.cpp \
 core/opengl/GPUInfo.cpp \
+core/opengl/gl3stub.c \
+core/opengl/GLContext.cpp \
 core/opengl/GLProgram.cpp \
 core/opengl/vbo/VBO.cpp \
 core/opengl/shader/Shaders.cpp \

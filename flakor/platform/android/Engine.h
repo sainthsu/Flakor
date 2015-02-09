@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include <pthread.h>
+
 #include <android/sensor.h>
 #include <android/log.h>
 #include <android/input.h>
@@ -23,6 +25,8 @@ class Scene;
 class Application;
 class Game;
 class Scheduler;
+class GLContext;
+class UpdateThread;
 
 enum EngineState {
     STATE_INITAL,
@@ -42,12 +46,12 @@ class Engine
     	const ASensor* accelerometerSensor;
     	ASensorEventQueue* sensorEventQueue;
 
-    	EGLDisplay display;
-    	EGLSurface surface;
-    	EGLContext context;
-		EGLConfig config;
-    	int32_t width;
-    	int32_t height;
+		GLContext* glContext;
+		bool initialized;
+		bool hasFocus;
+
+		bool drawed;
+		bool updated;
 
 		pthread_mutex_t mutex;
 		pthread_cond_t ready;
@@ -64,16 +68,29 @@ class Engine
     	float secondsPerFrame;
 
 		Scheduler* schedule;
+		UpdateThread* updateThread;
+
 	public:
 		Engine();
 		~Engine();
 		void setApplication(Application* app);
 		
-		void create(void);
+		void firstUpdate(void);
+		void onTickUpdate();
 		void drawFrame(void);
-        void saveState(void **saveState,size_t *size);
+        void saveState(void **savedState,size_t *size);
+		void initFromState(void *savedState,size_t size);
 		void termDisplay(void);
+		void trimMemory();
 		void destroy(void);
+
+		void updateViewport();
+
+		bool inline isFocus() {return hasFocus;};
+		void initSensors();
+		void processSensors( int32_t id );
+		void resumeSensors();
+		void suspendSensors();
 		
 		int32_t handleInput(AInputEvent* event);
 		void handleCMD(int32_t cmd);

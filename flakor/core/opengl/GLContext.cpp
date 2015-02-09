@@ -21,7 +21,8 @@
 // includes
 //--------------------------------------------------------------------------------
 #include <unistd.h>
-#include "targetMacros.h"
+#include <string>
+#include "macros.h"
 #include "core/opengl/GLContext.h"
 #include "core/opengl/gl3stub.h"
 
@@ -126,7 +127,7 @@ bool GLContext::InitEGLSurface()
 
     if( !num_configs )
     {
-        LOGW( "Unable to retrieve EGL config" );
+        FKLOG( "Unable to retrieve EGL config" );
         return false;
     }
 
@@ -153,7 +154,7 @@ bool GLContext::InitEGLContext()
 
     if( eglMakeCurrent( display_, surface_, surface_, context_ ) == EGL_FALSE )
     {
-        LOGW( "Unable to eglMakeCurrent" );
+        FKLOG( "Unable to eglMakeCurrent" );
         return false;
     }
 
@@ -229,19 +230,19 @@ EGLint GLContext::Resume( ANativeWindow* window )
     if( screen_width_ != original_widhth || screen_height_ != original_height )
     {
         //Screen resized
-        LOGI( "Screen resized" );
+        FKLOG( "Screen resized" );
     }
 
     if( eglMakeCurrent( display_, surface_, surface_, context_ ) == EGL_TRUE )
         return EGL_SUCCESS;
 
     EGLint err = eglGetError();
-    LOGW( "Unable to eglMakeCurrent %d", err );
+    FKLOG( "Unable to eglMakeCurrent %d", err );
 
     if( err == EGL_CONTEXT_LOST )
     {
         //Recreate context
-        LOGI( "Re-creating egl context" );
+        FKLOG( "Re-creating egl context" );
         InitEGLContext();
     }
     else
@@ -291,4 +292,4 @@ bool GLContext::CheckExtension( const char* extension )
     return false;
 }
 
-FLAKOR_NS_BEGIN   //namespace ndkHelper
+FLAKOR_NS_END   //namespace flakor

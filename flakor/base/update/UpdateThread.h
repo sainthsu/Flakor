@@ -14,6 +14,7 @@ class UpdateThread
     protected:
         pid_t _pid;
         pthread_t _thread;
+		bool _inited;
         bool _running;
 
 		Engine* _engine;
@@ -22,9 +23,12 @@ class UpdateThread
         ~UpdateThread();
 
         static UpdateThread* create(Engine* engine);
-        static void* run(void* thread);
+        static void* main(void* thread);
 
 		void start();
+		void run();
+		inline void quit() {_running = false};
+
         pid_t getPid();
 		inline void setEngine(Engine* engine) {_engine = engine;};
 		inline Engine* getEngine(){return _engine;};

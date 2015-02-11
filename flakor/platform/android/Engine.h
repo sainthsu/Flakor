@@ -50,11 +50,7 @@ class Engine
 		bool initialized;
 		bool hasFocus;
 
-		bool drawed;
-		bool updated;
-
-		pthread_mutex_t mutex;
-		pthread_cond_t ready;
+		pthread_mutex_t mutex;//draw lock
 
 		enum EngineState state;
 		struct timeval* lastTick;
@@ -63,7 +59,9 @@ class Engine
 		/* whether or not the next delta time will be zero */
     	bool nextDeltaTimeZero;
 
-		/* How many frames were called since the director started */
+		/* How many frames were updated since the engine started */
+		unsigned int totalUpdated;
+		/* How many frames were drawed since the engine started */
     	unsigned int totalFrames;
     	float secondsPerFrame;
 
@@ -73,11 +71,11 @@ class Engine
 	public:
 		Engine();
 		~Engine();
-		void setApplication(Application* app);
+		inline void setApplication(Application* app) {this->app = app;};
 		
-		void firstUpdate(void);
 		void onTickUpdate();
 		void drawFrame(void);
+
         void saveState(void **savedState,size_t *size);
 		void initFromState(void *savedState,size_t size);
 		void termDisplay(void);

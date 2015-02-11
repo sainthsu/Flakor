@@ -190,6 +190,7 @@ void Application::destroy()
         AInputQueue_detachLooper(this->inputQueue);
     }
     AConfiguration_delete(this->config);
+
     delete(this->engine);
     this->destroyed = 1;
     pthread_cond_broadcast(&this->cond);
@@ -266,6 +267,7 @@ void Application::freePipe()
     close(this->msgwrite);
     pthread_cond_destroy(&this->cond);
     pthread_mutex_destroy(&this->mutex);
+
     delete(this);
 }
 
@@ -463,9 +465,9 @@ void Application::main()
                     while (ASensorEventQueue_getEvents(engine->sensorEventQueue,
                                                        &event, 1) > 0)
                     {
-                        LOGE("accelerometer: x=%f y=%f z=%f",
+                        /*LOGE("accelerometer: x=%f y=%f z=%f",
                              event.acceleration.x, event.acceleration.y,
-                             event.acceleration.z);
+                             event.acceleration.z);*/
                     }
                 }
             }

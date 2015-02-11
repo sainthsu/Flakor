@@ -14,37 +14,36 @@
 FLAKOR_NS_BEGIN
 
 Engine::Engine()
-:drawed(true)
-,updated(false)
+:state(STATE_INITAL)
+,totalUpdated(0)
+,totalFrames(0)
 {
-	totalFrames = 0;
     lastTick = new struct timeval;
 	schedule = Scheduler::thisScheduler();
 	glContext = GLContext::GetInstance();
 	updateThread = UpdateThread::create(this);
+	pthread_mutex_init(&mutex, NULL);
 }
 
 Engine::~Engine()
 {
-}
-
-//run in update thread
-void Engine::firstUpdate()
-{
-	this->onTickUpdate();
-	sleep(1);
-	pthread_mutex_lock(&engine->mutex);
-	engine->drawed = false;
-    engine->updated = true;
-    pthread_mutex_unlock(&engine->mutex);
+	FK_SAFE_DELETE(updateThread);
+	FK_SAFE_DELETE(schedule);
 }
 
 //run in update thread
 void Engine::onTickUpdate()
 {
-	LOGW("Engine tickupdate!!!");
+	FKLOG("updateThread :frame:%d;update:%d",totalFrames,totalUpdated);
+	if(totalFrames < totalUpdated)
+	{
+			FKLOG("updateThread schedule update!!!");
+			usleep(40);
+			return;
+	}
+
 	this->calculateDeltaTime();
-	sleep(1);
+	usleep(100);
 	// skip one flame when _deltaTime equal to zero.
 	if(deltaTime < FLT_EPSILON)
 	{
@@ -53,8 +52,19 @@ void Engine::onTickUpdate()
 	
 	if (this->game != NULL)
 	{
+		LOGW("Engine tickupdate!!!");
 		game->update(deltaTime);
 	}
+
+	while(pthread_mutex_trylock(&mutex) == EBUSY)
+	{
+			FKLOG("updateThread clear memory!!!");
+			usleep(40);
+	}
+
+    FKLOG("updateThread swap memory!!!");
+	totalUpdated++;
+    pthread_mutex_unlock(&mutex);
 }
 
 
@@ -100,21 +110,23 @@ void Engine::updateViewport()
 /**
  * Just the current frame in the display.
  */
-void Engine::drawFrame() {
+void Engine::drawFrame()
+{
     
-	if(drawed && !updated)
+	FKLOG("DrawThread :frame:%d;update:%d",totalFrames,totalUpdated);
+	if(totalFrames > totalUpdated)
 	{
 		schedule->update(deltaTime);
 		return;
 	}
 
-    // Just fill the screen with a color.
-     glClearColor(1.f, 1.f,1.f, 1);
-     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	pthread_mutex_lock(&mutex);
+    // Just clear the screen with a color.
+    glClearColor(1.f, 1.f,1.f, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (this->game != NULL)
 	{
-		
 		this->game->render();
 		totalFrames++;
 	}
@@ -122,13 +134,10 @@ void Engine::drawFrame() {
     // Swap
     if( EGL_SUCCESS != glContext->Swap())
     {
-        //UnloadResources();
-        //LoadResources();
+        
     }
-
-	pthread_mutex_lock(&engine->mutex);
-    engine->drawed = true;
-    pthread_mutex_unlock(&engine->mutex);
+	
+    pthread_mutex_unlock(&mutex);
 }
 
 /**
@@ -170,10 +179,8 @@ int32_t Engine::handleInput(AInputEvent* event)
 {
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
 	{
-        this->state = STATE_RUNNING;
-        
-        //engine->state.x = AMotionEvent_getX(event, 0);
-        //engine->state.y = AMotionEvent_getY(event, 0);
+        //float x = AMotionEvent_getX(event, 0);
+        //float y = AMotionEvent_getY(event, 0);
         
         return 1;
     }
@@ -253,6 +260,7 @@ void Engine::handleCMD(int32_t cmd)
                 this->game->create();
                 this->drawFrame();
                 this->state = STATE_RUNNING;
+				updateThread->start();
             }
             break;
 		case APP_CMD_RESUME:
@@ -279,8 +287,6 @@ void Engine::handleCMD(int32_t cmd)
                         this->accelerometerSensor, (1000L/60)*1000);
             }
 			hasFocus = true;
-			updateThread->start();
-		
             break;
         case APP_CMD_LOST_FOCUS:
             // When our app loses focus, we stop monitoring the accelerometer.
@@ -293,6 +299,7 @@ void Engine::handleCMD(int32_t cmd)
 			hasFocus = false;
             this->state = STATE_STOP;
             this->drawFrame();
+			
             break;
 		 case APP_CMD_LOW_MEMORY:
 	        //Free up GL resources

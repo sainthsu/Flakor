@@ -10,6 +10,7 @@ UpdateThread::UpdateThread()
 :_pid(0)
 ,_thread(0)
 ,_running(false)
+,_inited(false)
 ,_engine(NULL)
 {}
 
@@ -29,36 +30,33 @@ UpdateThread* UpdateThread::create(Engine* engine)
 
 void UpdateThread::start()
 {
-    pthread_attr_t attr;
+	if(_inited)
+    {
+		return;
+	}
+	pthread_attr_t attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    pthread_create(&_thread, &attr, UpdateThread::run, this);
+    int err = pthread_create(&_thread, &attr, UpdateThread::main, this);
+	if(err == 0) _inited = true;
 }
 
-void* UpdateThread::run(void* thread)
+void* UpdateThread::main(void* thread)
 {
     UpdateThread* thr = (UpdateThread*)thread;
-    thr->setRun(true);
     
-	Engine* engine = thr->getEngine();
-	engine->firstUpdate();
-
-    while(thr->isRunning())
-    {
-		if(engine->updated && !engine->drawed)
-		{
-			FKLOG("updateThread clear memory!!!");
-			continue;
-		}
-
-		engine->onTickUpdate();
-		pthread_mutex_lock(&engine->mutex);
-    	engine->updated = true;
-    	pthread_mutex_unlock(&engine->mutex);
-		
-    }
-    
+    thr->run();
     return NULL;
+}
+
+void UpdateThread::run()
+{
+	_running = true;
+
+    while(_running)
+    {
+		_engine->onTickUpdate();
+    }
 }
 
 pid_t UpdateThread::getPid()

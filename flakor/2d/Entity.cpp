@@ -754,7 +754,6 @@ void Entity::onVisit(void)
 
     GLMode(GL_MODELVIEW);
     GLPush();
-    
 
     this->transform();
     
@@ -821,9 +820,17 @@ void Entity::onDetached()
 
 void Entity::update(float delta)
 {
-	if(!enabled)
+	if(ignoreUpdate)
 		return;
-	onUpdate(delta);
+	if(children == NULL || children->count() <=0 || !this->childrenIgnoreUpdate)
+	{
+		this->onUpdate(delta);
+	}
+	else
+	{
+		
+	}
+	
 }
 
 void Entity::transform(void)

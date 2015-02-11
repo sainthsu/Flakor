@@ -1,14 +1,15 @@
 #ifndef _FK_RUNNABLEHANDLER_H_
 #define _FK_RUNNABLEHANDLER_H_
 
-#include "base/interface/IUpadatabel"
+#include "base/interface/IUpdatable"
 
 
 class RunnableHandler : public IUpdatable
 {
 public:
 	Array* Runnables;
-	void onUpdate(final float secondsElapsed);
+
+	void onUpdate(float secondsElapsed);
 	void reset();
 	void postRunnable(const Runnable* runnable);
 };

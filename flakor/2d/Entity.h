@@ -150,6 +150,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 *子元素队列
 		 */
 		Array* children;
+
 		/**
 		 *父元素
 		 */
@@ -163,6 +164,12 @@ class Entity : public Object,public IColorable,public IUpdatable
 		Matrix4 inverseMatrix;
 		Matrix4 transformMatrix;
 		Matrix4 additionalMatrix;
+
+        /**
+          *updatehandler and modifier
+          */
+        Array* updateHandlers;
+        Array* entityModifiers;
 
 		//用户自定义数据指针
 		void* userData;

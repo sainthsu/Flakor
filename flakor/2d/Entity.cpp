@@ -822,13 +822,22 @@ void Entity::update(float delta)
 {
 	if(ignoreUpdate)
 		return;
-	if(children == NULL || children->count() <=0 || !this->childrenIgnoreUpdate)
+    if(children == NULL || children->count() <=0 || this->childrenIgnoreUpdate)
 	{
 		this->onUpdate(delta);
 	}
 	else
 	{
-		
+            Object* child;
+            Entity* entity;
+            FK_ARRAY_FOREACH(children, child)
+            {
+                entity = (Entity*)child;
+                if (!entity->isRunning())
+                {
+                    entity->update(delta);
+                }
+            }
 	}
 	
 }

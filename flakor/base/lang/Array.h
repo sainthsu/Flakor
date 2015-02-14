@@ -122,7 +122,7 @@ public:
     /**
      @brief   Generate a Array pointer by file
      @param   pFileName  The file name of *.plist file
-     @return  The CCArray pointer generated from the file
+     @return  The Array pointer generated from the file
      */
     static Array* createWithContentsOfFile(const char* pFileName);
     

@@ -164,6 +164,47 @@ int32_t Application::onInputEvent(AInputEvent* event)
 {
     if (this->engine != NULL)
     {
+        int32_t eventType = AInputEvent_getType(event);
+        if (eventType == AINPUT_EVENT_TYPE_MOTION)
+        {
+            int pointerNumber = AMotionEvent_getPointerCount( event );
+
+            int32_t ids[pointerNumber];
+            float xs[pointerNumber];
+            float ys[pointerNumber];
+
+            for (int i = 0; i < pointerNumber; i++) {
+                ids[i] = AMotionEvent_getPointerId(event, i );
+                xs[i] = AMotionEvent_getX( event, i );
+                ys[i] = AMotionEvent_getY( event, i );;
+            }
+
+
+            int32_t action = AMotionEvent_getAction(event);
+            unsigned int flags = action & AMOTION_EVENT_ACTION_MASK;
+            switch( flags )
+            {
+                case AMOTION_EVENT_ACTION_DOWN:
+                    /*int idDown = pMotionEvent.getPointerId(0);
+                    float xDown = xs[0];
+                    float yDown = ys[0];*/
+                    break;
+                case AMOTION_EVENT_ACTION_UP:
+                {
+                    int64_t eventTime = AMotionEvent_getEventTime(event);
+                    int64_t downTime = AMotionEvent_getDownTime(event);
+
+                    break;
+                }
+            }
+
+
+            return 1;
+        }
+        else if(eventType == AINPUT_EVENT_TYPE_KEY) //消息来源于物理键盘或虚拟键盘
+        {
+
+        }
         return this->engine->handleInput(event);
     }
     return 0;

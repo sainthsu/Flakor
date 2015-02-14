@@ -103,6 +103,13 @@ class Texture2D : public Object
 		PixelFormat _pixelFormat;
 
 		TexParams _texParams;
+    
+        bool _paramDirty;
+        bool _dataDirty;
+        bool _clearDataAfterLoad;
+    
+        MipmapInfo *_info;
+        int _mipmapsNum;
 
 		/** width in pixels */
 		int _pixelsWidth;
@@ -123,9 +130,7 @@ class Texture2D : public Object
 		Size _contentSize;
 
 		/** whether or not the texture has their Alpha premultiplied */
-		bool _hasPremultipliedAlpha;
-
-		bool _hasMipmaps;		
+		bool _hasPremultipliedAlpha;		
 
 		bool	_antialiasEnabled;
 
@@ -137,70 +142,73 @@ class Texture2D : public Object
 	public:
 		Texture2D();
 		virtual ~Texture2D();
-		
-		bool initWithData(const void *data,ssize_t dataLen,PixelFormat pixelFormat,int width,int height,const Size& size);
-
-		/** Initializes with mipmaps */
-    	bool initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat pixelFormat, int pixelsWidth, int pixelsHeight);
-
-		/**
-    	  create a Texture2D object from an image file.
-    	*/
-    	/** 
-		Initializes a texture from a Image resource.
-    	We will use the format you specified with setDefaultAlphaPixelFormat to convert the image for texture.
-    	NOTE: It will not convert the pvr image file.
-		*/
-    	bool initWithImage(Image * image);
     
-    	/** 
-		Initializes a texture from a Image resource.
-		we will use the format you passed to the function to convert the image format to the texture format.
-    	If you pass PixelFormat::Automatic, we will auto detect the image render type and use that type for texture to render.
+        /**
+         create a Texture2D object from an image file.
+         */
+        /**
+         Initializes a texture from a Image resource.
+         We will use the format you specified with setDefaultAlphaPixelFormat to convert the image for texture.
+         NOTE: It will not convert the pvr image file.
+         */
+        bool initWithImage(Image * image);
+    
+        /**
+         Initializes a texture from a Image resource.
+         we will use the format you passed to the function to convert the image format to the texture format.
+         If you pass PixelFormat::Automatic, we will auto detect the image render type and use that type for texture to render.
     	**/
-    	bool initWithImage(Image * image, PixelFormat format);
-
-		/** Update with texture data*/
-	    bool updateWithData(const void *data,int offsetX,int offsetY,int width,int height);
-
-		/** Gets the pixel format of the texture */
-	    PixelFormat getPixelFormat() const;
-
-		void setTexParams(const TexParams& texParams);
-
-		void setContentSize(Size& size);
-
-		Size getContentSize();
-	
-		/** Gets the width of the texture in pixels */
-    	int getPixelsWidth() const;
+        bool initWithImage(Image * image, PixelFormat format);
     
-    	/** Gets the height of the texture in pixels */
-    	int getPixelsHeight() const;
+        bool initWithData(const void *data,ssize_t dataLen,PixelFormat pixelFormat,int width,int height,const Size& size);
     
-    	/** Gets the texture id*/
-    	GLuint getTextureID() const;
+        /** Update with texture data*/
+        bool updateWithDataGL(const void *data,int offsetX,int offsetY,int width,int height);
     
-    	/** Gets max S */
-    	GLfloat getMaxS() const;
-    	/** Sets max S */
-    	void setMaxS(GLfloat maxS);
+        /** Gets the pixel format of the texture */
+        PixelFormat getPixelFormat() const;
     
-    	/** Gets max T */
-    	GLfloat getMaxT() const;
-    	/** Sets max T */
-    	void setMaxT(GLfloat maxT);
+        void setTexParams(const TexParams& texParams);
+    
+        void setContentSize(Size& size);
+    
+        Size getContentSize();
+    
+        /** Gets the width of the texture in pixels */
+        int getPixelsWidth() const;
+    
+        /** Gets the height of the texture in pixels */
+        int getPixelsHeight() const;
+    
+        /** Gets the texture id*/
+        GLuint getTextureID() const;
+    
+        /** Gets max S */
+        GLfloat getMaxS() const;
+        /** Sets max S */
+        void setMaxS(GLfloat maxS);
+    
+        /** Gets max T */
+        GLfloat getMaxT() const;
+        /** Sets max T */
+        void setMaxT(GLfloat maxT);
+    
+        bool hasPremultipliedAlpha();
+    
+        bool hasMipmaps() const;
+    
+    GL_METHOD:
 
-		bool hasPremultipliedAlpha();
+		/** load to gpu with mipmaps */
+    	bool loadWithMipmapsGL(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat pixelFormat, int pixelsWidth, int pixelsHeight);
 
-		bool hasMipmaps() const;
-		/** Generates mipmap images for the texture.
+		void bindGL();
+        void loadGL();
+        /** Generates mipmap images for the texture.
     	It only works if the texture size is POT (power of 2).
     	*/
-    	void generateMipmap();
-
-		void bind();
-		void delFromGPU();
+        void generateMipmapGL();
+		void deleteGL();
 
 	public:
 		static const PixelFormatInfoMap& getPixelFormatInfoMap();

@@ -27,7 +27,7 @@ class UpdateThread
 
 		void start();
 		void run();
-		inline void quit() {_running = false};
+        inline void quit() {_running = false;};
 
         pid_t getPid();
 		inline void setEngine(Engine* engine) {_engine = engine;};

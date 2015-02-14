@@ -727,8 +727,13 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * Stops all running actions and schedulers
 		 */
 		virtual void cleanup(void);
-
-		/** 
+    
+        /**
+         * Visits this entity's children and draw them recursively in GLThread.
+         */
+        virtual void onVisit(void);
+    
+		/**
 		 * Override this method to draw your own entity.
 		 * The following GL states will be enabled by default:
 		 * - glEnableClientState(GL_VERTEX_ARRAY);
@@ -739,18 +744,21 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 * But if you enable any other GL state, you should disable it after drawing your entity.
 		 */
 		virtual void draw(void);
-
-		/** 
-		 * Visits this entity's children and draw them recursively.
-		 */
-		virtual void onVisit(void);
+    
+        void setIngnoreUpdate(bool ignore);
+        bool getIngnoreUpdate();
+    
+        /*
+         * Update method will be called automatically every frame in update thread
+         * Visits this entity's children ,update & draw them recursively.
+         */
+        virtual void update(float delta);
+    
+        void onUpdate(float delta) override;
+        void reset() override;
 
 		virtual void onAttached();
 		virtual void onDetached();
-		/* 
-		 * Update method will be called automatically every frame if "scheduleUpdate" is called, and the entity is "live"
-		 */
-		virtual void update(float delta);
 
 		/// @} end of Scheduler and Timer
 
@@ -856,12 +864,6 @@ class Entity : public Object,public IColorable,public IUpdatable
 		float getGreen() override;
 		float getBlue() override;
 		float getAlpha() override;
-
-		void setIngnoreUpdate(bool ignore) override;
-		bool getIngnoreUpdate() override;
-
-		void onUpdate(float delta) override;
-		void reset() override;
 
 };
 

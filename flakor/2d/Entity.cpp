@@ -810,7 +810,7 @@ void Entity::onVisit(void)
  * */
 void Entity::onAttached()
 {
-
+    
 }
 
 void Entity::onDetached()
@@ -820,26 +820,81 @@ void Entity::onDetached()
 
 void Entity::update(float delta)
 {
-	if(ignoreUpdate)
-		return;
-    if(children == NULL || children->count() <=0 || this->childrenIgnoreUpdate)
-	{
-		this->onUpdate(delta);
-	}
-	else
-	{
-            Object* child;
-            Entity* entity;
-            FK_ARRAY_FOREACH(children, child)
+    GLMode(GL_MODELVIEW);
+    GLPush();
+    
+    this->transform();
+    
+    if(children == NULL || children->count() <=0 || !this->childrenVisible)
+    {
+        this->onUpdate(delta);
+    }
+    else
+    {
+        if(this->childrenSortPending)
+        {
+            sortAllChildren(true);
+        }
+        int childCount = children->count();
+        int i = 0;
+        Entity* child = NULL;
+        
+        FKLOG("children count:%d",childCount);
+        //draw children behind this entity
+        for(;i<childCount;i++)
+        {
+            child = (Entity *)children->data->arr[i];
+            if(child && child->zOrder < 0)
             {
-                entity = (Entity*)child;
-                if (!entity->isRunning())
-                {
-                    entity->update(delta);
-                }
+                child->update(delta);
             }
-	}
-	
+            else
+            {
+                break;
+            }
+        }
+        
+        this->onUpdate(delta);
+        
+        //draw children in font of this entity
+        for(;i<childCount;i++)
+        {
+            child = (Entity *)children->data->arr[i];
+            if(child)
+            {
+                child->update(delta);
+            }
+        }
+        
+    }
+    
+    GLMode(GL_MODELVIEW);
+    GLPop();
+
+}
+
+void Entity::setIngnoreUpdate(bool ignore)
+{
+    ignoreUpdate = ignore;
+}
+
+
+bool Entity::getIngnoreUpdate()
+{
+    return ignoreUpdate;
+}
+
+void Entity::onUpdate(float delta)
+{
+    Matrix4 * mat = new Matrix4();
+    GLGet(GL_MODELVIEW,mat);
+    
+    
+}
+
+void Entity::reset()
+{
+    
 }
 
 void Entity::transform(void)
@@ -1197,26 +1252,6 @@ float Entity::getAlpha()
 	return color.alpha;
 }
 
-void Entity::setIngnoreUpdate(bool ignore)
-{
-	ignoreUpdate = ignore;
-}
-
-
-bool Entity::getIngnoreUpdate()
-{
-	return ignoreUpdate;
-}
-
-void Entity::onUpdate(float delta)
-{
-	
-}
-
-void Entity::reset()
-{
-	
-}
 
 FLAKOR_NS_END
 

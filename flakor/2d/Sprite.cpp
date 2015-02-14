@@ -85,7 +85,7 @@ Sprite* Sprite::create()
 
 bool Sprite::init(void)
 {
-    return initWithTexture(nullptr, RectZero );
+    return initWithTexture(nullptr, RectZero);
 }
 
 bool Sprite::initWithTexture(Texture2D *texture)
@@ -543,7 +543,8 @@ void Sprite::draw()
     
 	_glProgram->use();
 	_vbo->onBufferData();
-	_texture->bind();
+    _texture->loadGL();
+	_texture->bindGL();
     
     if (_blendFunc.src == GL_ONE && _blendFunc.dst == GL_ZERO)
     {

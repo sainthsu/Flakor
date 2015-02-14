@@ -226,4 +226,6 @@
 #define FK_UNUSED
 #endif
 
+#define GL_METHOD public
+
 #endif 

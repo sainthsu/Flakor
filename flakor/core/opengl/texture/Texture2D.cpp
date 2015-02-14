@@ -78,8 +78,12 @@ Texture2D::Texture2D()
 , _maxS(0.0)
 , _maxT(0.0)
 , _hasPremultipliedAlpha(false)
-, _hasMipmaps(false)
 , _antialiasEnabled(true)
+, _info(NULL)
+, _mipmapsNum(1)
+, _paramDirty(false)
+, _dataDirty(false)
+, _clearDataAfterLoad(false)
 {
 	_texParams.minFilter = GL_LINEAR;
     _texParams.magFilter = GL_LINEAR;
@@ -100,13 +104,182 @@ bool Texture2D::initWithData(const void *data,ssize_t dataLen, PixelFormat pixel
 	FKAssert(dataLen>0 && width>0 && height>0, "Invalid size");
 
     //if data has no mipmaps, we will consider it has only one mipmap
-    MipmapInfo mipmap;
-    mipmap.address = (unsigned char*)data;
-    mipmap.len = static_cast<int>(dataLen);
-    return initWithMipmaps(&mipmap, 1, pixelFormat, width, height);
+    _info = new MipmapInfo();
+    _info->address = (unsigned char*)data;
+    _info->len = static_cast<int>(dataLen);
+    _mipmapsNum = 1;
+    _pixelFormat = pixelFormat;
+    _pixelsWidth = width;
+    _pixelsHeight = height;
+    _contentSize = size;
+    _dataDirty = true;
+    
+    return true;
 }
 
-bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat pixelFormat, int pixelsWidth, int pixelsHeight)
+// implementation Texture2D (Image)
+bool Texture2D::initWithImage(Image *image)
+{
+    return initWithImage(image, g_defaultAlphaPixelFormat);
+}
+
+bool Texture2D::initWithImage(Image *image, PixelFormat format)
+{
+    if (image == NULL)
+    {
+        FKLOG("Flakor: Texture2D. Can't create Texture. Image is nil");
+        return false;
+    }
+    
+    int imageWidth = image->getWidth();
+    int imageHeight = image->getHeight();
+    
+    GPUInfo *info = GPUInfo::getInstance();
+    
+    int maxTextureSize = info->getMaxTextureSize();
+    if (imageWidth > maxTextureSize || imageHeight > maxTextureSize)
+    {
+        FKLOG("Flakor: WARNING: Image (%u x %u) is bigger than the supported %u x %u", imageWidth, imageHeight, maxTextureSize, maxTextureSize);
+        return false;
+    }
+    
+    unsigned char*   tempData = image->getData();
+    Size             imageSize = Size((float)imageWidth, (float)imageHeight);
+    PixelFormat      pixelFormat = ((PixelFormat::NONE == format) || (PixelFormat::AUTO == format)) ? image->getRenderFormat() : format;
+    PixelFormat      renderFormat = image->getRenderFormat();
+    size_t	         tempDataLen = image->getDataLen();
+    _mipmapsNum = image->getNumberOfMipmaps();
+    
+    if (_mipmapsNum > 1)
+    {
+        if (pixelFormat != image->getRenderFormat())
+        {
+            FKLOG("Flakor: WARNING: This image has more than 1 mipmaps and we will not convert the data format");
+        }
+        
+        _pixelFormat = image->getRenderFormat();
+        _info = image->getMipmaps();
+        _pixelsWidth = imageWidth;
+        _pixelsHeight = imageHeight;
+        _dataDirty = true;
+        
+        return true;
+    }
+    else if (image->isCompressed())
+    {
+        if (pixelFormat != renderFormat)
+        {
+            FKLOG("Flakor: WARNING: This image is compressed and we can't convert it for now");
+        }
+        
+        initWithData(tempData, tempDataLen, renderFormat, imageWidth, imageHeight, imageSize);
+        return true;
+    }
+    else
+    {
+        unsigned char* outTempData = nullptr;
+        ssize_t outTempDataLen = 0;
+        
+        pixelFormat = TexUtils::convertDataToFormat(tempData, tempDataLen, renderFormat, pixelFormat, &outTempData, &outTempDataLen);
+        
+        initWithData(outTempData, outTempDataLen, pixelFormat, imageWidth, imageHeight, imageSize);
+        
+        // set the premultiplied tag
+        _hasPremultipliedAlpha = image->hasPremultipliedAlpha();
+        
+        return true;
+    }
+}
+
+
+/** Gets the pixel format of the texture */
+PixelFormat Texture2D::getPixelFormat() const
+{
+    return _pixelFormat;
+}
+
+void Texture2D::setTexParams(const TexParams& texParams)
+{
+    FKAssert((_pixelsWidth == FK_NextPOT(_pixelsWidth) || texParams.wrapS == GL_CLAMP_TO_EDGE) &&
+             (_pixelsHeight == FK_NextPOT(_pixelsHeight) || texParams.wrapT == GL_CLAMP_TO_EDGE),
+             "GL_CLAMP_TO_EDGE should be used in NPOT dimensions");
+    
+    _texParams.minFilter = texParams.minFilter;
+    _texParams.magFilter = texParams.magFilter;
+    _texParams.wrapS = texParams.wrapS;
+    _texParams.wrapT = texParams.wrapT;
+    
+    _paramDirty = true;
+    
+}
+
+void Texture2D::setContentSize(Size& size)
+{
+    _contentSize = size;
+}
+
+Size Texture2D::getContentSize()
+{
+    return _contentSize;
+}
+
+/** Gets the width of the texture in pixels */
+int Texture2D::getPixelsWidth() const
+{
+    return _pixelsWidth;
+}
+
+/** Gets the height of the texture in pixels */
+int Texture2D::getPixelsHeight() const
+{
+    return _pixelsHeight;
+}
+
+/** Gets the texture id*/
+GLuint Texture2D::getTextureID() const
+{
+    return _textureID;
+}
+
+/** Gets max S */
+GLfloat Texture2D::getMaxS() const
+{
+    return _maxS;
+}
+
+/** Sets max S */
+void Texture2D::setMaxS(GLfloat maxS)
+{
+    _maxS = maxS;
+}
+
+/** Gets max T */
+GLfloat Texture2D::getMaxT() const
+{
+    return _maxT;
+}
+
+/** Sets max T */
+void Texture2D::setMaxT(GLfloat maxT)
+{
+    _maxT = maxT;
+}
+
+bool Texture2D::hasPremultipliedAlpha()
+{
+    return _hasPremultipliedAlpha;
+}
+
+bool Texture2D::hasMipmaps() const
+{
+    return _mipmapsNum != 1;
+}
+
+/*********************************
+ * GL METHOD
+ ********************************/
+
+bool Texture2D::loadWithMipmapsGL(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat pixelFormat, int pixelsWidth, int pixelsHeight)
 {
 
     //the pixelFormat must be a certain value 
@@ -235,21 +408,18 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
     }
 
     _contentSize = Size((float)pixelsWidth, (float)pixelsHeight);
-    _pixelsWidth = pixelsWidth;
-    _pixelsHeight = pixelsHeight;
-    _pixelFormat = pixelFormat;
+    
     _maxS = 1;
     _maxT = 1;
 
     _hasPremultipliedAlpha = false;
-    _hasMipmaps = mipmapsNum > 1;
 
     // shader
     //setGLProgram(GLProgram::SHADER_NAME_POSITION_TEXTURE);
     return true;
 }
 
-bool Texture2D::updateWithData(const void *data,int offsetX,int offsetY,int width,int height)
+bool Texture2D::updateWithDataGL(const void *data,int offsetX,int offsetY,int width,int height)
 {
     if (_textureID)
     {
@@ -262,178 +432,34 @@ bool Texture2D::updateWithData(const void *data,int offsetX,int offsetY,int widt
     return false;
 }
 
-// implementation Texture2D (Image)
-bool Texture2D::initWithImage(Image *image)
-{
-    return initWithImage(image, g_defaultAlphaPixelFormat);
-}
-
-bool Texture2D::initWithImage(Image *image, PixelFormat format)
-{
-    if (image == NULL)
-    {
-        FKLOG("Flakor: Texture2D. Can't create Texture. Image is nil");
-        return false;
-    }
-
-    int imageWidth = image->getWidth();
-    int imageHeight = image->getHeight();
-
-    GPUInfo *info = GPUInfo::getInstance();
-
-    int maxTextureSize = info->getMaxTextureSize();
-    if (imageWidth > maxTextureSize || imageHeight > maxTextureSize) 
-    {
-        FKLOG("Flakor: WARNING: Image (%u x %u) is bigger than the supported %u x %u", imageWidth, imageHeight, maxTextureSize, maxTextureSize);
-        return false;
-    }
-
-    unsigned char*   tempData = image->getData();
-    Size             imageSize = Size((float)imageWidth, (float)imageHeight);
-    PixelFormat      pixelFormat = ((PixelFormat::NONE == format) || (PixelFormat::AUTO == format)) ? image->getRenderFormat() : format;
-    PixelFormat      renderFormat = image->getRenderFormat();
-    size_t	         tempDataLen = image->getDataLen();
-
-
-    if (image->getNumberOfMipmaps() > 1)
-    {
-        if (pixelFormat != image->getRenderFormat())
-        {
-            FKLOG("Flakor: WARNING: This image has more than 1 mipmaps and we will not convert the data format");
-        }
-
-        initWithMipmaps(image->getMipmaps(), image->getNumberOfMipmaps(), image->getRenderFormat(), imageWidth, imageHeight);
-        
-        return true;
-    }
-    else if (image->isCompressed())
-    {
-        if (pixelFormat != image->getRenderFormat())
-        {
-            FKLOG("Flakor: WARNING: This image is compressed and we cann't convert it for now");
-        }
-
-        initWithData(tempData, tempDataLen, image->getRenderFormat(), imageWidth, imageHeight, imageSize);
-        return true;
-    }
-    else
-    {
-        unsigned char* outTempData = nullptr;
-        ssize_t outTempDataLen = 0;
-
-        pixelFormat = TexUtils::convertDataToFormat(tempData, tempDataLen, renderFormat, pixelFormat, &outTempData, &outTempDataLen);
-
-        initWithData(outTempData, outTempDataLen, pixelFormat, imageWidth, imageHeight, imageSize);
-
-
-        if (outTempData != nullptr && outTempData != tempData)
-        {
-            free(outTempData);
-        }
-
-        // set the premultiplied tag
-        _hasPremultipliedAlpha = image->hasPremultipliedAlpha();
-        
-        return true;
-    }
-}
-
-
-/** Gets the pixel format of the texture */
-PixelFormat Texture2D::getPixelFormat() const
-{
-	return _pixelFormat;
-}
-
-void Texture2D::setTexParams(const TexParams& texParams)
-{
-	FKAssert((_pixelsWidth == FK_NextPOT(_pixelsWidth) || texParams.wrapS == GL_CLAMP_TO_EDGE) &&
-        (_pixelsHeight == FK_NextPOT(_pixelsHeight) || texParams.wrapT == GL_CLAMP_TO_EDGE),
-        "GL_CLAMP_TO_EDGE should be used in NPOT dimensions");
-
-	_texParams.minFilter = texParams.minFilter;
-    _texParams.magFilter = texParams.magFilter;
-    _texParams.wrapS = texParams.wrapS;
-    _texParams.wrapT = texParams.wrapT;
-	
-    glBindTexture( GL_TEXTURE_2D,_textureID );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texParams.minFilter );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texParams.magFilter );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, texParams.wrapS );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, texParams.wrapT );
-}
-
-void Texture2D::setContentSize(Size& size)
-{
-	_contentSize = size;
-}
-
-Size Texture2D::getContentSize()
-{
-	return _contentSize;
-}
-	
-/** Gets the width of the texture in pixels */
-int Texture2D::getPixelsWidth() const
-{
-	return _pixelsWidth;
-}
-    
-/** Gets the height of the texture in pixels */
-int Texture2D::getPixelsHeight() const
-{
-	return _pixelsHeight;
-}
-    
-/** Gets the texture id*/
-GLuint Texture2D::getTextureID() const
-{
-	return _textureID;
-}
-    
-/** Gets max S */
-GLfloat Texture2D::getMaxS() const
-{
-	return _maxS;
-}
-
-/** Sets max S */
-void Texture2D::setMaxS(GLfloat maxS)
-{
-	_maxS = maxS;
-}
-    
-/** Gets max T */
-GLfloat Texture2D::getMaxT() const
-{
-	return _maxT;
-}
-
-/** Sets max T */
-void Texture2D::setMaxT(GLfloat maxT)
-{
-	_maxT = maxT;
-}
-
-bool Texture2D::hasPremultipliedAlpha()
-{
-	return _hasPremultipliedAlpha;
-}
-
-bool Texture2D::hasMipmaps() const
-{
-    return _hasMipmaps;
-}
-
-void Texture2D::generateMipmap()
+void Texture2D::generateMipmapGL()
 {
     FKAssert(_pixelsWidth == FK_NextPOT(_pixelsWidth) && _pixelsHeight == FK_NextPOT(_pixelsHeight), "Mipmap texture only works in POT textures");
     glBindTexture(GL_TEXTURE_2D,_textureID);
     glGenerateMipmap(GL_TEXTURE_2D);
-    _hasMipmaps = true;
+    if(_mipmapsNum == 1)
+    {
+        _mipmapsNum = -1;
+    }
 }
 
-void Texture2D::delFromGPU()
+void Texture2D::loadGL()
+{
+    if(_paramDirty)
+    {
+        glBindTexture( GL_TEXTURE_2D,_textureID );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _texParams.minFilter );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _texParams.magFilter );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _texParams.wrapS );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _texParams.wrapT );
+    }
+    
+    if (_dataDirty) {
+        loadWithMipmapsGL(_info, _mipmapsNum, _pixelFormat, _pixelsWidth, _pixelsHeight);
+    }
+}
+
+void Texture2D::deleteGL()
 {
 	if(_textureID)
 	{
@@ -443,7 +469,7 @@ void Texture2D::delFromGPU()
 	_textureID = 0;
 }
 
-void Texture2D::bind()
+void Texture2D::bindGL()
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D,_textureID);

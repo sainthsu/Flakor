@@ -115,6 +115,10 @@
 		859BB0341A733F9700E57FFF /* utlist.h in Headers */ = {isa = PBXBuildFile; fileRef = 859BAD581A733AE100E57FFF /* utlist.h */; };
 		859BB0351A733F9700E57FFF /* Vectors.h in Headers */ = {isa = PBXBuildFile; fileRef = 859BAD591A733AE100E57FFF /* Vectors.h */; };
 		859BB0361A733F9700E57FFF /* Game.h in Headers */ = {isa = PBXBuildFile; fileRef = 859BAD621A733AE100E57FFF /* Game.h */; };
+		85E762621A8C46DF0008BC81 /* RunnableHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 85E7625E1A8C46DF0008BC81 /* RunnableHandler.h */; };
+		85E762631A8C46DF0008BC81 /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 85E7625F1A8C46DF0008BC81 /* Timer.h */; };
+		85E762641A8C46DF0008BC81 /* UpdateThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85E762601A8C46DF0008BC81 /* UpdateThread.cpp */; };
+		85E762651A8C46DF0008BC81 /* UpdateThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 85E762611A8C46DF0008BC81 /* UpdateThread.h */; };
 		85FD97561A761C75000039CF /* EAGLView-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 85FD97541A761C75000039CF /* EAGLView-ios.h */; };
 		85FD97571A761C75000039CF /* EAGLView-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85FD97551A761C75000039CF /* EAGLView-ios.mm */; };
 /* End PBXBuildFile section */
@@ -262,6 +266,11 @@
 		859BAF2B1A733AE100E57FFF /* TexUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TexUtils.cpp; sourceTree = "<group>"; };
 		859BAF2C1A733AE100E57FFF /* TexUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TexUtils.h; sourceTree = "<group>"; };
 		859BAFF41A733E3C00E57FFF /* libflakor_lib_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libflakor_lib_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		85E7625E1A8C46DF0008BC81 /* RunnableHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunnableHandler.h; sourceTree = "<group>"; };
+		85E7625F1A8C46DF0008BC81 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		85E762601A8C46DF0008BC81 /* UpdateThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UpdateThread.cpp; sourceTree = "<group>"; };
+		85E762611A8C46DF0008BC81 /* UpdateThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateThread.h; sourceTree = "<group>"; };
+		85E762661A8C86B50008BC81 /* ICommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommand.h; sourceTree = "<group>"; };
 		85FD97541A761C75000039CF /* EAGLView-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EAGLView-ios.h"; sourceTree = "<group>"; };
 		85FD97551A761C75000039CF /* EAGLView-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EAGLView-ios.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -325,6 +334,7 @@
 		859BACA31A733AE000E57FFF /* base */ = {
 			isa = PBXGroup;
 			children = (
+				85E7625D1A8C46DF0008BC81 /* update */,
 				859BACA41A733AE000E57FFF /* config */,
 				859BACAC1A733AE000E57FFF /* console */,
 				859BACB01A733AE000E57FFF /* element */,
@@ -377,6 +387,7 @@
 				859BACC61A733AE000E57FFF /* IModifier.h */,
 				859BACC71A733AE000E57FFF /* ITexture.h */,
 				859BACC81A733AE000E57FFF /* IUpdatable.h */,
+				85E762661A8C86B50008BC81 /* ICommand.h */,
 			);
 			path = interface;
 			sourceTree = "<group>";
@@ -621,6 +632,17 @@
 			path = utility;
 			sourceTree = "<group>";
 		};
+		85E7625D1A8C46DF0008BC81 /* update */ = {
+			isa = PBXGroup;
+			children = (
+				85E7625E1A8C46DF0008BC81 /* RunnableHandler.h */,
+				85E7625F1A8C46DF0008BC81 /* Timer.h */,
+				85E762601A8C46DF0008BC81 /* UpdateThread.cpp */,
+				85E762611A8C46DF0008BC81 /* UpdateThread.h */,
+			);
+			path = update;
+			sourceTree = "<group>";
+		};
 		85FD97531A761C75000039CF /* ios */ = {
 			isa = PBXGroup;
 			children = (
@@ -665,7 +687,9 @@
 				859BB02D1A733F9700E57FFF /* Camera.h in Headers */,
 				859BB02E1A733F9700E57FFF /* CArray.h in Headers */,
 				859BB02F1A733F9700E57FFF /* GLMatrix.h in Headers */,
+				85E762621A8C46DF0008BC81 /* RunnableHandler.h in Headers */,
 				859BB0301A733F9700E57FFF /* Matrices.h in Headers */,
+				85E762631A8C46DF0008BC81 /* Timer.h in Headers */,
 				859BB0311A733F9700E57FFF /* MatrixStack.h in Headers */,
 				859BB0321A733F9700E57FFF /* Quaternion.h in Headers */,
 				859BB0331A733F9700E57FFF /* uthash.h in Headers */,
@@ -694,6 +718,7 @@
 				859BB0041A733EF500E57FFF /* ITexture.h in Headers */,
 				859BB0051A733EF500E57FFF /* IUpdatable.h in Headers */,
 				859BAFFA1A733EE400E57FFF /* Blendfunc.h in Headers */,
+				85E762651A8C46DF0008BC81 /* UpdateThread.h in Headers */,
 				859BAFFB1A733EE400E57FFF /* Color.h in Headers */,
 				859BAFFC1A733EE400E57FFF /* Element.h in Headers */,
 				859BAFFD1A733EE400E57FFF /* Helper.h in Headers */,
@@ -771,6 +796,7 @@
 				859BAF451A733AE100E57FFF /* Str.cpp in Sources */,
 				859BAF5F1A733AE100E57FFF /* Resource.cpp in Sources */,
 				859BAF5E1A733AE100E57FFF /* LoaderThread.cpp in Sources */,
+				85E762641A8C46DF0008BC81 /* UpdateThread.cpp in Sources */,
 				859BAF2F1A733AE100E57FFF /* Entity.cpp in Sources */,
 				859BAF401A733AE100E57FFF /* DataVisitor.cpp in Sources */,
 				859BAF4A1A733AE100E57FFF /* Touch.cpp in Sources */,

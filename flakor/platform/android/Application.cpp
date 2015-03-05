@@ -1,4 +1,4 @@
-#include <jni.h>
+#成include <jni.h>
 
 #include <errno.h>
 #include <string.h>
@@ -128,9 +128,74 @@ void Application::preExecCmd(int8_t cmd)
 
 void Application::onExecCmd(int32_t cmd)
 {
-    if(this->engine != NULL)
+    if(this->engine == NULL)
     {
-        this->engine->handleCMD(cmd);
+        return;
+    }
+    
+    switch (cmd)
+    {
+        case APP_CMD_SAVE_STATE:
+            // The system has asked us to save our current state.  Do so.
+            this->saveState(&this->app->savedState,
+                            &this->app->savedStateSize);
+            
+            break;
+        case APP_CMD_INIT_WINDOW:
+            // The window is being shown, get it ready.
+            if (this->app->window != NULL) {
+                this->game = Game::thisGame();
+                this->initDisplay();
+                LOGW("game create!!!");
+                ResourceManager::setAssetManager(this->app->activity->assetManager);
+                this->game->create();
+                this->drawFrame();
+                this->state = STATE_RUNNING;
+                updateThread->start();
+            }
+            break;
+        case APP_CMD_RESUME:
+            // Wait for first update is done.
+            
+            break;
+        case APP_CMD_PAUSE:
+            this->state = STATE_STOP;
+            this->game->pause();
+            break;
+        case APP_CMD_TERM_WINDOW:
+            // The window is being hidden or closed, clean it up.
+            this->termDisplay();
+            hasFocus = false;
+            break;
+        case APP_CMD_GAINED_FOCUS:
+            // When our app gains focus, we start monitoring the accelerometer.
+            if (this->accelerometerSensor != NULL)
+            {
+                ASensorEventQueue_enableSensor(this->sensorEventQueue,
+                                               this->accelerometerSensor);
+                // We'd like to get 60 events per second (in us).
+                ASensorEventQueue_setEventRate(this->sensorEventQueue,
+                                               this->accelerometerSensor, (1000L/60)*1000);
+            }
+            hasFocus = true;
+            break;
+        case APP_CMD_LOST_FOCUS:
+            // When our app loses focus, we stop monitoring the accelerometer.
+            // This is to avoid consuming battery while not being used.
+            if (this->accelerometerSensor != NULL) {
+                ASensorEventQueue_disableSensor(this->sensorEventQueue,
+                                                this->accelerometerSensor);
+            }
+            // Also stop animating.
+            hasFocus = false;
+            this->state = STATE_STOP;
+            this->drawFrame();
+            
+            break;
+        case APP_CMD_LOW_MEMORY:
+            //Free up GL resources
+            this->trimMemory();
+            break;
     }
 }
 
@@ -179,23 +244,44 @@ int32_t Application::onInputEvent(AInputEvent* event)
                 ys[i] = AMotionEvent_getY( event, i );;
             }
 
-
             int32_t action = AMotionEvent_getAction(event);
             unsigned int flags = action & AMOTION_EVENT_ACTION_MASK;
             switch( flags )
             {
+                case AMOTION_EVENT_ACTION_POINTER_DOWN:
+                    int indexPointerDown = action >> AMOTION_EVENT_ACTION_POINTER_INDEX_MASK;
+                    int idPointerDown = pMotionEvent.getPointerId(indexPointerDown);
+                    float xPointerDown = pMotionEvent.getX(indexPointerDown);
+                    float yPointerDown = pMotionEvent.getY(indexPointerDown);
+
+                    break;
                 case AMOTION_EVENT_ACTION_DOWN:
-                    /*int idDown = pMotionEvent.getPointerId(0);
+                    int idDown = ids[0];
                     float xDown = xs[0];
-                    float yDown = ys[0];*/
+                    float yDown = ys[0];
+
+                    break;
+                case AMOTION_EVENT_ACTION_POINTER_UP:
+                    int idUp = ids[0];
+                    float xUp = xs[0];
+                    float yDown = ys[0];
+
+
                     break;
                 case AMOTION_EVENT_ACTION_UP:
                 {
                     int64_t eventTime = AMotionEvent_getEventTime(event);
                     int64_t downTime = AMotionEvent_getDownTime(event);
 
+                    int idUp = ids[0];
+                    float xUp = xs[0];
+                    float yDown = ys[0];
+
                     break;
                 }
+            case AMOTION_EVENT_ACTION_CANCLE:
+
+                break;
             }
 
 

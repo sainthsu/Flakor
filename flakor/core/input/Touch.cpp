@@ -12,7 +12,7 @@ FLAKOR_NS_BEGIN
 // returns the current touch location in screen coordinates
 Point Touch::getLocationInView() const 
 { 
-    return _point; 
+    return _point;
 }
 
 // returns the previous touch location in screen coordinates

@@ -15,13 +15,15 @@ protected:
 	int cpuCount;
 	int ram;
 	int screenWidth;
-	int screenHeight;
+    int screenHeight;
+    char lang[2];
+    char country[2];
 private:
     Device();
 public:
     static Device *thisDevice(void);
 	int getCpuCount();
-	int getRAM;
+    int getRAM();
 };
 
 

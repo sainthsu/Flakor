@@ -28,7 +28,10 @@ FLAKOR_NS_BEGIN
 
 TouchPool::TouchPool()
 :_indexBitsUsed(0)
-{};
+,currentTrigger(NULL)
+{
+	
+}
 
 int TouchPool::getUnUsedIndex()
 {
@@ -152,9 +155,9 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
     }
 
     touchTrigger._action = action;
-    auto dispatcher = Director::getInstance()->getEventDispatcher();
-    dispatcher->dispatchEvent(&touchEvent);
+    currentTrigger = &touchTrigger;
 
+	/*
     if(action == TouchTrigger::TouchAction::DOWN || action == TouchTrigger::TouchAction::CANCLE)
     {
         for (auto& touch : touchTrigger._touches)
@@ -162,7 +165,7 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
             // release the touch object.
             touch->release();
         }
-    }
+    }*/
 
 }
 

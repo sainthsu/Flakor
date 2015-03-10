@@ -87,7 +87,7 @@ class Entity : public Object,public IColorable,public IUpdatable
 		float skewY;
 
 		///在父元素排序使用的Z值
-		int zOrder;
+		int zOrder;//localZOrder
 		int orderOfArrival;            ///< used to preserve sequence while sorting children with the same localZOrder
 		/**
 		 *标签

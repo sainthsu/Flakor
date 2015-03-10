@@ -4,6 +4,7 @@
 #include "core/opengl/GLContext.h"
 #include "core/resource/Scheduler.h"
 #include "core/resource/ResourceManager.h"
+#include "core/input/TouchPool.h"
 #include "base/update/UpdateThread.h"
 #include "math/GLMatrix.h"
 
@@ -23,12 +24,14 @@ Engine::Engine()
 	glContext = GLContext::GetInstance();
 	updateThread = UpdateThread::create(this);
 	pthread_mutex_init(&mutex, NULL);
+	touchPool = new TouchPool();
 }
 
 Engine::~Engine()
 {
 	FK_SAFE_DELETE(updateThread);
 	FK_SAFE_DELETE(schedule);
+	FK_SAFE_DELETE(touchPool);
 }
 
 //run in update thread
@@ -175,50 +178,9 @@ void Engine::destroy()
 /**
  * Process the next input event.
  */
-int32_t Engine::handleInput(AInputEvent* event)
+int32_t Engine::handleTouch(TouchTrigger::TouchAction action,int count,intptr_t ids[],float xs[],float ys[])
 {
-    int32_t eventType = AInputEvent_getType(event);
-    if (eventType == AINPUT_EVENT_TYPE_MOTION)
-	{
-        int pointerNumber = AMotionEvent_getPointerCount( event );
-        
-        int32_t ids[pointerNumber];
-        float xs[pointerNumber];
-        float ys[pointerNumber];
-        
-        for (int i = 0; i < pointerNumber; i++) {
-            ids[i] = AMotionEvent_getPointerId(event, i );
-            xs[i] = AMotionEvent_getX( event, i );
-            ys[i] = AMotionEvent_getY( event, i );;
-        }
-
-        
-        int32_t action = AMotionEvent_getAction(event);
-        unsigned int flags = action & AMOTION_EVENT_ACTION_MASK;
-        switch( flags )
-        {
-            case AMOTION_EVENT_ACTION_DOWN:
-                /*int idDown = pMotionEvent.getPointerId(0);
-                float xDown = xs[0];
-                float yDown = ys[0];*/
-                break;
-            case AMOTION_EVENT_ACTION_UP:
-            {
-                int64_t eventTime = AMotionEvent_getEventTime(event);
-                int64_t downTime = AMotionEvent_getDownTime(event);
-                
-                break;
-            }
-        }
-
-        
-        return 1;
-    }
-    else if(eventType == AINPUT_EVENT_TYPE_KEY) //消息来源于物理键盘或虚拟键盘
-    {
-    
-    }
-    return 0;
+	touchPool->handleTouch(action,count,ids,xs,ys);
 }
 
 //-------------------------------------------------------------------------

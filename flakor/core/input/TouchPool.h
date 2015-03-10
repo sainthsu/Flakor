@@ -44,6 +44,7 @@ protected:
     // System touch pointer ID (It may not be ascending order number) <-> Ascending order number from 0
     std::map<intptr_t, int> _touchIdReorderMap;
 
+	TouchTrigger* currentTrigger;
 public:
     TouchPool();
 

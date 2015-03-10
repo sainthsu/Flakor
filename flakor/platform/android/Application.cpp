@@ -250,22 +250,25 @@ int32_t Application::onInputEvent(AInputEvent* event)
             {
                 case AMOTION_EVENT_ACTION_POINTER_DOWN:
                     int indexPointerDown = action >> AMOTION_EVENT_ACTION_POINTER_INDEX_MASK;
-                    int idPointerDown = pMotionEvent.getPointerId(indexPointerDown);
-                    float xPointerDown = pMotionEvent.getX(indexPointerDown);
-                    float yPointerDown = pMotionEvent.getY(indexPointerDown);
-
+                    int idPointerDown = AMotionEvent_getPointerId(indexPointerDown);
+                    float xPointerDown = AMotionEvent_getX(indexPointerDown);
+                    float yPointerDown = AMotionEvent_getY(indexPointerDown);
+					
+					return this->engine->handleTouch(TouchTrigger::DOWN,1,&idPointerDown,&xPointerDown,&yPointerDown);
                     break;
                 case AMOTION_EVENT_ACTION_DOWN:
                     int idDown = ids[0];
                     float xDown = xs[0];
                     float yDown = ys[0];
+					return this->engine->handleTouch(TouchTrigger::DOWN,1,&idDown,&xDown,&yDown);
 
                     break;
                 case AMOTION_EVENT_ACTION_POINTER_UP:
-                    int idUp = ids[0];
-                    float xUp = xs[0];
-                    float yDown = ys[0];
-
+					int indexUp = action >> AMOTION_EVENT_ACTION_POINTER_INDEX_MASK;
+                    int idUp = AMotionEvent_getPointerId(indexUp);
+                    float xUp = AMotionEvent_getX(indexUp);
+                    float yUp = AMotionEvent_getY(indexUp);
+					return this->engine->handleTouch(TouchTrigger::UP,1,&idUp,&xUp,&yUp);
 
                     break;
                 case AMOTION_EVENT_ACTION_UP:
@@ -275,23 +278,28 @@ int32_t Application::onInputEvent(AInputEvent* event)
 
                     int idUp = ids[0];
                     float xUp = xs[0];
-                    float yDown = ys[0];
+                    float yUp = ys[0];
+					return this->engine->handleTouch(TouchTrigger::UP,1,&idUp,&xUp,&yUp);
 
                     break;
                 }
+			case AMOTION_EVENT_ACTION_MOVE:
+				return this->engine->handleTouch(TouchTrigger::MOVE,pointNumber,&ids,&xs,&ys);
+					
+				break;
             case AMOTION_EVENT_ACTION_CANCLE:
+				return this->engine->handleTouch(TouchTrigger::CANCLE,pointNumber,&ids,&xs,&ys);
 
-                break;
+				break;
             }
 
 
-            return 1;
         }
         else if(eventType == AINPUT_EVENT_TYPE_KEY) //消息来源于物理键盘或虚拟键盘
         {
-
+			return this->engine->handleKey(event);
         }
-        return this->engine->handleInput(event);
+        
     }
     return 0;
 }

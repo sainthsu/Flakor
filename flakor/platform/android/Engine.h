@@ -27,6 +27,7 @@ class Game;
 class Scheduler;
 class GLContext;
 class UpdateThread;
+class TouchPool;
 
 enum EngineState {
     STATE_INITAL,
@@ -66,6 +67,7 @@ class Engine
     	float secondsPerFrame;
 
 		Scheduler* schedule;
+		TouchPool* touchPool;
 		UpdateThread* updateThread;
 
 	public:
@@ -90,7 +92,7 @@ class Engine
 		void resumeSensors();
 		void suspendSensors();
 		
-		int32_t handleInput(AInputEvent* event);
+		int32_t handleTouch(TouchTrigger::TouchAction action,int count,intptr_t ids[],float xs[],float ys[]);
 		void handleCMD(int32_t cmd);
 
 	protected:

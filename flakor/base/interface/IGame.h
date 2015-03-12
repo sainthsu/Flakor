@@ -4,6 +4,8 @@
 //game interface that the engine 
 FLAKOR_NS_BEGIN
 
+class TouchTrigger;
+
 class IGame
 {
 public:
@@ -19,6 +21,7 @@ public:
 	virtual void resize (int width, int height) = 0;
 
 	virtual void update (float delta) = 0;
+
 	/** Called when the {@link Application} should render itself. */
 	virtual void render () = 0;
 
@@ -32,7 +35,7 @@ public:
 	/** Called when the {@link Application} is destroyed. Preceded by a call to {@link #pause()}. */
 	virtual void dispose () = 0;
     
-    virtual bool onTouch() = 0;
+        virtual bool onTouch(TouchTrigger* trigger) = 0;
 
 };
 

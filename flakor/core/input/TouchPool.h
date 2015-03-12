@@ -54,6 +54,8 @@ public:
     Touch* find(intptr_t pointId);
 
     bool handleTouch(TouchTrigger::TouchAction action,int count,intptr_t ids[],float xs[],float ys[]);
+
+	inline TouchTrigger* getCurrentTouch(){ return currentTrigger;};
 };
 
 // end of input group

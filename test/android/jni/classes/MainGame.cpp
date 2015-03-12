@@ -53,4 +53,8 @@ void MainGame::dispose()
 }
 
 
+void MainGame::onTouch(TouchTrigger* touch)
+{
+     
+}
 

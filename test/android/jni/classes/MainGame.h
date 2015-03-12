@@ -16,13 +16,13 @@ public:
     virtual void create ();
     virtual void resize (int width, int height);
     
-	virtual void update (float delta);
+    virtual void update (float delta);
     virtual void render ();
     virtual void pause ();
     virtual void resume ();
     virtual void dispose ();
 
-    
+    virtual void onTouch(TouchTrigger* touch);
 protected:
     Scene* runningScene;
 };

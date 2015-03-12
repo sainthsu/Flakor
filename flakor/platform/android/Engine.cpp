@@ -56,6 +56,9 @@ void Engine::onTickUpdate()
 	if (this->game != NULL)
 	{
 		LOGW("Engine tickupdate!!!");
+		TouchTrigger* trigger = touchPool->getCurrent();
+		if(trigger != NULL)
+			game->onTouch(trigger);
 		game->update(deltaTime);
 	}
 

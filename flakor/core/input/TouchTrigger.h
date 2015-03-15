@@ -40,23 +40,26 @@ class TouchTrigger : public Object
 {
 public:
     /**最大的同时触摸点 */
-    static int MAX_TOUCHES = 15;
+    static const int MAX_TOUCHES = 15;
 
     /**触摸动作  touch action */
     enum class TouchAction {
+        NONE,
         DOWN,
         MOVE,
         UP,
-        CANCLE
+        CANCEL
     };
 
+    std::vector<Touch*> _touches;
+
     TouchTrigger();
+    inline void setAction(const TouchAction action) {_action = action;};
     inline TouchAction getAction() const { return _action;};
     inline const std::vector<Touch*>& getTouches() const { return _touches; };
 
 private:
     TouchAction _action;
-    std::vector<Touch*> _touches;
 };
 
 // end of input group

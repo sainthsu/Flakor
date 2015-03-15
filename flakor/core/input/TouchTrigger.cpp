@@ -24,5 +24,11 @@ THE SOFTWARE.
 
 #include "core/input/TouchTrigger.h"
 
+FLAKOR_NS_BEGIN
 
+TouchTrigger::TouchTrigger()
+:_action(TouchAction::NONE)
+{}
+
+FLAKOR_NS_END
 

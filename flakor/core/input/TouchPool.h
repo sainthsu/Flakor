@@ -25,9 +25,9 @@ THE SOFTWARE.
 #ifndef _FK_TOUCHPOOL_H_
 #define _FK_TOUCHPOOL_H_
 
-#include "base/lang/Object.h"
 #include "core/input/TouchTrigger.h"
 #include <stddef.h>
+#include <map>
 
 FLAKOR_NS_BEGIN
 
@@ -39,12 +39,12 @@ FLAKOR_NS_BEGIN
 class TouchPool
 {
 protected:
-    static unsigned int g_indexBitsUsed = 0;
+    static unsigned int _indexBitsUsed;
     Touch* _touches[TouchTrigger::MAX_TOUCHES];
     // System touch pointer ID (It may not be ascending order number) <-> Ascending order number from 0
     std::map<intptr_t, int> _touchIdReorderMap;
+    TouchTrigger* _currentTrigger;
 
-	TouchTrigger* currentTrigger;
 public:
     TouchPool();
 
@@ -55,7 +55,7 @@ public:
 
     bool handleTouch(TouchTrigger::TouchAction action,int count,intptr_t ids[],float xs[],float ys[]);
 
-	inline TouchTrigger* getCurrentTouch(){ return currentTrigger;};
+    inline TouchTrigger* getCurrentTouch(){ return _currentTrigger;};
 };
 
 // end of input group

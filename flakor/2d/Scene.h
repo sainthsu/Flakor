@@ -12,6 +12,7 @@ class Scene : public Entity
 		Scene();
 		~Scene();
 		static Scene* create();
+        virtual bool onTouchTrigger(TouchTrigger* trigger);
 };
 
 FLAKOR_NS_END

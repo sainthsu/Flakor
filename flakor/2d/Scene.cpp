@@ -31,4 +31,10 @@ Scene* Scene::create()
 
 }
 
+
+bool Scene::onTouchTrigger(TouchTrigger* trigger)
+{
+
+}
+
 FLAKOR_NS_END

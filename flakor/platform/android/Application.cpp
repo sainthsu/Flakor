@@ -1,4 +1,4 @@
-#成include <jni.h>
+#include <jni.h>
 
 #include <errno.h>
 #include <string.h>
@@ -128,24 +128,25 @@ void Application::preExecCmd(int8_t cmd)
 
 void Application::onExecCmd(int32_t cmd)
 {
-    if(this->engine == NULL)
+    if(this->engine != NULL)
     {
+        this->engine->handleCMD(cmd);
         return;
     }
-    
+    /*
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
             // The system has asked us to save our current state.  Do so.
-            this->saveState(&this->app->savedState,
+            this->engine->saveState(&this->app->savedState,
                             &this->app->savedStateSize);
             
             break;
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.
             if (this->app->window != NULL) {
-                this->game = Game::thisGame();
-                this->initDisplay();
+                this->engine->game = Game::thisGame();
+                this->engine->initDisplay();
                 LOGW("game create!!!");
                 ResourceManager::setAssetManager(this->app->activity->assetManager);
                 this->game->create();
@@ -196,7 +197,7 @@ void Application::onExecCmd(int32_t cmd)
             //Free up GL resources
             this->trimMemory();
             break;
-    }
+    }*/
 }
 
 void Application::postExecCmd(int8_t cmd)
@@ -234,12 +235,14 @@ int32_t Application::onInputEvent(AInputEvent* event)
         {
             int pointerNumber = AMotionEvent_getPointerCount( event );
 
-            int32_t ids[pointerNumber];
+            intptr_t ids[pointerNumber];
             float xs[pointerNumber];
             float ys[pointerNumber];
 
+
             for (int i = 0; i < pointerNumber; i++) {
-                ids[i] = AMotionEvent_getPointerId(event, i );
+                ids[i] = (intptr_t)AMotionEvent_getPointerId(event, i );
+
                 xs[i] = AMotionEvent_getX( event, i );
                 ys[i] = AMotionEvent_getY( event, i );;
             }
@@ -249,55 +252,60 @@ int32_t Application::onInputEvent(AInputEvent* event)
             switch( flags )
             {
                 case AMOTION_EVENT_ACTION_POINTER_DOWN:
-                    int indexPointerDown = action >> AMOTION_EVENT_ACTION_POINTER_INDEX_MASK;
-                    int idPointerDown = AMotionEvent_getPointerId(indexPointerDown);
-                    float xPointerDown = AMotionEvent_getX(indexPointerDown);
-                    float yPointerDown = AMotionEvent_getY(indexPointerDown);
-					
-					return this->engine->handleTouch(TouchTrigger::DOWN,1,&idPointerDown,&xPointerDown,&yPointerDown);
-                    break;
+                    {
+                    int indexPointerDown = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK)
+                            >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
+                    intptr_t idPointerDown = AMotionEvent_getPointerId(event,indexPointerDown);
+                    float xPointerDown = AMotionEvent_getX(event,indexPointerDown);
+                    float yPointerDown = AMotionEvent_getY(event,indexPointerDown);
+                    LOGV("POINTER_DOWN\n");
+
+                    return this->engine->handleTouch(TouchTrigger::TouchAction::DOWN,1,&idPointerDown,&xPointerDown,&yPointerDown);
+                    }
                 case AMOTION_EVENT_ACTION_DOWN:
-                    int idDown = ids[0];
+                    {
+                    intptr_t idDown = ids[0];
                     float xDown = xs[0];
                     float yDown = ys[0];
-					return this->engine->handleTouch(TouchTrigger::DOWN,1,&idDown,&xDown,&yDown);
+                    LOGV("DOWN\n");
+                    return this->engine->handleTouch(TouchTrigger::TouchAction::DOWN,1,&idDown,&xDown,&yDown);
 
-                    break;
+                    }
                 case AMOTION_EVENT_ACTION_POINTER_UP:
-					int indexUp = action >> AMOTION_EVENT_ACTION_POINTER_INDEX_MASK;
-                    int idUp = AMotionEvent_getPointerId(indexUp);
-                    float xUp = AMotionEvent_getX(indexUp);
-                    float yUp = AMotionEvent_getY(indexUp);
-					return this->engine->handleTouch(TouchTrigger::UP,1,&idUp,&xUp,&yUp);
+                    {
+                    int indexUp = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK)
+                            >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
+                    intptr_t idUp = AMotionEvent_getPointerId(event,indexUp);
+                    float xUp = AMotionEvent_getX(event,indexUp);
+                    float yUp = AMotionEvent_getY(event,indexUp);
+                    LOGV("POINTER_UP\n");
 
-                    break;
+                    return this->engine->handleTouch(TouchTrigger::TouchAction::UP,1,&idUp,&xUp,&yUp);
+                    }
                 case AMOTION_EVENT_ACTION_UP:
-                {
+                    {
                     int64_t eventTime = AMotionEvent_getEventTime(event);
                     int64_t downTime = AMotionEvent_getDownTime(event);
 
-                    int idUp = ids[0];
+                    intptr_t idUp = ids[0];
                     float xUp = xs[0];
                     float yUp = ys[0];
-					return this->engine->handleTouch(TouchTrigger::UP,1,&idUp,&xUp,&yUp);
-
-                    break;
-                }
-			case AMOTION_EVENT_ACTION_MOVE:
-				return this->engine->handleTouch(TouchTrigger::MOVE,pointNumber,&ids,&xs,&ys);
-					
-				break;
-            case AMOTION_EVENT_ACTION_CANCLE:
-				return this->engine->handleTouch(TouchTrigger::CANCLE,pointNumber,&ids,&xs,&ys);
-
-				break;
+                    LOGV("UP\n");
+                    return this->engine->handleTouch(TouchTrigger::TouchAction::UP,1,&idUp,&xUp,&yUp);
+                    }
+                case AMOTION_EVENT_ACTION_MOVE:
+                LOGV("MOVE\n");
+                    return this->engine->handleTouch(TouchTrigger::TouchAction::MOVE,pointerNumber,ids,xs,ys);
+                case AMOTION_EVENT_ACTION_CANCEL:
+                LOGV("CANCEL\n");
+                    return this->engine->handleTouch(TouchTrigger::TouchAction::CANCEL,pointerNumber,ids,xs,ys);
             }
 
 
         }
         else if(eventType == AINPUT_EVENT_TYPE_KEY) //消息来源于物理键盘或虚拟键盘
         {
-			return this->engine->handleKey(event);
+            //return this->engine->handleKey(event);
         }
         
     }

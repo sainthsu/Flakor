@@ -14,6 +14,7 @@ FLAKOR_NS_BEGIN
 class Color;
 class Camera;
 class Touch;
+class TouchTrigger;
 class String;
 
 enum EntityState {
@@ -97,7 +98,13 @@ class Entity : public Object,public IColorable,public IUpdatable
 		/**
 		 *是否选中
 		 */
-		bool selected;
+        bool selected;
+
+        /**
+         *是否允许触摸
+         */
+        bool touchable;
+
 		/**
 		 *是否可用，如果是False渲染和更新都将忽略这个元素
 		 */
@@ -863,7 +870,12 @@ class Entity : public Object,public IColorable,public IUpdatable
 		float getRed() override;
 		float getGreen() override;
 		float getBlue() override;
-		float getAlpha() override;
+        float getAlpha() override;
+
+        void setTouchable(bool able);
+        bool isTouchable();
+
+        virtual bool onTouchTrigger(TouchTrigger* trigger);
 
 };
 

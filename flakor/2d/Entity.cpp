@@ -1253,5 +1253,20 @@ float Entity::getAlpha()
 }
 
 
+void Entity::setTouchable(bool able)
+{
+    touchable = able;
+}
+
+bool Entity::isTouchable()
+{
+    return touchable;
+}
+
+bool Entity::onTouchTrigger(TouchTrigger* tigger)
+{
+    return false;
+}
+
 FLAKOR_NS_END
 

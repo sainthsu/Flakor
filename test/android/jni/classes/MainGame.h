@@ -22,7 +22,7 @@ public:
     virtual void resume ();
     virtual void dispose ();
 
-    virtual void onTouch(TouchTrigger* touch);
+    virtual bool onTouch(TouchTrigger* touch);
 protected:
     Scene* runningScene;
 };

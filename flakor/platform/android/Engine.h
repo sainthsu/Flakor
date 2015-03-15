@@ -18,6 +18,7 @@
 #include <android/input.h>
 
 #include "macros.h"
+#include "core/input/TouchTrigger.h"
 
 FLAKOR_NS_BEGIN
 

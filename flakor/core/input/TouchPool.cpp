@@ -22,15 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
+
 #include "core/input/TouchPool.h"
+#include "core/input/Touch.h"
 
 FLAKOR_NS_BEGIN
 
+unsigned int TouchPool::_indexBitsUsed = 0;
+
 TouchPool::TouchPool()
-:_indexBitsUsed(0)
-,currentTrigger(NULL)
+:_currentTrigger(NULL)
 {
-	
+    _indexBitsUsed = 0;
 }
 
 int TouchPool::getUnUsedIndex()
@@ -38,7 +41,7 @@ int TouchPool::getUnUsedIndex()
     int i;
     int temp = _indexBitsUsed;
 
-    for (i = 0; i < EventTrigger::MAX_TOUCHES; i++) {
+    for (i = 0; i < TouchTrigger::MAX_TOUCHES; i++) {
           if (! (temp & 0x00000001)) {
                _indexBitsUsed |= (1 <<  i);
                return i;
@@ -49,18 +52,17 @@ int TouchPool::getUnUsedIndex()
 
     // all bits are used
     return -1;
-
 }
 
-std::vector<Touch*> TouchPoolgetAllTouchesVector()
+std::vector<Touch*> TouchPool::getAllTouchesVector()
 {
     std::vector<Touch*> ret;
     int i;
-    int temp = g_indexBitsUsed;
+    int temp = TouchPool::_indexBitsUsed;
 
-    for (i = 0; i < EventTouch::MAX_TOUCHES; i++) {
+    for (i = 0; i < TouchTrigger::MAX_TOUCHES; i++) {
         if ( temp & 0x00000001) {
-               ret.push_back(g_touches[i]);
+               ret.push_back(_touches[i]);
         }
         temp >>= 1;
     }
@@ -69,7 +71,7 @@ std::vector<Touch*> TouchPoolgetAllTouchesVector()
 
 void TouchPool::removeUsedIndexBit(int index)
 {
-    if (index < 0 || index >= EventTouch::MAX_TOUCHES)
+    if (index < 0 || index >= TouchTrigger::MAX_TOUCHES)
     {
          return;
     }
@@ -86,24 +88,27 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
     float y = 0.0f;
     int unusedIndex = 0;
     TouchTrigger touchTrigger;
+
     for(int i=0;i<num;i++)
     {
         id = ids[i];
         x = xs[i];
         y = ys[i];
 
+
         auto iter = _touchIdReorderMap.find(id);
 
         // it is a new touch
         if (iter == _touchIdReorderMap.end())
         {
-            if(action != TouchTrigger::TouchAction::DOWN)
-            {
-                FKLOG("if the index doesn't exist, it is an error");
-                continue;
-            }
+             if(action != TouchTrigger::TouchAction::DOWN)
+             {
+                 FKLOG("if the index doesn't exist, it is an error");
+                 continue;
+             }
 
-             unusedIndex = getUnUsedIndex();
+            FKLOG("id = %d", id);
+            unusedIndex = getUnUsedIndex();
 
              // The touches is more than MAX_TOUCHES ?
              if (unusedIndex == -1) {
@@ -114,21 +119,24 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
              Touch* touch = _touches[unusedIndex] = new (std::nothrow) Touch();
              touch->setTouchInfo(unusedIndex, x, y);
 
-             FKLOGINFO("x = %f y = %f", touch->getLocationInView().x, touch->getLocationInView().y);
+             FKLOG("x = %f y = %f", touch->getLocationInView().x, touch->getLocationInView().y);
 
              _touchIdReorderMap.insert(std::make_pair(id, unusedIndex));
              touchTrigger._touches.push_back(touch);
+
          }
         else
         {
+            FKLOG("unusedindex = %d", iter->second);
+            FKLOG("other x = %f y = %f", x, y);
             Touch* touch = _touches[iter->second];
             if (touch)
             {
                   touch->setTouchInfo(iter->second, x, y);
 
-                  touchEvent._touches.push_back(touch);
+                  touchTrigger._touches.push_back(touch);
 
-                  if(action == TouchTrigger::TouchAction::DOWN || action == TouchTrigger::TouchAction::CANCLE)
+                  if(action == TouchTrigger::TouchAction::UP || action == TouchTrigger::TouchAction::CANCEL)
                   {
                       _touches[iter->second] = nullptr;
                       removeUsedIndexBit(iter->second);
@@ -141,7 +149,7 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
             {
                 // It is error, should return.
                 FKLOG("Moving touches with id: %ld error", (long int)id);
-                return;
+                return false;
             }
 
         }
@@ -150,12 +158,12 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
 
     if (touchTrigger._touches.size() == 0)
     {
-         FKLOG("touchesBegan: size = 0");
-         return;
+         FKLOG("touches: size = 0");
+         return false;
     }
 
-    touchTrigger._action = action;
-    currentTrigger = &touchTrigger;
+    touchTrigger.setAction(action);
+    _currentTrigger = &touchTrigger;
 
 	/*
     if(action == TouchTrigger::TouchAction::DOWN || action == TouchTrigger::TouchAction::CANCLE)

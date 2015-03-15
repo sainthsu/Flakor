@@ -43,6 +43,8 @@ core/resource/ImageLoader.cpp \
 core/resource/ResourceManager.cpp \
 core/resource/Scheduler.cpp \
 core/input/Touch.cpp \
+core/input/TouchPool.cpp \
+core/input/TouchTrigger.cpp \
 core/opengl/GPUInfo.cpp \
 core/opengl/gl3stub.c \
 core/opengl/GLContext.cpp \
@@ -67,7 +69,7 @@ LOCAL_EXPORT_LDLIBS := -lGLESv1_CM \
                        -lz \
                        -landroid
 
-LOCAL_LDLIBS    := -lGLESv1_CM \
+LOCAL_LDLIBS := -lGLESv1_CM \
                    -lGLESv2 \
                    -lEGL \
                    -llog \

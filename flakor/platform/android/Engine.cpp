@@ -37,10 +37,10 @@ Engine::~Engine()
 //run in update thread
 void Engine::onTickUpdate()
 {
-	FKLOG("updateThread :frame:%d;update:%d",totalFrames,totalUpdated);
+    //FKLOG("updateThread :frame:%d;update:%d",totalFrames,totalUpdated);
 	if(totalFrames < totalUpdated)
 	{
-			FKLOG("updateThread schedule update!!!");
+            //FKLOG("updateThread schedule update!!!");
 			usleep(40);
 			return;
 	}
@@ -55,20 +55,20 @@ void Engine::onTickUpdate()
 	
 	if (this->game != NULL)
 	{
-		LOGW("Engine tickupdate!!!");
-		TouchTrigger* trigger = touchPool->getCurrent();
+        //LOGW("Engine tickupdate!!!");
+        TouchTrigger* trigger = touchPool->getCurrentTouch();
 		if(trigger != NULL)
 			game->onTouch(trigger);
-		game->update(deltaTime);
+        //game->update(deltaTime);
 	}
 
 	while(pthread_mutex_trylock(&mutex) == EBUSY)
 	{
-			FKLOG("updateThread clear memory!!!");
+            //FKLOG("updateThread clear memory!!!");
 			usleep(40);
 	}
 
-    FKLOG("updateThread swap memory!!!");
+    //FKLOG("updateThread swap memory!!!");
 	totalUpdated++;
     pthread_mutex_unlock(&mutex);
 }
@@ -119,7 +119,7 @@ void Engine::updateViewport()
 void Engine::drawFrame()
 {
     
-	FKLOG("DrawThread :frame:%d;update:%d",totalFrames,totalUpdated);
+    //FKLOG("DrawThread :frame:%d;update:%d",totalFrames,totalUpdated);
 	if(totalFrames > totalUpdated)
 	{
 		schedule->update(deltaTime);
@@ -133,7 +133,7 @@ void Engine::drawFrame()
 
 	if (this->game != NULL)
 	{
-		this->game->render();
+        //this->game->render();
 		totalFrames++;
 	}
 
@@ -183,7 +183,7 @@ void Engine::destroy()
  */
 int32_t Engine::handleTouch(TouchTrigger::TouchAction action,int count,intptr_t ids[],float xs[],float ys[])
 {
-	touchPool->handleTouch(action,count,ids,xs,ys);
+    return touchPool->handleTouch(action,count,ids,xs,ys);
 }
 
 //-------------------------------------------------------------------------
@@ -304,6 +304,9 @@ void Engine::handleCMD(int32_t cmd)
 	        //Free up GL resources
 	        this->trimMemory();
 	        break;
+        case APP_CMD_DESTROY:
+            updateThread->quit();
+            break;
     }
 }
 

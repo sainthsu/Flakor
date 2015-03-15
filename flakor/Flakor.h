@@ -45,6 +45,8 @@
 #include "core/resource/Scheduler.h"
 //input
 #include "core/input/Touch.h"
+#include "core/input/TouchPool.h"
+#include "core/input/TouchTrigger.h"
 //opengl
 #include "core/opengl/GL.h"
 #include "core/opengl/GPUInfo.h"

@@ -61,8 +61,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 */
 
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include "target.h"
+#if FK_TARGET_PLATFORM == FK_PLATFORM_IOS
 
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
@@ -71,18 +71,18 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <OpenGLES/ES2/glext.h>
 #import <CoreFoundation/CoreFoundation.h>
 
-#import "CCESRenderer-ios.h"
+#import "platform/ios/ESRenderer.h"
 
 //CLASS INTERFACE:
 
-/** CCEAGLView Class.
+/** EAGLView Class.
  * This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
  * The view content is basically an EAGL surface you render your OpenGL scene into.
  * Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
  */
-@interface CCEAGLView : UIView <UIKeyInput, UITextInput>
+@interface EAGLView : UIView <UIKeyInput, UITextInput>
 {
-    id                        <CCESRenderer> renderer_;    
+    id                        <ESRenderer> renderer_;
     EAGLContext                *context_; // weak ref
 
     NSString                *pixelformat_;

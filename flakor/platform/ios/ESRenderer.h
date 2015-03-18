@@ -1,3 +1,6 @@
+/**
+ * borrow from cocos2d-x
+ */
 /****************************************************************************
  Copyright (c) 2010      Ricardo Quesada
  Copyright (c) 2010-2012 cocos2d-x.org
@@ -37,7 +40,7 @@
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/EAGLDrawable.h>
 
-@protocol CCESRenderer <NSObject>
+@protocol ESRenderer <NSObject>
 
 - (id) initWithDepthFormat:(unsigned int)depthFormat withPixelFormat:(unsigned int)pixelFormat withSharegroup:(EAGLSharegroup*)sharegroup withMultiSampling:(BOOL) multiSampling withNumberOfSamples:(unsigned int) requestedSamples;
 

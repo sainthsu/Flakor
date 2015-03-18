@@ -36,7 +36,7 @@
                                      numberOfSamples: 0];
     
     // Use RootViewController manage CCEAGLView
-    _viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
+    _viewController = [[GameViewController alloc] initWithNibName:nil bundle:nil];
     _viewController.wantsFullScreenLayout = YES;
     _viewController.view = eaglView;
     

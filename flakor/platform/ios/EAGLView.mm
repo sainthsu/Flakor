@@ -61,31 +61,26 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 */
 
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include "target.h"
+#if FK_TARGET_PLATFORM == FK_PLATFORM_IOS
 
-#import "CCEAGLView-ios.h"
+#import "EAGLView.h"
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "base/CCDirector.h"
-#import "deprecated/CCSet.h"
-#import "base/CCTouch.h"
-#import "base/CCIMEDispatcher.h"
-#import "CCGLViewImpl-ios.h"
-#import "CCES2Renderer-ios.h"
-#import "OpenGL_Internal-ios.h"
+#import "platform/ios/ES2Renderer.h"
+#import "platform/ios/OpenGL_Internal-ios.h"
 
 //CLASS IMPLEMENTATIONS:
 
 #define IOS_MAX_TOUCHES_COUNT     10
 
-@interface CCEAGLView (Private)
+@interface EAGLView (Private)
 - (BOOL) setupSurfaceWithSharegroup:(EAGLSharegroup*)sharegroup;
 - (unsigned int) convertPixelFormat:(NSString*) pixelFormat;
 @end
 
-@implementation CCEAGLView
+@implementation EAGLView
 
 @synthesize surfaceSize=size_;
 @synthesize pixelFormat=pixelformat_, depthFormat=depthFormat_;

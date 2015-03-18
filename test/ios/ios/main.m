@@ -14,3 +14,9 @@ int main(int argc, char * argv[]) {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }
+
+/*NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+int retVal = UIApplicationMain(argc, argv, nil, @"AppController");
+[pool release];
+return retVal;
+*/

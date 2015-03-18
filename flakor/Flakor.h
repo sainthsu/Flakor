@@ -66,6 +66,9 @@
 #if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 #include "platform/android/Engine.h"
 #include "platform/android/Application.h"
+#elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
+#include "platform/ios/CCESRenderer-ios.h"
+#include "platform/ios/CCES2Renderer-ios.h"
 #endif
 
 #include "platform/Game.h"

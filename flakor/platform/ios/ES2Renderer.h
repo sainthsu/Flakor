@@ -1,3 +1,7 @@
+/**
+ * borrow from cocos2d-x
+ */
+
 /****************************************************************************
  Copyright (c) 2010      Ricardo Quesada
  Copyright (c) 2010-2012 cocos2d-x.org
@@ -28,17 +32,17 @@
 // Only compile this code on iOS. These files should NOT be included on your Mac project.
 // But in case they are included, it won't be compiled.
 
-#include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include "target.h"
+#if FK_TARGET_PLATFORM == FK_PLATFORM_IOS
 
-#import "CCESRenderer-ios.h"
+#import "ESRenderer.h"
 
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
-#import "CCPlatformMacros.h"
+#import "targetMacros.h"
 
-@interface CCES2Renderer : NSObject <CCESRenderer>
+@interface ES2Renderer : NSObject <ESRenderer>
 {
     // The pixel dimensions of the CAEAGLLayer
     GLint backingWidth_;
@@ -82,4 +86,4 @@
 @end
 
 
-#endif // CC_PLATFORM_IOS
+#endif // FK_PLATFORM_IOS

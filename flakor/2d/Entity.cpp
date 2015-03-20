@@ -1265,7 +1265,135 @@ bool Entity::isTouchable()
 
 bool Entity::onTouchTrigger(TouchTrigger* tigger)
 {
-    return false;
+    final float x = event.getX();
+           final float y = event.getY();
+           final int viewFlags = mViewFlags;
+
+           if ((viewFlags & ENABLED_MASK) == DISABLED) {
+               if (event.getAction() == MotionEvent.ACTION_UP && (mPrivateFlags & PFLAG_PRESSED) != 0) {
+                   setPressed(false);
+               }
+               // A disabled view that is clickable still consumes the touch
+               // events, it just doesn't respond to them.
+               return (((viewFlags & CLICKABLE) == CLICKABLE ||
+                       (viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE));
+           }
+
+           if (mTouchDelegate != null) {
+               if (mTouchDelegate.onTouchEvent(event)) {
+                   return true;
+               }
+           }
+
+           if (((viewFlags & CLICKABLE) == CLICKABLE ||
+                   (viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE)) {
+               switch (event.getAction()) {
+                   case MotionEvent.ACTION_UP:
+                       boolean prepressed = (mPrivateFlags & PFLAG_PREPRESSED) != 0;
+                       if ((mPrivateFlags & PFLAG_PRESSED) != 0 || prepressed) {
+                           // take focus if we don't have it already and we should in
+                           // touch mode.
+                           boolean focusTaken = false;
+                           if (isFocusable() && isFocusableInTouchMode() && !isFocused()) {
+                               focusTaken = requestFocus();
+                           }
+
+                           if (prepressed) {
+                               // The button is being released before we actually
+                               // showed it as pressed.  Make it show the pressed
+                               // state now (before scheduling the click) to ensure
+                               // the user sees it.
+                               setPressed(true, x, y);
+                          }
+
+                           if (!mHasPerformedLongPress) {
+                               // This is a tap, so remove the longpress check
+                               removeLongPressCallback();
+
+                               // Only perform take click actions if we were in the pressed state
+                               if (!focusTaken) {
+                                   // Use a Runnable and post this rather than calling
+                                   // performClick directly. This lets other visual state
+                                   // of the view update before click actions start.
+                                   if (mPerformClick == null) {
+                                       mPerformClick = new PerformClick();
+                                   }
+                                   if (!post(mPerformClick)) {
+                                       performClick();
+                                   }
+                               }
+                           }
+
+                           if (mUnsetPressedState == null) {
+                               mUnsetPressedState = new UnsetPressedState();
+                           }
+
+                           if (prepressed) {
+                               postDelayed(mUnsetPressedState,
+                                       ViewConfiguration.getPressedStateDuration());
+                           } else if (!post(mUnsetPressedState)) {
+                               // If the post failed, unpress right now
+                               mUnsetPressedState.run();
+                           }
+
+                           removeTapCallback();
+                       }
+                       break;
+
+                   case MotionEvent.ACTION_DOWN:
+                       mHasPerformedLongPress = false;
+
+                       if (performButtonActionOnTouchDown(event)) {
+                           break;
+                       }
+
+                       // Walk up the hierarchy to determine if we're inside a scrolling container.
+                       boolean isInScrollingContainer = isInScrollingContainer();
+
+                       // For views inside a scrolling container, delay the pressed feedback for
+                       // a short period in case this is a scroll.
+                       if (isInScrollingContainer) {
+                           mPrivateFlags |= PFLAG_PREPRESSED;
+                           if (mPendingCheckForTap == null) {
+                               mPendingCheckForTap = new CheckForTap();
+                           }
+                           mPendingCheckForTap.x = event.getX();
+                           mPendingCheckForTap.y = event.getY();
+                           postDelayed(mPendingCheckForTap, ViewConfiguration.getTapTimeout());
+                       } else {
+                           // Not inside a scrolling container, so show the feedback right away
+                           setPressed(true, x, y);
+                           checkForLongClick(0);
+                       }
+                       break;
+
+                   case MotionEvent.ACTION_CANCEL:
+                       setPressed(false);
+                       removeTapCallback();
+                       removeLongPressCallback();
+                       break;
+
+                   case MotionEvent.ACTION_MOVE:
+                       drawableHotspotChanged(x, y);
+
+                       // Be lenient about moving outside of buttons
+                       if (!pointInView(x, y, mTouchSlop)) {
+                           // Outside button
+                           removeTapCallback();
+                           if ((mPrivateFlags & PFLAG_PRESSED) != 0) {
+                               // Remove any future long press/tap checks
+                               removeLongPressCallback();
+
+                               setPressed(false);
+                           }
+                       }
+                       break;
+               }
+
+               return true;
+           }
+
+           return false;
 }
 
 FLAKOR_NS_END

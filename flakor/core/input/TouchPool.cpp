@@ -107,7 +107,7 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
                  continue;
              }
 
-            FKLOG("id = %d", id);
+            FKLOG("id = %ld", id);
             unusedIndex = getUnUsedIndex();
 
              // The touches is more than MAX_TOUCHES ?
@@ -174,7 +174,7 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
             touch->release();
         }
     }*/
-
+    return true;
 }
 
 FLAKOR_NS_END

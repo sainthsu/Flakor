@@ -12,6 +12,7 @@
 		8509E9121A7252AE00F66057 /* GameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8509E9111A7252AE00F66057 /* GameViewController.mm */; };
 		8509E9171A7252AE00F66057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8509E9161A7252AE00F66057 /* Images.xcassets */; };
 		8509E91A1A7252AE00F66057 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8509E9181A7252AE00F66057 /* LaunchScreen.xib */; };
+		859BE3611ABB0A95000B15C4 /* libflakor_lib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85FD97511A761013000039CF /* libflakor_lib_ios.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				859BE3611ABB0A95000B15C4 /* libflakor_lib_ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,7 +226,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -266,7 +268,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -313,7 +315,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../flakor";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../flakor $(PROJECT_DIR)/../../flakor/include";
 			};
 			name = Debug;
 		};
@@ -332,7 +334,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../flakor";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../flakor $(PROJECT_DIR)/../../flakor/include";
 			};
 			name = Release;
 		};

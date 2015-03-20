@@ -26,8 +26,8 @@
     // Add the view controller's view to the window and display.
     _window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     
-    // Init the CCEAGLView
-    CCEAGLView *eaglView = [CCEAGLView viewWithFrame: [window bounds]
+    // Init the EAGLView
+    EAGLView *eaglView = [EAGLView viewWithFrame: [_window bounds]
                                          pixelFormat: kEAGLColorFormatRGBA8
                                          depthFormat: GL_DEPTH24_STENCIL8_OES
                                   preserveBackbuffer: NO
@@ -57,10 +57,11 @@
     [[UIApplication sharedApplication] setStatusBarHidden:true];
     
     // IMPORTANT: Setting the GLView should be done after creating the RootViewController
-    cocos2d::GLView *glview = cocos2d::GLView::createWithEAGLView(eaglView);
-    cocos2d::Director::getInstance()->setOpenGLView(glview);
+    flakor::GLContext *glContext = flakor::GLContext::getInstance();
+    glContext->initWithEAGLView(eaglView);
+    flakor::Engine::getInstance()->setGLContext(glContext);
     
-    cocos2d::Application::getInstance()->run();
+    //flakor::Application::getInstance()->run();
     
     return YES;
 

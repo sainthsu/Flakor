@@ -8,7 +8,7 @@
 
 #import "GameViewController.h"
 #import "Flakor.h"
-#import "platform/ios/CCEAGLView-ios.h"
+#import "platform/ios/EAGLView.h"
 
 @implementation GameViewController
 
@@ -55,7 +55,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    /*auto glview = flakor::Engine::getInstance()->getOpenGLView();
     
     if (glview)
     {
@@ -66,7 +66,7 @@
             CGSize s = CGSizeMake([eaglview getWidth], [eaglview getHeight]);
             cocos2d::Application::getInstance()->applicationScreenSizeChanged((int) s.width, (int) s.height);
         }
-    }
+    }*/
 }
 
 //fix not hide status on ios7

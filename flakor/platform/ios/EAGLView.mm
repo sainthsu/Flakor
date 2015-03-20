@@ -66,9 +66,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "EAGLView.h"
 
+#import "targetMacros.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "base/element/Element.h"
 #import "platform/ios/ES2Renderer.h"
+#import "platform/ios/Engine.h"
 #import "platform/ios/OpenGL_Internal-ios.h"
 
 //CLASS IMPLEMENTATIONS:
@@ -156,7 +158,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 {
     if( (self = [super initWithCoder:aDecoder]) ) {
         
-        CAEAGLLayer*            eaglLayer = (CAEAGLLayer*)[self layer];
+        CAEAGLLayer* eaglLayer = (CAEAGLLayer*)[self layer];
         
         pixelformat_ = kEAGLColorFormatRGB565;
         depthFormat_ = 0; // GL_DEPTH_COMPONENT24_OES;
@@ -215,7 +217,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
                                     pixelformat_, kEAGLDrawablePropertyColorFormat, nil];
     
     
-    renderer_ = [[CCES2Renderer alloc] initWithDepthFormat:depthFormat_
+    renderer_ = [[ES2Renderer alloc] initWithDepthFormat:depthFormat_
                                          withPixelFormat:[self convertPixelFormat:pixelformat_]
                                           withSharegroup:sharegroup
                                        withMultiSampling:multiSampling_
@@ -254,14 +256,14 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     // Issue #914 #924
 //     Director *director = [Director sharedDirector];
 //     [director reshapeProjection:size_];
-    cocos2d::Size size;
+    flakor::Size size;
     size.width = size_.width;
     size.height = size_.height;
     //cocos2d::Director::getInstance()->reshapeProjection(size);
 
     // Avoid flicker. Issue #350
     //[director performSelectorOnMainThread:@selector(drawScene) withObject:nil waitUntilDone:YES];
-    cocos2d::Director::getInstance()->drawScene();
+    flakor::Engine::getInstance()->drawFrame();
 }
 
 - (void) swapBuffers
@@ -405,8 +407,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         ++i;
     }
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
-    glview->handleTouchesBegin(i, (intptr_t*)ids, xs, ys);
+    auto engine = flakor::Engine::getInstance();
+    engine->handleTouch(flakor::TouchTrigger::TouchAction::DOWN,i, (intptr_t*)ids, xs, ys);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -423,8 +425,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         ++i;
     }
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
-    glview->handleTouchesMove(i, (intptr_t*)ids, xs, ys);
+    auto engine = flakor::Engine::getInstance();
+    engine->handleTouch(flakor::TouchTrigger::TouchAction::MOVE,i, (intptr_t*)ids, xs, ys);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -441,8 +443,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         ++i;
     }
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
-    glview->handleTouchesEnd(i, (intptr_t*)ids, xs, ys);
+    auto engine = flakor::Engine::getInstance();
+    engine->handleTouch(flakor::TouchTrigger::TouchAction::UP,i, (intptr_t*)ids, xs, ys);
 }
     
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -459,8 +461,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         ++i;
     }
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
-    glview->handleTouchesCancel(i, (intptr_t*)ids, xs, ys);
+    auto engine = flakor::Engine::getInstance();
+    engine->handleTouch(flakor::TouchTrigger::TouchAction::CANCEL,i, (intptr_t*)ids, xs, ys);
 }
 
 #pragma mark - UIView - Responder
@@ -504,8 +506,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         [markedText_ release];
         markedText_ = nil;
     }
-    const char * pszText = [text cStringUsingEncoding:NSUTF8StringEncoding];
-    cocos2d::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
+    //const char * pszText = [text cStringUsingEncoding:NSUTF8StringEncoding];
+    //flakor::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
 }
 
 - (void)deleteBackward
@@ -514,7 +516,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         [markedText_ release];
         markedText_ = nil;
     }
-    cocos2d::IMEDispatcher::sharedDispatcher()->dispatchDeleteBackward();
+    //flakor::IMEDispatcher::sharedDispatcher()->dispatchDeleteBackward();
 }
 
 #pragma mark - UITextInputTrait protocol
@@ -540,7 +542,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * always performed on the text from this selection.  nil corresponds to no selection. */
 - (void)setSelectedTextRange:(UITextRange *)aSelectedTextRange;
 {
-    CCLOG("UITextRange:setSelectedTextRange");
+    FKLOG("UITextRange:setSelectedTextRange");
 }
 - (UITextRange *)selectedTextRange;
 {
@@ -551,12 +553,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (NSString *)textInRange:(UITextRange *)range;
 {
-    CCLOG("textInRange");
+    FKLOG("textInRange");
     return @"";
 }
 - (void)replaceRange:(UITextRange *)range withText:(NSString *)theText;
 {
-    CCLOG("replaceRange");
+    FKLOG("replaceRange");
 }
 
 #pragma mark UITextInput - Working with Marked and Selected Text
@@ -573,27 +575,27 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void)setMarkedTextRange:(UITextRange *)markedTextRange;
 {
-    CCLOG("setMarkedTextRange");
+    FKLOG("setMarkedTextRange");
 }
 
 - (UITextRange *)markedTextRange;
 {
-    CCLOG("markedTextRange");
+    FKLOG("markedTextRange");
     return nil; // Nil if no marked text.
 }
 - (void)setMarkedTextStyle:(NSDictionary *)markedTextStyle;
 {
-    CCLOG("setMarkedTextStyle");
+    FKLOG("setMarkedTextStyle");
     
 }
 - (NSDictionary *)markedTextStyle;
 {
-    CCLOG("markedTextStyle");
+    FKLOG("markedTextStyle");
     return nil;
 }
 - (void)setMarkedText:(NSString *)markedText selectedRange:(NSRange)selectedRange;
 {
-    CCLOG("setMarkedText");
+    FKLOG("setMarkedText");
     if (markedText == markedText_) {
         return;
     }
@@ -605,13 +607,13 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 }
 - (void)unmarkText;
 {
-    CCLOG("unmarkText");
+    FKLOG("unmarkText");
     if (nil == markedText_)
     {
         return;
     }
-    const char * pszText = [markedText_ cStringUsingEncoding:NSUTF8StringEncoding];
-    cocos2d::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
+    //const char * pszText = [markedText_ cStringUsingEncoding:NSUTF8StringEncoding];
+    //flakor::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
     [markedText_ release];
     markedText_ = nil;
 }
@@ -620,40 +622,40 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (UITextRange *)textRangeFromPosition:(UITextPosition *)fromPosition toPosition:(UITextPosition *)toPosition;
 {
-    CCLOG("textRangeFromPosition");
+    FKLOG("textRangeFromPosition");
     return nil;
 }
 - (UITextPosition *)positionFromPosition:(UITextPosition *)position offset:(NSInteger)offset;
 {
-    CCLOG("positionFromPosition");
+    FKLOG("positionFromPosition");
     return nil;
 }
 - (UITextPosition *)positionFromPosition:(UITextPosition *)position inDirection:(UITextLayoutDirection)direction offset:(NSInteger)offset;
 {
-    CCLOG("positionFromPosition");
+    FKLOG("positionFromPosition");
     return nil;
 }
 
 /* Simple evaluation of positions */
 - (NSComparisonResult)comparePosition:(UITextPosition *)position toPosition:(UITextPosition *)other;
 {
-    CCLOG("comparePosition");
+    FKLOG("comparePosition");
     return (NSComparisonResult)0;
 }
 - (NSInteger)offsetFromPosition:(UITextPosition *)from toPosition:(UITextPosition *)toPosition;
 {
-    CCLOG("offsetFromPosition");
+    FKLOG("offsetFromPosition");
     return 0;
 }
 
 - (UITextPosition *)positionWithinRange:(UITextRange *)range farthestInDirection:(UITextLayoutDirection)direction;
 {
-    CCLOG("positionWithinRange");
+    FKLOG("positionWithinRange");
     return nil;
 }
 - (UITextRange *)characterRangeByExtendingPosition:(UITextPosition *)position inDirection:(UITextLayoutDirection)direction;
 {
-    CCLOG("characterRangeByExtendingPosition");
+    FKLOG("characterRangeByExtendingPosition");
     return nil;
 }
 
@@ -661,12 +663,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (UITextWritingDirection)baseWritingDirectionForPosition:(UITextPosition *)position inDirection:(UITextStorageDirection)direction;
 {
-    CCLOG("baseWritingDirectionForPosition");
+    FKLOG("baseWritingDirectionForPosition");
     return UITextWritingDirectionNatural;
 }
 - (void)setBaseWritingDirection:(UITextWritingDirection)writingDirection forRange:(UITextRange *)range;
 {
-    CCLOG("setBaseWritingDirection");
+    FKLOG("setBaseWritingDirection");
 }
 
 #pragma mark Geometry
@@ -674,12 +676,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 /* Geometry used to provide, for example, a correction rect. */
 - (CGRect)firstRectForRange:(UITextRange *)range;
 {
-    CCLOG("firstRectForRange");
+    FKLOG("firstRectForRange");
     return CGRectNull;
 }
 - (CGRect)caretRectForPosition:(UITextPosition *)position;
 {
-    CCLOG("caretRectForPosition");
+    FKLOG("caretRectForPosition");
     return caretRect_;
 }
 
@@ -688,23 +690,23 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 /* JS - Find the closest position to a given point */
 - (UITextPosition *)closestPositionToPoint:(CGPoint)point;
 {
-    CCLOG("closestPositionToPoint");
+    FKLOG("closestPositionToPoint");
     return nil;
 }
 - (UITextPosition *)closestPositionToPoint:(CGPoint)point withinRange:(UITextRange *)range;
 {
-    CCLOG("closestPositionToPoint");
+    FKLOG("closestPositionToPoint");
     return nil;
 }
 - (UITextRange *)characterRangeAtPoint:(CGPoint)point;
 {
-    CCLOG("characterRangeAtPoint");
+    FKLOG("characterRangeAtPoint");
     return nil;
 }
 
 - (NSArray *)selectionRectsForRange:(UITextRange *)range
 {
-    CCLOG("selectionRectsForRange");
+    FKLOG("selectionRectsForRange");
     return nil;
 }
 
@@ -767,7 +769,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         default:
             break;
     }
-
+/*
     auto glview = cocos2d::Director::getInstance()->getOpenGLView();
     float scaleX = glview->getScaleX();
 	float scaleY = glview->getScaleY();
@@ -779,7 +781,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     end = CGRectApplyAffineTransform(end, CGAffineTransformScale(CGAffineTransformIdentity, self.contentScaleFactor, self.contentScaleFactor));
     
     float offestY = glview->getViewPortRect().origin.y;
-    CCLOG("offestY = %f", offestY);
+    FKLOG("offestY = %f", offestY);
     if (offestY < 0.0f)
     {
         begin.origin.y += offestY;
@@ -827,7 +829,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         caretRect_ = CGRectZero;
         dispatcher->dispatchKeyboardDidHide(notiInfo);
         isKeyboardShown_ = NO;
-    }
+    }*/
 }
 
 UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrientation)
@@ -841,7 +843,7 @@ UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrien
 
 -(void) doAnimationWhenKeyboardMoveWithDuration:(float)duration distance:(float)dis
 {
-    [UIView beginAnimations:nil context:nullptr];
+    /*[UIView beginAnimations:nil context:nullptr];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDuration:duration];
 	[UIView setAnimationBeginsFromCurrentState:YES];
@@ -877,7 +879,7 @@ UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrien
             break;
     }
     
-	[UIView commitAnimations];
+	[UIView commitAnimations];*/
 }
 
 
@@ -891,4 +893,4 @@ UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrien
 
 @end
 
-#endif // CC_PLATFORM_IOS
+#endif // FK_PLATFORM_IOS

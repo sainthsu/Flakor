@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef _FK_COMSOLE_H_
 #define _FK_COMSOLE_H_
 
-#include "PlatformMacros.h"
+#include "macros.h"
 
 FLAKOR_NS_BEGIN
 

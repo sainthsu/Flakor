@@ -1,5 +1,11 @@
 #include "macros.h"
+
+#if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 #include "platform/android/Engine.h"
+#elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
+#include "platform/ios/Engine.h"
+#endif
+
 #include "base/update/UpdateThread.h"
 
 #include <unistd.h>

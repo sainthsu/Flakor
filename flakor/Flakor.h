@@ -50,7 +50,6 @@
 //opengl
 #include "core/opengl/GL.h"
 #include "core/opengl/GPUInfo.h"
-#include "core/opengl/GLContext.h"
 #include "core/opengl/GLProgram.h"
 #include "core/opengl/shader/Shaders.h"
 #include "core/opengl/vbo/VBO.h"
@@ -64,11 +63,14 @@
 #include "tool/utility/TexUtils.h"
 
 #if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
+#include "core/opengl/GLContext.h"
 #include "platform/android/Engine.h"
 #include "platform/android/Application.h"
 #elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
-#include "platform/ios/CCESRenderer-ios.h"
-#include "platform/ios/CCES2Renderer-ios.h"
+#include "platform/ios/GLContext.h"
+#include "platform/ios/EAGLView.h"
+#include "platform/ios/Engine.h"
+#include "platform/ios/ES2Renderer.h"
 #endif
 
 #include "platform/Game.h"

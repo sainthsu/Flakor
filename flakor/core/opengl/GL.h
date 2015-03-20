@@ -23,6 +23,7 @@ http://www.FLAKOR.org
 
 // GL_GLEXT_PROTOTYPES isn't defined in glplatform.h on android ndk r7 
 // we manually define it here
+#include <EGL/egl.h>
 #include <GLES2/gl2platform.h>
 #ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES 1

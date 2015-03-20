@@ -43,85 +43,71 @@ FLAKOR_NS_BEGIN
  * thus GLContext class is not designed as a thread-safe
  */
 
-class EAGLView;
-
 class GLContext
 {
 private:
     //EGL configurations
-    ANativeWindow* window_;
-    EGLDisplay display_;
-    EGLSurface surface_;
-    EGLContext context_;
-    EGLConfig config_;
-
-    EAGLView *glView;
+    
+    void *_glView;
     
     //Screen parameters
-    int32_t screen_width_;
-    int32_t screen_height_;
-    int32_t color_size_;
-    int32_t depth_size_;
+    int32_t _screenWidth;
+    int32_t _screenHeight;
+    int32_t _colorSize;
+    int32_t _depthSize;
 
     //Flags
-    bool gles_initialized_;
-    bool egl_context_initialized_;
-    bool es3_supported_;
-    float gl_version_;
-    bool context_valid_;
+    bool _initialized;
+    
+    bool _es3Supported;
+    float _glVersion;
 
-    void InitGLES();
-    void Terminate();
-    bool InitEGLSurface();
-    bool InitEGLContext();
+    void terminate();
 
     GLContext( GLContext const& );
     void operator=( GLContext const& );
     GLContext();
     virtual ~GLContext();
 public:
-    static GLContext* GetInstance()
+    static GLContext* getInstance()
     {
         //Singleton
         static GLContext instance;
-
         return &instance;
     }
 
-    bool Init( ANativeWindow* window );
-    EGLint Resume( ANativeWindow* window );
+    bool initWithEAGLView(void *eaglview);
     
-    
-    EGLint Swap();
-    bool Invalidate();
-    void Suspend();
+    void swap();
+    bool invalidate();
+    bool isInited() { return _initialized;};
     
 
-    int32_t GetScreenWidth()
+    int32_t getScreenWidth()
     {
-        return screen_width_;
+        return _screenWidth;
     }
-    int32_t GetScreenHeight()
+    int32_t getScreenHeight()
     {
-        return screen_height_;
-    }
-
-    int32_t GetBufferColorSize()
-    {
-        return color_size_;
+        return _screenHeight;
     }
 
-    int32_t GetBufferDepthSize()
+    int32_t getBufferColorSize()
     {
-        return depth_size_;
+        return _colorSize;
     }
 
-    float GetGLVersion()
+    int32_t getBufferDepthSize()
     {
-        return gl_version_;
+        return _depthSize;
     }
 
-    bool CheckExtension( const char* extension );
+    float getGLVersion()
+    {
+        return _glVersion;
+    }
+
+    bool checkExtension( const char* extension );
 };
 
 FLAKOR_NS_END   //namespace flakor

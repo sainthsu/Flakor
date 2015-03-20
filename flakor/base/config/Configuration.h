@@ -120,7 +120,7 @@ public:
 	Object * getObject( const char *key ) const;
 
 	/** sets a new key/value pair  in the configuration dictionary */
-	void setObject( const char *key, CCObject *value );
+	void setObject( const char *key, Object *value );
 
 	/** dumps the current configuration on the console */
 	void dumpInfo(void) const;

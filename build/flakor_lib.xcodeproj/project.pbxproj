@@ -18,15 +18,7 @@
 		8570FCFC1AB941CE003DF0D2 /* Scene.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9A11AB941CD003DF0D2 /* Scene.h */; };
 		8570FCFD1AB941CE003DF0D2 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9A21AB941CD003DF0D2 /* Sprite.cpp */; };
 		8570FCFE1AB941CE003DF0D2 /* Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9A31AB941CD003DF0D2 /* Sprite.h */; };
-		8570FCFF1AB941CE003DF0D2 /* SpriteFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9A41AB941CD003DF0D2 /* SpriteFrame.cpp */; };
-		8570FD001AB941CE003DF0D2 /* SpriteFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9A51AB941CD003DF0D2 /* SpriteFrame.h */; };
 		8570FD021AB941CE003DF0D2 /* Config.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9AC1AB941CD003DF0D2 /* Config.h */; };
-		8570FD031AB941CE003DF0D2 /* Configuration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9AD1AB941CD003DF0D2 /* Configuration.cpp */; };
-		8570FD041AB941CE003DF0D2 /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9AE1AB941CD003DF0D2 /* Configuration.h */; };
-		8570FD071AB941CE003DF0D2 /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9B11AB941CD003DF0D2 /* Device.cpp */; };
-		8570FD081AB941CE003DF0D2 /* Device.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9B21AB941CD003DF0D2 /* Device.h */; };
-		8570FD091AB941CE003DF0D2 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9B41AB941CD003DF0D2 /* Console.cpp */; };
-		8570FD0A1AB941CE003DF0D2 /* Console.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9B51AB941CD003DF0D2 /* Console.h */; };
 		8570FD0B1AB941CE003DF0D2 /* Blendfunc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9B71AB941CD003DF0D2 /* Blendfunc.cpp */; };
 		8570FD0C1AB941CE003DF0D2 /* Blendfunc.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9B81AB941CD003DF0D2 /* Blendfunc.h */; };
 		8570FD0D1AB941CE003DF0D2 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9B91AB941CD003DF0D2 /* Color.cpp */; };
@@ -57,8 +49,6 @@
 		8570FD2C1AB941CF003DF0D2 /* Object.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9DB1AB941CD003DF0D2 /* Object.h */; };
 		8570FD2D1AB941CF003DF0D2 /* Set.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9DC1AB941CD003DF0D2 /* Set.cpp */; };
 		8570FD2E1AB941CF003DF0D2 /* Set.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9DD1AB941CD003DF0D2 /* Set.h */; };
-		8570FD2F1AB941CF003DF0D2 /* smartptr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9DE1AB941CD003DF0D2 /* smartptr.cpp */; };
-		8570FD301AB941CF003DF0D2 /* smartptr.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9DF1AB941CD003DF0D2 /* smartptr.h */; };
 		8570FD311AB941CF003DF0D2 /* Str.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9E01AB941CD003DF0D2 /* Str.cpp */; };
 		8570FD321AB941CF003DF0D2 /* Str.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9E11AB941CD003DF0D2 /* Str.h */; };
 		8570FD331AB941CF003DF0D2 /* Types.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9E21AB941CD003DF0D2 /* Types.h */; };
@@ -130,7 +120,6 @@
 		8570FD831AB941D2003DF0D2 /* target.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA581AB941CD003DF0D2 /* target.h */; };
 		8570FD841AB941D2003DF0D2 /* targetAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA591AB941CD003DF0D2 /* targetAssert.h */; };
 		8570FD851AB941D2003DF0D2 /* targetMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA5A1AB941CD003DF0D2 /* targetMacros.h */; };
-		8570FD861AB941D2003DF0D2 /* ArrayList.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA5C1AB941CD003DF0D2 /* ArrayList.h */; };
 		8570FD871AB941D2003DF0D2 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570FA5D1AB941CD003DF0D2 /* Camera.cpp */; };
 		8570FD881AB941D2003DF0D2 /* Camera.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA5E1AB941CD003DF0D2 /* Camera.h */; };
 		8570FD891AB941D2003DF0D2 /* CArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570FA5F1AB941CD003DF0D2 /* CArray.cpp */; };
@@ -142,8 +131,6 @@
 		8570FD8F1AB941D2003DF0D2 /* MatrixStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570FA651AB941CD003DF0D2 /* MatrixStack.cpp */; };
 		8570FD901AB941D2003DF0D2 /* MatrixStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA661AB941CD003DF0D2 /* MatrixStack.h */; };
 		8570FD911AB941D2003DF0D2 /* Quaternion.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA671AB941CD003DF0D2 /* Quaternion.h */; };
-		8570FD921AB941D2003DF0D2 /* tapCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570FA681AB941CD003DF0D2 /* tapCamera.cpp */; };
-		8570FD931AB941D2003DF0D2 /* tapCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA691AB941CD003DF0D2 /* tapCamera.h */; };
 		8570FD941AB941D2003DF0D2 /* uthash.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA6A1AB941CD003DF0D2 /* uthash.h */; };
 		8570FD951AB941D3003DF0D2 /* utlist.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA6B1AB941CD003DF0D2 /* utlist.h */; };
 		8570FD961AB941D3003DF0D2 /* Vectors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FA6C1AB941CD003DF0D2 /* Vectors.h */; };
@@ -167,8 +154,10 @@
 		8570FE9D1AB941E7003DF0D2 /* rapidxml_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8570FCF11AB941CE003DF0D2 /* rapidxml_utils.hpp */; };
 		8570FE9E1AB941E8003DF0D2 /* TexUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570FCF51AB941CE003DF0D2 /* TexUtils.cpp */; };
 		8570FE9F1AB941E8003DF0D2 /* TexUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FCF61AB941CE003DF0D2 /* TexUtils.h */; };
-		8570FEA01AB941E8003DF0D2 /* ZipUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570FCF71AB941CE003DF0D2 /* ZipUtils.cpp */; };
-		8570FEA11AB941E8003DF0D2 /* ZipUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FCF81AB941CE003DF0D2 /* ZipUtils.h */; };
+		85AAA9E31ABB04C9001068F6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AAA9E21ABB04C9001068F6 /* UIKit.framework */; };
+		85AF3AAC1ABAB92E005E4589 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AAB1ABAB92E005E4589 /* Engine.cpp */; };
+		85AF3AB71ABACC31005E4589 /* GLContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AB51ABACC31005E4589 /* GLContext.mm */; };
+		85AF3AB81ABACC31005E4589 /* GLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 85AF3AB61ABACC31005E4589 /* GLContext.h */; };
 		85D8EFD81AB97FBE001DF670 /* flakor-prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 85D8EFD71AB97FBE001DF670 /* flakor-prefix.pch */; };
 /* End PBXBuildFile section */
 
@@ -184,15 +173,7 @@
 		8570F9A11AB941CD003DF0D2 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		8570F9A21AB941CD003DF0D2 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
 		8570F9A31AB941CD003DF0D2 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
-		8570F9A41AB941CD003DF0D2 /* SpriteFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteFrame.cpp; sourceTree = "<group>"; };
-		8570F9A51AB941CD003DF0D2 /* SpriteFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteFrame.h; sourceTree = "<group>"; };
 		8570F9AC1AB941CD003DF0D2 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
-		8570F9AD1AB941CD003DF0D2 /* Configuration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Configuration.cpp; sourceTree = "<group>"; };
-		8570F9AE1AB941CD003DF0D2 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configuration.h; sourceTree = "<group>"; };
-		8570F9B11AB941CD003DF0D2 /* Device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Device.cpp; sourceTree = "<group>"; };
-		8570F9B21AB941CD003DF0D2 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
-		8570F9B41AB941CD003DF0D2 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
-		8570F9B51AB941CD003DF0D2 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		8570F9B71AB941CD003DF0D2 /* Blendfunc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blendfunc.cpp; sourceTree = "<group>"; };
 		8570F9B81AB941CD003DF0D2 /* Blendfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blendfunc.h; sourceTree = "<group>"; };
 		8570F9B91AB941CD003DF0D2 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
@@ -223,8 +204,6 @@
 		8570F9DB1AB941CD003DF0D2 /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
 		8570F9DC1AB941CD003DF0D2 /* Set.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Set.cpp; sourceTree = "<group>"; };
 		8570F9DD1AB941CD003DF0D2 /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Set.h; sourceTree = "<group>"; };
-		8570F9DE1AB941CD003DF0D2 /* smartptr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = smartptr.cpp; sourceTree = "<group>"; };
-		8570F9DF1AB941CD003DF0D2 /* smartptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = smartptr.h; sourceTree = "<group>"; };
 		8570F9E01AB941CD003DF0D2 /* Str.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Str.cpp; sourceTree = "<group>"; };
 		8570F9E11AB941CD003DF0D2 /* Str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Str.h; sourceTree = "<group>"; };
 		8570F9E21AB941CD003DF0D2 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
@@ -312,7 +291,7 @@
 		8570FA4D1AB941CD003DF0D2 /* ThreadPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadPool.h; sourceTree = "<group>"; };
 		8570FA4E1AB941CD003DF0D2 /* Uri.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Uri.cpp; sourceTree = "<group>"; };
 		8570FA4F1AB941CD003DF0D2 /* Uri.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Uri.h; sourceTree = "<group>"; };
-		8570FA501AB941CD003DF0D2 /* Flakor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Flakor.cpp; sourceTree = "<group>"; };
+		8570FA501AB941CD003DF0D2 /* Flakor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Flakor.cpp; sourceTree = "<group>"; };
 		8570FA511AB941CD003DF0D2 /* Flakor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flakor.h; sourceTree = "<group>"; };
 		8570FA531AB941CD003DF0D2 /* common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = common.cpp; sourceTree = "<group>"; };
 		8570FA541AB941CD003DF0D2 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
@@ -322,7 +301,6 @@
 		8570FA581AB941CD003DF0D2 /* target.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = target.h; sourceTree = "<group>"; };
 		8570FA591AB941CD003DF0D2 /* targetAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = targetAssert.h; sourceTree = "<group>"; };
 		8570FA5A1AB941CD003DF0D2 /* targetMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = targetMacros.h; sourceTree = "<group>"; };
-		8570FA5C1AB941CD003DF0D2 /* ArrayList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayList.h; sourceTree = "<group>"; };
 		8570FA5D1AB941CD003DF0D2 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		8570FA5E1AB941CD003DF0D2 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		8570FA5F1AB941CD003DF0D2 /* CArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CArray.cpp; sourceTree = "<group>"; };
@@ -334,8 +312,6 @@
 		8570FA651AB941CD003DF0D2 /* MatrixStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatrixStack.cpp; sourceTree = "<group>"; };
 		8570FA661AB941CD003DF0D2 /* MatrixStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixStack.h; sourceTree = "<group>"; };
 		8570FA671AB941CD003DF0D2 /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
-		8570FA681AB941CD003DF0D2 /* tapCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tapCamera.cpp; sourceTree = "<group>"; };
-		8570FA691AB941CD003DF0D2 /* tapCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tapCamera.h; sourceTree = "<group>"; };
 		8570FA6A1AB941CD003DF0D2 /* uthash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uthash.h; sourceTree = "<group>"; };
 		8570FA6B1AB941CD003DF0D2 /* utlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utlist.h; sourceTree = "<group>"; };
 		8570FA6C1AB941CD003DF0D2 /* Vectors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vectors.h; sourceTree = "<group>"; };
@@ -364,10 +340,12 @@
 		8570FCF11AB941CE003DF0D2 /* rapidxml_utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = rapidxml_utils.hpp; sourceTree = "<group>"; };
 		8570FCF51AB941CE003DF0D2 /* TexUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TexUtils.cpp; sourceTree = "<group>"; };
 		8570FCF61AB941CE003DF0D2 /* TexUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TexUtils.h; sourceTree = "<group>"; };
-		8570FCF71AB941CE003DF0D2 /* ZipUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZipUtils.cpp; sourceTree = "<group>"; };
-		8570FCF81AB941CE003DF0D2 /* ZipUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipUtils.h; sourceTree = "<group>"; };
 		8570FEAA1AB9686B003DF0D2 /* Engine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		859BAFF41A733E3C00E57FFF /* libflakor_lib_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libflakor_lib_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		85AAA9E21ABB04C9001068F6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		85AF3AAB1ABAB92E005E4589 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
+		85AF3AB51ABACC31005E4589 /* GLContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLContext.mm; sourceTree = "<group>"; };
+		85AF3AB61ABACC31005E4589 /* GLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLContext.h; sourceTree = "<group>"; };
 		85D8EFD71AB97FBE001DF670 /* flakor-prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "flakor-prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -376,6 +354,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85AAA9E31ABB04C9001068F6 /* UIKit.framework in Frameworks */,
 				850FD7791AB96D6E00EF4A7D /* OpenGLES.framework in Frameworks */,
 				850FD77A1AB96D6E00EF4A7D /* QuartzCore.framework in Frameworks */,
 				85520C421A75EA060017565D /* libjpeg.a in Frameworks */,
@@ -390,6 +369,7 @@
 		85520C431A75EA280017565D /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				85AAA9E21ABB04C9001068F6 /* UIKit.framework */,
 				850FD7771AB96D6E00EF4A7D /* OpenGLES.framework */,
 				850FD7781AB96D6E00EF4A7D /* QuartzCore.framework */,
 				85520C411A75EA060017565D /* libjpeg.a */,
@@ -426,8 +406,6 @@
 				8570F9A11AB941CD003DF0D2 /* Scene.h */,
 				8570F9A21AB941CD003DF0D2 /* Sprite.cpp */,
 				8570F9A31AB941CD003DF0D2 /* Sprite.h */,
-				8570F9A41AB941CD003DF0D2 /* SpriteFrame.cpp */,
-				8570F9A51AB941CD003DF0D2 /* SpriteFrame.h */,
 			);
 			path = 2d;
 			sourceTree = "<group>";
@@ -450,10 +428,6 @@
 			isa = PBXGroup;
 			children = (
 				8570F9AC1AB941CD003DF0D2 /* Config.h */,
-				8570F9AD1AB941CD003DF0D2 /* Configuration.cpp */,
-				8570F9AE1AB941CD003DF0D2 /* Configuration.h */,
-				8570F9B11AB941CD003DF0D2 /* Device.cpp */,
-				8570F9B21AB941CD003DF0D2 /* Device.h */,
 			);
 			path = config;
 			sourceTree = "<group>";
@@ -461,8 +435,6 @@
 		8570F9B31AB941CD003DF0D2 /* console */ = {
 			isa = PBXGroup;
 			children = (
-				8570F9B41AB941CD003DF0D2 /* Console.cpp */,
-				8570F9B51AB941CD003DF0D2 /* Console.h */,
 			);
 			path = console;
 			sourceTree = "<group>";
@@ -514,8 +486,6 @@
 				8570F9DB1AB941CD003DF0D2 /* Object.h */,
 				8570F9DC1AB941CD003DF0D2 /* Set.cpp */,
 				8570F9DD1AB941CD003DF0D2 /* Set.h */,
-				8570F9DE1AB941CD003DF0D2 /* smartptr.cpp */,
-				8570F9DF1AB941CD003DF0D2 /* smartptr.h */,
 				8570F9E01AB941CD003DF0D2 /* Str.cpp */,
 				8570F9E11AB941CD003DF0D2 /* Str.h */,
 				8570F9E21AB941CD003DF0D2 /* Types.h */,
@@ -702,7 +672,6 @@
 		8570FA5B1AB941CD003DF0D2 /* math */ = {
 			isa = PBXGroup;
 			children = (
-				8570FA5C1AB941CD003DF0D2 /* ArrayList.h */,
 				8570FA5D1AB941CD003DF0D2 /* Camera.cpp */,
 				8570FA5E1AB941CD003DF0D2 /* Camera.h */,
 				8570FA5F1AB941CD003DF0D2 /* CArray.cpp */,
@@ -714,8 +683,6 @@
 				8570FA651AB941CD003DF0D2 /* MatrixStack.cpp */,
 				8570FA661AB941CD003DF0D2 /* MatrixStack.h */,
 				8570FA671AB941CD003DF0D2 /* Quaternion.h */,
-				8570FA681AB941CD003DF0D2 /* tapCamera.cpp */,
-				8570FA691AB941CD003DF0D2 /* tapCamera.h */,
 				8570FA6A1AB941CD003DF0D2 /* uthash.h */,
 				8570FA6B1AB941CD003DF0D2 /* utlist.h */,
 				8570FA6C1AB941CD003DF0D2 /* Vectors.h */,
@@ -736,6 +703,8 @@
 		8570FA771AB941CD003DF0D2 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				85AF3AB51ABACC31005E4589 /* GLContext.mm */,
+				85AF3AB61ABACC31005E4589 /* GLContext.h */,
 				85D8EFD71AB97FBE001DF670 /* flakor-prefix.pch */,
 				8570FA781AB941CD003DF0D2 /* ES2Renderer.h */,
 				8570FA791AB941CD003DF0D2 /* ES2Renderer.m */,
@@ -744,6 +713,7 @@
 				8570FA7C1AB941CD003DF0D2 /* EAGLView.mm */,
 				8570FA7D1AB941CD003DF0D2 /* OpenGL_Internal-ios.h */,
 				8570FEAA1AB9686B003DF0D2 /* Engine.h */,
+				85AF3AAB1ABAB92E005E4589 /* Engine.cpp */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -871,8 +841,6 @@
 			children = (
 				8570FCF51AB941CE003DF0D2 /* TexUtils.cpp */,
 				8570FCF61AB941CE003DF0D2 /* TexUtils.h */,
-				8570FCF71AB941CE003DF0D2 /* ZipUtils.cpp */,
-				8570FCF81AB941CE003DF0D2 /* ZipUtils.h */,
 			);
 			path = utility;
 			sourceTree = "<group>";
@@ -894,7 +862,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8570FDA91AB941D4003DF0D2 /* jconfig.h in Headers */,
-				8570FD861AB941D2003DF0D2 /* ArrayList.h in Headers */,
 				8570FD401AB941CF003DF0D2 /* Touch.h in Headers */,
 				8570FD511AB941CF003DF0D2 /* Shaders.h in Headers */,
 				8570FD671AB941D0003DF0D2 /* VBO.h in Headers */,
@@ -913,7 +880,6 @@
 				8570FD0E1AB941CE003DF0D2 /* Color.h in Headers */,
 				8570FD631AB941D0003DF0D2 /* TGAlib.h in Headers */,
 				8570FD591AB941D0003DF0D2 /* etc1.h in Headers */,
-				8570FD0A1AB941CE003DF0D2 /* Console.h in Headers */,
 				8570FE9A1AB941E7003DF0D2 /* rapidxml.hpp in Headers */,
 				8570FD1D1AB941CE003DF0D2 /* IDrawable.h in Headers */,
 				8570FD601AB941D0003DF0D2 /* Texture2D.h in Headers */,
@@ -923,19 +889,17 @@
 				8570FD4B1AB941CF003DF0D2 /* GLProgram.h in Headers */,
 				8570FD0C1AB941CE003DF0D2 /* Blendfunc.h in Headers */,
 				8570FD321AB941CF003DF0D2 /* Str.h in Headers */,
-				8570FD931AB941D2003DF0D2 /* tapCamera.h in Headers */,
-				8570FD301AB941CF003DF0D2 /* smartptr.h in Headers */,
 				8570FD5C1AB941D0003DF0D2 /* pvr.h in Headers */,
 				8570FD241AB941CE003DF0D2 /* Array.h in Headers */,
 				8570FDA11AB941D3003DF0D2 /* ESRenderer.h in Headers */,
 				8570FD651AB941D0003DF0D2 /* VAO.h in Headers */,
 				8570FD421AB941CF003DF0D2 /* TouchPool.h in Headers */,
 				8570FD811AB941D1003DF0D2 /* macros.h in Headers */,
+				85AF3AB81ABACC31005E4589 /* GLContext.h in Headers */,
 				8570FD451AB941CF003DF0D2 /* GL.h in Headers */,
 				8570FE9F1AB941E8003DF0D2 /* TexUtils.h in Headers */,
 				8570FD1A1AB941CE003DF0D2 /* IColorable.h in Headers */,
 				8570FD701AB941D1003DF0D2 /* LoaderThread.h in Headers */,
-				8570FEA11AB941E8003DF0D2 /* ZipUtils.h in Headers */,
 				8570FD911AB941D2003DF0D2 /* Quaternion.h in Headers */,
 				8570FD7F1AB941D1003DF0D2 /* common.h in Headers */,
 				8570FD021AB941CE003DF0D2 /* Config.h in Headers */,
@@ -943,7 +907,6 @@
 				8570FE9C1AB941E7003DF0D2 /* rapidxml_print.hpp in Headers */,
 				8570FCFA1AB941CE003DF0D2 /* Entity.h in Headers */,
 				8570FD751AB941D1003DF0D2 /* ResourceManager.h in Headers */,
-				8570FD001AB941CE003DF0D2 /* SpriteFrame.h in Headers */,
 				8570FDA41AB941D3003DF0D2 /* OpenGL_Internal-ios.h in Headers */,
 				8570FD951AB941D3003DF0D2 /* utlist.h in Headers */,
 				8570FD6E1AB941D1003DF0D2 /* ImageLoader.h in Headers */,
@@ -973,7 +936,6 @@
 				8570FD8E1AB941D2003DF0D2 /* Matrices.h in Headers */,
 				8570FD181AB941CE003DF0D2 /* Helper.h in Headers */,
 				8570FD7D1AB941D1003DF0D2 /* Flakor.h in Headers */,
-				8570FD081AB941CE003DF0D2 /* Device.h in Headers */,
 				8570FD1B1AB941CE003DF0D2 /* ICommand.h in Headers */,
 				8570FD8A1AB941D2003DF0D2 /* CArray.h in Headers */,
 				8570FE7A1AB941E3003DF0D2 /* pnglibconf.h in Headers */,
@@ -984,7 +946,6 @@
 				8570FD5A1AB941D0003DF0D2 /* ImageInfo.h in Headers */,
 				8570FD201AB941CE003DF0D2 /* IModifier.h in Headers */,
 				8570FD4D1AB941CF003DF0D2 /* GPUInfo.h in Headers */,
-				8570FD041AB941CE003DF0D2 /* Configuration.h in Headers */,
 				8570FD611AB941D0003DF0D2 /* TextureManager.h in Headers */,
 				8570FD351AB941CF003DF0D2 /* Zone.h in Headers */,
 				8570FCFC1AB941CE003DF0D2 /* Scene.h in Headers */,
@@ -1066,8 +1027,6 @@
 				8570FD741AB941D1003DF0D2 /* ResourceManager.cpp in Sources */,
 				8570FD5F1AB941D0003DF0D2 /* Texture2D.cpp in Sources */,
 				8570FD3F1AB941CF003DF0D2 /* Touch.cpp in Sources */,
-				8570FEA01AB941E8003DF0D2 /* ZipUtils.cpp in Sources */,
-				8570FD921AB941D2003DF0D2 /* tapCamera.cpp in Sources */,
 				8570FD9D1AB941D3003DF0D2 /* Game.cpp in Sources */,
 				8570FD641AB941D0003DF0D2 /* VAO.cpp in Sources */,
 				8570FD171AB941CE003DF0D2 /* Helper.cpp in Sources */,
@@ -1075,19 +1034,17 @@
 				8570FD311AB941CF003DF0D2 /* Str.cpp in Sources */,
 				8570FCF91AB941CE003DF0D2 /* Entity.cpp in Sources */,
 				8570FD6F1AB941D1003DF0D2 /* LoaderThread.cpp in Sources */,
-				8570FD031AB941CE003DF0D2 /* Configuration.cpp in Sources */,
 				8570FD271AB941CE003DF0D2 /* DataVisitor.cpp in Sources */,
-				8570FCFF1AB941CE003DF0D2 /* SpriteFrame.cpp in Sources */,
 				8570FD871AB941D2003DF0D2 /* Camera.cpp in Sources */,
 				8570FD7E1AB941D1003DF0D2 /* common.cpp in Sources */,
 				8570FD231AB941CE003DF0D2 /* Array.cpp in Sources */,
 				8570FD621AB941D0003DF0D2 /* TGAlib.cpp in Sources */,
 				8570FD4A1AB941CF003DF0D2 /* GLProgram.cpp in Sources */,
-				8570FD071AB941CE003DF0D2 /* Device.cpp in Sources */,
 				8570FD5B1AB941D0003DF0D2 /* pvr.cpp in Sources */,
 				8570FD661AB941D0003DF0D2 /* VBO.cpp in Sources */,
 				8570FD8F1AB941D2003DF0D2 /* MatrixStack.cpp in Sources */,
 				8570FD251AB941CE003DF0D2 /* AutoreleasePool.cpp in Sources */,
+				85AF3AB71ABACC31005E4589 /* GLContext.mm in Sources */,
 				8570FD151AB941CE003DF0D2 /* Element.cpp in Sources */,
 				8570FD501AB941CF003DF0D2 /* Shaders.cpp in Sources */,
 				8570FD761AB941D1003DF0D2 /* Scheduler.cpp in Sources */,
@@ -1097,12 +1054,10 @@
 				8570FD891AB941D2003DF0D2 /* CArray.cpp in Sources */,
 				8570FD681AB941D0003DF0D2 /* BitData.cpp in Sources */,
 				8570FD291AB941CE003DF0D2 /* Dictionary.cpp in Sources */,
-				8570FD2F1AB941CF003DF0D2 /* smartptr.cpp in Sources */,
 				8570FCFD1AB941CE003DF0D2 /* Sprite.cpp in Sources */,
 				8570FD341AB941CF003DF0D2 /* Zone.cpp in Sources */,
 				8570FD2B1AB941CF003DF0D2 /* Object.cpp in Sources */,
 				8570FE9E1AB941E8003DF0D2 /* TexUtils.cpp in Sources */,
-				8570FD091AB941CE003DF0D2 /* Console.cpp in Sources */,
 				8570FD7C1AB941D1003DF0D2 /* Flakor.cpp in Sources */,
 				8570FD8B1AB941D2003DF0D2 /* GLMatrix.cpp in Sources */,
 				8570FD521AB941D0003DF0D2 /* atitc.cpp in Sources */,
@@ -1110,6 +1065,7 @@
 				8570FD581AB941D0003DF0D2 /* etc1.cpp in Sources */,
 				8570FD411AB941CF003DF0D2 /* TouchPool.cpp in Sources */,
 				8570FD781AB941D1003DF0D2 /* ThreadPool.cpp in Sources */,
+				85AF3AAC1ABAB92E005E4589 /* Engine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1149,7 +1105,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1183,7 +1139,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1209,7 +1165,7 @@
 					"$(SRCROOT)/../flakor/support/jpeg/include/ios",
 					"$(SRCROOT)/../flakor/support/png/include/ios",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../flakor/support/jpeg/prebuild/ios",
 					"$(SRCROOT)/../flakor/support/png/prebuild/ios",
@@ -1296,7 +1252,7 @@
 					"$(SRCROOT)/../flakor/support/jpeg/include/ios",
 					"$(SRCROOT)/../flakor/support/png/include/ios",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../flakor/support/jpeg/prebuild/ios",
 					"$(SRCROOT)/../flakor/support/png/prebuild/ios",

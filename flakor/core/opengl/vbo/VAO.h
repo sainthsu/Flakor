@@ -16,17 +16,24 @@
 #include "base/lang/Object.h"
 #include "core/opengl/GL.h"
 
+
 FLAKOR_NS_BEGIN
 
+struct VBOAttribute;
+
+/**
+ *VAO = Vertex Array Object
+ */
 class VAO : public Object
 {
 protected:
-	int sizePerVertex;
-	int vertexNumber;
+	unsigned int sizePerVertex;
+	unsigned int vertexNumber;
+    unsigned int indiceNumber;
+    
 	GLuint arrayID;
-	unsigned short count;
 	GLuint bufferID[2];//0: vertex  1: indices
-	GLenum usage[2];
+	GLenum usage[2];//0: vertex  1: indices
 
 	float *vertexs;
 	GLushort *indices;
@@ -41,8 +48,10 @@ protected:
 	bool dispose;
 
 public:
-	static VAO* create(int sizePerVertex,int vertexNumber,GLenum usage);
+	static VAO* create(int sizePerVertex,unsigned int vertexNumber,unsigned int indiceNumber);
 
+    VAO();
+    
         /**
          * 是否使用后自动销毁
          * @return true if auto
@@ -50,10 +59,10 @@ public:
         bool isAutoDispose();
 
         /**
-         * 获取该VBO对应的显卡bufferID
-         * @return int bufferID
+         * 获取该VAO对应的显卡arrayID
+         * @return int arrayID
          */
-        int getBufferID();
+        int getArrayID();
         /**
          * 是否已载入显卡
          * @return true if loaded
@@ -87,6 +96,7 @@ public:
         int getVertexNumber() const;
 
 		void bind();
+        virtual void onBufferData();
 		void setUsage(GLenum usage);
         void setVertexData(int index,int size,float data[]);
 		void setIndexData(GLushort *data,int length);

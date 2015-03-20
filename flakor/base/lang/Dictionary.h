@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef _FK_DICTIONARY_H_
 #define _FK_DICTIONARY_H_
 
-#include "uthash.h"
+#include "math/uthash.h"
 #include "base/lang/Object.h"
 #include "base/lang/Array.h"
 #include "base/lang/Zone.h"

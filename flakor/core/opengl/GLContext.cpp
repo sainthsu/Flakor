@@ -20,11 +20,12 @@
 //--------------------------------------------------------------------------------
 // includes
 //--------------------------------------------------------------------------------
-#include <unistd.h>
-#include <string>
 #include "macros.h"
 #include "core/opengl/GLContext.h"
 #include "core/opengl/gl3stub.h"
+
+#include <unistd.h>
+#include <string>
 
 FLAKOR_NS_BEGIN
 

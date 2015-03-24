@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include "core/input/TouchTrigger.h"
 #include <stddef.h>
 #include <map>
+#include <set>
 
 FLAKOR_NS_BEGIN
 
@@ -35,6 +36,8 @@ FLAKOR_NS_BEGIN
  * @addtogroup input
  * @{
  */
+class TouchTarget;
+class Entity;
 
 class TouchPool
 {
@@ -43,7 +46,15 @@ protected:
     Touch* _touches[TouchTrigger::MAX_TOUCHES];
     // System touch pointer ID (It may not be ascending order number) <-> Ascending order number from 0
     std::map<intptr_t, int> _touchIdReorderMap;
-    TouchTrigger* _currentTrigger;
+    
+    //The entity contained within this Scene that has or contains focus.
+    Entity* _focused;
+    TouchTarget *_firstTouchTarget;
+    bool _splitTouchTrigger;
+    bool _dispatching;
+    
+    //registered entity
+    std::set<Entity*>* _entities;
 
 public:
     TouchPool();
@@ -53,9 +64,11 @@ public:
     void removeUsedIndexBit(int index);
     Touch* find(intptr_t pointId);
 
+    bool registerEntity(Entity* entity);
+    bool removeEntity(Entity* entity);
+    
     bool handleTouch(TouchTrigger::TouchAction action,int count,intptr_t ids[],float xs[],float ys[]);
-
-    inline TouchTrigger* getCurrentTouch(){ return _currentTrigger;};
+    bool dispatchTouch(TouchTrigger *trigger);
 };
 
 // end of input group

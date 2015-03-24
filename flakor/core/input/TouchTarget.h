@@ -35,23 +35,28 @@ FLAKOR_NS_BEGIN
  * @{
  */
 
+class Entity;
+class TouchTrigger;
+
 class TouchTarget : public Object
 {
 public:
-    Entity* child;
-    int pointerIdBits;
-    TouchTarget* next;
+    static const int ALL_POINTER_IDS = -1; // all ones
+    
+    Entity* _child;
+    int _pointerIdBits;
+    TouchTarget* _next;
 
     TouchTarget()
-        : _id(0),
-        _startPointCaptured(false)
+        : _child(NULL),
+        _pointerIdBits(0)
     {}
 
     static TouchTarget* obtain(Entity* child,int pointerIdBits);
     void clear();
     TouchTarget* getTouchTarget(Entity* child);
     TouchTarget* addTouchTarget(Entity* child, int pointerIdBits);
-    void cancelAndClearTouchTargets(TouchTrigger* touch);
+    void cancelAndClear(TouchTrigger* touch);
 private:
 };
 

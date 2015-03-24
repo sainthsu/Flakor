@@ -57,7 +57,7 @@ public:
     inline void setAction(const TouchAction action) {_action = action;};
     inline TouchAction getAction() const { return _action;};
     inline const std::vector<Touch*>& getTouches() const { return _touches; };
-
+    int getCount();
 private:
     TouchAction _action;
 };

@@ -4,7 +4,7 @@
 /**
  * copyright Saint Hsu
  *local file system：
- *asset://flakor.png
+ *asset://flakor.png for android assets
  *local:///sdcard/images/flakor.png
  *file:///sdcard/images/flakor.png same as local
  *internet：

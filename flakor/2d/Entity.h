@@ -8,13 +8,13 @@
 #include "base/lang/Array.h"
 #include "math/Camera.h"
 #include "math/Matrices.h"
+#include "core/input/TouchTrigger.h"
 
 FLAKOR_NS_BEGIN
 
 class Color;
 class Camera;
 class Touch;
-class TouchTrigger;
 class String;
 
 enum EntityState {
@@ -104,6 +104,7 @@ class Entity : public Object,public IColorable,public IUpdatable
          *是否允许触摸
          */
         bool touchable;
+        bool disallowIntercept;
 
 		/**
 		 *是否可用，如果是False渲染和更新都将忽略这个元素
@@ -872,11 +873,12 @@ class Entity : public Object,public IColorable,public IUpdatable
 		float getBlue() override;
         float getAlpha() override;
 
+        //handle Touch Trigger
         void setTouchable(bool able);
         bool isTouchable();
 
         virtual bool onTouchTrigger(TouchTrigger* trigger);
-
+        virtual bool  dispatchTouchTrigger(TouchTrigger* trigger);
 };
 
 FLAKOR_NS_END

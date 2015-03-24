@@ -158,6 +158,7 @@
 		85AF3AAC1ABAB92E005E4589 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AAB1ABAB92E005E4589 /* Engine.cpp */; };
 		85AF3AB71ABACC31005E4589 /* GLContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AB51ABACC31005E4589 /* GLContext.mm */; };
 		85AF3AB81ABACC31005E4589 /* GLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 85AF3AB61ABACC31005E4589 /* GLContext.h */; };
+		85C8E5A41ABFA9F400BC01DB /* TouchTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C8E5A31ABFA9F400BC01DB /* TouchTarget.h */; };
 		85D8EFD81AB97FBE001DF670 /* flakor-prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 85D8EFD71AB97FBE001DF670 /* flakor-prefix.pch */; };
 /* End PBXBuildFile section */
 
@@ -346,6 +347,7 @@
 		85AF3AAB1ABAB92E005E4589 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
 		85AF3AB51ABACC31005E4589 /* GLContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLContext.mm; sourceTree = "<group>"; };
 		85AF3AB61ABACC31005E4589 /* GLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLContext.h; sourceTree = "<group>"; };
+		85C8E5A31ABFA9F400BC01DB /* TouchTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchTarget.h; sourceTree = "<group>"; };
 		85D8EFD71AB97FBE001DF670 /* flakor-prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "flakor-prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -535,6 +537,7 @@
 		8570F9F01AB941CD003DF0D2 /* input */ = {
 			isa = PBXGroup;
 			children = (
+				85C8E5A31ABFA9F400BC01DB /* TouchTarget.h */,
 				8570F9F31AB941CD003DF0D2 /* Touch.cpp */,
 				8570F9F41AB941CD003DF0D2 /* Touch.h */,
 				8570F9F51AB941CD003DF0D2 /* TouchPool.cpp */,
@@ -887,6 +890,7 @@
 				8570FD1F1AB941CE003DF0D2 /* IMatcher.h in Headers */,
 				8570FD841AB941D2003DF0D2 /* targetAssert.h in Headers */,
 				8570FD4B1AB941CF003DF0D2 /* GLProgram.h in Headers */,
+				85C8E5A41ABFA9F400BC01DB /* TouchTarget.h in Headers */,
 				8570FD0C1AB941CE003DF0D2 /* Blendfunc.h in Headers */,
 				8570FD321AB941CF003DF0D2 /* Str.h in Headers */,
 				8570FD5C1AB941D0003DF0D2 /* pvr.h in Headers */,

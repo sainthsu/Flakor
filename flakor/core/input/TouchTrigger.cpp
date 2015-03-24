@@ -30,5 +30,9 @@ TouchTrigger::TouchTrigger()
 :_action(TouchAction::NONE)
 {}
 
+int TouchTrigger::getCount()
+{
+    return (int)_touches.size();
+}
 FLAKOR_NS_END
 

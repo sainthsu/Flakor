@@ -1263,30 +1263,30 @@ bool Entity::isTouchable()
     return touchable;
 }
 
-bool Entity::onTouchTrigger(TouchTrigger* tigger)
+bool Entity::onTouchTrigger(TouchTrigger* trigger)
 {
-    final float x = event.getX();
-           final float y = event.getY();
-           final int viewFlags = mViewFlags;
+    float x = event.getX();
+    float y = event.getY();
 
-           if ((viewFlags & ENABLED_MASK) == DISABLED) {
-               if (event.getAction() == MotionEvent.ACTION_UP && (mPrivateFlags & PFLAG_PRESSED) != 0) {
+    if(touchable) {
+            if (trigger->getAction() == MotionEvent.ACTION_UP && (mPrivateFlags & PFLAG_PRESSED) != 0) {
                    setPressed(false);
-               }
-               // A disabled view that is clickable still consumes the touch
-               // events, it just doesn't respond to them.
-               return (((viewFlags & CLICKABLE) == CLICKABLE ||
+            }
+            // A disabled view that is clickable still consumes the touch
+            // events, it just doesn't respond to them.
+            return (((viewFlags & CLICKABLE) == CLICKABLE ||
                        (viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE));
-           }
+    }
 
-           if (mTouchDelegate != null) {
-               if (mTouchDelegate.onTouchEvent(event)) {
+    if (mTouchDelegate != null) {
+            if (mTouchDelegate.onTouchEvent(event)) {
                    return true;
-               }
-           }
+            }
+    }
 
-           if (((viewFlags & CLICKABLE) == CLICKABLE ||
-                   (viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE)) {
+    if (((viewFlags & CLICKABLE) == CLICKABLE ||
+                   (viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE))
+    {
                switch (event.getAction()) {
                    case MotionEvent.ACTION_UP:
                        boolean prepressed = (mPrivateFlags & PFLAG_PREPRESSED) != 0;

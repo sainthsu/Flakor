@@ -44,6 +44,7 @@ core/resource/ResourceManager.cpp \
 core/resource/Scheduler.cpp \
 core/input/Touch.cpp \
 core/input/TouchPool.cpp \
+core/input/TouchTarget.cpp \
 core/input/TouchTrigger.cpp \
 core/opengl/GPUInfo.cpp \
 core/opengl/gl3stub.c \

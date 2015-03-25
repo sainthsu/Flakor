@@ -207,13 +207,12 @@ bool TouchPool::dispatchTouch(TouchTrigger *trigger)
 {
     bool handled = false;
     
-    if (true)
-    {
-        TouchTrigger::TouchAction action = trigger->getAction();
+
+    TouchTrigger::TouchAction action = trigger->getAction();
         
-        // Handle an initial down.
-        if (action == TouchTrigger::TouchAction::DOWN)
-        {
+    // Handle an initial down.
+    if (action == TouchTrigger::TouchAction::DOWN)
+    {
             // Throw away all previous state when starting a new touch gesture.
             // The framework may have dropped the up or cancel event for the previous gesture
             // due to an app switch, ANR, or some other state change.
@@ -222,28 +221,36 @@ bool TouchPool::dispatchTouch(TouchTrigger *trigger)
             /*resetCancelNextUpFlag(this);
              mGroupFlags &= ~FLAG_DISALLOW_INTERCEPT;
              mNestedScrollAxes = SCROLL_AXIS_NONE;*/
-        }
+     }
         
-        // Check for cancelation.
-        bool canceled = resetCancelNextUpFlag(this)
-        || action == TouchTrigger::TouchAction::CANCEL;
+     // Check for cancelation.
+     bool canceled = resetCancelNextUpFlag(this)|| action == TouchTrigger::TouchAction::CANCEL;
         
-        // Update list of touch targets for pointer down, if needed.
-        bool split = _splitTouchTrigger;
-        TouchTarget *newTouchTarget = NULL;
-        bool alreadyDispatchedToNewTouchTarget = false;
-        if (!canceled)
-        {
-            if (action == TouchTrigger::TouchAction::DOWN
-                || (split && trigger->getCount() > 1))
+     // Update list of touch targets for pointer down, if needed.
+     bool split = _splitTouchTrigger;
+     TouchTarget *newTouchTarget = NULL;
+     bool alreadyDispatchedToNewTouchTarget = false;
+     if (!canceled)
+     {
+            if (action == TouchTrigger::TouchAction::DOWN)
             {
-                int actionIndex = ev.getActionIndex();// always 0 for down
-                int idBitsToAssign = split ? 1 << ev.getPointerId(actionIndex) : TouchTarget::ALL_POINTER_IDS;
+                // always 0 for down
+                int idBitsToAssign = split ? trigger->_touches[0]->getID(): TouchTarget::ALL_POINTER_IDS;
                 
                 // Clean up earlier touch targets for this pointer id in case they
                 // have become out of sync.
-                removePointersFromTouchTargets(idBitsToAssign);
+                _firstTouchTarget->removePointers(idBitsToAssign);
                 
+                for(Entity* e :_entities)
+                {
+                   handled = e->dispatchTouch(trigger);
+                   if(handled)
+                       break;
+                }
+
+                if(handled)
+                    alreadyDispatchedToNewTouchTarget = true;
+
                 if (newTouchTarget == NULL && _firstTouchTarget != NULL) {
                     // Did not find a child to receive the event.
                     // Assign the pointer to the least recently added target.
@@ -255,19 +262,24 @@ bool TouchPool::dispatchTouch(TouchTrigger *trigger)
                     newTouchTarget->_pointerIdBits |= idBitsToAssign;
                 }
             }
-        }
+     }
         
-        // Dispatch to touch targets.
-        if (_firstTouchTarget == NULL) {
+     // Dispatch to touch targets.
+     if (_firstTouchTarget == NULL)
+     {
             // No touch targets so treat this as an ordinary view.
-            handled = dispatchTransformedTouchEvent(ev, canceled, null,
-                                                    TouchTarget.ALL_POINTER_IDS);
-        }
-        else
-        {
-            // Dispatch to touch targets, excluding the new touch target if we already
-            // dispatched to it.  Cancel touch targets if necessary.
-            TouchTarget *predecessor = NULL;
+             for(Entity* e :_entities)
+             {
+                handled = e->dispatchTouch(trigger);
+                if(handled)
+                    break;
+             }
+     }
+     else
+     {
+         // Dispatch to touch targets, excluding the new touch target if we already
+         // dispatched to it.  Cancel touch targets if necessary.
+            /*TouchTarget *predecessor = NULL;
             TouchTarget *target = _firstTouchTarget;
             while (target != NULL)
             {
@@ -299,21 +311,23 @@ bool TouchPool::dispatchTouch(TouchTrigger *trigger)
                 }
                 predecessor = target;
                 target = next;
-            }
-        }
+            }*/
+    }
         
-        // Update list of touch targets for pointer up or cancel, if needed.
-        if (canceled
-            || action == TouchTrigger::TouchAction::UP)
-        {
-            resetTouchState();
-        }
-        else if (split && action == TouchTrigger::TouchAction::UP)
-        {
-            int actionIndex = ev.getActionIndex();
-            int idBitsToRemove = 1 << ev.getPointerId(actionIndex);
-            removePointersFromTouchTargets(idBitsToRemove);
-        }
+    // Update list of touch targets for pointer up or cancel, if needed.
+    if (canceled
+        || action == TouchTrigger::TouchAction::UP)
+    {
+            _firstTouchTarget->cancelAndClear(trigger);
+            _firstTouchTarget->clear();
+            /*resetCancelNextUpFlag(this);
+             mGroupFlags &= ~FLAG_DISALLOW_INTERCEPT;
+             mNestedScrollAxes = SCROLL_AXIS_NONE;*/
+    }
+    else if (split && action == TouchTrigger::TouchAction::UP)
+    {
+            int idBitsToRemove = trigger->_touches[0]->getID();
+            _firstTouchTarget->removePointers(idBitsToRemove);
     }
     
     return handled;

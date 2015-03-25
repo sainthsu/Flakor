@@ -22,11 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef _FK_TOUCHTARGET_H_
-#define _FK_TOUCHTARGET_H_
-
-#include "base/lang/Object.h"
-#include "base/element/Element.h"
+#include "core/input/TouchTarget.h"
+#include "base/2d/Entity.h"
+#include "core/input/TouchTrigger.h"
 
 FLAKOR_NS_BEGIN
 
@@ -35,35 +33,37 @@ FLAKOR_NS_BEGIN
  * @{
  */
 
-class Entity;
-class TouchTrigger;
-
-class TouchTarget : public Object
+TouchTarget* TouchTarget::obtain(Entity* child,int pointerIdBits)
 {
-public:
-    static const int ALL_POINTER_IDS = -1; // all ones
-    
-    Entity* _child;
-    int _pointerIdBits;
-    TouchTarget* _next;
 
-    TouchTarget()
-        : _child(NULL),
-        _pointerIdBits(0)
-    {}
+}
 
-    static TouchTarget* obtain(Entity* child,int pointerIdBits);
-    void clear();
-    TouchTarget* getTouchTarget(Entity* child);
-    TouchTarget* addTouchTarget(Entity* child, int pointerIdBits);
-    void removePointers(int idBitsToAssign);
-    void cancelAndClear(TouchTrigger* touch);
-private:
-};
+void TouchTarget::clear()
+{
+
+}
+
+TouchTarget* TouchTarget::getTouchTarget(Entity* child)
+{
+
+}
+
+TouchTarget* TouchTarget::addTouchTarget(Entity* child, int pointerIdBits)
+{
+
+}
+
+void TouchTarget::removePointers(int idBitsToAssign)
+{
+
+}
+
+void TouchTarget::cancelAndClear(TouchTrigger* touch)
+{
+
+}
 
 // end of input group
 /// @}
 
 FLAKOR_NS_END
-
-#endif  // _FK_TOUCH_H_

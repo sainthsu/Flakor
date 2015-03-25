@@ -42,6 +42,7 @@ Entity::Entity(void)
 , inverseDirty(true)
 , additionalTransformDirty(false)
 , visible(true)
+, touchable(false)
 // "whole screen" objects. like Scenes and Layers, should set relativeAnchorPoint to false
 , relativeAnchorPoint(false)
 , childrenVisible(true)
@@ -1256,6 +1257,14 @@ float Entity::getAlpha()
 void Entity::setTouchable(bool able)
 {
     touchable = able;
+    if(able)
+    {
+        //Engine::getInstance()->touchPool->registerEntity(this);
+    }
+    else
+    {
+        //Engine::getInstance()->touchPool->removeEntity(this);
+    }
 }
 
 bool Entity::isTouchable()
@@ -1263,48 +1272,88 @@ bool Entity::isTouchable()
     return touchable;
 }
 
-bool Entity::onTouchTrigger(TouchTrigger* trigger)
+bool Entity::dispatchTouchTrigger(TouchTrigger* trigger)
 {
-    float x = event.getX();
-    float y = event.getY();
+    bool result = false;
 
-    if(touchable) {
-            if (trigger->getAction() == MotionEvent.ACTION_UP && (mPrivateFlags & PFLAG_PRESSED) != 0) {
-                   setPressed(false);
-            }
-            // A disabled view that is clickable still consumes the touch
-            // events, it just doesn't respond to them.
-            return (((viewFlags & CLICKABLE) == CLICKABLE ||
-                       (viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE));
+    if (mInputEventConsistencyVerifier != null) {
+                mInputEventConsistencyVerifier.onTouchEvent(event, 0);
     }
 
-    if (mTouchDelegate != null) {
-            if (mTouchDelegate.onTouchEvent(event)) {
+    TouchTrigger::TouchAction action = trigger->getAction();
+    if (action == TouchTrigger::TouchAction::DOWN)
+    {
+                // Defensive cleanup for new gesture
+                stopNestedScroll();
+    }
+
+    if (onFilterTouchEventForSecurity(event))
+    {
+         //noinspection SimplifiableIfStatement
+         ListenerInfo li = mListenerInfo;
+         if (li != null && li.mOnTouchListener != null
+                        && (mViewFlags & ENABLED_MASK) == ENABLED
+                        && li.mOnTouchListener.onTouch(this, event)) {
+                    result = true;
+         }
+
+         if (!result && onTouchEvent(event)) {
+                    result = true;
+         }
+    }
+
+    if (!result && mInputEventConsistencyVerifier != null)
+    {
+                mInputEventConsistencyVerifier.onUnhandledEvent(event, 0);
+    }
+
+    // Clean up after nested scrolls if this is the end of a gesture;
+    // also cancel it if we tried an ACTION_DOWN but we didn't want the rest
+    // of the gesture.
+    if (actionMasked == MotionEvent.ACTION_UP ||
+                    actionMasked == MotionEvent.ACTION_CANCEL ||
+                    (actionMasked == MotionEvent.ACTION_DOWN && !result)) {
+                stopNestedScroll();
+    }
+
+    return result;
+}
+
+bool Entity::onTouchTrigger(TouchTrigger* trigger)
+{
+    if(!touchable) return false;
+
+    TouchTrigger::TouchAction action = trigger->getAction();
+
+/*    if (touchDelegate != null) {
+            if (touchDelegate.onTouchTrigger(trigger)) {
                    return true;
             }
     }
 
-    if (((viewFlags & CLICKABLE) == CLICKABLE ||
-                   (viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE))
+    if (touchable)
     {
-               switch (event.getAction()) {
-                   case MotionEvent.ACTION_UP:
-                       boolean prepressed = (mPrivateFlags & PFLAG_PREPRESSED) != 0;
-                       if ((mPrivateFlags & PFLAG_PRESSED) != 0 || prepressed) {
-                           // take focus if we don't have it already and we should in
-                           // touch mode.
-                           boolean focusTaken = false;
-                           if (isFocusable() && isFocusableInTouchMode() && !isFocused()) {
+        switch (action)
+        {
+            case TouchTrigger::TouchAction::UP:
+               bool prepressed = (mPrivateFlags & PFLAG_PREPRESSED) != 0;
+               if ((mPrivateFlags & PFLAG_PRESSED) != 0 || prepressed)
+               {
+                    // take focus if we don't have it already and we should in
+                    // touch mode.
+                     bool focusTaken = false;
+                     if (isFocusable() && isFocusableInTouchMode() && !isFocused()) {
                                focusTaken = requestFocus();
-                           }
+                     }
 
-                           if (prepressed) {
+                     if (prepressed)
+                     {
                                // The button is being released before we actually
                                // showed it as pressed.  Make it show the pressed
                                // state now (before scheduling the click) to ensure
                                // the user sees it.
                                setPressed(true, x, y);
-                          }
+                     }
 
                            if (!mHasPerformedLongPress) {
                                // This is a tap, so remove the longpress check
@@ -1340,7 +1389,7 @@ bool Entity::onTouchTrigger(TouchTrigger* trigger)
                        }
                        break;
 
-                   case MotionEvent.ACTION_DOWN:
+                   case TouchTrigger::TouchAction::DOWN:
                        mHasPerformedLongPress = false;
 
                        if (performButtonActionOnTouchDown(event)) {
@@ -1367,13 +1416,13 @@ bool Entity::onTouchTrigger(TouchTrigger* trigger)
                        }
                        break;
 
-                   case MotionEvent.ACTION_CANCEL:
+                   case TouchTrigger::TouchAction::CANCEL:
                        setPressed(false);
                        removeTapCallback();
                        removeLongPressCallback();
                        break;
 
-                   case MotionEvent.ACTION_MOVE:
+                   case TouchTrigger::TouchAction::MOVE:
                        drawableHotspotChanged(x, y);
 
                        // Be lenient about moving outside of buttons
@@ -1392,8 +1441,8 @@ bool Entity::onTouchTrigger(TouchTrigger* trigger)
 
                return true;
            }
-
-           return false;
+*/
+     return false;
 }
 
 FLAKOR_NS_END

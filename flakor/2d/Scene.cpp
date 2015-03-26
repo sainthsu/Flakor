@@ -32,6 +32,11 @@ Scene* Scene::create()
 
 }
 
+bool  Scene::onInterceptTouchTrigger(TouchTrigger* trigger)
+{
+    return false;
+}
+
 bool Scene::dispatchTouchTrigger(TouchTrigger* trigger)
 {
     return false;

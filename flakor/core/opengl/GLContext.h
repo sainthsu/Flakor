@@ -19,7 +19,9 @@
 #ifndef _FK_GLCONTEXT_H_
 #define _FK_GLCONTEXT_H_
 
-#include "core/opengl/GL.h"
+#include <EGL/egl.h>
+#include <GLES2/gl2.h>
+#include <android/log.h>
 
 FLAKOR_NS_BEGIN
 

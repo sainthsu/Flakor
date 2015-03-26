@@ -52,15 +52,6 @@ void Engine::onTickUpdate()
 	{
 	     return;
 	}
-	
-	if (this->game != NULL)
-	{
-        //LOGW("Engine tickupdate!!!");
-        TouchTrigger* trigger = touchPool->getCurrentTouch();
-		if(trigger != NULL)
-			game->onTouch(trigger);
-        //game->update(deltaTime);
-	}
 
 	while(pthread_mutex_trylock(&mutex) == EBUSY)
 	{

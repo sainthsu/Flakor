@@ -2,6 +2,7 @@
 #include "2d/Entity.h"
 #include "base/lang/Str.h"
 #include "core/input/Touch.h"
+#include "core/input/OnTouchEvent.h"
 #include "math/GLMatrix.h"
 
 #if FK_ENTITY_RENDER_SUBPIXEL
@@ -1276,44 +1277,34 @@ bool Entity::dispatchTouchTrigger(TouchTrigger* trigger)
 {
     bool result = false;
 
-    if (mInputEventConsistencyVerifier != null) {
-                mInputEventConsistencyVerifier.onTouchEvent(event, 0);
-    }
-
     TouchTrigger::TouchAction action = trigger->getAction();
     if (action == TouchTrigger::TouchAction::DOWN)
     {
                 // Defensive cleanup for new gesture
-                stopNestedScroll();
+                //stopNestedScroll();
     }
 
-    if (onFilterTouchEventForSecurity(event))
+    if (trigger != NULL)
     {
          //noinspection SimplifiableIfStatement
-         ListenerInfo li = mListenerInfo;
-         if (li != null && li.mOnTouchListener != null
-                        && (mViewFlags & ENABLED_MASK) == ENABLED
-                        && li.mOnTouchListener.onTouch(this, event)) {
+         if (touchEvent != NULL
+                        && enabled
+                        && touchEvent->onTouch(this, trigger)) {
                     result = true;
          }
 
-         if (!result && onTouchEvent(event)) {
+         if (!result && onTouchTrigger(trigger)) {
                     result = true;
          }
-    }
-
-    if (!result && mInputEventConsistencyVerifier != null)
-    {
-                mInputEventConsistencyVerifier.onUnhandledEvent(event, 0);
     }
 
     // Clean up after nested scrolls if this is the end of a gesture;
     // also cancel it if we tried an ACTION_DOWN but we didn't want the rest
     // of the gesture.
-    if (actionMasked == MotionEvent.ACTION_UP ||
-                    actionMasked == MotionEvent.ACTION_CANCEL ||
-                    (actionMasked == MotionEvent.ACTION_DOWN && !result)) {
-                stopNestedScroll();
+    if (action == TouchTrigger::TouchAction::UP ||
+                    action == TouchTrigger::TouchAction::CANCEL ||
+                    (action == TouchTrigger::TouchAction::DOWN && !result)) {
+                //stopNestedScroll();
     }
 
     return result;

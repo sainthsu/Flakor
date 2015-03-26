@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include "core/input/TouchPool.h"
 #include "core/input/Touch.h"
 #include "core/input/TouchTarget.h"
+#include "2d/Entity.h"
 
 FLAKOR_NS_BEGIN
 
@@ -133,7 +134,7 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
                  continue;
              }
 
-            FKLOG("id = %ld", id);
+            FKLOG("id = %ld",(long int) id);
             unusedIndex = getUnUsedIndex();
 
              // The touches is more than MAX_TOUCHES ?
@@ -203,11 +204,11 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
     return result;
 }
 
+//http://www.cnblogs.com/samchen2009/p/3364327.html
 bool TouchPool::dispatchTouch(TouchTrigger *trigger)
 {
     bool handled = false;
     
-
     TouchTrigger::TouchAction action = trigger->getAction();
         
     // Handle an initial down.
@@ -224,7 +225,7 @@ bool TouchPool::dispatchTouch(TouchTrigger *trigger)
      }
         
      // Check for cancelation.
-     bool canceled = resetCancelNextUpFlag(this)|| action == TouchTrigger::TouchAction::CANCEL;
+     bool canceled = (action == TouchTrigger::TouchAction::CANCEL);
         
      // Update list of touch targets for pointer down, if needed.
      bool split = _splitTouchTrigger;
@@ -241,9 +242,9 @@ bool TouchPool::dispatchTouch(TouchTrigger *trigger)
                 // have become out of sync.
                 _firstTouchTarget->removePointers(idBitsToAssign);
                 
-                for(Entity* e :_entities)
+                for( std::set<Entity*>::const_iterator i = _entities->begin(); i != _entities->end(); ++i)
                 {
-                   handled = e->dispatchTouch(trigger);
+                   handled = (*i)->dispatchTouchTrigger(trigger);
                    if(handled)
                        break;
                 }
@@ -268,9 +269,9 @@ bool TouchPool::dispatchTouch(TouchTrigger *trigger)
      if (_firstTouchTarget == NULL)
      {
             // No touch targets so treat this as an ordinary view.
-             for(Entity* e :_entities)
+             for( std::set<Entity*>::const_iterator i = _entities->begin(); i != _entities->end(); ++i)
              {
-                handled = e->dispatchTouch(trigger);
+                handled = (*i)->dispatchTouchTrigger(trigger);
                 if(handled)
                     break;
              }

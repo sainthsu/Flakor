@@ -16,6 +16,7 @@ class Color;
 class Camera;
 class Touch;
 class String;
+class OnTouchEvent;
 
 enum EntityState {
 	EntityOnEnter,
@@ -105,7 +106,7 @@ class Entity : public Object,public IColorable,public IUpdatable
          */
         bool touchable;
         bool disallowIntercept;
-
+        OnTouchEvent *touchEvent;
 		/**
 		 *是否可用，如果是False渲染和更新都将忽略这个元素
 		 */
@@ -788,6 +789,26 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 */
 		virtual void updateTransform(void);
 
+                void setColor(const Color& color) override;
+                void setColor(float red,float green,float blue) override;
+                void setColor(float red,float green,float blue,float alpha) override;
+                void setRed(float red) override;
+                void setGreen(float green) override;
+                void setBlue(float blue) override;
+                void setAlpha(float alpha) override;
+                Color& getColor() override;
+                float getRed() override;
+                float getGreen() override;
+                float getBlue() override;
+        float getAlpha() override;
+
+        //handle Touch Trigger
+        void setTouchable(bool able);
+        bool isTouchable();
+
+        virtual bool onTouchTrigger(TouchTrigger* trigger);
+        virtual bool  dispatchTouchTrigger(TouchTrigger* trigger);
+
 		private:
 		/// lazy allocs
 		void childrenAlloc(void);
@@ -859,26 +880,6 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 */
 		Point convertTouchToEntitySpaceAR(Touch * touch);
 
-
-		void setColor(const Color& color) override;
-		void setColor(float red,float green,float blue) override;
-		void setColor(float red,float green,float blue,float alpha) override;
-		void setRed(float red) override;
-		void setGreen(float green) override;
-		void setBlue(float blue) override;
-		void setAlpha(float alpha) override;
-		Color& getColor() override;
-		float getRed() override;
-		float getGreen() override;
-		float getBlue() override;
-        float getAlpha() override;
-
-        //handle Touch Trigger
-        void setTouchable(bool able);
-        bool isTouchable();
-
-        virtual bool onTouchTrigger(TouchTrigger* trigger);
-        virtual bool  dispatchTouchTrigger(TouchTrigger* trigger);
 };
 
 FLAKOR_NS_END

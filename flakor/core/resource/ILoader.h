@@ -15,7 +15,7 @@ public:
 	virtual Resource* createRes(Uri* uri) = 0;
 	virtual bool load(Resource* res) = 0;
     
-    virtual ~ILoader();
+    virtual ~ILoader(){};
 };
 
 FLAKOR_NS_END

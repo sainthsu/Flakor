@@ -17,7 +17,7 @@ class Scene : public Entity
 		~Scene();
 		static Scene* create();
         virtual bool  dispatchTouchTrigger(TouchTrigger* trigger) override;
-        virtual bool  onInterceptTouchEvent(TouchTrigger* trigger);
+        virtual bool  onInterceptTouchTrigger(TouchTrigger* trigger);
         virtual bool onTouchTrigger(TouchTrigger* trigger) override;
 };
 

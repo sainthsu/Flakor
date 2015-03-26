@@ -47,18 +47,16 @@ public:
     int _pointerIdBits;
     TouchTarget* _next;
 
-    TouchTarget()
-        : _child(NULL),
-        _pointerIdBits(0)
-    {}
+    TouchTarget();
 
     static TouchTarget* obtain(Entity* child,int pointerIdBits);
-    void clear();
+
     TouchTarget* getTouchTarget(Entity* child);
     TouchTarget* addTouchTarget(Entity* child, int pointerIdBits);
+
     void removePointers(int idBitsToAssign);
     void cancelAndClear(TouchTrigger* touch);
-private:
+    void clear();
 };
 
 // end of input group
@@ -66,4 +64,4 @@ private:
 
 FLAKOR_NS_END
 
-#endif  // _FK_TOUCH_H_
+#endif  // _FK_TOUCHTARGET_H_

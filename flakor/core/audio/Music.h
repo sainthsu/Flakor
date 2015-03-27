@@ -1,8 +1,9 @@
 #ifndef _FK_MUSIC_H_
 #define _FK_MUSIC_H_
 
+#include "base/interface/IAudio.h"
 
-class Music
+class Music : public IAudio
 {
 public:
   Music();

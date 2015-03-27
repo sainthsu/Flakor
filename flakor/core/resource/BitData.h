@@ -25,7 +25,11 @@ public:
     ~BitData();
 
     static BitData* createFromUri(Uri* uri);
+    #if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
     static BitData* createFromAsset(const String* filePath);
+    #elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
+    static BitData* createFromBundle(const String* filePath);
+    #endif
     static BitData* createFromFile(const String* filePath);
 
     // Assignment operator

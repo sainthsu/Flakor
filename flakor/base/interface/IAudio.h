@@ -3,6 +3,15 @@
 
 FLAKOR_NS_BEGIN
 
+enum class AudioState
+{
+       ERROR  = -1,
+       INITIALZING,
+       PLAYING,
+       PAUSED,
+       RELEASE
+};
+
 class IAudio
 {
 public:

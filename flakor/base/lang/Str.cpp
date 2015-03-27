@@ -4,7 +4,7 @@
 
 namespace {
 
-    /* Helper function for sdssplitargs() that returns non zero if 'c'
+    /* Helper function for splitargs() that returns non zero if 'c'
      * is a valid hex digit. */
     int is_hex_digit(char c) {
         return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') ||
@@ -274,6 +274,95 @@ unsigned int String::avail() const
 {
 	return _free;
 }
+
+unsigned int String::findFirst(const String* c)
+{
+    return findFirst(c->getCString(),0);
+}
+
+unsigned int String::findFirst(const char* c ,unsigned int pos = 0)
+{
+    unsigned int i = pos;
+    if(i > _length) return 0;
+
+    for(;i < _length;i++)
+    {
+        for(int j =0 ; c[j] != '/0';j++)
+        {
+            if(c[j] == _string[i])
+                break;
+        }
+    }
+
+    if(i > _length) return 0;
+
+    return i;
+}
+
+unsigned int String::findFirstNot(const String* c)
+{
+    return findFirstNot(c->getCString(),0);
+}
+
+unsigned int String::findFirstNot(const char* c ,unsigned int pos = 0)
+{
+    unsigned int i = pos;
+    if(i > _length) return 0;
+
+    for(;i < _length;i++)
+    {
+        for(int j =0 ; c[j] != '/0';j++)
+        {
+            if(c[j] == _string[i])
+                break;
+        }
+    }
+
+    if(i > _length) return 0;
+
+    return i;
+}
+
+unsigned int String::findLast(const String* c)
+{
+    return findLast(c->getCString(),0);
+}
+
+unsigned int String::findLast(const char* c ,unsigned int pos = 0)
+{
+    if(pos < 0 || pos > _length) return 0;
+    int i = pos;
+
+    for(;i>=0;i--)
+    {
+         for(int j = 0;c[j] != '/0';j++)
+         {
+              if(c[j] == _string[i])
+                     break;
+         }
+    }
+    if(i < 0) return 0;
+
+    return i;
+}
+
+unsigned int String::findLastNot(const String* c)
+{
+    return findLastNot(c->getCString(),0);
+}
+
+unsigned int String::findLastNot(const char* c ,unsigned int pos = 0)
+{
+
+}
+
+const char at(unsigned int pos)
+{
+    if(pos > _length) return 0;
+
+    return _string[pos];
+}
+
 
 int String::compare(const char * pStr) const
 {

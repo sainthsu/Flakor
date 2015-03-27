@@ -8,6 +8,8 @@
 
 #if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 #include <android/asset_manager.h>
+#elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
+#include "core/resource/ios/FileUtils.h"
 #endif
 
 
@@ -103,6 +105,14 @@ BitData* BitData::createFromAsset(const String* filePath)
 
 
 }
+#elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
+
+BitData* BitData::createFromAsset(const String* filePath)
+{
+    String* file = FileUtils::getBundleFile(filePath);
+    return BitData::createFromFile(file);
+}
+
 #endif
 
 BitData* BitData::createFromFile(const String* filePath)

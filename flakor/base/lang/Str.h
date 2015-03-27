@@ -89,6 +89,17 @@ public:
         /** get the available free */
         unsigned int avail() const;
 
+        unsigned int findFirst(const String* c);
+        unsigned int findFirst(const char* c ,unsigned int pos = 0);
+        unsigned int findFirstNot(const String* c);
+        unsigned int findFirstNot(const char* c ,unsigned int pos = 0);
+        unsigned int findLast(const String* c);
+        unsigned int findLast(const char* c ,unsigned int pos = 0);
+        unsigned int findLastNot(const String* c);
+        unsigned int findLastNot(const char* c ,unsigned int pos = 0);
+
+        const char at(unsigned int pos);
+
     	/** compare to a c string */
     	int compare(const char *) const;
 		/** compare to a String */

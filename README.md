@@ -5,6 +5,7 @@
 
 ###Release
    + 0.0.1beta
-###QQ Qun
+
+###QQ Group
 + 426992887	
 

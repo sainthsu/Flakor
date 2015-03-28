@@ -152,6 +152,8 @@
 		8570FE9D1AB941E7003DF0D2 /* rapidxml_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8570FCF11AB941CE003DF0D2 /* rapidxml_utils.hpp */; };
 		8570FE9E1AB941E8003DF0D2 /* TexUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570FCF51AB941CE003DF0D2 /* TexUtils.cpp */; };
 		8570FE9F1AB941E8003DF0D2 /* TexUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FCF61AB941CE003DF0D2 /* TexUtils.h */; };
+		8591994E1AC6A1090062B26F /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8570FAC01AB941CD003DF0D2 /* libjpeg.a */; };
+		8591994F1AC6A1130062B26F /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8570FCD21AB941CE003DF0D2 /* libpng.a */; };
 		85AAA9E31ABB04C9001068F6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AAA9E21ABB04C9001068F6 /* UIKit.framework */; };
 		85AF3AAC1ABAB92E005E4589 /* Engine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AAB1ABAB92E005E4589 /* Engine.mm */; };
 		85AF3AB71ABACC31005E4589 /* GLContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AB51ABACC31005E4589 /* GLContext.mm */; };
@@ -160,8 +162,6 @@
 		85C24DD71AC63A9300E58809 /* FileUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85C24DD51AC63A9300E58809 /* FileUtils.mm */; };
 		85C24DE61AC64C2D00E58809 /* OnTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C24DE41AC64C2D00E58809 /* OnTouchEvent.h */; };
 		85C24DE71AC64C2D00E58809 /* TouchTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85C24DE51AC64C2D00E58809 /* TouchTarget.cpp */; };
-		85C24DE81AC64CBB00E58809 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8570FAC01AB941CD003DF0D2 /* libjpeg.a */; };
-		85C24DE91AC64CCD00E58809 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8570FCD21AB941CE003DF0D2 /* libpng.a */; };
 		85C24DF21AC6511500E58809 /* DrawCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C24DF01AC6511500E58809 /* DrawCaller.h */; };
 		85C24DF31AC6511500E58809 /* DrawCaller.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85C24DF11AC6511500E58809 /* DrawCaller.mm */; };
 		85C8E5A41ABFA9F400BC01DB /* TouchTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C8E5A31ABFA9F400BC01DB /* TouchTarget.h */; };
@@ -366,8 +366,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85C24DE91AC64CCD00E58809 /* libpng.a in Frameworks */,
-				85C24DE81AC64CBB00E58809 /* libjpeg.a in Frameworks */,
+				8591994F1AC6A1130062B26F /* libpng.a in Frameworks */,
+				8591994E1AC6A1090062B26F /* libjpeg.a in Frameworks */,
 				85AAA9E31ABB04C9001068F6 /* UIKit.framework in Frameworks */,
 				850FD7791AB96D6E00EF4A7D /* OpenGLES.framework in Frameworks */,
 				850FD77A1AB96D6E00EF4A7D /* QuartzCore.framework in Frameworks */,

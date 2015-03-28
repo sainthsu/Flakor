@@ -13,6 +13,11 @@
 		8509E9171A7252AE00F66057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8509E9161A7252AE00F66057 /* Images.xcassets */; };
 		8509E91A1A7252AE00F66057 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8509E9181A7252AE00F66057 /* LaunchScreen.xib */; };
 		859BE3611ABB0A95000B15C4 /* libflakor_lib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85FD97511A761013000039CF /* libflakor_lib_ios.a */; };
+		85A7D56E1AC6854B009D1EE9 /* flakor_test.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A7D56D1AC6854B009D1EE9 /* flakor_test.png */; };
+		85C24DDC1AC648D100E58809 /* flakor_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C24DDB1AC648D100E58809 /* flakor_logo.png */; };
+		85C24DE21AC648FA00E58809 /* MainGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85C24DDE1AC648FA00E58809 /* MainGame.cpp */; };
+		85C24DE31AC648FA00E58809 /* TestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85C24DE01AC648FA00E58809 /* TestScene.cpp */; };
+		85C24DEF1AC64DAA00E58809 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C24DEE1AC64DAA00E58809 /* libz.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +48,13 @@
 		8509E9161A7252AE00F66057 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8509E9191A7252AE00F66057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		859BAC8D1A733A8100E57FFF /* flakor_lib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = flakor_lib.xcodeproj; path = ../../build/flakor_lib.xcodeproj; sourceTree = SOURCE_ROOT; };
+		85A7D56D1AC6854B009D1EE9 /* flakor_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flakor_test.png; path = ../../android/assets/flakor_test.png; sourceTree = "<group>"; };
+		85C24DDB1AC648D100E58809 /* flakor_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flakor_logo.png; sourceTree = "<group>"; };
+		85C24DDE1AC648FA00E58809 /* MainGame.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = MainGame.cpp; sourceTree = "<group>"; };
+		85C24DDF1AC648FA00E58809 /* MainGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainGame.h; sourceTree = "<group>"; };
+		85C24DE01AC648FA00E58809 /* TestScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = TestScene.cpp; sourceTree = "<group>"; };
+		85C24DE11AC648FA00E58809 /* TestScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestScene.h; sourceTree = "<group>"; };
+		85C24DEE1AC64DAA00E58809 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85C24DEF1AC64DAA00E58809 /* libz.dylib in Frameworks */,
 				859BE3611ABB0A95000B15C4 /* libflakor_lib_ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,6 +73,7 @@
 		8509E8F91A7252AE00F66057 = {
 			isa = PBXGroup;
 			children = (
+				85C24DEE1AC64DAA00E58809 /* libz.dylib */,
 				859BAC8D1A733A8100E57FFF /* flakor_lib.xcodeproj */,
 				8509E9041A7252AE00F66057 /* ios */,
 				8509E9031A7252AE00F66057 /* Products */,
@@ -77,6 +91,9 @@
 		8509E9041A7252AE00F66057 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				85A7D56D1AC6854B009D1EE9 /* flakor_test.png */,
+				85C24DDD1AC648FA00E58809 /* classes */,
+				85C24DDB1AC648D100E58809 /* flakor_logo.png */,
 				8509E9091A7252AE00F66057 /* AppDelegate.h */,
 				8509E90A1A7252AE00F66057 /* AppDelegate.mm */,
 				8509E9101A7252AE00F66057 /* GameViewController.h */,
@@ -95,6 +112,17 @@
 				8509E9071A7252AE00F66057 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		85C24DDD1AC648FA00E58809 /* classes */ = {
+			isa = PBXGroup;
+			children = (
+				85C24DDE1AC648FA00E58809 /* MainGame.cpp */,
+				85C24DDF1AC648FA00E58809 /* MainGame.h */,
+				85C24DE01AC648FA00E58809 /* TestScene.cpp */,
+				85C24DE11AC648FA00E58809 /* TestScene.h */,
+			);
+			path = classes;
 			sourceTree = "<group>";
 		};
 		85FD974D1A761013000039CF /* Products */ = {
@@ -179,6 +207,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85A7D56E1AC6854B009D1EE9 /* flakor_test.png in Resources */,
+				85C24DDC1AC648D100E58809 /* flakor_logo.png in Resources */,
 				8509E91A1A7252AE00F66057 /* LaunchScreen.xib in Resources */,
 				8509E9171A7252AE00F66057 /* Images.xcassets in Resources */,
 			);
@@ -191,7 +221,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85C24DE21AC648FA00E58809 /* MainGame.cpp in Sources */,
 				8509E90B1A7252AE00F66057 /* AppDelegate.mm in Sources */,
+				85C24DE31AC648FA00E58809 /* TestScene.cpp in Sources */,
 				8509E9121A7252AE00F66057 /* GameViewController.mm in Sources */,
 				8509E9081A7252AE00F66057 /* main.m in Sources */,
 			);

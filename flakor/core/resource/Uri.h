@@ -6,6 +6,7 @@
  *local file system：
  *asset://flakor.png for android assets
  *local:///sdcard/images/flakor.png
+ *bundle://flakor.png for ios bundle
  *file:///sdcard/images/flakor.png same as local
  *internet：
  *http://flakor.org/img/image.png
@@ -59,6 +60,7 @@ class Uri
 
         enum {
            ASSET=1,
+           BUNDLE,
            LOCAL,
            INTERNET,
            OTHER

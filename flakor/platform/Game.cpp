@@ -7,19 +7,20 @@ Game *Game::game = 0;
 
 Game::Game()
 {
-	FKAssert(! game, "No game inited");
+    FKLOG("GAME CREATE");
+	FKAssert(!game, "No game inited");
     game = this;
 }
 
 Game::~Game()
 {
-	FKAssert(! game, "");
+	FKAssert(game, "");
     game = NULL;
 }
 
 Game* Game::thisGame()
 {
-	FKAssert(! game, "No game inited");
+	FKAssert(game, "No game inited");
     return game;
 }
 

@@ -74,6 +74,10 @@ Uri* Uri::parse(const char* uriString)
     {
         u->type = Uri::ASSET;
     }
+    else if(u->scheme->compare("bundle") == 0)
+    {
+        u->type = Uri::BUNDLE;
+    }
     else if(u->scheme->compare("local") == 0 || u->scheme->compare("file") == 0)
     {
         u->type = Uri::LOCAL;

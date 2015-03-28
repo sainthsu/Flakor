@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 FLAKOR_NS_BEGIN
 
-static NSFileManager* nsfileManager = [NSFileManager defaultManager];
+static NSFileManager* nsFileManager = [NSFileManager defaultManager];
 
 String* FileUtils::getWritablePath() const
 {
@@ -37,20 +37,22 @@ String* FileUtils::getWritablePath() const
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     const char* strRet = [documentsDirectory UTF8String];
-    String *ret = new String(strRet);
+    String *ret = String::create(strRet);
     ret->append("/");
-    return strRet;
+    return ret;
 }
 
-bool FileUtils::isFileExistInternal(const String& filePath) const
+bool FileUtils::isFileExistInternal(const String* fileName) const
 {
-    if (filePath->length() == 0)
+    std::string filePath(fileName->getCString());
+    if (filePath.empty())
     {
         return false;
     }
 
     bool ret = false;
 
+    
     if (filePath[0] != '/')
     {
         std::string path;
@@ -76,7 +78,7 @@ bool FileUtils::isFileExistInternal(const String& filePath) const
     else
     {
         // Search path is an absolute path.
-        if ([nsfileManager fileExistsAtPath:[NSString stringWithUTF8String:filePath.c_str()]]) {
+        if ([nsFileManager fileExistsAtPath:[NSString stringWithUTF8String:filePath.c_str()]]) {
             ret = true;
         }
     }
@@ -84,47 +86,72 @@ bool FileUtils::isFileExistInternal(const String& filePath) const
     return ret;
 }
 
-std::string FileUtils::getFullPathForDirectoryAndFilename(const std::string& directory, const std::string& filename)
+String* FileUtils::getFullPathForDirectoryAndFilename(const String* directory, const String* filename)
 {
-    if (directory[0] != '/')
+    if ((directory->getCString())[0] != '/')
     {
-        NSString* fullpath = [getBundle() pathForResource:[NSString stringWithUTF8String:filename.c_str()]
+        NSString* fullpath = [getBundle() pathForResource:[NSString stringWithUTF8String:filename->getCString()]
                                                              ofType:nil
-                                                        inDirectory:[NSString stringWithUTF8String:directory.c_str()]];
+                                                        inDirectory:[NSString stringWithUTF8String:directory->getCString()]];
         if (fullpath != nil) {
-            return [fullpath UTF8String];
+            return String::create([fullpath UTF8String]);
         }
     }
     else
     {
-        std::string fullPath = directory+filename;
+        String* fullPath = String::create(directory->getCString());
+        fullPath->append(filename);
         // Search path is an absolute path.
-        if ([s_fileManager fileExistsAtPath:[NSString stringWithUTF8String:fullPath.c_str()]]) {
+        if ([nsFileManager fileExistsAtPath:[NSString stringWithUTF8String:fullPath->getCString()]]) {
             return fullPath;
         }
     }
-    return "";
+    return NULL;
 }
 
-bool FileUtils::writeToFile(ValueMap& dict, const std::string &fullPath)
+String* FileUtils::getBundleFilePath(const String* fileName)
 {
-    //CCLOG("iOS||Mac Dictionary %d write to file %s", dict->_ID, fullPath.c_str());
-    NSMutableDictionary *nsDict = [NSMutableDictionary dictionary];
-
-    for (auto iter = dict.begin(); iter != dict.end(); ++iter)
+    std::string filePath(fileName->getCString());
+    if (filePath.empty())
     {
-        addObjectToNSDict(iter->first, iter->second, nsDict);
+        return NULL;
     }
-
-    NSString *file = [NSString stringWithUTF8String:fullPath.c_str()];
-    // do it atomically
-    [nsDict writeToFile:file atomically:YES];
-
-    return true;
-}
-
-String* getBundleFilePath(const String* fileName)
-{
+    
+    String* ret = NULL;
+    
+    
+    if (filePath[0] != '/')
+    {
+        std::string path;
+        std::string file;
+        size_t pos = filePath.find_last_of("/");
+        if (pos != std::string::npos)
+        {
+            file = filePath.substr(pos+1);
+            path = filePath.substr(0, pos+1);
+        }
+        else
+        {
+            file = filePath;
+        }
+        
+        NSBundle* bundle = [NSBundle mainBundle];
+        NSString* fullpath = [bundle pathForResource:[NSString stringWithUTF8String:file.c_str()]
+                                                   ofType:nil
+                                              inDirectory:[NSString stringWithUTF8String:path.c_str()]];
+        if (fullpath != nil) {
+            ret = String::create([fullpath UTF8String]);
+        }
+    }
+    else
+    {
+        // Search path is an absolute path.
+        if ([nsFileManager fileExistsAtPath:[NSString stringWithUTF8String:filePath.c_str()]]) {
+            ret = String::create(fileName->getCString());
+        }
+    }
+    
+    return ret;
 
 }
 

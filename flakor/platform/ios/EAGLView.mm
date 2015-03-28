@@ -263,7 +263,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
     // Avoid flicker. Issue #350
     //[director performSelectorOnMainThread:@selector(drawScene) withObject:nil waitUntilDone:YES];
-    flakor::Engine::getInstance()->drawFrame();
+    //flakor::Engine::getInstance()->drawFrame();
 }
 
 - (void) swapBuffers
@@ -314,10 +314,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     
      if(![context_ presentRenderbuffer:GL_RENDERBUFFER])
         {
-//         CCLOG(@"cocos2d: Failed to swap renderbuffer in %s\n", __FUNCTION__);
+         FKLOG("flakor: Failed to swap renderbuffer in %s\n", __FUNCTION__);
         }
 
-#if COCOS2D_DEBUG
+#if FLAKOR_DEBUG
     CHECK_GL_ERROR();
 #endif
     
@@ -387,7 +387,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 }
 
 // Pass the touches to the superview
-#pragma mark CCEAGLView - Touch Delegate
+#pragma mark EAGLView - Touch Delegate
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if (isKeyboardShown_)

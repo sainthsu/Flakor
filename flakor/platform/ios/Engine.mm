@@ -14,6 +14,7 @@
 #include "core/input/TouchPool.h"
 #include "base/update/UpdateThread.h"
 #include "math/GLMatrix.h"
+#import "platform/ios/DrawCaller.h"
 
 FLAKOR_NS_BEGIN
 
@@ -26,9 +27,10 @@ Engine::Engine()
 {
     lastTick = new struct timeval;
     schedule = Scheduler::thisScheduler();
-    updateThread = UpdateThread::create(this);
-    pthread_mutex_init(&mutex, NULL);
+    //updateThread = UpdateThread::create(this);
+    //pthread_mutex_init(&mutex, NULL);
     touchPool = new TouchPool();
+    game = Game::thisGame();
 }
 
 Engine::~Engine()
@@ -45,6 +47,18 @@ Engine* Engine::getInstance()
     }
     
     return mainEngine;
+}
+
+void Engine::setGame(Game* game)
+{
+    this->game = game;
+}
+
+void Engine::run()
+{
+    game->create();
+    updateViewport();
+    [[DrawCaller sharedDirectorCaller] startMainLoop];
 }
 
 //run in update thread
@@ -64,6 +78,7 @@ void Engine::onTickUpdate()
         return;
     }
     
+    /*
     if (this->game != NULL)
     {
         //LOGW("Engine tickupdate!!!");
@@ -71,7 +86,7 @@ void Engine::onTickUpdate()
         if(trigger != NULL)
             game->onTouch(trigger);
         //game->update(deltaTime);
-    }
+    }*/
     
     while(pthread_mutex_trylock(&mutex) == EBUSY)
     {
@@ -99,22 +114,24 @@ void Engine::updateViewport()
 */
 void Engine::drawFrame()
 {
-    
-    //FKLOG("DrawThread :frame:%d;update:%d",totalFrames,totalUpdated);
-    if(totalFrames > totalUpdated)
+    FKLOG("DrawThread :frame:%d;update:%d",totalFrames,totalUpdated);
+    /*if(totalFrames > totalUpdated)
     {
         schedule->update(deltaTime);
         return;
-    }
+    }*/
+    schedule->update(deltaTime);
     
     pthread_mutex_lock(&mutex);
     // Just clear the screen with a color.
     glClearColor(1.f, 1.f,1.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    
     if (this->game != NULL)
     {
-        //this->game->render();
+        
+        this->game->render();
         totalFrames++;
     }
     

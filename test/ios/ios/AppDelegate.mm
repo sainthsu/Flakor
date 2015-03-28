@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "Flakor.h"
 #import "GameViewController.h"
+#include "MainGame.h"
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -56,12 +57,14 @@
     
     [[UIApplication sharedApplication] setStatusBarHidden:true];
     
+    MainGame *game = new MainGame();
     // IMPORTANT: Setting the GLView should be done after creating the RootViewController
     flakor::GLContext *glContext = flakor::GLContext::getInstance();
     glContext->initWithEAGLView(eaglView);
-    flakor::Engine::getInstance()->setGLContext(glContext);
+    Engine* engine = flakor::Engine::getInstance();
+    engine->setGLContext(glContext);
     
-    //flakor::Application::getInstance()->run();
+    engine->run();
     
     return YES;
 

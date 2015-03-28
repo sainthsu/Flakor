@@ -61,10 +61,14 @@ public:
     
     static Engine* getInstance();
     
+    void run();
     void onTickUpdate();
     void drawFrame(void);
     
     void setGLContext(GLContext* context) {glContext = context;};
+    GLContext* getGLContext(){return glContext;};
+    void setGame(Game* game);
+    
     void saveState(void **savedState,size_t *size);
     void initFromState(void *savedState,size_t size);
     

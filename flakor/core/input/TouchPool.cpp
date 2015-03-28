@@ -39,6 +39,7 @@ TouchPool::TouchPool()
 ,_dispatching(false)
 {
     _indexBitsUsed = 0;
+    _entities = new std::set<Entity*>;
 }
 
 int TouchPool::getUnUsedIndex()
@@ -207,6 +208,9 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
 //http://www.cnblogs.com/samchen2009/p/3364327.html
 bool TouchPool::dispatchTouch(TouchTrigger *trigger)
 {
+    if (_entities->empty()) {
+        return false;
+    }
     bool handled = false;
     
     TouchTrigger::TouchAction action = trigger->getAction();

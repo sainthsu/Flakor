@@ -77,7 +77,7 @@ public:
     }
 
     bool initWithEAGLView(void *eaglview);
-    
+    void* getEAGLView(){return _glView;};
     void swap();
     bool invalidate();
     bool isInited() { return _initialized;};

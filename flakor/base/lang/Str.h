@@ -90,15 +90,16 @@ public:
         unsigned int avail() const;
 
         unsigned int findFirst(const String* c);
-        unsigned int findFirst(const char* c ,unsigned int pos = 0);
+        unsigned int findFirst(const char* c ,int pos = 0);
         unsigned int findFirstNot(const String* c);
-        unsigned int findFirstNot(const char* c ,unsigned int pos = 0);
+        unsigned int findFirstNot(const char* c ,int pos = 0);
         unsigned int findLast(const String* c);
-        unsigned int findLast(const char* c ,unsigned int pos = 0);
+        unsigned int findLast(const char* c ,int pos = -1);
         unsigned int findLastNot(const String* c);
-        unsigned int findLastNot(const char* c ,unsigned int pos = 0);
+        unsigned int findLastNot(const char* c ,int pos = -1);
 
         const char at(unsigned int pos);
+        //String* substr(int start,int end = -1);
 
     	/** compare to a c string */
     	int compare(const char *) const;

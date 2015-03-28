@@ -233,13 +233,13 @@ public:
     bool intersectsRect(const Rect& rect) const;
 };
 
-#define PointMake(x,y) Point((float)(x),(float)(y))
+#define PointMake(x,y) flakor::Point((float)(x),(float)(y))
 const Point PointZero = PointMake(0.f,0.f);
 
-#define SizeMake(width, height) Size((float)(width), (float)(height))
+#define SizeMake(width, height) flakor::Size((float)(width), (float)(height))
 const Size SizeZero = SizeMake(0.f,0.f);
 
-#define RectMake(x,y,width, height) Rect((float)(x), (float)(y) , (float)(width), (float)(height))
+#define RectMake(x,y,width, height) flakor::Rect((float)(x), (float)(y) , (float)(width), (float)(height))
 const Rect RectZero = RectMake(0.f,0.f,0.f,0.f);
 
 FLAKOR_NS_END

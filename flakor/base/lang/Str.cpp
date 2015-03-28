@@ -69,7 +69,7 @@ String::~String()
 
 String* String::create(const char * str)
 {
-	int len = str == NULL? 0 : strlen(str);
+	int len = str == NULL? 0 : (int)strlen(str);
         return String::create(str,len);
 }
 
@@ -86,7 +86,7 @@ String* String::create(const char * str,size_t len)
 
 String* String::create(const std::string& str)
 {
-    int len = str.length();
+    int len = (int)str.length();
     return String::create(str.c_str(),len);
 }
 
@@ -159,7 +159,7 @@ bool String::initLength(const char* str,size_t len)
 
     if(_string == NULL) return false;
 
-    _length = len;
+    _length = (int)len;
 
     if(len && str)
     {
@@ -178,7 +178,7 @@ bool String::initWithFormatAndValist(const char* format, va_list ap)
     {
         vsnprintf(buf, MAX_STRING_LEN, format, ap);
 
-        int len = strlen(buf);
+        int len = (int)strlen(buf);
         _string = (char*)malloc(len+1);
 
         if(_string != NULL)
@@ -280,14 +280,14 @@ unsigned int String::findFirst(const String* c)
     return findFirst(c->getCString(),0);
 }
 
-unsigned int String::findFirst(const char* c ,unsigned int pos = 0)
+unsigned int String::findFirst(const char* c ,int pos)
 {
     unsigned int i = pos;
     if(i > _length) return 0;
 
     for(;i < _length;i++)
     {
-        for(int j =0 ; c[j] != '/0';j++)
+        for(int j =0 ; c[j] != '\0';j++)
         {
             if(c[j] == _string[i])
                 break;
@@ -304,14 +304,14 @@ unsigned int String::findFirstNot(const String* c)
     return findFirstNot(c->getCString(),0);
 }
 
-unsigned int String::findFirstNot(const char* c ,unsigned int pos = 0)
+unsigned int String::findFirstNot(const char* c ,int pos)
 {
     unsigned int i = pos;
     if(i > _length) return 0;
 
     for(;i < _length;i++)
     {
-        for(int j =0 ; c[j] != '/0';j++)
+        for(int j =0 ; c[j] != '\0';j++)
         {
             if(c[j] == _string[i])
                 break;
@@ -328,14 +328,16 @@ unsigned int String::findLast(const String* c)
     return findLast(c->getCString(),0);
 }
 
-unsigned int String::findLast(const char* c ,unsigned int pos = 0)
+unsigned int String::findLast(const char* c ,int pos)
 {
-    if(pos < 0 || pos > _length) return 0;
-    int i = pos;
+    int p = pos + _length;
+    
+    if(p < 0 || p > _length) return 0;
+    int i = p;
 
     for(;i>=0;i--)
     {
-         for(int j = 0;c[j] != '/0';j++)
+         for(int j = 0;c[j] != '\0';j++)
          {
               if(c[j] == _string[i])
                      break;
@@ -351,12 +353,27 @@ unsigned int String::findLastNot(const String* c)
     return findLastNot(c->getCString(),0);
 }
 
-unsigned int String::findLastNot(const char* c ,unsigned int pos = 0)
+unsigned int String::findLastNot(const char* c ,int pos)
 {
-
+    int p = pos + _length;
+    
+    if(p < 0 || p > _length) return 0;
+    int i = p;
+    
+    for(;i>=0;i--)
+    {
+        for(int j = 0;c[j] != '\0';j++)
+        {
+            if(c[j] == _string[i])
+                break;
+        }
+    }
+    if(i < 0) return 0;
+    
+    return i;
 }
 
-const char at(unsigned int pos)
+const char String::at(unsigned int pos)
 {
     if(pos > _length) return 0;
 
@@ -422,8 +439,8 @@ void String::trim(const char* cset)
 	if(_string != sp) memmove(_string,sp,len);
 
 	_string[len] = '\0';
-	_length = len;
-	_free = _free + (_length - len);
+	_length = (int)len;
+	_free = _free + (_length - (int)len);
 
 }
 
@@ -453,7 +470,7 @@ bool String::append(const String* str)
 
 bool String::append(const char* cat)
 {
-	int len = strlen(cat);
+	int len = (int)strlen(cat);
 	if(len <= 0) return false;
 	return catlen(cat,len);
 }
@@ -499,7 +516,7 @@ void String::range(int start,int end)
 
 String** String::split(const char* sep,int *count)
 {
-	int len = strlen(sep);
+	int len = (int)strlen(sep);
 	//position array contain start end pairs
 	String **strArray;
 	if(_length <= 0 || len < 1) return NULL;

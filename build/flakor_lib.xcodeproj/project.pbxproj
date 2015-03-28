@@ -10,8 +10,6 @@
 		850FD7791AB96D6E00EF4A7D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850FD7771AB96D6E00EF4A7D /* OpenGLES.framework */; };
 		850FD77A1AB96D6E00EF4A7D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850FD7781AB96D6E00EF4A7D /* QuartzCore.framework */; };
 		85520C3E1A75E9D50017565D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85520C3D1A75E9D50017565D /* Foundation.framework */; };
-		85520C401A75E9F50017565D /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85520C3F1A75E9F50017565D /* libpng.a */; };
-		85520C421A75EA060017565D /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85520C411A75EA060017565D /* libjpeg.a */; };
 		8570FCF91AB941CE003DF0D2 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F99E1AB941CD003DF0D2 /* Entity.cpp */; };
 		8570FCFA1AB941CE003DF0D2 /* Entity.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F99F1AB941CD003DF0D2 /* Entity.h */; };
 		8570FCFB1AB941CE003DF0D2 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9A01AB941CD003DF0D2 /* Scene.cpp */; };
@@ -155,9 +153,17 @@
 		8570FE9E1AB941E8003DF0D2 /* TexUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570FCF51AB941CE003DF0D2 /* TexUtils.cpp */; };
 		8570FE9F1AB941E8003DF0D2 /* TexUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570FCF61AB941CE003DF0D2 /* TexUtils.h */; };
 		85AAA9E31ABB04C9001068F6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AAA9E21ABB04C9001068F6 /* UIKit.framework */; };
-		85AF3AAC1ABAB92E005E4589 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AAB1ABAB92E005E4589 /* Engine.cpp */; };
+		85AF3AAC1ABAB92E005E4589 /* Engine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AAB1ABAB92E005E4589 /* Engine.mm */; };
 		85AF3AB71ABACC31005E4589 /* GLContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AB51ABACC31005E4589 /* GLContext.mm */; };
 		85AF3AB81ABACC31005E4589 /* GLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 85AF3AB61ABACC31005E4589 /* GLContext.h */; };
+		85C24DD61AC63A9300E58809 /* FileUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C24DD41AC63A9300E58809 /* FileUtils.h */; };
+		85C24DD71AC63A9300E58809 /* FileUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85C24DD51AC63A9300E58809 /* FileUtils.mm */; };
+		85C24DE61AC64C2D00E58809 /* OnTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C24DE41AC64C2D00E58809 /* OnTouchEvent.h */; };
+		85C24DE71AC64C2D00E58809 /* TouchTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85C24DE51AC64C2D00E58809 /* TouchTarget.cpp */; };
+		85C24DE81AC64CBB00E58809 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8570FAC01AB941CD003DF0D2 /* libjpeg.a */; };
+		85C24DE91AC64CCD00E58809 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8570FCD21AB941CE003DF0D2 /* libpng.a */; };
+		85C24DF21AC6511500E58809 /* DrawCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C24DF01AC6511500E58809 /* DrawCaller.h */; };
+		85C24DF31AC6511500E58809 /* DrawCaller.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85C24DF11AC6511500E58809 /* DrawCaller.mm */; };
 		85C8E5A41ABFA9F400BC01DB /* TouchTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 85C8E5A31ABFA9F400BC01DB /* TouchTarget.h */; };
 		85D8EFD81AB97FBE001DF670 /* flakor-prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 85D8EFD71AB97FBE001DF670 /* flakor-prefix.pch */; };
 /* End PBXBuildFile section */
@@ -166,8 +172,6 @@
 		850FD7771AB96D6E00EF4A7D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		850FD7781AB96D6E00EF4A7D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		85520C3D1A75E9D50017565D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		85520C3F1A75E9F50017565D /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = ../flakor/support/png/prebuilt/ios/libpng.a; sourceTree = "<group>"; };
-		85520C411A75EA060017565D /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../flakor/support/jpeg/prebuilt/ios/libjpeg.a; sourceTree = "<group>"; };
 		8570F99E1AB941CD003DF0D2 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		8570F99F1AB941CD003DF0D2 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		8570F9A01AB941CD003DF0D2 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
@@ -272,7 +276,7 @@
 		8570FA381AB941CD003DF0D2 /* VAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAO.h; sourceTree = "<group>"; };
 		8570FA391AB941CD003DF0D2 /* VBO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VBO.cpp; sourceTree = "<group>"; };
 		8570FA3A1AB941CD003DF0D2 /* VBO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBO.h; sourceTree = "<group>"; };
-		8570FA3C1AB941CD003DF0D2 /* BitData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitData.cpp; sourceTree = "<group>"; };
+		8570FA3C1AB941CD003DF0D2 /* BitData.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = BitData.cpp; sourceTree = "<group>"; };
 		8570FA3D1AB941CD003DF0D2 /* BitData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitData.h; sourceTree = "<group>"; };
 		8570FA3E1AB941CD003DF0D2 /* ILoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILoader.h; sourceTree = "<group>"; };
 		8570FA3F1AB941CD003DF0D2 /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Image.cpp; sourceTree = "<group>"; };
@@ -344,9 +348,15 @@
 		8570FEAA1AB9686B003DF0D2 /* Engine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		859BAFF41A733E3C00E57FFF /* libflakor_lib_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libflakor_lib_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		85AAA9E21ABB04C9001068F6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		85AF3AAB1ABAB92E005E4589 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
+		85AF3AAB1ABAB92E005E4589 /* Engine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Engine.mm; sourceTree = "<group>"; };
 		85AF3AB51ABACC31005E4589 /* GLContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLContext.mm; sourceTree = "<group>"; };
 		85AF3AB61ABACC31005E4589 /* GLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLContext.h; sourceTree = "<group>"; };
+		85C24DD41AC63A9300E58809 /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
+		85C24DD51AC63A9300E58809 /* FileUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileUtils.mm; sourceTree = "<group>"; };
+		85C24DE41AC64C2D00E58809 /* OnTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnTouchEvent.h; sourceTree = "<group>"; };
+		85C24DE51AC64C2D00E58809 /* TouchTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchTarget.cpp; sourceTree = "<group>"; };
+		85C24DF01AC6511500E58809 /* DrawCaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawCaller.h; sourceTree = "<group>"; };
+		85C24DF11AC6511500E58809 /* DrawCaller.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawCaller.mm; sourceTree = "<group>"; };
 		85C8E5A31ABFA9F400BC01DB /* TouchTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchTarget.h; sourceTree = "<group>"; };
 		85D8EFD71AB97FBE001DF670 /* flakor-prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "flakor-prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -356,11 +366,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85C24DE91AC64CCD00E58809 /* libpng.a in Frameworks */,
+				85C24DE81AC64CBB00E58809 /* libjpeg.a in Frameworks */,
 				85AAA9E31ABB04C9001068F6 /* UIKit.framework in Frameworks */,
 				850FD7791AB96D6E00EF4A7D /* OpenGLES.framework in Frameworks */,
 				850FD77A1AB96D6E00EF4A7D /* QuartzCore.framework in Frameworks */,
-				85520C421A75EA060017565D /* libjpeg.a in Frameworks */,
-				85520C401A75E9F50017565D /* libpng.a in Frameworks */,
 				85520C3E1A75E9D50017565D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -374,8 +384,6 @@
 				85AAA9E21ABB04C9001068F6 /* UIKit.framework */,
 				850FD7771AB96D6E00EF4A7D /* OpenGLES.framework */,
 				850FD7781AB96D6E00EF4A7D /* QuartzCore.framework */,
-				85520C411A75EA060017565D /* libjpeg.a */,
-				85520C3F1A75E9F50017565D /* libpng.a */,
 				85520C3D1A75E9D50017565D /* Foundation.framework */,
 			);
 			name = Framework;
@@ -537,6 +545,8 @@
 		8570F9F01AB941CD003DF0D2 /* input */ = {
 			isa = PBXGroup;
 			children = (
+				85C24DE41AC64C2D00E58809 /* OnTouchEvent.h */,
+				85C24DE51AC64C2D00E58809 /* TouchTarget.cpp */,
 				85C8E5A31ABFA9F400BC01DB /* TouchTarget.h */,
 				8570F9F31AB941CD003DF0D2 /* Touch.cpp */,
 				8570F9F41AB941CD003DF0D2 /* Touch.h */,
@@ -633,6 +643,7 @@
 		8570FA3B1AB941CD003DF0D2 /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				85C24DD31AC63A9300E58809 /* ios */,
 				8570FA3C1AB941CD003DF0D2 /* BitData.cpp */,
 				8570FA3D1AB941CD003DF0D2 /* BitData.h */,
 				8570FA3E1AB941CD003DF0D2 /* ILoader.h */,
@@ -706,6 +717,8 @@
 		8570FA771AB941CD003DF0D2 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				85C24DF01AC6511500E58809 /* DrawCaller.h */,
+				85C24DF11AC6511500E58809 /* DrawCaller.mm */,
 				85AF3AB51ABACC31005E4589 /* GLContext.mm */,
 				85AF3AB61ABACC31005E4589 /* GLContext.h */,
 				85D8EFD71AB97FBE001DF670 /* flakor-prefix.pch */,
@@ -716,7 +729,7 @@
 				8570FA7C1AB941CD003DF0D2 /* EAGLView.mm */,
 				8570FA7D1AB941CD003DF0D2 /* OpenGL_Internal-ios.h */,
 				8570FEAA1AB9686B003DF0D2 /* Engine.h */,
-				85AF3AAB1ABAB92E005E4589 /* Engine.cpp */,
+				85AF3AAB1ABAB92E005E4589 /* Engine.mm */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -857,6 +870,15 @@
 			);
 			sourceTree = "<group>";
 		};
+		85C24DD31AC63A9300E58809 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				85C24DD41AC63A9300E58809 /* FileUtils.h */,
+				85C24DD51AC63A9300E58809 /* FileUtils.mm */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -882,6 +904,7 @@
 				8570FD771AB941D1003DF0D2 /* Scheduler.h in Headers */,
 				8570FD0E1AB941CE003DF0D2 /* Color.h in Headers */,
 				8570FD631AB941D0003DF0D2 /* TGAlib.h in Headers */,
+				85C24DD61AC63A9300E58809 /* FileUtils.h in Headers */,
 				8570FD591AB941D0003DF0D2 /* etc1.h in Headers */,
 				8570FE9A1AB941E7003DF0D2 /* rapidxml.hpp in Headers */,
 				8570FD1D1AB941CE003DF0D2 /* IDrawable.h in Headers */,
@@ -918,6 +941,7 @@
 				8570FD7B1AB941D1003DF0D2 /* Uri.h in Headers */,
 				8570FD6C1AB941D0003DF0D2 /* Image.h in Headers */,
 				8570FD3A1AB941CF003DF0D2 /* AudioPlayer.h in Headers */,
+				85C24DF21AC6511500E58809 /* DrawCaller.h in Headers */,
 				8570FD901AB941D2003DF0D2 /* MatrixStack.h in Headers */,
 				8570FD5E1AB941D0003DF0D2 /* s3tc.h in Headers */,
 				8570FD361AB941CF003DF0D2 /* RunnableHandler.h in Headers */,
@@ -929,6 +953,7 @@
 				8570FD161AB941CE003DF0D2 /* Element.h in Headers */,
 				8570FD1E1AB941CE003DF0D2 /* IGame.h in Headers */,
 				8570FD851AB941D2003DF0D2 /* targetMacros.h in Headers */,
+				85C24DE61AC64C2D00E58809 /* OnTouchEvent.h in Headers */,
 				8570FD8C1AB941D2003DF0D2 /* GLMatrix.h in Headers */,
 				8570FCFE1AB941CE003DF0D2 /* Sprite.h in Headers */,
 				8570FD731AB941D1003DF0D2 /* Resource.h in Headers */,
@@ -1023,6 +1048,7 @@
 				8570FD721AB941D1003DF0D2 /* Resource.cpp in Sources */,
 				8570FD0B1AB941CE003DF0D2 /* Blendfunc.cpp in Sources */,
 				8570FD6D1AB941D0003DF0D2 /* ImageLoader.cpp in Sources */,
+				85C24DD71AC63A9300E58809 /* FileUtils.mm in Sources */,
 				8570FD8D1AB941D2003DF0D2 /* Matrices.cpp in Sources */,
 				8570FDA01AB941D3003DF0D2 /* ES2Renderer.m in Sources */,
 				8570FCFB1AB941CE003DF0D2 /* Scene.cpp in Sources */,
@@ -1037,6 +1063,7 @@
 				8570FD2D1AB941CF003DF0D2 /* Set.cpp in Sources */,
 				8570FD311AB941CF003DF0D2 /* Str.cpp in Sources */,
 				8570FCF91AB941CE003DF0D2 /* Entity.cpp in Sources */,
+				85C24DE71AC64C2D00E58809 /* TouchTarget.cpp in Sources */,
 				8570FD6F1AB941D1003DF0D2 /* LoaderThread.cpp in Sources */,
 				8570FD271AB941CE003DF0D2 /* DataVisitor.cpp in Sources */,
 				8570FD871AB941D2003DF0D2 /* Camera.cpp in Sources */,
@@ -1063,13 +1090,14 @@
 				8570FD2B1AB941CF003DF0D2 /* Object.cpp in Sources */,
 				8570FE9E1AB941E8003DF0D2 /* TexUtils.cpp in Sources */,
 				8570FD7C1AB941D1003DF0D2 /* Flakor.cpp in Sources */,
+				85C24DF31AC6511500E58809 /* DrawCaller.mm in Sources */,
 				8570FD8B1AB941D2003DF0D2 /* GLMatrix.cpp in Sources */,
 				8570FD521AB941D0003DF0D2 /* atitc.cpp in Sources */,
 				8570FD6B1AB941D0003DF0D2 /* Image.cpp in Sources */,
 				8570FD581AB941D0003DF0D2 /* etc1.cpp in Sources */,
 				8570FD411AB941CF003DF0D2 /* TouchPool.cpp in Sources */,
 				8570FD781AB941D1003DF0D2 /* ThreadPool.cpp in Sources */,
-				85AF3AAC1ABAB92E005E4589 /* Engine.cpp in Sources */,
+				85AF3AAC1ABAB92E005E4589 /* Engine.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

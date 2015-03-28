@@ -48,9 +48,15 @@ BitData::~BitData()
 
 BitData* BitData::createFromUri(Uri* uri)
 {
-	if(uri->type == Uri::ASSET)
+    if(uri->type == Uri::ASSET)
 #if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
-		return BitData::createFromAsset(uri->realPath);
+        return BitData::createFromAsset(uri->realPath);
+#else
+    return NULL;
+#endif
+	else if(uri->type == Uri::BUNDLE)
+#if FK_TARGET_PLATFORM == FK_PLATFORM_IOS
+		return BitData::createFromBundle(uri->realPath);
 #else
     return NULL;
 #endif
@@ -107,9 +113,9 @@ BitData* BitData::createFromAsset(const String* filePath)
 }
 #elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
 
-BitData* BitData::createFromAsset(const String* filePath)
+BitData* BitData::createFromBundle(const String* filePath)
 {
-    String* file = FileUtils::getBundleFile(filePath);
+    String* file = FileUtils::getBundleFilePath(filePath);
     return BitData::createFromFile(file);
 }
 

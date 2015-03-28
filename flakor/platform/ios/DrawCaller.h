@@ -1,7 +1,8 @@
 /****************************************************************************
- Copyright (c) 2013-2014 Saint Hsu
+ Copyright (c) 2010-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
- http://www.flakor.org
+ http://www.cocos2d-x.org
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +22,24 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#ifndef _FK_FILEUTILS_H_
-#define _FK_FILEUTILS_H_
 
-#include "targetMacros.h"
-#include "base/lang/Str.h"
+#include "target.h"
+#if FK_TARGET_PLATFORM == FK_PLATFORM_IOS
 
-FLAKOR_NS_BEGIN
+#import <Foundation/Foundation.h>
 
-/**
- * @addtogroup platform
- * @{
- */
+@interface DrawCaller : NSObject {
+        id displayLink;
+        int interval;
+}
+@property (readwrite) int interval;
+-(void) startMainLoop;
+-(void) stopMainLoop;
+-(void) doDraw: (id) sender;
+-(void) setAnimationInterval:(double)interval;
++(id) sharedDirectorCaller;
++(void) destroy;
+@end
 
-//! @brief  Helper class to handle file operations
-class FileUtils
-{
-public:
-    FileUtils();
-    /* override funtions */
-    virtual String* getWritablePath() const;
-    virtual String* getFullPathForDirectoryAndFilename(const String* directory, const String* filename);
-
-    static String* getBundleFilePath(const String* fileName);
-    void setBundle(NSBundle* bundle);
-private:
-    virtual bool isFileExistInternal(const String* fileName) const;
-    NSBundle* getBundle() const;
-    NSBundle* _bundle;
-};
-
-// end of platform group
-/// @}
-
-FLAKOR_NS_END
-
-#endif    // _FK_FILEUTILS_H_
+#endif 
 

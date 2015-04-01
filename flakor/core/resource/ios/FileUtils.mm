@@ -111,7 +111,12 @@ String* FileUtils::getFullPathForDirectoryAndFilename(const String* directory, c
 
 String* FileUtils::getBundleFilePath(const String* fileName)
 {
-    std::string filePath(fileName->getCString());
+    return FileUtils::getBundleFilePath(fileName->getCString());
+}
+
+String* FileUtils::getBundleFilePath(const char* fileName)
+{
+    std::string filePath(fileName);
     if (filePath.empty())
     {
         return NULL;
@@ -147,7 +152,7 @@ String* FileUtils::getBundleFilePath(const String* fileName)
     {
         // Search path is an absolute path.
         if ([nsFileManager fileExistsAtPath:[NSString stringWithUTF8String:filePath.c_str()]]) {
-            ret = String::create(fileName->getCString());
+            ret = String::create(fileName);
         }
     }
     

@@ -22,124 +22,125 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "audio/include/SimpleAudioEngine.h"
-#include "SimpleAudioEngine_objc.h"
-#include "cocos2d.h"
-USING_NS_CC;
+#include "core/audio/SimpleAudioEngine.h"
+#include "BaseAudioEngine_objc.h"
+#include "Flakor.h"
+
+USING_FLAKOR_NS;
 
 static void static_end()
 {
-    [SimpleAudioEngine  end];
+    [BaseAudioEngine  end];
 }
 
 static void static_preloadBackgroundMusic(const char* pszFilePath)
 {
-    [[SimpleAudioEngine sharedEngine] preloadBackgroundMusic: [NSString stringWithUTF8String: pszFilePath]];
+    [[BaseAudioEngine sharedEngine] preloadBackgroundMusic: [NSString stringWithUTF8String: pszFilePath]];
 }
 
 static void static_playBackgroundMusic(const char* pszFilePath, bool bLoop)
 {
-    [[SimpleAudioEngine sharedEngine] playBackgroundMusic: [NSString stringWithUTF8String: pszFilePath] loop: bLoop];
+    [[BaseAudioEngine sharedEngine] playBackgroundMusic: [NSString stringWithUTF8String: pszFilePath] loop: bLoop];
 }
 
 static void static_stopBackgroundMusic()
 {
-    [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+    [[BaseAudioEngine sharedEngine] stopBackgroundMusic];
 }
 
 static void static_pauseBackgroundMusic()
 {
-     [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+     [[BaseAudioEngine sharedEngine] pauseBackgroundMusic];
 }
 
 static void static_resumeBackgroundMusic()
 {
-    [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
+    [[BaseAudioEngine sharedEngine] resumeBackgroundMusic];
 } 
 
 static void static_rewindBackgroundMusic()
 {
-    [[SimpleAudioEngine sharedEngine] rewindBackgroundMusic];
+    [[BaseAudioEngine sharedEngine] rewindBackgroundMusic];
 }
 
 static bool static_willPlayBackgroundMusic()
 {
-    return [[SimpleAudioEngine sharedEngine] willPlayBackgroundMusic];
+    return [[BaseAudioEngine sharedEngine] willPlayBackgroundMusic];
 }
 
 static bool static_isBackgroundMusicPlaying()
 {
-    return [[SimpleAudioEngine sharedEngine] isBackgroundMusicPlaying];
+    return [[BaseAudioEngine sharedEngine] isBackgroundMusicPlaying];
 }
 
 static float static_getBackgroundMusicVolume()
 {
-    return [[SimpleAudioEngine sharedEngine] backgroundMusicVolume];
+    return [[BaseAudioEngine sharedEngine] backgroundMusicVolume];
 }
 
 static void static_setBackgroundMusicVolume(float volume)
 {
     volume = MAX( MIN(volume, 1.0), 0 );
-    [SimpleAudioEngine sharedEngine].backgroundMusicVolume = volume;
+    [BaseAudioEngine sharedEngine].backgroundMusicVolume = volume;
 }
      
 static float static_getEffectsVolume()
 {
-    return [[SimpleAudioEngine sharedEngine] effectsVolume];
+    return [[BaseAudioEngine sharedEngine] effectsVolume];
 }
      
 static void static_setEffectsVolume(float volume)
 {
     volume = MAX( MIN(volume, 1.0), 0 );
-    [SimpleAudioEngine sharedEngine].effectsVolume = volume;
+    [BaseAudioEngine sharedEngine].effectsVolume = volume;
 }
 
 static unsigned int static_playEffect(const char* pszFilePath, bool bLoop, Float32 pszPitch, Float32 pszPan, Float32 pszGain)
 {
-    return [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithUTF8String: pszFilePath] loop:bLoop pitch:pszPitch pan: pszPan gain:pszGain];
+    return [[BaseAudioEngine sharedEngine] playEffect:[NSString stringWithUTF8String: pszFilePath] loop:bLoop pitch:pszPitch pan: pszPan gain:pszGain];
 }
      
 static void static_stopEffect(int nSoundId)
 {
-    [[SimpleAudioEngine sharedEngine] stopEffect: nSoundId];
+    [[BaseAudioEngine sharedEngine] stopEffect: nSoundId];
 }
      
 static void static_preloadEffect(const char* pszFilePath)
 {
-    [[SimpleAudioEngine sharedEngine] preloadEffect: [NSString stringWithUTF8String: pszFilePath]];
+    [[BaseAudioEngine sharedEngine] preloadEffect: [NSString stringWithUTF8String: pszFilePath]];
 }
      
 static void static_unloadEffect(const char* pszFilePath)
 {
-    [[SimpleAudioEngine sharedEngine] unloadEffect: [NSString stringWithUTF8String: pszFilePath]];
+    [[BaseAudioEngine sharedEngine] unloadEffect: [NSString stringWithUTF8String: pszFilePath]];
 }
 
 static void static_pauseEffect(unsigned int uSoundId)
 {
-    [[SimpleAudioEngine sharedEngine] pauseEffect: uSoundId];
+    [[BaseAudioEngine sharedEngine] pauseEffect: uSoundId];
 }
 
 static void static_pauseAllEffects()
 {
-    [[SimpleAudioEngine sharedEngine] pauseAllEffects];
+    [[BaseAudioEngine sharedEngine] pauseAllEffects];
 }
 
 static void static_resumeEffect(unsigned int uSoundId)
 {
-    [[SimpleAudioEngine sharedEngine] resumeEffect: uSoundId];
+    [[BaseAudioEngine sharedEngine] resumeEffect: uSoundId];
 }
 
 static void static_resumeAllEffects()
 {
-    [[SimpleAudioEngine sharedEngine] resumeAllEffects];
+    [[BaseAudioEngine sharedEngine] resumeAllEffects];
 }
 
 static void static_stopAllEffects()
 {
-    [[SimpleAudioEngine sharedEngine] stopAllEffects];
+    [[BaseAudioEngine sharedEngine] stopAllEffects];
 }
 
-namespace CocosDenshion {
+namespace flakor {
 
 static SimpleAudioEngine *s_pEngine;
 
@@ -177,15 +178,15 @@ void SimpleAudioEngine::end()
 void SimpleAudioEngine::preloadBackgroundMusic(const char* pszFilePath)
 {
     // Changing file path to full path
-    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(pszFilePath);
-    static_preloadBackgroundMusic(fullPath.c_str());
+    String* fullPath = FileUtils::getBundleFilePath(pszFilePath);
+    static_preloadBackgroundMusic(fullPath->getCString());
 }
 
 void SimpleAudioEngine::playBackgroundMusic(const char* pszFilePath, bool bLoop)
 {
     // Changing file path to full path
-    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(pszFilePath);
-    static_playBackgroundMusic(fullPath.c_str(), bLoop);
+    String* fullPath = FileUtils::getBundleFilePath(pszFilePath);
+    static_playBackgroundMusic(fullPath->getCString(), bLoop);
 }
 
 void SimpleAudioEngine::stopBackgroundMusic(bool bReleaseData)
@@ -242,8 +243,8 @@ unsigned int SimpleAudioEngine::playEffect(const char *pszFilePath, bool bLoop,
                                            float pitch, float pan, float gain)
 {
     // Changing file path to full path
-    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(pszFilePath);
-    return static_playEffect(fullPath.c_str(), bLoop, pitch, pan, gain);
+    String* fullPath = FileUtils::getBundleFilePath(pszFilePath);
+    return static_playEffect(fullPath->getCString(), bLoop, pitch, pan, gain);
 }
 
 void SimpleAudioEngine::stopEffect(unsigned int nSoundId)
@@ -254,15 +255,15 @@ void SimpleAudioEngine::stopEffect(unsigned int nSoundId)
 void SimpleAudioEngine::preloadEffect(const char* pszFilePath)
 {
     // Changing file path to full path
-    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(pszFilePath);
-    static_preloadEffect(fullPath.c_str());
+    String* fullPath = FileUtils::getBundleFilePath(pszFilePath);
+    static_preloadEffect(fullPath->getCString());
 }
 
 void SimpleAudioEngine::unloadEffect(const char* pszFilePath)
 {
     // Changing file path to full path
-    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(pszFilePath);
-    static_unloadEffect(fullPath.c_str());
+    String* fullPath = FileUtils::getBundleFilePath(pszFilePath);
+    static_unloadEffect(fullPath->getCString());
 }
 
 void SimpleAudioEngine::pauseEffect(unsigned int uSoundId)

@@ -1,6 +1,8 @@
 #ifndef _FK_IAUDIO_H_
 #define _FK_IAUDIO_H_
 
+#include "targetMacros.h"
+
 FLAKOR_NS_BEGIN
 
 enum class AudioState
@@ -34,7 +36,7 @@ public:
 
     virtual void setLooping(bool looping) = 0;
 	
-}
+};
 
 FLAKOR_NS_END
 

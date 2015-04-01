@@ -56,6 +56,9 @@
 //#include "core/opengl/texture/Image.h"
 #include "core/opengl/texture/Texture2D.h"
 
+//audio
+#include "core/audio/SimpleAudioEngine.h"
+
 //math
 #include "math/GLMatrix.h"
 
@@ -71,6 +74,7 @@
 #include "platform/ios/EAGLView.h"
 #include "platform/ios/Engine.h"
 #include "platform/ios/ES2Renderer.h"
+#include "core/resource/ios/FileUtils.h"
 #endif
 
 #include "platform/Game.h"

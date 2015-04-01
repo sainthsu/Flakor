@@ -22,6 +22,8 @@ bool TestScene::init()
     // add the sprite as a child to this layer
     this->addChild(logo,2);
     
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("bgm.mp3");
+    
     return true;
 }
 

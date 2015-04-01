@@ -3,6 +3,8 @@
 
 #include "base/interface/IAudio.h"
 
+FLAKOR_NS_BEGIN
+
 class Sound : public IAudio
 {
 public:
@@ -19,5 +21,7 @@ protected:
   int soundID;
   int loopCount;
 };
+
+FLAKOR_NS_END
 
 #endif // SOUND_H

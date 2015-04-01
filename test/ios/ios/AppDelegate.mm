@@ -58,7 +58,7 @@
     [[UIApplication sharedApplication] setStatusBarHidden:true];
     
     MainGame *game = new MainGame();
-    // IMPORTANT: Setting the GLView should be done after creating the RootViewController
+    // IMPORTANT: Setting the GLView should be done after creating the GameViewController
     flakor::GLContext *glContext = flakor::GLContext::getInstance();
     glContext->initWithEAGLView(eaglView);
     Engine* engine = flakor::Engine::getInstance();

@@ -9,6 +9,25 @@
 /* Begin PBXBuildFile section */
 		850FD7791AB96D6E00EF4A7D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850FD7771AB96D6E00EF4A7D /* OpenGLES.framework */; };
 		850FD77A1AB96D6E00EF4A7D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850FD7781AB96D6E00EF4A7D /* QuartzCore.framework */; };
+		852D70CE1ACBCFD700198963 /* AudioManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70C41ACBCFD700198963 /* AudioManager.h */; };
+		852D70CF1ACBCFD700198963 /* AudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 852D70C51ACBCFD700198963 /* AudioManager.m */; };
+		852D70D01ACBCFD700198963 /* AudioConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70C61ACBCFD700198963 /* AudioConfig.h */; };
+		852D70D11ACBCFD700198963 /* OpenALSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70C71ACBCFD700198963 /* OpenALSupport.h */; };
+		852D70D21ACBCFD700198963 /* OpenALSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 852D70C81ACBCFD700198963 /* OpenALSupport.m */; };
+		852D70D31ACBCFD700198963 /* FlakorAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70C91ACBCFD700198963 /* FlakorAudio.h */; };
+		852D70D41ACBCFD700198963 /* FlakorAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 852D70CA1ACBCFD700198963 /* FlakorAudio.m */; };
+		852D70D51ACBCFD700198963 /* SimpleAudioEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 852D70CB1ACBCFD700198963 /* SimpleAudioEngine.mm */; };
+		852D70D61ACBCFD700198963 /* BaseAudioEngine_objc.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70CC1ACBCFD700198963 /* BaseAudioEngine_objc.h */; };
+		852D70D71ACBCFD700198963 /* BaseAudioEngine_objc.m in Sources */ = {isa = PBXBuildFile; fileRef = 852D70CD1ACBCFD700198963 /* BaseAudioEngine_objc.m */; };
+		852D70E01ACBD1E200198963 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 852D70D81ACBD1E200198963 /* Audio.cpp */; };
+		852D70E11ACBD1E200198963 /* Audio.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70D91ACBD1E200198963 /* Audio.h */; };
+		852D70E21ACBD1E200198963 /* AudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70DA1ACBD1E200198963 /* AudioEngine.h */; };
+		852D70E31ACBD1E200198963 /* Export.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70DB1ACBD1E200198963 /* Export.h */; };
+		852D70E41ACBD1E200198963 /* Music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 852D70DC1ACBD1E200198963 /* Music.cpp */; };
+		852D70E51ACBD1E200198963 /* Music.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70DD1ACBD1E200198963 /* Music.h */; };
+		852D70E61ACBD1E200198963 /* Sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 852D70DE1ACBD1E200198963 /* Sound.cpp */; };
+		852D70E71ACBD1E200198963 /* Sound.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70DF1ACBD1E200198963 /* Sound.h */; };
+		852D70E91ACC1C1D00198963 /* SimpleAudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70E81ACC1C1D00198963 /* SimpleAudioEngine.h */; };
 		85520C3E1A75E9D50017565D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85520C3D1A75E9D50017565D /* Foundation.framework */; };
 		8570FCF91AB941CE003DF0D2 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F99E1AB941CD003DF0D2 /* Entity.cpp */; };
 		8570FCFA1AB941CE003DF0D2 /* Entity.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F99F1AB941CD003DF0D2 /* Entity.h */; };
@@ -171,6 +190,25 @@
 /* Begin PBXFileReference section */
 		850FD7771AB96D6E00EF4A7D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		850FD7781AB96D6E00EF4A7D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		852D70C41ACBCFD700198963 /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
+		852D70C51ACBCFD700198963 /* AudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioManager.m; sourceTree = "<group>"; };
+		852D70C61ACBCFD700198963 /* AudioConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioConfig.h; sourceTree = "<group>"; };
+		852D70C71ACBCFD700198963 /* OpenALSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenALSupport.h; sourceTree = "<group>"; };
+		852D70C81ACBCFD700198963 /* OpenALSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenALSupport.m; sourceTree = "<group>"; };
+		852D70C91ACBCFD700198963 /* FlakorAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlakorAudio.h; sourceTree = "<group>"; };
+		852D70CA1ACBCFD700198963 /* FlakorAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlakorAudio.m; sourceTree = "<group>"; };
+		852D70CB1ACBCFD700198963 /* SimpleAudioEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleAudioEngine.mm; sourceTree = "<group>"; };
+		852D70CC1ACBCFD700198963 /* BaseAudioEngine_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAudioEngine_objc.h; sourceTree = "<group>"; };
+		852D70CD1ACBCFD700198963 /* BaseAudioEngine_objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAudioEngine_objc.m; sourceTree = "<group>"; };
+		852D70D81ACBD1E200198963 /* Audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
+		852D70D91ACBD1E200198963 /* Audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Audio.h; sourceTree = "<group>"; };
+		852D70DA1ACBD1E200198963 /* AudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEngine.h; sourceTree = "<group>"; };
+		852D70DB1ACBD1E200198963 /* Export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Export.h; sourceTree = "<group>"; };
+		852D70DC1ACBD1E200198963 /* Music.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Music.cpp; sourceTree = "<group>"; };
+		852D70DD1ACBD1E200198963 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
+		852D70DE1ACBD1E200198963 /* Sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sound.cpp; sourceTree = "<group>"; };
+		852D70DF1ACBD1E200198963 /* Sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sound.h; sourceTree = "<group>"; };
+		852D70E81ACC1C1D00198963 /* SimpleAudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine.h; sourceTree = "<group>"; };
 		85520C3D1A75E9D50017565D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8570F99E1AB941CD003DF0D2 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		8570F99F1AB941CD003DF0D2 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -378,6 +416,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		852D70C31ACBCFD700198963 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				852D70C41ACBCFD700198963 /* AudioManager.h */,
+				852D70C51ACBCFD700198963 /* AudioManager.m */,
+				852D70C61ACBCFD700198963 /* AudioConfig.h */,
+				852D70C71ACBCFD700198963 /* OpenALSupport.h */,
+				852D70C81ACBCFD700198963 /* OpenALSupport.m */,
+				852D70C91ACBCFD700198963 /* FlakorAudio.h */,
+				852D70CA1ACBCFD700198963 /* FlakorAudio.m */,
+				852D70CB1ACBCFD700198963 /* SimpleAudioEngine.mm */,
+				852D70CC1ACBCFD700198963 /* BaseAudioEngine_objc.h */,
+				852D70CD1ACBCFD700198963 /* BaseAudioEngine_objc.m */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
 		85520C431A75EA280017565D /* Framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -537,6 +592,16 @@
 		8570F9EC1AB941CD003DF0D2 /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				852D70E81ACC1C1D00198963 /* SimpleAudioEngine.h */,
+				852D70D81ACBD1E200198963 /* Audio.cpp */,
+				852D70D91ACBD1E200198963 /* Audio.h */,
+				852D70DA1ACBD1E200198963 /* AudioEngine.h */,
+				852D70DB1ACBD1E200198963 /* Export.h */,
+				852D70DC1ACBD1E200198963 /* Music.cpp */,
+				852D70DD1ACBD1E200198963 /* Music.h */,
+				852D70DE1ACBD1E200198963 /* Sound.cpp */,
+				852D70DF1ACBD1E200198963 /* Sound.h */,
+				852D70C31ACBCFD700198963 /* ios */,
 				8570F9ED1AB941CD003DF0D2 /* AudioPlayer.h */,
 			);
 			path = audio;
@@ -888,13 +953,17 @@
 			files = (
 				8570FDA91AB941D4003DF0D2 /* jconfig.h in Headers */,
 				8570FD401AB941CF003DF0D2 /* Touch.h in Headers */,
+				852D70E31ACBD1E200198963 /* Export.h in Headers */,
 				8570FD511AB941CF003DF0D2 /* Shaders.h in Headers */,
 				8570FD671AB941D0003DF0D2 /* VBO.h in Headers */,
 				8570FD2E1AB941CF003DF0D2 /* Set.h in Headers */,
 				8570FD211AB941CE003DF0D2 /* ITexture.h in Headers */,
 				8570FD941AB941D2003DF0D2 /* uthash.h in Headers */,
+				852D70E11ACBD1E200198963 /* Audio.h in Headers */,
+				852D70D11ACBCFD700198963 /* OpenALSupport.h in Headers */,
 				8570FD531AB941D0003DF0D2 /* atitc.h in Headers */,
 				8570FD6A1AB941D0003DF0D2 /* ILoader.h in Headers */,
+				852D70D01ACBCFD700198963 /* AudioConfig.h in Headers */,
 				8570FE9B1AB941E7003DF0D2 /* rapidxml_iterators.hpp in Headers */,
 				8570FE791AB941E2003DF0D2 /* pngconf.h in Headers */,
 				8570FD831AB941D2003DF0D2 /* target.h in Headers */,
@@ -904,6 +973,7 @@
 				8570FD771AB941D1003DF0D2 /* Scheduler.h in Headers */,
 				8570FD0E1AB941CE003DF0D2 /* Color.h in Headers */,
 				8570FD631AB941D0003DF0D2 /* TGAlib.h in Headers */,
+				852D70E51ACBD1E200198963 /* Music.h in Headers */,
 				85C24DD61AC63A9300E58809 /* FileUtils.h in Headers */,
 				8570FD591AB941D0003DF0D2 /* etc1.h in Headers */,
 				8570FE9A1AB941E7003DF0D2 /* rapidxml.hpp in Headers */,
@@ -914,6 +984,7 @@
 				8570FD841AB941D2003DF0D2 /* targetAssert.h in Headers */,
 				8570FD4B1AB941CF003DF0D2 /* GLProgram.h in Headers */,
 				85C8E5A41ABFA9F400BC01DB /* TouchTarget.h in Headers */,
+				852D70CE1ACBCFD700198963 /* AudioManager.h in Headers */,
 				8570FD0C1AB941CE003DF0D2 /* Blendfunc.h in Headers */,
 				8570FD321AB941CF003DF0D2 /* Str.h in Headers */,
 				8570FD5C1AB941D0003DF0D2 /* pvr.h in Headers */,
@@ -928,6 +999,7 @@
 				8570FD1A1AB941CE003DF0D2 /* IColorable.h in Headers */,
 				8570FD701AB941D1003DF0D2 /* LoaderThread.h in Headers */,
 				8570FD911AB941D2003DF0D2 /* Quaternion.h in Headers */,
+				852D70E91ACC1C1D00198963 /* SimpleAudioEngine.h in Headers */,
 				8570FD7F1AB941D1003DF0D2 /* common.h in Headers */,
 				8570FD021AB941CE003DF0D2 /* Config.h in Headers */,
 				8570FDAA1AB941D4003DF0D2 /* jmorecfg.h in Headers */,
@@ -936,6 +1008,7 @@
 				8570FD751AB941D1003DF0D2 /* ResourceManager.h in Headers */,
 				8570FDA41AB941D3003DF0D2 /* OpenGL_Internal-ios.h in Headers */,
 				8570FD951AB941D3003DF0D2 /* utlist.h in Headers */,
+				852D70E21ACBD1E200198963 /* AudioEngine.h in Headers */,
 				8570FD6E1AB941D1003DF0D2 /* ImageLoader.h in Headers */,
 				8570FD791AB941D1003DF0D2 /* ThreadPool.h in Headers */,
 				8570FD7B1AB941D1003DF0D2 /* Uri.h in Headers */,
@@ -957,6 +1030,7 @@
 				8570FD8C1AB941D2003DF0D2 /* GLMatrix.h in Headers */,
 				8570FCFE1AB941CE003DF0D2 /* Sprite.h in Headers */,
 				8570FD731AB941D1003DF0D2 /* Resource.h in Headers */,
+				852D70E71ACBD1E200198963 /* Sound.h in Headers */,
 				8570FD1C1AB941CE003DF0D2 /* IComparator.h in Headers */,
 				8570FD2A1AB941CE003DF0D2 /* Dictionary.h in Headers */,
 				8570FDAB1AB941D4003DF0D2 /* jpeglib.h in Headers */,
@@ -968,9 +1042,11 @@
 				8570FD1B1AB941CE003DF0D2 /* ICommand.h in Headers */,
 				8570FD8A1AB941D2003DF0D2 /* CArray.h in Headers */,
 				8570FE7A1AB941E3003DF0D2 /* pnglibconf.h in Headers */,
+				852D70D61ACBCFD700198963 /* BaseAudioEngine_objc.h in Headers */,
 				8570FDA21AB941D3003DF0D2 /* EAGLView.h in Headers */,
 				8570FD371AB941CF003DF0D2 /* Timer.h in Headers */,
 				8570FD391AB941CF003DF0D2 /* UpdateThread.h in Headers */,
+				852D70D31ACBCFD700198963 /* FlakorAudio.h in Headers */,
 				8570FD221AB941CE003DF0D2 /* IUpdatable.h in Headers */,
 				8570FD5A1AB941D0003DF0D2 /* ImageInfo.h in Headers */,
 				8570FD201AB941CE003DF0D2 /* IModifier.h in Headers */,
@@ -1047,9 +1123,11 @@
 				8570FD4C1AB941CF003DF0D2 /* GPUInfo.cpp in Sources */,
 				8570FD721AB941D1003DF0D2 /* Resource.cpp in Sources */,
 				8570FD0B1AB941CE003DF0D2 /* Blendfunc.cpp in Sources */,
+				852D70D51ACBCFD700198963 /* SimpleAudioEngine.mm in Sources */,
 				8570FD6D1AB941D0003DF0D2 /* ImageLoader.cpp in Sources */,
 				85C24DD71AC63A9300E58809 /* FileUtils.mm in Sources */,
 				8570FD8D1AB941D2003DF0D2 /* Matrices.cpp in Sources */,
+				852D70CF1ACBCFD700198963 /* AudioManager.m in Sources */,
 				8570FDA01AB941D3003DF0D2 /* ES2Renderer.m in Sources */,
 				8570FCFB1AB941CE003DF0D2 /* Scene.cpp in Sources */,
 				8570FD381AB941CF003DF0D2 /* UpdateThread.cpp in Sources */,
@@ -1059,12 +1137,14 @@
 				8570FD3F1AB941CF003DF0D2 /* Touch.cpp in Sources */,
 				8570FD9D1AB941D3003DF0D2 /* Game.cpp in Sources */,
 				8570FD641AB941D0003DF0D2 /* VAO.cpp in Sources */,
+				852D70D71ACBCFD700198963 /* BaseAudioEngine_objc.m in Sources */,
 				8570FD171AB941CE003DF0D2 /* Helper.cpp in Sources */,
 				8570FD2D1AB941CF003DF0D2 /* Set.cpp in Sources */,
 				8570FD311AB941CF003DF0D2 /* Str.cpp in Sources */,
 				8570FCF91AB941CE003DF0D2 /* Entity.cpp in Sources */,
 				85C24DE71AC64C2D00E58809 /* TouchTarget.cpp in Sources */,
 				8570FD6F1AB941D1003DF0D2 /* LoaderThread.cpp in Sources */,
+				852D70E41ACBD1E200198963 /* Music.cpp in Sources */,
 				8570FD271AB941CE003DF0D2 /* DataVisitor.cpp in Sources */,
 				8570FD871AB941D2003DF0D2 /* Camera.cpp in Sources */,
 				8570FD7E1AB941D1003DF0D2 /* common.cpp in Sources */,
@@ -1075,20 +1155,24 @@
 				8570FD661AB941D0003DF0D2 /* VBO.cpp in Sources */,
 				8570FD8F1AB941D2003DF0D2 /* MatrixStack.cpp in Sources */,
 				8570FD251AB941CE003DF0D2 /* AutoreleasePool.cpp in Sources */,
+				852D70D41ACBCFD700198963 /* FlakorAudio.m in Sources */,
 				85AF3AB71ABACC31005E4589 /* GLContext.mm in Sources */,
 				8570FD151AB941CE003DF0D2 /* Element.cpp in Sources */,
 				8570FD501AB941CF003DF0D2 /* Shaders.cpp in Sources */,
 				8570FD761AB941D1003DF0D2 /* Scheduler.cpp in Sources */,
 				8570FD0D1AB941CE003DF0D2 /* Color.cpp in Sources */,
+				852D70D21ACBCFD700198963 /* OpenALSupport.m in Sources */,
 				8570FD431AB941CF003DF0D2 /* TouchTrigger.cpp in Sources */,
 				8570FD5D1AB941D0003DF0D2 /* s3tc.cpp in Sources */,
 				8570FD891AB941D2003DF0D2 /* CArray.cpp in Sources */,
 				8570FD681AB941D0003DF0D2 /* BitData.cpp in Sources */,
 				8570FD291AB941CE003DF0D2 /* Dictionary.cpp in Sources */,
 				8570FCFD1AB941CE003DF0D2 /* Sprite.cpp in Sources */,
+				852D70E01ACBD1E200198963 /* Audio.cpp in Sources */,
 				8570FD341AB941CF003DF0D2 /* Zone.cpp in Sources */,
 				8570FD2B1AB941CF003DF0D2 /* Object.cpp in Sources */,
 				8570FE9E1AB941E8003DF0D2 /* TexUtils.cpp in Sources */,
+				852D70E61ACBD1E200198963 /* Sound.cpp in Sources */,
 				8570FD7C1AB941D1003DF0D2 /* Flakor.cpp in Sources */,
 				85C24DF31AC6511500E58809 /* DrawCaller.mm in Sources */,
 				8570FD8B1AB941D2003DF0D2 /* GLMatrix.cpp in Sources */,

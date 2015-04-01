@@ -30,7 +30,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "platform/CCPlatformMacros.h"
+#include "platform/targetMacros.h"
 #include "Export.h"
 
 #ifdef ERROR

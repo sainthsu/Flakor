@@ -1,9 +1,11 @@
 #ifndef _FK_MUSIC_H_
 #define _FK_MUSIC_H_
 
-#include "base/interface/IAudio.h"
+#include "core/audio/Audio.h"
 
-class Music : public IAudio
+FLAKOR_NS_BEGIN
+
+class Music : public Audio
 {
 public:
   Music();
@@ -12,8 +14,9 @@ public:
   void play();
 
 protected:
-  float volume;
-  bool loop;
+
 };
+
+FLAKOR_NS_END
 
 #endif // MUSIC_H

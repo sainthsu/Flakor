@@ -12,6 +12,10 @@
 		8509E9121A7252AE00F66057 /* GameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8509E9111A7252AE00F66057 /* GameViewController.mm */; };
 		8509E9171A7252AE00F66057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8509E9161A7252AE00F66057 /* Images.xcassets */; };
 		8509E91A1A7252AE00F66057 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8509E9181A7252AE00F66057 /* LaunchScreen.xib */; };
+		852D70EB1ACC2BE600198963 /* bgm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 852D70EA1ACC2BE600198963 /* bgm.mp3 */; };
+		852D70F71ACC2EAC00198963 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 852D70EC1ACC2C7400198963 /* OpenAL.framework */; };
+		852D70F91ACC2EBE00198963 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 852D70F81ACC2EBE00198963 /* AudioToolbox.framework */; };
+		852D70FA1ACC2ECC00198963 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 852D70EE1ACC2C7C00198963 /* AVFoundation.framework */; };
 		859BE3611ABB0A95000B15C4 /* libflakor_lib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85FD97511A761013000039CF /* libflakor_lib_ios.a */; };
 		85A7D56E1AC6854B009D1EE9 /* flakor_test.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A7D56D1AC6854B009D1EE9 /* flakor_test.png */; };
 		85C24DDC1AC648D100E58809 /* flakor_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C24DDB1AC648D100E58809 /* flakor_logo.png */; };
@@ -47,6 +51,10 @@
 		8509E9111A7252AE00F66057 /* GameViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GameViewController.mm; sourceTree = "<group>"; };
 		8509E9161A7252AE00F66057 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8509E9191A7252AE00F66057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		852D70EA1ACC2BE600198963 /* bgm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm.mp3; sourceTree = "<group>"; };
+		852D70EC1ACC2C7400198963 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		852D70EE1ACC2C7C00198963 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		852D70F81ACC2EBE00198963 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		859BAC8D1A733A8100E57FFF /* flakor_lib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = flakor_lib.xcodeproj; path = ../../build/flakor_lib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		85A7D56D1AC6854B009D1EE9 /* flakor_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flakor_test.png; path = ../../android/assets/flakor_test.png; sourceTree = "<group>"; };
 		85C24DDB1AC648D100E58809 /* flakor_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flakor_logo.png; sourceTree = "<group>"; };
@@ -62,6 +70,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				852D70FA1ACC2ECC00198963 /* AVFoundation.framework in Frameworks */,
+				852D70F91ACC2EBE00198963 /* AudioToolbox.framework in Frameworks */,
+				852D70F71ACC2EAC00198963 /* OpenAL.framework in Frameworks */,
 				85C24DEF1AC64DAA00E58809 /* libz.dylib in Frameworks */,
 				859BE3611ABB0A95000B15C4 /* libflakor_lib_ios.a in Frameworks */,
 			);
@@ -73,8 +84,8 @@
 		8509E8F91A7252AE00F66057 = {
 			isa = PBXGroup;
 			children = (
-				85C24DEE1AC64DAA00E58809 /* libz.dylib */,
 				859BAC8D1A733A8100E57FFF /* flakor_lib.xcodeproj */,
+				852D70FB1ACC303600198963 /* Framework */,
 				8509E9041A7252AE00F66057 /* ios */,
 				8509E9031A7252AE00F66057 /* Products */,
 			);
@@ -91,6 +102,7 @@
 		8509E9041A7252AE00F66057 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				852D70EA1ACC2BE600198963 /* bgm.mp3 */,
 				85A7D56D1AC6854B009D1EE9 /* flakor_test.png */,
 				85C24DDD1AC648FA00E58809 /* classes */,
 				85C24DDB1AC648D100E58809 /* flakor_logo.png */,
@@ -112,6 +124,17 @@
 				8509E9071A7252AE00F66057 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		852D70FB1ACC303600198963 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				85C24DEE1AC64DAA00E58809 /* libz.dylib */,
+				852D70F81ACC2EBE00198963 /* AudioToolbox.framework */,
+				852D70EE1ACC2C7C00198963 /* AVFoundation.framework */,
+				852D70EC1ACC2C7400198963 /* OpenAL.framework */,
+			);
+			name = Framework;
 			sourceTree = "<group>";
 		};
 		85C24DDD1AC648FA00E58809 /* classes */ = {
@@ -211,6 +234,7 @@
 				85C24DDC1AC648D100E58809 /* flakor_logo.png in Resources */,
 				8509E91A1A7252AE00F66057 /* LaunchScreen.xib in Resources */,
 				8509E9171A7252AE00F66057 /* Images.xcassets in Resources */,
+				852D70EB1ACC2BE600198963 /* bgm.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

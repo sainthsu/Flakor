@@ -44,6 +44,7 @@ public:
     virtual String* getFullPathForDirectoryAndFilename(const String* directory, const String* filename);
 
     static String* getBundleFilePath(const String* fileName);
+    static String* getBundleFilePath(const char* fileName);
     void setBundle(NSBundle* bundle);
 private:
     virtual bool isFileExistInternal(const String* fileName) const;

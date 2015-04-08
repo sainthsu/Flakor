@@ -65,7 +65,7 @@ private:
     friend class AudioEngineImpl;
 };
 
-class AudioEngineImpl : public cocos2d::Ref
+class AudioEngineImpl : public Object
 {
 public:
     AudioEngineImpl();

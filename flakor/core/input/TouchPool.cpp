@@ -194,7 +194,7 @@ bool TouchPool::handleTouch(TouchTrigger::TouchAction action,int num,intptr_t id
     
     bool result = dispatchTouch(&touchTrigger);
 	
-    if(action == TouchTrigger::TouchAction::DOWN || action == TouchTrigger::TouchAction::CANCEL)
+    if(action == TouchTrigger::TouchAction::UP || action == TouchTrigger::TouchAction::CANCEL)
     {
         for (auto& touch : touchTrigger._touches)
         {

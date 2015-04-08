@@ -19,14 +19,7 @@
 		852D70D51ACBCFD700198963 /* SimpleAudioEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 852D70CB1ACBCFD700198963 /* SimpleAudioEngine.mm */; };
 		852D70D61ACBCFD700198963 /* BaseAudioEngine_objc.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70CC1ACBCFD700198963 /* BaseAudioEngine_objc.h */; };
 		852D70D71ACBCFD700198963 /* BaseAudioEngine_objc.m in Sources */ = {isa = PBXBuildFile; fileRef = 852D70CD1ACBCFD700198963 /* BaseAudioEngine_objc.m */; };
-		852D70E01ACBD1E200198963 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 852D70D81ACBD1E200198963 /* Audio.cpp */; };
-		852D70E11ACBD1E200198963 /* Audio.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70D91ACBD1E200198963 /* Audio.h */; };
-		852D70E21ACBD1E200198963 /* AudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70DA1ACBD1E200198963 /* AudioEngine.h */; };
 		852D70E31ACBD1E200198963 /* Export.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70DB1ACBD1E200198963 /* Export.h */; };
-		852D70E41ACBD1E200198963 /* Music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 852D70DC1ACBD1E200198963 /* Music.cpp */; };
-		852D70E51ACBD1E200198963 /* Music.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70DD1ACBD1E200198963 /* Music.h */; };
-		852D70E61ACBD1E200198963 /* Sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 852D70DE1ACBD1E200198963 /* Sound.cpp */; };
-		852D70E71ACBD1E200198963 /* Sound.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70DF1ACBD1E200198963 /* Sound.h */; };
 		852D70E91ACC1C1D00198963 /* SimpleAudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70E81ACC1C1D00198963 /* SimpleAudioEngine.h */; };
 		85520C3E1A75E9D50017565D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85520C3D1A75E9D50017565D /* Foundation.framework */; };
 		8570FCF91AB941CE003DF0D2 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F99E1AB941CD003DF0D2 /* Entity.cpp */; };
@@ -75,7 +68,6 @@
 		8570FD371AB941CF003DF0D2 /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9E81AB941CD003DF0D2 /* Timer.h */; };
 		8570FD381AB941CF003DF0D2 /* UpdateThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9E91AB941CD003DF0D2 /* UpdateThread.cpp */; };
 		8570FD391AB941CF003DF0D2 /* UpdateThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9EA1AB941CD003DF0D2 /* UpdateThread.h */; };
-		8570FD3A1AB941CF003DF0D2 /* AudioPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9ED1AB941CD003DF0D2 /* AudioPlayer.h */; };
 		8570FD3F1AB941CF003DF0D2 /* Touch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9F31AB941CD003DF0D2 /* Touch.cpp */; };
 		8570FD401AB941CF003DF0D2 /* Touch.h in Headers */ = {isa = PBXBuildFile; fileRef = 8570F9F41AB941CD003DF0D2 /* Touch.h */; };
 		8570FD411AB941CF003DF0D2 /* TouchPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8570F9F51AB941CD003DF0D2 /* TouchPool.cpp */; };
@@ -200,14 +192,7 @@
 		852D70CB1ACBCFD700198963 /* SimpleAudioEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleAudioEngine.mm; sourceTree = "<group>"; };
 		852D70CC1ACBCFD700198963 /* BaseAudioEngine_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAudioEngine_objc.h; sourceTree = "<group>"; };
 		852D70CD1ACBCFD700198963 /* BaseAudioEngine_objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAudioEngine_objc.m; sourceTree = "<group>"; };
-		852D70D81ACBD1E200198963 /* Audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
-		852D70D91ACBD1E200198963 /* Audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Audio.h; sourceTree = "<group>"; };
-		852D70DA1ACBD1E200198963 /* AudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEngine.h; sourceTree = "<group>"; };
 		852D70DB1ACBD1E200198963 /* Export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Export.h; sourceTree = "<group>"; };
-		852D70DC1ACBD1E200198963 /* Music.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Music.cpp; sourceTree = "<group>"; };
-		852D70DD1ACBD1E200198963 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
-		852D70DE1ACBD1E200198963 /* Sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sound.cpp; sourceTree = "<group>"; };
-		852D70DF1ACBD1E200198963 /* Sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sound.h; sourceTree = "<group>"; };
 		852D70E81ACC1C1D00198963 /* SimpleAudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine.h; sourceTree = "<group>"; };
 		85520C3D1A75E9D50017565D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8570F99E1AB941CD003DF0D2 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
@@ -256,7 +241,6 @@
 		8570F9E81AB941CD003DF0D2 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		8570F9E91AB941CD003DF0D2 /* UpdateThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UpdateThread.cpp; sourceTree = "<group>"; };
 		8570F9EA1AB941CD003DF0D2 /* UpdateThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateThread.h; sourceTree = "<group>"; };
-		8570F9ED1AB941CD003DF0D2 /* AudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioPlayer.h; sourceTree = "<group>"; };
 		8570F9F31AB941CD003DF0D2 /* Touch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Touch.cpp; sourceTree = "<group>"; };
 		8570F9F41AB941CD003DF0D2 /* Touch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Touch.h; sourceTree = "<group>"; };
 		8570F9F51AB941CD003DF0D2 /* TouchPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchPool.cpp; sourceTree = "<group>"; };
@@ -593,16 +577,8 @@
 			isa = PBXGroup;
 			children = (
 				852D70E81ACC1C1D00198963 /* SimpleAudioEngine.h */,
-				852D70D81ACBD1E200198963 /* Audio.cpp */,
-				852D70D91ACBD1E200198963 /* Audio.h */,
-				852D70DA1ACBD1E200198963 /* AudioEngine.h */,
 				852D70DB1ACBD1E200198963 /* Export.h */,
-				852D70DC1ACBD1E200198963 /* Music.cpp */,
-				852D70DD1ACBD1E200198963 /* Music.h */,
-				852D70DE1ACBD1E200198963 /* Sound.cpp */,
-				852D70DF1ACBD1E200198963 /* Sound.h */,
 				852D70C31ACBCFD700198963 /* ios */,
-				8570F9ED1AB941CD003DF0D2 /* AudioPlayer.h */,
 			);
 			path = audio;
 			sourceTree = "<group>";
@@ -959,7 +935,6 @@
 				8570FD2E1AB941CF003DF0D2 /* Set.h in Headers */,
 				8570FD211AB941CE003DF0D2 /* ITexture.h in Headers */,
 				8570FD941AB941D2003DF0D2 /* uthash.h in Headers */,
-				852D70E11ACBD1E200198963 /* Audio.h in Headers */,
 				852D70D11ACBCFD700198963 /* OpenALSupport.h in Headers */,
 				8570FD531AB941D0003DF0D2 /* atitc.h in Headers */,
 				8570FD6A1AB941D0003DF0D2 /* ILoader.h in Headers */,
@@ -973,7 +948,6 @@
 				8570FD771AB941D1003DF0D2 /* Scheduler.h in Headers */,
 				8570FD0E1AB941CE003DF0D2 /* Color.h in Headers */,
 				8570FD631AB941D0003DF0D2 /* TGAlib.h in Headers */,
-				852D70E51ACBD1E200198963 /* Music.h in Headers */,
 				85C24DD61AC63A9300E58809 /* FileUtils.h in Headers */,
 				8570FD591AB941D0003DF0D2 /* etc1.h in Headers */,
 				8570FE9A1AB941E7003DF0D2 /* rapidxml.hpp in Headers */,
@@ -1008,12 +982,10 @@
 				8570FD751AB941D1003DF0D2 /* ResourceManager.h in Headers */,
 				8570FDA41AB941D3003DF0D2 /* OpenGL_Internal-ios.h in Headers */,
 				8570FD951AB941D3003DF0D2 /* utlist.h in Headers */,
-				852D70E21ACBD1E200198963 /* AudioEngine.h in Headers */,
 				8570FD6E1AB941D1003DF0D2 /* ImageLoader.h in Headers */,
 				8570FD791AB941D1003DF0D2 /* ThreadPool.h in Headers */,
 				8570FD7B1AB941D1003DF0D2 /* Uri.h in Headers */,
 				8570FD6C1AB941D0003DF0D2 /* Image.h in Headers */,
-				8570FD3A1AB941CF003DF0D2 /* AudioPlayer.h in Headers */,
 				85C24DF21AC6511500E58809 /* DrawCaller.h in Headers */,
 				8570FD901AB941D2003DF0D2 /* MatrixStack.h in Headers */,
 				8570FD5E1AB941D0003DF0D2 /* s3tc.h in Headers */,
@@ -1030,7 +1002,6 @@
 				8570FD8C1AB941D2003DF0D2 /* GLMatrix.h in Headers */,
 				8570FCFE1AB941CE003DF0D2 /* Sprite.h in Headers */,
 				8570FD731AB941D1003DF0D2 /* Resource.h in Headers */,
-				852D70E71ACBD1E200198963 /* Sound.h in Headers */,
 				8570FD1C1AB941CE003DF0D2 /* IComparator.h in Headers */,
 				8570FD2A1AB941CE003DF0D2 /* Dictionary.h in Headers */,
 				8570FDAB1AB941D4003DF0D2 /* jpeglib.h in Headers */,
@@ -1144,7 +1115,6 @@
 				8570FCF91AB941CE003DF0D2 /* Entity.cpp in Sources */,
 				85C24DE71AC64C2D00E58809 /* TouchTarget.cpp in Sources */,
 				8570FD6F1AB941D1003DF0D2 /* LoaderThread.cpp in Sources */,
-				852D70E41ACBD1E200198963 /* Music.cpp in Sources */,
 				8570FD271AB941CE003DF0D2 /* DataVisitor.cpp in Sources */,
 				8570FD871AB941D2003DF0D2 /* Camera.cpp in Sources */,
 				8570FD7E1AB941D1003DF0D2 /* common.cpp in Sources */,
@@ -1168,11 +1138,9 @@
 				8570FD681AB941D0003DF0D2 /* BitData.cpp in Sources */,
 				8570FD291AB941CE003DF0D2 /* Dictionary.cpp in Sources */,
 				8570FCFD1AB941CE003DF0D2 /* Sprite.cpp in Sources */,
-				852D70E01ACBD1E200198963 /* Audio.cpp in Sources */,
 				8570FD341AB941CF003DF0D2 /* Zone.cpp in Sources */,
 				8570FD2B1AB941CF003DF0D2 /* Object.cpp in Sources */,
 				8570FE9E1AB941E8003DF0D2 /* TexUtils.cpp in Sources */,
-				852D70E61ACBD1E200198963 /* Sound.cpp in Sources */,
 				8570FD7C1AB941D1003DF0D2 /* Flakor.cpp in Sources */,
 				85C24DF31AC6511500E58809 /* DrawCaller.mm in Sources */,
 				8570FD8B1AB941D2003DF0D2 /* GLMatrix.cpp in Sources */,

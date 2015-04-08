@@ -30,7 +30,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "platform/targetMacros.h"
+#include "targetMacros.h"
 #include "Export.h"
 
 #ifdef ERROR
@@ -59,7 +59,7 @@ public:
 };
 
 class AudioEngineImpl;
-
+class Audio;
 /**
   @class          AudioEngine
   @brief          
@@ -69,17 +69,8 @@ class AudioEngineImpl;
 class EXPORT_DLL AudioEngine
 {
 public:
-    enum class AudioState
-    {
-        ERROR  = -1,
-        INITIALZING,
-        PLAYING,
-        PAUSED
-    };
     
     static const int INVALID_AUDIO_ID;
-
-    static const float TIME_UNKNOWN;
 
     static bool lazyInit();
     /**
@@ -227,30 +218,9 @@ protected:
 
         }
     };
-    
-    struct AudioInfo
-    {
-        const std::string* filePath;
-        ProfileHelper* profileHelper;
-        
-        float volume;
-        bool loop;
-        float duration;
-        AudioState state;
-        
-        bool is3dAudio;
-
-        AudioInfo()
-            : profileHelper(nullptr)
-            , duration(TIME_UNKNOWN)
-            , state(AudioState::INITIALZING)
-        {
-
-        }
-    };
 
     //audioID,audioAttribute
-    static std::unordered_map<int, AudioInfo> _audioIDInfoMap;
+    static std::unordered_map<int, Audio*> _audioIDInfoMap;
     
     //audio file path,audio IDs
     static std::unordered_map<std::string,std::list<int>> _audioPathIDMap;

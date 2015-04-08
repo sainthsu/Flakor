@@ -46,6 +46,9 @@ core/input/Touch.cpp \
 core/input/TouchPool.cpp \
 core/input/TouchTarget.cpp \
 core/input/TouchTrigger.cpp \
+core/audio/Audio.cpp \
+core/audio/AudioEngine.cpp \
+core/audio/android/AudioEngine-inl.cpp \
 core/opengl/GPUInfo.cpp \
 core/opengl/gl3stub.c \
 core/opengl/GLContext.cpp \
@@ -89,7 +92,6 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
 					$(LOCAL_PATH)/core/opengl/ \
 					$(LOCAL_PATH)/core/opengl/vbo \
 					$(LOCAL_PATH)/core/opengl/shader \
-					$(LOCAL_PATH)/core/texture \
 					$(LOCAL_PATH)/math \
 					$(LOCAL_PATH)/support/libjpeg \
 					$(LOCAL_PATH)/support/libpng
@@ -105,7 +107,6 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH) \
 					$(LOCAL_PATH)/core/opengl/ \
 					$(LOCAL_PATH)/core/opengl/vbo \
 					$(LOCAL_PATH)/core/opengl/shader \
-					$(LOCAL_PATH)/core/texture \
 					$(LOCAL_PATH)/math \
 					$(LOCAL_PATH)/support/libjpeg \
 					$(LOCAL_PATH)/support/libpng

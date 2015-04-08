@@ -2,11 +2,15 @@
 
 FLAKOR_NS_BEGIN
 
+const float Audio::TIME_UNKNOWN = -1.0f;
+
 Audio::Audio()
-:_leftVolume(0)
+:profileHelper(NULL)
+, duration(TIME_UNKNOWN)
+, state(AudioState::INITIALZING)
+,_leftVolume(0)
 ,_rightVolume(0)
 ,_mute(false)
-,_release(false)
 {
 }
 

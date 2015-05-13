@@ -74,7 +74,7 @@
 #include "platform/ios/EAGLView.h"
 #include "platform/ios/Engine.h"
 #include "platform/ios/ES2Renderer.h"
-#include "core/resource/ios/FileUtils.h"
+#include "tool/utility/ios/FileUtils.h"
 #endif
 
 #include "platform/Game.h"

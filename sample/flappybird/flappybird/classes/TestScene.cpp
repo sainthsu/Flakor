@@ -3,18 +3,18 @@
 bool TestScene::init()
 {
 	TestScene* s = this;
-	Image* image = dynamic_cast<Image*>(ResourceManager::thisManager()->createResource("bundle://flakor_test.png",ResourceManager::IMAGE_NAME));
+	Image* image = dynamic_cast<Image*>(ResourceManager::thisManager()->createResource("bundle://bg.png",ResourceManager::IMAGE_NAME));
 	image->setCallback([=](Resource*){
 		Texture2D* tex = new Texture2D();
 		tex->initWithImage(image);
     	Sprite *sprite = Sprite::createWithTexture(tex);
-    	sprite->setPosition(PointMake(0,5));
+    	sprite->setContentSize(SizeMake(2000,1800));
 	    s->addChild(sprite, 1);
 	});
 	image->load(true);
 	
     
-    Sprite *logo = Sprite::create("bundle://flakor_logo.png");
+    Sprite *logo = Sprite::create("bundle://bird.png");
     
     // position the sprite on the center of the screen
     logo->setPosition(PointMake(200,20));

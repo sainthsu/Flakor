@@ -212,6 +212,7 @@ Sprite::Sprite(void)
     _debugDrawNode = DrawEntity::create();
     addChild(_debugDrawNode);
 #endif //FK_SPRITE_DEBUG_DRAW
+    
 }
 
 Sprite::~Sprite(void)

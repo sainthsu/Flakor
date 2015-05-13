@@ -509,8 +509,8 @@ void String::range(int start,int end)
 	}
 	if (start && newLen) memmove(_string, _string+start, newLen);
 	_string[newLen] = '\0';
-	_free = _free+(_length-newLen);
-	_length = newLen;
+	_free = _free+(unsigned int)(_length-newLen);
+	_length = (unsigned int)newLen;
 
 }
 
@@ -583,7 +583,7 @@ bool String::makeRoomFor(size_t addlen)
 	
 	_string = (char*)realloc(_string,newLen);
 	if(_string == NULL) return false;
-	_free = newLen - _length;
+	_free = (unsigned int)(newLen - _length);
 	return true;
 }
 

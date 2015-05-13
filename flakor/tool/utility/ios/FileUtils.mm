@@ -25,7 +25,7 @@ THE SOFTWARE.
 ****************************************************************************/
 #import <Foundation/Foundation.h>
 
-#include "core/resource/ios/FileUtils.h"
+#include "tool/utility/ios/FileUtils.h"
 
 FLAKOR_NS_BEGIN
 

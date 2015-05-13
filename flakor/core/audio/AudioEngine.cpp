@@ -86,7 +86,7 @@ int AudioEngine::play2d(const std::string& filePath, bool loop, float volume, co
             break;
         }
 
-        if ( !FileUtils::getInstance()->isFileExist(filePath)){
+        if ( !FileUtils::isFileExist(filePath)){
             break;
         }
 

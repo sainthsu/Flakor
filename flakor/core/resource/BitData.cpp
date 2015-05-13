@@ -9,7 +9,7 @@
 #if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 #include <android/asset_manager.h>
 #elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
-#include "core/resource/ios/FileUtils.h"
+#include "tool/utility/ios/FileUtils.h"
 #endif
 
 

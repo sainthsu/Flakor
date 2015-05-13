@@ -161,10 +161,6 @@ public:
 
     /// @}  end of creators group
 
-
-    /// @{
-    /// @name BatchNode methods
-
     /**
      * Updates the quad according the rotation, position, scale values.
      */

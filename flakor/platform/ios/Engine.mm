@@ -102,6 +102,7 @@ void Engine::updateViewport()
 {
     int32_t width = glContext->getScreenWidth();
     int32_t height = glContext->getScreenHeight();
+    
     //Note that screen size might have been changed
     glViewport( 0, 0, width, height );
     Matrix4 pMatrix = Matrix4::orthographic(width,height,-width/2, width/2);

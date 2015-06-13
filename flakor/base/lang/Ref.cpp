@@ -33,14 +33,14 @@ _refCount(new RefCount())
 
 Ref::~Ref()
 {
-    FKAssert(_refCount);
-    FKAssert(_refCount->_refs == 0);
-    FKAssert(_refCount->_weakRefs > 0);
+    FKAssert(_refCount,"refcount cant be null");
+    FKAssert(_refCount->_refs == 0,"refcount cant be 0");
+    FKAssert(_refCount->_weakRefs > 0,"refcount cant be 0");
     
     // Mark object as expired, release the self weak ref and delete the refcount if no other weak refs exist
-    refCount_->_refs = -1;
-    (refCount_->_weakRefs)--;
-    if (!refCount_->_weakRefs)
+    _refCount->_refs = -1;
+    (_refCount->_weakRefs)--;
+    if (!_refCount->_weakRefs)
         delete _refCount;
     
     _refCount = 0;
@@ -48,13 +48,13 @@ Ref::~Ref()
 
 void Ref::addRef()
 {
-    FKAssert(_refCount->_refs >= 0);
+    FKAssert(_refCount->_refs >= 0,"refcount cant be less than 0");
     (_refCount->_refs)++;
 }
 
 void Ref::releaseRef()
 {
-    FKAssert(_refCount->_refs > 0);
+    FKAssert(_refCount->_refs > 0,"refcount must be greater than 0");
     (_refCount->_refs)--;
     if (!_refCount->_refs)
         delete this;

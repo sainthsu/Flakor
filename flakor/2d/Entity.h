@@ -789,17 +789,17 @@ class Entity : public Object,public IColorable,public IUpdatable
 		 */
 		virtual void updateTransform(void);
 
-                void setColor(const Color& color) override;
-                void setColor(float red,float green,float blue) override;
-                void setColor(float red,float green,float blue,float alpha) override;
-                void setRed(float red) override;
-                void setGreen(float green) override;
-                void setBlue(float blue) override;
-                void setAlpha(float alpha) override;
-                Color& getColor() override;
-                float getRed() override;
-                float getGreen() override;
-                float getBlue() override;
+        void setColor(const Color& color) override;
+        void setColor(float red,float green,float blue) override;
+        void setColor(float red,float green,float blue,float alpha) override;
+        void setRed(float red) override;
+        void setGreen(float green) override;
+        void setBlue(float blue) override;
+        void setAlpha(float alpha) override;
+        Color& getColor() override;
+        float getRed() override;
+        float getGreen() override;
+        float getBlue() override;
         float getAlpha() override;
 
         //handle Touch Trigger

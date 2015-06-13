@@ -309,6 +309,7 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
 {
     _rectRotated = rotated;
 
+    
     setContentSize(untrimmedSize);
     setVertexRect(rect);
     setTextureCoords(rect);

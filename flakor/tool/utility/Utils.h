@@ -86,12 +86,6 @@ namespace utils
      * @return Returns the time in seconds since the Epoch.
      */
     double FK_DLL gettime();
-
-    /**
-     * Calculate unionof bounding box of a node and its children.
-     * @return Returns unionof bounding box of a node and its children.
-     */
-    Rect FK_DLL getCascadeBoundingBox(Node *node);
 }
 
 FLAKOR_NS_END

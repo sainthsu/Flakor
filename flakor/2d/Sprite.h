@@ -65,6 +65,7 @@ protected:
     BlendFunc        _blendFunc;            /// It's required for TextureProtocol inheritance
     Texture2D*       _texture;              /// Texture2D object that is used to render the sprite
     //QuadCommand      _quadCommand;          /// quad command
+	TextureRegion*   _textureRegion;
 #if FK_SPRITE_DEBUG_DRAW
     DrawNode *_debugDrawNode;
 #endif //FK_SPRITE_DEBUG_DRAW
@@ -159,6 +160,14 @@ public:
      */
     static Sprite* createWithTexture(Texture2D *texture, const Rect& rect, bool rotated=false);
 
+	/**
+     * Creates a sprite with an sprite frame.
+     *
+     * @param   spriteFrame    A sprite frame which involves a texture and a rect.
+     * @return  An autoreleased sprite object.
+     */
+    static Sprite* createWithTextureRegion(TextureRegion *region);
+
     /// @}  end of creators group
 
     /**
@@ -185,7 +194,7 @@ public:
 
     /**
      * Updates the texture rect of the Sprite in points.
-     * It will call setTextureRect(const Rect& rect, bool rotated, const Size& untrimmedSize) with \p rotated = false, and \p utrimmedSize = rect.size.
+     * It will call setTextureRect(const Rect& rect, bool rotated, const Size& untrimmedSize) with \p rotated = false, and \p utrimmedSize = rect.size.offset
      */
     virtual void setTextureRect(const Rect& rect);
 

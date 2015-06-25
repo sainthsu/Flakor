@@ -22,68 +22,68 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 #include "targetMacros.h"
-#include "2d/SpriteFrame.h"
+#include "2d/TextureRegion.h"
 
 FLAKOR_NS_BEGIN
 
-// implementation of SpriteFrame
+// implementation of TextureRegion
 
-SpriteFrame* SpriteFrame::create(const std::string& filename, const Rect& rect)
+TextureRegion* TextureRegion::create(const std::string& filename, const Rect& rect)
 {
-    SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
-    spriteFrame->initWithTextureFilename(filename, rect);
-    spriteFrame->autorelease();
+    TextureRegion *TextureRegion = new (std::nothrow) TextureRegion();
+    TextureRegion->initWithTextureFilename(filename, rect);
+    TextureRegion->autorelease();
 
-    return spriteFrame;
+    return TextureRegion;
 }
 
-SpriteFrame* SpriteFrame::createWithTexture(Texture2D *texture, const Rect& rect)
+TextureRegion* TextureRegion::createWithTexture(Texture2D *texture, const Rect& rect)
 {
-    SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
-    spriteFrame->initWithTexture(texture, rect);
-    spriteFrame->autorelease();
+    TextureRegion *TextureRegion = new (std::nothrow) TextureRegion();
+    TextureRegion->initWithTexture(texture, rect);
+    TextureRegion->autorelease();
     
-    return spriteFrame;
+    return TextureRegion;
 }
 
-SpriteFrame* SpriteFrame::createWithTexture(Texture2D* texture, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize)
+TextureRegion* TextureRegion::createWithTexture(Texture2D* texture, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize)
 {
-    SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
-    spriteFrame->initWithTexture(texture, rect, rotated, offset, originalSize);
-    spriteFrame->autorelease();
+    TextureRegion *TextureRegion = new (std::nothrow) TextureRegion();
+    TextureRegion->initWithTexture(texture, rect, rotated, offset, originalSize);
+    TextureRegion->autorelease();
 
-    return spriteFrame;
+    return TextureRegion;
 }
 
-SpriteFrame* SpriteFrame::create(const std::string& filename, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize)
+TextureRegion* TextureRegion::create(const std::string& filename, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize)
 {
-    SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
-    spriteFrame->initWithTextureFilename(filename, rect, rotated, offset, originalSize);
-    spriteFrame->autorelease();
+    TextureRegion *TextureRegion = new (std::nothrow) TextureRegion();
+    TextureRegion->initWithTextureFilename(filename, rect, rotated, offset, originalSize);
+    TextureRegion->autorelease();
 
-    return spriteFrame;
+    return TextureRegion;
 }
 
-SpriteFrame::SpriteFrame(void)
+TextureRegion::TextureRegion(void)
 : _rotated(false)
 , _texture(nullptr)
 {
     
 }
 
-bool SpriteFrame::initWithTexture(Texture2D* texture, const Rect& rect)
+bool TextureRegion::initWithTexture(Texture2D* texture, const Rect& rect)
 {
     Rect rectInPixels = FK_RECT_POINTS_TO_PIXELS(rect);
     return initWithTexture(texture, rectInPixels, false, PointZero, rectInPixels.size);
 }
 
-bool SpriteFrame::initWithTextureFilename(const std::string& filename, const Rect& rect)
+bool TextureRegion::initWithTextureFilename(const std::string& filename, const Rect& rect)
 {
     Rect rectInPixels = FK_RECT_POINTS_TO_PIXELS( rect );
     return initWithTextureFilename(filename, rectInPixels, false, PointZero, rectInPixels.size);
 }
 
-bool SpriteFrame::initWithTexture(Texture2D* texture, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize)
+bool TextureRegion::initWithTexture(Texture2D* texture, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize)
 {
     _texture = texture;
 
@@ -103,7 +103,7 @@ bool SpriteFrame::initWithTexture(Texture2D* texture, const Rect& rect, bool rot
     return true;
 }
 
-bool SpriteFrame::initWithTextureFilename(const std::string& filename, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize)
+bool TextureRegion::initWithTextureFilename(const std::string& filename, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize)
 {
     _texture = nullptr;
     _textureFilename = filename;
@@ -118,57 +118,57 @@ bool SpriteFrame::initWithTextureFilename(const std::string& filename, const Rec
     return true;
 }
 
-SpriteFrame::~SpriteFrame(void)
+TextureRegion::~TextureRegion(void)
 {
-    FKLOGINFO("deallocing SpriteFrame: %p", this);
+    FKLOGINFO("deallocing TextureRegion: %p", this);
     FK_SAFE_RELEASE(_texture);
 }
 
-SpriteFrame* SpriteFrame::clone() const
+TextureRegion* TextureRegion::clone() const
 {
 	// no copy constructor	
-    SpriteFrame *copy = new (std::nothrow) SpriteFrame();
+    TextureRegion *copy = new (std::nothrow) TextureRegion();
     copy->initWithTextureFilename(_textureFilename.c_str(), _rectInPixels, _rotated, _offsetInPixels, _originalSizeInPixels);
     copy->setTexture(_texture);
     copy->autorelease();
     return copy;
 }
 
-void SpriteFrame::setRect(const Rect& rect)
+void TextureRegion::setRect(const Rect& rect)
 {
     _rect = rect;
     _rectInPixels = FK_RECT_POINTS_TO_PIXELS(_rect);
 }
 
-void SpriteFrame::setRectInPixels(const Rect& rectInPixels)
+void TextureRegion::setRectInPixels(const Rect& rectInPixels)
 {
     _rectInPixels = rectInPixels;
     _rect = FK_RECT_PIXELS_TO_POINTS(rectInPixels);
 }
 
-const Point& SpriteFrame::getOffset() const
+const Point& TextureRegion::getOffset() const
 {
     return _offset;
 }
 
-void SpriteFrame::setOffset(const Point& offsets)
+void TextureRegion::setOffset(const Point& offsets)
 {
     _offset = offsets;
     _offsetInPixels = FK_POINT_POINTS_TO_PIXELS( _offset );
 }
 
-const Point& SpriteFrame::getOffsetInPixels() const
+const Point& TextureRegion::getOffsetInPixels() const
 {
     return _offsetInPixels;
 }
 
-void SpriteFrame::setOffsetInPixels(const Point& offsetInPixels)
+void TextureRegion::setOffsetInPixels(const Point& offsetInPixels)
 {
     _offsetInPixels = offsetInPixels;
     _offset = FK_POINT_PIXELS_TO_POINTS( _offsetInPixels );
 }
 
-void SpriteFrame::setTexture(Texture2D * texture)
+void TextureRegion::setTexture(Texture2D * texture)
 {
     if( _texture != texture ) {
         FK_SAFE_RELEASE(_texture);
@@ -177,7 +177,7 @@ void SpriteFrame::setTexture(Texture2D * texture)
     }
 }
 
-Texture2D* SpriteFrame::getTexture(void)
+Texture2D* TextureRegion::getTexture(void)
 {
     if( _texture ) {
         return _texture;
@@ -187,7 +187,7 @@ Texture2D* SpriteFrame::getTexture(void)
         return Director::getInstance()->getTextureCache()->addImage(_textureFilename.c_str());
     }
     // no texture or texture filename
-    return nullptr;
+    return NULL;
 }
 
 FLAKOR_NS_END

@@ -26,12 +26,6 @@ THE SOFTWARE.
 
 #include <stdlib.h>
 
-#include "base/CCDirector.h"
-#include "renderer/CCCustomCommand.h"
-#include "renderer/CCRenderer.h"
-#include "platform/CCImage.h"
-#include "platform/CCFileUtils.h"
-
 FLAKOR_NS_BEGIN
 
 int nextPOT(int x)
@@ -52,9 +46,10 @@ namespace utils
  */
 void onCaptureScreen(const std::function<void(bool, const std::string&)>& afterCaptured, const std::string& filename)
 {
+/*
     auto glView = Director::getInstance()->getOpenGLView();
     auto frameSize = glView->getFrameSize();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#if (FK_TARGET_PLATFORM == FK_PLATFORM_MAC) || (FK_TARGET_PLATFORM == FK_PLATFORM_WIN32) || (FK_TARGET_PLATFORM == FK_PLATFORM_LINUX)
     frameSize = frameSize * glView->getFrameZoomFactor() * glView->getRetinaFactor();
 #endif
     
@@ -74,11 +69,11 @@ void onCaptureScreen(const std::function<void(bool, const std::string&)>& afterC
         
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+#if (FK_TARGET_PLATFORM == FK_PLATFORM_WP8)
         // The frame buffer is always created with portrait orientation on WP8. 
         // So if the current device orientation is landscape, we need to rotate the frame buffer.  
         auto renderTargetSize = glView->getRenerTargetSize();
-        CCASSERT(width * height == static_cast<int>(renderTargetSize.width * renderTargetSize.height), "The frame size is not matched");
+        FKASSERT(width * height == static_cast<int>(renderTargetSize.width * renderTargetSize.height), "The frame size is not matched");
         glReadPixels(0, 0, (int)renderTargetSize.width, (int)renderTargetSize.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.get());
 #else
         glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.get());
@@ -90,7 +85,7 @@ void onCaptureScreen(const std::function<void(bool, const std::string&)>& afterC
             break;
         }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+#if (FK_TARGET_PLATFORM == FK_PLATFORM_WP8)
         if (width == static_cast<int>(renderTargetSize.width))
         {
             // The current device orientation is portrait.
@@ -137,29 +132,22 @@ void onCaptureScreen(const std::function<void(bool, const std::string&)>& afterC
     if (afterCaptured)
     {
         afterCaptured(succeed, outputFile);
-    }
+    }*/
 }
 /*
  * Capture screen interface
  */
 void captureScreen(const std::function<void(bool, const std::string&)>& afterCaptured, const std::string& filename)
 {
-    static CustomCommand captureScreenCommand;
+    /*static CustomCommand captureScreenCommand;
     captureScreenCommand.init(std::numeric_limits<float>::max());
     captureScreenCommand.func = std::bind(onCaptureScreen, afterCaptured, filename);
-    Director::getInstance()->getRenderer()->addCommand(&captureScreenCommand);
+    Director::getInstance()->getRenderer()->addCommand(&captureScreenCommand);*/
 }
     
 std::vector<Entity*> findChildren(const Entity &node, const std::string &name)
 {
-    std::vector<Node*> vec;
-    
-    node.enumerateChildren(name, [&vec](Node* nodeFound) -> bool {
-        vec.push_back(nodeFound);
-        return false;
-    });
-
-    return vec;
+    return NULL;
 }
 
 #define MAX_ITOA_BUFFER_SIZE 256
@@ -189,50 +177,6 @@ double gettime()
     gettimeofday(&tv, nullptr);
 
     return (double)tv.tv_sec + (double)tv.tv_usec/1000000;
-}
-
-Rect getCascadeBoundingBox(Node *node)
-{
-    Rect cbb;
-    Size contentSize = node->getContentSize();
-    
-    // check all childrens bounding box, get maximize box
-    Node* child = nullptr;
-    bool merge = false;
-    for(auto object : node->getChildren())
-    {
-        child = dynamic_cast<Node*>(object);
-        if (!child->isVisible()) continue;
-        
-        const Rect box = getCascadeBoundingBox(child);
-        if (box.size.width <= 0 || box.size.height <= 0) continue;
-        
-        if (!merge)
-        {
-            cbb = box;
-            merge = true;
-        }
-        else
-        {
-            cbb.merge(box);
-        }
-    }
-    
-    // merge content size
-    if (contentSize.width > 0 && contentSize.height > 0)
-    {
-        const Rect box = RectApplyAffineTransform(Rect(0, 0, contentSize.width, contentSize.height), node->getNodeToWorldAffineTransform());
-        if (!merge)
-        {
-            cbb = box;
-        }
-        else
-        {
-            cbb.merge(box);
-        }
-    }
-    
-    return cbb;
 }
     
 }

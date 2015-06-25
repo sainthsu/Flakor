@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef _FK_SPRITEFRAME_H_
-#define _FK_SPRITEFRAME_H_
+#ifndef _FK_TEXTUREREGION_H_
+#define _FK_TEXTUREREGION_H_
 
 #include "2d/Entity.h"
 #include "base/element/Element.h"
@@ -33,43 +33,43 @@ FLAKOR_NS_BEGIN
 class Texture2D;
 
 /**
- * @addtogroup sprite_nodes
+ * @addtogroup texture
  * @{
  */
 
-/** @brief A SpriteFrame has:
+/** @brief A TextureRegion has:
     - texture: A Texture2D that will be used by the Sprite
     - rectangle: A rectangle of the texture
 
 
  You can modify the frame of a Sprite by doing:
  
-    SpriteFrame *frame = SpriteFrame::frameWithTexture(texture, rect, offset);
-    sprite->setDisplayFrame(frame);
+    TextureRegion *region = TextureRegion::createWithTexture(texture, rect, offset);
+    sprite->setDisplayRegion(region);
  */
-class SpriteFrame : public Object, public Clonable
+class TextureRegion : public Object, public Clonable
 {
 public:
 
-    /** Create a SpriteFrame with a texture filename, rect in points.
+    /** Create a TextureRegion with a texture filename, rect in points.
      It is assumed that the frame was not trimmed.
      */
-    static SpriteFrame* create(const std::string& filename, const Rect& rect);
+    static TextureRegion* create(const std::string& filename, const Rect& rect);
     
-    /** Create a SpriteFrame with a texture filename, rect, rotated, offset and originalSize in pixels.
+    /** Create a TextureRegion with a texture filename, rect, rotated, offset and originalSize in pixels.
      The originalSize is the size in pixels of the frame before being trimmed.
      */
-    static SpriteFrame* create(const std::string& filename, const Rect& rect, bool rotated, const Vec2& offset, const Size& originalSize);
+    static TextureRegion* create(const std::string& filename, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize);
     
-    /** Create a SpriteFrame with a texture, rect in points.
+    /** Create a TextureRegion with a texture, rect in points.
      It is assumed that the frame was not trimmed.
      */
-    static SpriteFrame* createWithTexture(Texture2D* pobTexture, const Rect& rect);
+    static TextureRegion* createWithTexture(Texture2D* pobTexture, const Rect& rect);
 
-    /** Create a SpriteFrame with a texture, rect, rotated, offset and originalSize in pixels.
+    /** Create a TextureRegion with a texture, rect, rotated, offset and originalSize in pixels.
      The originalSize is the size in points of the frame before being trimmed.
      */
-    static SpriteFrame* createWithTexture(Texture2D* pobTexture, const Rect& rect, bool rotated, const Vec2& offset, const Size& originalSize);
+    static TextureRegion* createWithTexture(Texture2D* pobTexture, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize);
 
     // attributes
     inline const Rect& getRectInPixels() const { return _rectInPixels; }
@@ -107,35 +107,35 @@ public:
     void setOffset(const Vec2& offsets);
 
     // Overrides
-	virtual SpriteFrame *clone() const override;
+	virtual TextureRegion *clone() const override;
     
 	protected:
     /**
      * @lua NA
      */
-    SpriteFrame(void);
+    TextureRegion(void);
     
     /**
      * @lua NA
      */
-    virtual ~SpriteFrame(void);
+    virtual ~TextureRegion(void);
     
-    /** Initializes a SpriteFrame with a texture, rect in points.
+    /** Initializes a TextureRegion with a texture, rect in points.
      It is assumed that the frame was not trimmed.
      */
     bool initWithTexture(Texture2D* pobTexture, const Rect& rect);
     
-    /** Initializes a SpriteFrame with a texture filename, rect in points;
+    /** Initializes a TextureRegion with a texture filename, rect in points;
      It is assumed that the frame was not trimmed.
      */
     bool initWithTextureFilename(const std::string& filename, const Rect& rect);
     
-    /** Initializes a SpriteFrame with a texture, rect, rotated, offset and originalSize in pixels.
+    /** Initializes a TextureRegion with a texture, rect, rotated, offset and originalSize in pixels.
      The originalSize is the size in points of the frame before being trimmed.
      */
     bool initWithTexture(Texture2D* pobTexture, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize);
     
-    /** Initializes a SpriteFrame with a texture, rect, rotated, offset and originalSize in pixels.
+    /** Initializes a TextureRegion with a texture, rect, rotated, offset and originalSize in pixels.
      The originalSize is the size in pixels of the frame before being trimmed.
      
      @since v1.1
@@ -143,20 +143,23 @@ public:
     bool initWithTextureFilename(const std::string& filename, const Rect& rect, bool rotated, const Point& offset, const Size& originalSize);
 
 protected:
+	bool   _rotated;
+
+	Rect _rect;
     Point _offset;
     Size _originalSize;
-    Rect _rectInPixels;
-    bool   _rotated;
-    Rect _rect;
+
+	Rect _rectInPixels;
     Point _offsetInPixels;
     Size _originalSizeInPixels;
+
     Texture2D *_texture;
     std::string  _textureFilename;
 };
 
-// end of sprite_nodes group
+// end of texture group
 /// @}
 
 FLAKOR_NS_END
 
-#endif //_FK_SPRITEFRAME_H_
+#endif //_FK_TextureRegion_H_

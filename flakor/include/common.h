@@ -48,6 +48,12 @@ void FK_DLL Log(const char * pszFormat, ...) FK_FORMAT_PRINTF(1, 2);
 void FK_DLL LuaLog(const char * pszFormat);
 
 /**
+ * KunKua log
+ */
+
+void FK_DLL KKLog(const char * pszFormat);
+
+/**
 @brief Pop out a message box
 */
 void FK_DLL MessageBox(const char * pszMsg, const char * pszTitle);

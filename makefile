@@ -9,4 +9,4 @@ OBJS=flakor.o
 %.o : % .cpp
 
 clean:
-    rm -rf *.o
+	rm -rf *.o

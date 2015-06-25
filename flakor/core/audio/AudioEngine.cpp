@@ -27,6 +27,7 @@
 #if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID || FK_TARGET_PLATFORM == FK_PLATFORM_IOS
 #include "core/audio/Audio.h"
 #include "core/audio/AudioEngine.h"
+#include "tool/utility/FileUtils.h"
 #if FK_TARGET_PLATFORM == FK_PLATFORM_ANDROID
 #include "core/audio/android/AudioEngine-inl.h"
 #elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS

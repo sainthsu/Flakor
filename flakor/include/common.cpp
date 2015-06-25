@@ -56,6 +56,11 @@ void LuaLog(const char * pszFormat)
     __android_log_print(ANDROID_LOG_DEBUG, "flakor engine debug info", "%s", pszFormat);
 }
 
+void KKLog(const char * pszFormat)
+{
+    __android_log_print(ANDROID_LOG_DEBUG, "flakor engine debug info", "%s", pszFormat);
+}
+
 FLAKOR_NS_END
 
 #elif FK_TARGET_PLATFORM == FK_PLATFORM_IOS
@@ -96,6 +101,11 @@ void MessageBox(const char * pszMsg, const char * pszTitle)
 }
 
 void LuaLog(const char * pszFormat)
+{
+    puts(pszFormat);
+}
+
+void KKLog(const char * pszFormat)
 {
     puts(pszFormat);
 }

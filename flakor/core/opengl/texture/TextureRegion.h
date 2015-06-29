@@ -42,7 +42,7 @@ class Texture2D;
     - rectangle: A rectangle of the texture
 
 
- You can modify the frame of a Sprite by doing:
+ You can modify the region of a Texture to display by doing:
  
     TextureRegion *region = TextureRegion::createWithTexture(texture, rect, offset);
     sprite->setDisplayRegion(region);

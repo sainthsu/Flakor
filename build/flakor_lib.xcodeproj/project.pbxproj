@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		850FD7791AB96D6E00EF4A7D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850FD7771AB96D6E00EF4A7D /* OpenGLES.framework */; };
 		850FD77A1AB96D6E00EF4A7D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850FD7781AB96D6E00EF4A7D /* QuartzCore.framework */; };
+		85143EA91B3D66DA00F98BA4 /* TextureRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85143EA71B3D66DA00F98BA4 /* TextureRegion.cpp */; };
+		85143EAA1B3D66DA00F98BA4 /* TextureRegion.h in Headers */ = {isa = PBXBuildFile; fileRef = 85143EA81B3D66DA00F98BA4 /* TextureRegion.h */; };
 		852D70CE1ACBCFD700198963 /* AudioManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70C41ACBCFD700198963 /* AudioManager.h */; };
 		852D70CF1ACBCFD700198963 /* AudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 852D70C51ACBCFD700198963 /* AudioManager.m */; };
 		852D70D01ACBCFD700198963 /* AudioConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 852D70C61ACBCFD700198963 /* AudioConfig.h */; };
@@ -188,6 +190,8 @@
 /* Begin PBXFileReference section */
 		850FD7771AB96D6E00EF4A7D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		850FD7781AB96D6E00EF4A7D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		85143EA71B3D66DA00F98BA4 /* TextureRegion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureRegion.cpp; sourceTree = "<group>"; };
+		85143EA81B3D66DA00F98BA4 /* TextureRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureRegion.h; sourceTree = "<group>"; };
 		852D70C41ACBCFD700198963 /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
 		852D70C51ACBCFD700198963 /* AudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioManager.m; sourceTree = "<group>"; };
 		852D70C61ACBCFD700198963 /* AudioConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioConfig.h; sourceTree = "<group>"; };
@@ -679,6 +683,8 @@
 		8570FA221AB941CD003DF0D2 /* texture */ = {
 			isa = PBXGroup;
 			children = (
+				85143EA71B3D66DA00F98BA4 /* TextureRegion.cpp */,
+				85143EA81B3D66DA00F98BA4 /* TextureRegion.h */,
 				8570FA231AB941CD003DF0D2 /* atitc.cpp */,
 				8570FA241AB941CD003DF0D2 /* atitc.h */,
 				8570FA2A1AB941CD003DF0D2 /* etc1.cpp */,
@@ -1035,6 +1041,7 @@
 				8570FD8A1AB941D2003DF0D2 /* CArray.h in Headers */,
 				8570FE7A1AB941E3003DF0D2 /* pnglibconf.h in Headers */,
 				852D70D61ACBCFD700198963 /* BaseAudioEngine_objc.h in Headers */,
+				85143EAA1B3D66DA00F98BA4 /* TextureRegion.h in Headers */,
 				8570FDA21AB941D3003DF0D2 /* EAGLView.h in Headers */,
 				8570FD371AB941CF003DF0D2 /* Timer.h in Headers */,
 				8570FD391AB941CF003DF0D2 /* UpdateThread.h in Headers */,
@@ -1134,6 +1141,7 @@
 				8570FD2D1AB941CF003DF0D2 /* Set.cpp in Sources */,
 				8570FD311AB941CF003DF0D2 /* Str.cpp in Sources */,
 				8570FCF91AB941CE003DF0D2 /* Entity.cpp in Sources */,
+				85143EA91B3D66DA00F98BA4 /* TextureRegion.cpp in Sources */,
 				85C24DE71AC64C2D00E58809 /* TouchTarget.cpp in Sources */,
 				8570FD6F1AB941D1003DF0D2 /* LoaderThread.cpp in Sources */,
 				8570FD271AB941CE003DF0D2 /* DataVisitor.cpp in Sources */,

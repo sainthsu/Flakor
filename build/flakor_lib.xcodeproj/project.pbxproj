@@ -173,6 +173,10 @@
 		8591918F1AF5A6F500B7F1B5 /* Value.h in Headers */ = {isa = PBXBuildFile; fileRef = 8591918D1AF5A6F500B7F1B5 /* Value.h */; };
 		8591994E1AC6A1090062B26F /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8570FAC01AB941CD003DF0D2 /* libjpeg.a */; };
 		8591994F1AC6A1130062B26F /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8570FCD21AB941CE003DF0D2 /* libpng.a */; };
+		85925F811B61E5F20032F768 /* SpriteBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85925F7F1B61E5F20032F768 /* SpriteBatch.cpp */; };
+		85925F821B61E5F20032F768 /* SpriteBatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 85925F801B61E5F20032F768 /* SpriteBatch.h */; };
+		85925F851B61E95A0032F768 /* TextureAtlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85925F831B61E95A0032F768 /* TextureAtlas.cpp */; };
+		85925F861B61E95A0032F768 /* TextureAtlas.h in Headers */ = {isa = PBXBuildFile; fileRef = 85925F841B61E95A0032F768 /* TextureAtlas.h */; };
 		85AAA9E31ABB04C9001068F6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AAA9E21ABB04C9001068F6 /* UIKit.framework */; };
 		85AF3AAC1ABAB92E005E4589 /* Engine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AAB1ABAB92E005E4589 /* Engine.mm */; };
 		85AF3AB71ABACC31005E4589 /* GLContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85AF3AB51ABACC31005E4589 /* GLContext.mm */; };
@@ -384,6 +388,10 @@
 		8578EE581ADA5CB50059FAE2 /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
 		8591918C1AF5A6F500B7F1B5 /* Value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Value.cpp; sourceTree = "<group>"; };
 		8591918D1AF5A6F500B7F1B5 /* Value.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Value.h; sourceTree = "<group>"; };
+		85925F7F1B61E5F20032F768 /* SpriteBatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteBatch.cpp; sourceTree = "<group>"; };
+		85925F801B61E5F20032F768 /* SpriteBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBatch.h; sourceTree = "<group>"; };
+		85925F831B61E95A0032F768 /* TextureAtlas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureAtlas.cpp; sourceTree = "<group>"; };
+		85925F841B61E95A0032F768 /* TextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureAtlas.h; sourceTree = "<group>"; };
 		859BAFF41A733E3C00E57FFF /* libflakor_lib_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libflakor_lib_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		85AAA9E21ABB04C9001068F6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		85AF3AAB1ABAB92E005E4589 /* Engine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Engine.mm; sourceTree = "<group>"; };
@@ -474,6 +482,8 @@
 		8570F99D1AB941CD003DF0D2 /* 2d */ = {
 			isa = PBXGroup;
 			children = (
+				85925F7F1B61E5F20032F768 /* SpriteBatch.cpp */,
+				85925F801B61E5F20032F768 /* SpriteBatch.h */,
 				8570F99E1AB941CD003DF0D2 /* Entity.cpp */,
 				8570F99F1AB941CD003DF0D2 /* Entity.h */,
 				8570F9A01AB941CD003DF0D2 /* Scene.cpp */,
@@ -699,6 +709,8 @@
 				8570FA331AB941CD003DF0D2 /* TextureManager.h */,
 				8570FA341AB941CD003DF0D2 /* TGAlib.cpp */,
 				8570FA351AB941CD003DF0D2 /* TGAlib.h */,
+				85925F831B61E95A0032F768 /* TextureAtlas.cpp */,
+				85925F841B61E95A0032F768 /* TextureAtlas.h */,
 			);
 			path = texture;
 			sourceTree = "<group>";
@@ -1023,9 +1035,11 @@
 				8570FD691AB941D0003DF0D2 /* BitData.h in Headers */,
 				8570FD9F1AB941D3003DF0D2 /* ES2Renderer.h in Headers */,
 				8570FD161AB941CE003DF0D2 /* Element.h in Headers */,
+				85925F821B61E5F20032F768 /* SpriteBatch.h in Headers */,
 				8570FD1E1AB941CE003DF0D2 /* IGame.h in Headers */,
 				8570FD851AB941D2003DF0D2 /* targetMacros.h in Headers */,
 				85C24DE61AC64C2D00E58809 /* OnTouchEvent.h in Headers */,
+				85925F861B61E95A0032F768 /* TextureAtlas.h in Headers */,
 				8570FD8C1AB941D2003DF0D2 /* GLMatrix.h in Headers */,
 				8570FCFE1AB941CE003DF0D2 /* Sprite.h in Headers */,
 				8570FD731AB941D1003DF0D2 /* Resource.h in Headers */,
@@ -1123,11 +1137,13 @@
 				8570FD721AB941D1003DF0D2 /* Resource.cpp in Sources */,
 				85FE3EEF1B04383A00D8CF15 /* Ref.cpp in Sources */,
 				8570FD0B1AB941CE003DF0D2 /* Blendfunc.cpp in Sources */,
+				85925F851B61E95A0032F768 /* TextureAtlas.cpp in Sources */,
 				852D70D51ACBCFD700198963 /* SimpleAudioEngine.mm in Sources */,
 				8570FD6D1AB941D0003DF0D2 /* ImageLoader.cpp in Sources */,
 				8570FD8D1AB941D2003DF0D2 /* Matrices.cpp in Sources */,
 				852D70CF1ACBCFD700198963 /* AudioManager.m in Sources */,
 				8570FDA01AB941D3003DF0D2 /* ES2Renderer.m in Sources */,
+				85925F811B61E5F20032F768 /* SpriteBatch.cpp in Sources */,
 				8570FCFB1AB941CE003DF0D2 /* Scene.cpp in Sources */,
 				8570FD381AB941CF003DF0D2 /* UpdateThread.cpp in Sources */,
 				8570FDA31AB941D3003DF0D2 /* EAGLView.mm in Sources */,

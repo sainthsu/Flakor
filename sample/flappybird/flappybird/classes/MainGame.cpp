@@ -53,9 +53,3 @@ void MainGame::dispose()
     FKLOG("main game dispose!");
 }
 
-
-bool MainGame::onTouch(TouchTrigger* touch)
-{
-     return runningScene->onTouchTrigger(touch);
-}
-

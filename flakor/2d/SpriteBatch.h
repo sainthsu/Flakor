@@ -28,41 +28,38 @@ THE SOFTWARE.
 #include <vector>
 
 #include "2d/Sprite.h"
-#include "base/CCProtocols.h"
-#include "renderer/CCTextureAtlas.h"
-#include "renderer/CCBatchCommand.h"
 
-NS_CC_BEGIN
+
+FLAKOR_NS_BEGIN
 
 /**
  * @addtogroup _2d
  * @{
  */
 
+class TextureAtlas;
 
-class Sprite;
-
-/** SpriteBatchNode is like a batch node: if it contains children, it will draw them in 1 single OpenGL call
+/** SpriteBatch is like a batch node: if it contains children, it will draw them in 1 single OpenGL call
  * (often known as "batch draw").
  *
- * A SpriteBatchNode can reference one and only one texture (one image file, one texture atlas).
- * Only the Sprites that are contained in that texture can be added to the SpriteBatchNode.
- * All Sprites added to a SpriteBatchNode are drawn in one OpenGL ES draw call.
- * If the Sprites are not added to a SpriteBatchNode then an OpenGL ES draw call will be needed for each one, which is less efficient.
+ * A SpriteBatch can reference one and only one texture (one image file, one texture atlas).
+ * Only the Sprites that are contained in that texture can be added to the SpriteBatch.
+ * All Sprites added to a SpriteBatch are drawn in one OpenGL ES draw call.
+ * If the Sprites are not added to a SpriteBatch then an OpenGL ES draw call will be needed for each one, which is less efficient.
  *
  *
  * Limitations:
- *  - The only object that is accepted as child (or grandchild, grand-grandchild, etc...) is Sprite or any subclass of Sprite. eg: particles, labels and layer can't be added to a SpriteBatchNode.
+ *  - The only object that is accepted as child (or grandchild, grand-grandchild, etc...) is Sprite or any subclass of Sprite. eg: particles, labels and layer can't be added to a SpriteBatch.
  *  - Either all its children are Aliased or Antialiased. It can't be a mix. This is because "alias" is a property of the texture, and all the sprites share the same texture.
  *
  * @since v0.7.1
  */
-class CC_DLL SpriteBatchNode : public Node, public TextureProtocol
+class FK_DLL SpriteBatch : public Entity, public ITexture
 {
     static const int DEFAULT_CAPACITY = 29;
 
 public:
-    /** Creates a SpriteBatchNode with a texture2d and capacity of children.
+    /** Creates a SpriteBatch with a texture2d and capacity of children.
      * The capacity will be increased in 33% in runtime if it runs out of space.
      *
      * @param tex A texture2d.
@@ -71,7 +68,7 @@ public:
      */
     static SpriteBatch* createWithTexture(Texture2D* tex, ssize_t capacity = DEFAULT_CAPACITY);
 
-    /** Creates a SpriteBatchNode with a file image (.png, .jpeg, .pvr, etc) and capacity of children.
+    /** Creates a SpriteBatch with a file image (.png, .jpeg, .pvr, etc) and capacity of children.
      * The capacity will be increased in 33% in runtime if it runs out of space.
      * The file will be loaded using the TextureMgr.
      *
@@ -96,8 +93,8 @@ public:
     { 
         if (textureAtlas != _textureAtlas)
         {
-            CC_SAFE_RETAIN(textureAtlas);
-            CC_SAFE_RELEASE(_textureAtlas);
+            FK_SAFE_RETAIN(textureAtlas);
+            FK_SAFE_RELEASE(_textureAtlas);
             _textureAtlas = textureAtlas;
         }
     }
@@ -116,7 +113,7 @@ public:
      *
      * @param index A certain index.
      * @param doCleanup Whether or not to cleanup the running actions.
-     * @warning Removing a child from a SpriteBatchNode is very slow.
+     * @warning Removing a child from a SpriteBatch is very slow.
      */
     void removeChildAtIndex(ssize_t index, bool doCleanup);
     
@@ -186,13 +183,12 @@ public:
 
     virtual void visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
     
-    using Node::addChild;
-    virtual void addChild(Node * child, int zOrder, int tag) override;
-    virtual void addChild(Node * child, int zOrder, const std::string &name) override;
-    virtual void reorderChild(Node *child, int zOrder) override;
+    using Entity::addChild;
+    virtual void addChild(Entity * child, int zOrder, int tag) override;
+    virtual void reorderChild(Entity *child, int zOrder) override;
         
-    virtual void removeChild(Node *child, bool cleanup) override;
-    virtual void removeAllChildrenWithCleanup(bool cleanup) override;
+    virtual void removeChild(Entity *child, bool cleanup) override;
+    virtual void removeAllChildren(bool cleanup) override;
     virtual void sortAllChildren() override;
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
     virtual std::string getDescription() const override;
@@ -205,24 +201,24 @@ public:
     /* This is the opposite of "addQuadFromSprite.
      * It add the sprite to the children and descendants array, but it doesn't update add it to the texture atlas
      */
-    SpriteBatchNode * addSpriteWithoutQuad(Sprite *child, int z, int aTag);
+    SpriteBatch * addSpriteWithoutQuad(Sprite *child, int z, int aTag);
     
-CC_CONSTRUCTOR_ACCESS:
+FK_CONSTRUCTOR_ACCESS:
     /**
      * @js ctor
      */
-    SpriteBatchNode();
+    SpriteBatch();
     /**
      * @js NA
      * @lua NA
      */
-    virtual ~SpriteBatchNode();
+    virtual ~SpriteBatch();
     
-    /** initializes a SpriteBatchNode with a texture2d and capacity of children.
+    /** initializes a SpriteBatch with a texture2d and capacity of children.
      The capacity will be increased in 33% in runtime if it runs out of space.
      */
     bool initWithTexture(Texture2D *tex, ssize_t capacity = DEFAULT_CAPACITY);
-    /** initializes a SpriteBatchNode with a file image (.png, .jpeg, .pvr, etc) and a capacity of children.
+    /** initializes a SpriteBatch with a file image (.png, .jpeg, .pvr, etc) and a capacity of children.
      The capacity will be increased in 33% in runtime if it runs out of space.
      The file will be loaded using the TextureMgr.
      * @js init
@@ -252,9 +248,9 @@ protected:
     std::vector<Sprite*> _descendants;
 };
 
-// end of sprite_nodes group
+// end of sprite group
 /** @} */
 
-NS_CC_END
+FLAKOR_NS_END
 
-#endif // __CC_SPRITE_BATCH_NODE_H__
+#endif

@@ -16,8 +16,6 @@ public:
     virtual void pause ();
     virtual void resume ();
     virtual void dispose ();
-
-    virtual bool onTouch(TouchTrigger* touch);
 protected:
     Scene* runningScene;
 };

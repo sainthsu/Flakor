@@ -192,7 +192,7 @@ void VBO::enableAndPointer()
 		VBOAttribute *attri = VBOAttributes[i];
         FKLOG("%s index: %d",attri->_name,attri->_location);
 		glEnableVertexAttribArray(attri->_location);
-		glVertexAttribPointer(attri->_location,attri->_size,GL_FLOAT,attri->_normalized,sizePerVertex*sizeof(float),(GLvoid*)attri->_offset);
+		glVertexAttribPointer(attri->_location,attri->_size,GL_FLOAT,attri->_normalized,sizePerVertex*sizeof(float),reinterpret_cast<GLvoid*>(attri->_offset));
 	}
 }
 

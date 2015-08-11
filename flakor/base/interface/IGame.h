@@ -34,8 +34,6 @@ public:
 
 	/** Called when the {@link Application} is destroyed. Preceded by a call to {@link #pause()}. */
 	virtual void dispose () = 0;
-    
-        virtual bool onTouch(TouchTrigger* trigger) = 0;
 
 };
 

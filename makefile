@@ -3,7 +3,7 @@ CXX = g++
 
 all:
 
-OBJS=flakor.o 
+OBJS=flakor.o
 
 
 %.o : % .cpp

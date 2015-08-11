@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8578EE531ADA56440059FAE2 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8578EE4F1ADA56440059FAE2 /* AudioToolbox.framework */; };
-		8578EE541ADA56440059FAE2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8578EE501ADA56440059FAE2 /* AVFoundation.framework */; };
-		8578EE551ADA56440059FAE2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8578EE511ADA56440059FAE2 /* libz.dylib */; };
-		8578EE561ADA56440059FAE2 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8578EE521ADA56440059FAE2 /* OpenAL.framework */; };
+		85925F8B1B61F1960032F768 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85925F871B61F1960032F768 /* AudioToolbox.framework */; };
+		85925F8C1B61F1960032F768 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85925F881B61F1960032F768 /* AVFoundation.framework */; };
+		85925F8D1B61F1960032F768 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85925F891B61F1960032F768 /* libz.dylib */; };
+		85925F8E1B61F1960032F768 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85925F8A1B61F1960032F768 /* OpenAL.framework */; };
 		85AEBC631AD5401C001A4DE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AEBC621AD5401C001A4DE8 /* main.m */; };
 		85AEBC6E1AD5401C001A4DE8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85AEBC6D1AD5401C001A4DE8 /* Images.xcassets */; };
 		85AEBC711AD5401C001A4DE8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AEBC6F1AD5401C001A4DE8 /* LaunchScreen.xib */; };
@@ -50,10 +50,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8578EE4F1ADA56440059FAE2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
-		8578EE501ADA56440059FAE2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		8578EE511ADA56440059FAE2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
-		8578EE521ADA56440059FAE2 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
+		85925F871B61F1960032F768 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		85925F881B61F1960032F768 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		85925F891B61F1960032F768 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
+		85925F8A1B61F1960032F768 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
 		85AEBC5D1AD5401C001A4DE8 /* flappybird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flappybird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85AEBC611AD5401C001A4DE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85AEBC621AD5401C001A4DE8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -87,10 +87,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8578EE531ADA56440059FAE2 /* AudioToolbox.framework in Frameworks */,
-				8578EE541ADA56440059FAE2 /* AVFoundation.framework in Frameworks */,
-				8578EE551ADA56440059FAE2 /* libz.dylib in Frameworks */,
-				8578EE561ADA56440059FAE2 /* OpenAL.framework in Frameworks */,
+				85925F8B1B61F1960032F768 /* AudioToolbox.framework in Frameworks */,
+				85925F8C1B61F1960032F768 /* AVFoundation.framework in Frameworks */,
+				85925F8D1B61F1960032F768 /* libz.dylib in Frameworks */,
+				85925F8E1B61F1960032F768 /* OpenAL.framework in Frameworks */,
 				85F185781AD557C7007F95EC /* libflakor_lib_ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,10 +109,10 @@
 		85AEBC3D1AD53E6C001A4DE8 = {
 			isa = PBXGroup;
 			children = (
-				8578EE4F1ADA56440059FAE2 /* AudioToolbox.framework */,
-				8578EE501ADA56440059FAE2 /* AVFoundation.framework */,
-				8578EE511ADA56440059FAE2 /* libz.dylib */,
-				8578EE521ADA56440059FAE2 /* OpenAL.framework */,
+				85925F871B61F1960032F768 /* AudioToolbox.framework */,
+				85925F881B61F1960032F768 /* AVFoundation.framework */,
+				85925F891B61F1960032F768 /* libz.dylib */,
+				85925F8A1B61F1960032F768 /* OpenAL.framework */,
 				85AEBCA31AD54109001A4DE8 /* flakor_lib.xcodeproj */,
 				85AEBC5F1AD5401C001A4DE8 /* flappybird */,
 				85AEBC791AD5401D001A4DE8 /* flappybirdTests */,

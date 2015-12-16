@@ -1,4 +1,4 @@
-#THIS REPO IS DEPRECATED PLEASE SEE the new one![https://github.com/KunKua/flakor]
+##THIS REPO IS DEPRECATED PLEASE SEE the new one![https://github.com/KunKua/flakor]
 
 ##[Flakor Engine](http://flakor.org)
 
